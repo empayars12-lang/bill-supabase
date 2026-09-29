@@ -51,6 +51,8 @@
         .order-detail-view { display: none; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 20px; margin-top: 20px; }
         .detail-header { display: flex; justify-content: space-between; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #eee; flex-wrap: wrap; gap: 10px; }
         .detail-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #eee; }
+        .detail-item .detail-desc { max-width: 70%; }
+        .detail-item .detail-desc .size-line { font-size: 11px; color: #666; font-family: 'Courier New', monospace; margin-top: 3px; }
         .detail-total { display: flex; justify-content: space-between; margin-bottom: 10px; }
         .detail-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
         .page { display: none; } .page.active { display: block; }
@@ -74,11 +76,14 @@
         .btn-info { background: #3498db; } .btn-info:hover { background: #2980b9; }
         .btn-print-hantar { background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); font-weight: bold; padding: 12px 25px; font-size: 17px; box-shadow: 0 3px 10px rgba(46, 204, 113, 0.4); }
         .btn-print-hantar:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(46, 204, 113, 0.5); }
+        .btn-size-input { background: linear-gradient(135deg, #3498db, #2980b9); color: white; border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px; box-shadow: 0 3px 10px rgba(52, 152, 219, 0.3); }
+        .btn-size-input:hover { transform: translateY(-2px); }
         .terms { font-size: 12px; margin-top: 20px; padding: 10px; background: #f9f9f9; border-radius: 4px; }
         .bank-info { margin-top: 20px; padding: 10px; background: #e8f4fc; border-radius: 4px; }
         .action-buttons { display: flex; justify-content: space-between; margin-top: 20px; gap: 10px; flex-wrap: wrap; }
         .invoice-totals { margin-top: 20px; font-weight: bold; text-align: right; }
         .invoice-preview { border: 1px solid #ddd; padding: 20px; background: white; margin-bottom: 20px; }
+        .invoice-preview .size-breakdown { font-size: 11px; color: #555; font-family: 'Courier New', monospace; line-height: 1.5; margin-top: 3px; padding-left: 15px; }
         #offline-banner { position: fixed; bottom: 0; left: 0; right: 0; background: #e74c3c; color: white; padding: 10px; text-align: center; display: none; z-index: 1000; }
         .sync-status { font-size: 12px; color: #777; margin-top: 5px; }
         .discount-container { display: flex; gap: 10px; }
@@ -88,7 +93,6 @@
         .dashboard-card { background-color: #f9f9f9; border: 1px solid #eee; border-radius: 8px; padding: 25px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .dashboard-card h3 { margin-top: 0; color: #6e48aa; font-size: 1.2rem; margin-bottom: 15px; }
         .dashboard-card .amount { font-size: 2.5rem; font-weight: bold; color: #333; }
-        .dashboard-card .period { font-size: 0.9rem; color: #777; margin-top: 5px; }
         .commission-section { margin-top: 30px; padding: 20px; background: #f9f9f9; border-radius: 8px; }
         .top-customers-section { margin-top: 30px; padding: 20px; background: #fff8e1; border-radius: 8px; }
         .add-sales-person { margin-bottom: 30px; padding: 20px; background-color: #f9f9f9; border-radius: 8px; display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
@@ -106,7 +110,7 @@
         #submit-password { background-color: #6e48aa; color: white; } #cancel-password { background-color: #ccc; }
         #bills-modal { position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; }
         .bills-modal-content { background-color: #fefefe; margin: auto; padding: 20px 30px; border-radius: 8px; position: relative; width: 80%; max-width: 500px; }
-        #close-bills-modal, #close-payment-modal, #close-edit-order-modal, #close-template-modal, #close-name-modal { color: #aaa; position: absolute; top: 10px; right: 15px; font-size: 28px; font-weight: bold; cursor: pointer; }
+        #close-bills-modal, #close-payment-modal, #close-edit-order-modal, #close-template-modal, #close-name-modal, #close-size-cat-modal, #close-size-input-modal { color: #aaa; position: absolute; top: 10px; right: 15px; font-size: 28px; font-weight: bold; cursor: pointer; }
         #bills-modal-list { list-style: none; padding: 0; margin-top: 15px; max-height: 300px; overflow-y: auto; }
         #bills-modal-list li { padding: 8px 0; border-bottom: 1px solid #eee; font-size: 14px; }
         #payment-modal { position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; }
@@ -133,23 +137,53 @@
         .name-modal-content, .template-modal-content { background: white; padding: 30px; border-radius: 8px; position: relative; width: 90%; max-width: 400px; }
         .template-modal-content { max-width: 600px; max-height: 80vh; overflow-y: auto; }
 
-        #danger-modal {
-            position: fixed; z-index: 4000; left: 0; top: 0; width: 100%; height: 100%;
-            background-color: rgba(20, 0, 0, 0.85); display: none; justify-content: center; align-items: center; padding: 20px;
+        /* SIZE CATEGORIES MODAL */
+        #size-cat-modal, #size-input-modal {
+            position: fixed; z-index: 3500; left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; padding: 20px;
         }
+        .size-cat-modal-content, .size-input-modal-content {
+            background: white; padding: 30px; border-radius: 12px; position: relative;
+            width: 100%; max-width: 550px; max-height: 90vh; overflow-y: auto;
+        }
+        .size-input-modal-content { max-width: 600px; }
+        .size-cat-modal-content h3, .size-input-modal-content h3 {
+            margin-top: 0; color: #6e48aa; display: flex; justify-content: space-between; align-items: center;
+        }
+        .size-table-input { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+        .size-table-input thead { background: #f2f2f2; }
+        .size-table-input th { padding: 10px; text-align: left; font-size: 13px; }
+        .size-table-input td { padding: 8px 10px; border-bottom: 1px solid #eee; }
+        .size-table-input input[type="number"] { width: 80px; padding: 8px; text-align: center; border: 2px solid #ddd; border-radius: 4px; font-weight: bold; font-size: 14px; }
+        .size-table-input input[type="number"]:focus { border-color: #6e48aa; outline: none; }
+        .size-table-input .size-total-cell { text-align: right; font-weight: bold; color: #27ae60; }
+        .size-table-input .size-name { font-weight: bold; }
+        .size-total-summary { background: #f0f4ff; padding: 15px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid #6e48aa; text-align: right; }
+        .size-total-summary .label { color: #666; font-size: 12px; }
+        .size-total-summary .value { font-size: 18px; font-weight: bold; color: #6e48aa; }
+
+        /* SIZE CATEGORY MANAGEMENT */
+        .size-cat-list { margin-top: 15px; }
+        .size-cat-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 15px; background: #f9f9f9; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid #6e48aa; gap: 10px; flex-wrap: wrap; }
+        .size-cat-item .cat-info { flex: 1; min-width: 200px; }
+        .size-cat-item .cat-name { font-weight: bold; color: #333; margin-bottom: 5px; }
+        .size-cat-item .cat-sizes { font-size: 12px; color: #666; font-family: 'Courier New', monospace; margin-bottom: 5px; }
+        .size-cat-item .cat-price { font-size: 13px; color: #27ae60; font-weight: bold; }
+        .size-cat-item .cat-actions { display: flex; gap: 5px; }
+        .size-cat-item button { padding: 6px 12px; font-size: 12px; border: none; border-radius: 4px; cursor: pointer; color: white; }
+        .size-cat-item .btn-edit-cat { background: #3498db; }
+        .size-cat-item .btn-del-cat { background: #e74c3c; }
+
+        /* DANGER MODAL */
+        #danger-modal { position: fixed; z-index: 4000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(20, 0, 0, 0.85); display: none; justify-content: center; align-items: center; padding: 20px; }
         .danger-modal-content { background: white; padding: 30px; border-radius: 12px; width: 100%; max-width: 500px; box-shadow: 0 10px 40px rgba(231, 76, 60, 0.5); border-top: 6px solid #e74c3c; }
-        .danger-modal-content h3 { color: #e74c3c; margin-top: 0; font-size: 1.5rem; display: flex; align-items: center; gap: 10px; }
+        .danger-modal-content h3 { color: #e74c3c; margin-top: 0; font-size: 1.5rem; }
         .danger-modal-content .warning-box { background: #fff5f5; border-left: 4px solid #e74c3c; padding: 15px; margin: 15px 0; border-radius: 4px; font-size: 14px; line-height: 1.6; }
-        .danger-modal-content .warning-box ul { margin: 8px 0 0 20px; padding: 0; }
-        .danger-modal-content .warning-box li { margin-bottom: 4px; }
         .danger-modal-content input[type="text"] { padding: 12px; font-size: 16px; text-align: center; font-weight: bold; letter-spacing: 2px; margin: 10px 0; text-transform: uppercase; border: 2px solid #ddd; }
-        .danger-modal-content input[type="text"]:focus { border-color: #e74c3c; outline: none; }
         .danger-modal-buttons { display: flex; gap: 10px; margin-top: 20px; }
-        .danger-modal-buttons button { flex: 1; padding: 12px; border: none; border-radius: 6px; font-size: 15px; font-weight: bold; cursor: pointer; transition: all 0.2s; }
+        .danger-modal-buttons button { flex: 1; padding: 12px; border: none; border-radius: 6px; font-size: 15px; font-weight: bold; cursor: pointer; }
         #danger-cancel-btn { background: #95a5a6; color: white; }
-        #danger-cancel-btn:hover { background: #7f8c8d; }
         #danger-confirm-btn { background: #e74c3c; color: white; }
-        #danger-confirm-btn:hover { background: #c0392b; }
         #danger-confirm-btn:disabled { background: #ccc; cursor: not-allowed; }
         #danger-error { color: #e74c3c; font-size: 13px; font-weight: bold; margin-top: 10px; display: none; }
 
@@ -211,7 +245,7 @@
             <button class="tab-btn" id="tab-active">Order Aktif</button>
             <button class="tab-btn" id="tab-dashboard">Papan Pemuka</button>
             <button class="tab-btn" id="tab-sales-person">Jurujual</button>
-            <button class="tab-btn" id="tab-templates">Template Item</button>
+            <button class="tab-btn" id="tab-templates">Template & Saiz</button>
             <button class="tab-btn" id="tab-deleted-bills">Bil Dibatalkan</button>
         </div>
 
@@ -245,6 +279,10 @@
                 <strong>⚡ Item Pantas:</strong>
                 <span id="template-buttons"></span>
             </div>
+            <div class="action-buttons no-print" style="justify-content:flex-start; margin-bottom:15px;">
+                <button id="open-size-input-btn" class="btn-size-input">📐 Input Saiz Pantas</button>
+                <button id="add-item" class="btn">➕ Tambah Item Biasa</button>
+            </div>
             <table id="items-table">
                 <thead><tr><th>No.</th><th>Item/Keterangan</th><th>Harga/Unit (RM)</th><th>Kuantiti</th><th>Jumlah (RM)</th><th>Tindakan</th></tr></thead>
                 <tbody>
@@ -259,7 +297,6 @@
                 </tbody>
                 <tfoot><tr class="table-summary-row"><td colspan="3">JUMLAH</td><td id="total-quantity">0</td><td id="total-amount">0.00</td><td></td></tr></tfoot>
             </table>
-            <button id="add-item" class="btn no-print">Tambah Item</button>
 
             <div class="form-group"><label>DISKAUN:</label>
                 <div class="discount-container">
@@ -471,6 +508,13 @@
                 <thead><tr><th>Nama</th><th>Keterangan</th><th>Harga (RM)</th><th class="no-print">Tindakan</th></tr></thead>
                 <tbody id="template-list"></tbody>
             </table>
+
+            <h2 style="margin-top:40px;">📐 Kategori Saiz (untuk Baju dll)</h2>
+            <p style="color:#666;margin-top:-10px;">Kategori saiz yang boleh digunakan dalam invois. Boleh tambah, edit, atau padam bila-bila.</p>
+            <div class="action-buttons no-print" style="justify-content:flex-start; margin-bottom:15px;">
+                <button id="add-size-cat-btn" class="btn" style="background:#6e48aa;">➕ Tambah Kategori Saiz</button>
+            </div>
+            <div class="size-cat-list" id="size-cat-list"></div>
         </div>
 
         <!-- DELETED BILLS -->
@@ -508,6 +552,52 @@
             </div>
             <input type="hidden" id="password-action" value="">
             <input type="hidden" id="password-target-id" value="">
+        </div>
+    </div>
+
+    <!-- SIZE CATEGORY MODAL (add/edit) -->
+    <div id="size-cat-modal">
+        <div class="size-cat-modal-content">
+            <span id="close-size-cat-modal">×</span>
+            <h3 id="size-cat-modal-title">➕ Tambah Kategori Saiz</h3>
+            <div class="form-group">
+                <label>Nama Kategori:</label>
+                <input type="text" id="sc-name" placeholder="Contoh: Baju Dewasa Lelaki">
+            </div>
+            <div class="form-group">
+                <label>Senarai Saiz (pisah dengan koma):</label>
+                <input type="text" id="sc-sizes" placeholder="3XL, 2XL, XL, L, M, S, XS">
+            </div>
+            <div class="form-group">
+                <label>Harga Default (RM):</label>
+                <input type="number" id="sc-price" placeholder="35" step="0.01">
+            </div>
+            <div class="action-buttons no-print" style="justify-content:flex-end;">
+                <button id="cancel-size-cat" class="btn btn-secondary">Batal</button>
+                <button id="save-size-cat" class="btn">💾 Simpan</button>
+            </div>
+            <input type="hidden" id="sc-edit-id" value="">
+        </div>
+    </div>
+
+    <!-- SIZE INPUT MODAL (untuk invoice) -->
+    <div id="size-input-modal">
+        <div class="size-input-modal-content">
+            <span id="close-size-input-modal">×</span>
+            <h3 id="size-input-title">📐 Input Saiz Pantas</h3>
+            <label style="font-weight:bold;font-size:13px;">Kategori:</label>
+            <select class="filter-select" id="si-cat-select" style="width:100%;margin-bottom:15px;" onchange="onSizeCatChange()"></select>
+            <label style="font-weight:bold;font-size:13px;">Harga Seunit (RM):</label>
+            <input type="number" id="si-price" step="0.01" style="margin-bottom:15px;" oninput="recalcSizeInput()">
+            <table class="size-table-input" id="si-table"></table>
+            <div class="size-total-summary">
+                <div class="label">JUMLAH</div>
+                <div class="value" id="si-total">0 pcs × RM0.00 = RM 0.00</div>
+            </div>
+            <div class="action-buttons no-print" style="justify-content:flex-end;">
+                <button id="cancel-size-input" class="btn btn-secondary">Batal</button>
+                <button id="submit-size-input" class="btn">➕ Tambah ke Invoice</button>
+            </div>
         </div>
     </div>
 
@@ -563,7 +653,7 @@
             <div class="form-group"><label>KEPADA:</label><input type="text" id="edit-customer-name"></div>
             <div class="form-group"><label>NO. TELEFON:</label><input type="text" id="edit-customer-phone"></div>
             <div class="form-group"><label>TARIKH ORDER:</label><input type="date" id="edit-order-date"></div>
-            <div class="form-group"><label>TARIKH JANJI SIAP:</label><input type="date" id="edit-completion-date"></div>
+            <div class="form-group"><label>TARIKH JANI SIAP:</label><input type="date" id="edit-completion-date"></div>
             <h3>Butiran Item</h3>
             <table id="edit-items-table">
                 <thead><tr><th>No.</th><th>Item</th><th>Harga/Unit (RM)</th><th>Kuantiti</th><th>Jumlah (RM)</th><th>Tindakan</th></tr></thead>
@@ -597,7 +687,6 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // ============ SUPABASE ============
     const SUPABASE_URL = 'https://lgnbravmaqgdcgldkose.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_C4Vg3j2N-4u6Ro26RsoF7A_Nqh1oKSi';
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -624,6 +713,10 @@ document.addEventListener('DOMContentLoaded', function() {
     let allOrdersCache = [];
     let allSalesPersonsCache = [];
     let allTemplatesCache = [];
+    let allSizeCatsCache = [];
+
+    // Data semasa item dalam borang invoice (untuk handle size breakdown)
+    let currentInvoiceItems = []; // { description, price, quantity, total, sizeBreakdown? }
 
     // ============ BOSS MODE ============
     function applyBossMode() {
@@ -643,6 +736,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     function formatRM(n) { return 'RM ' + (parseFloat(n)||0).toFixed(2); }
     function escapeHtml(s) { return (s||'').toString().replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+    function escapeAttr(s) { return (s||'').toString().replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
 
     function getOrderStatus(o) {
         if (o.status === 'completed') return 'completed';
@@ -672,20 +766,22 @@ document.addEventListener('DOMContentLoaded', function() {
         if (days <= 3) return {text:`${days} hari lagi`,cls:'soon'};
         return {text:`${days} hari lagi`,cls:'normal'};
     }
+    function formatSizeBreakdown(bd) {
+        if (!bd) return '';
+        return Object.entries(bd).map(([s,q]) => `${s} (${q})`).join(', ');
+    }
 
-    // ============ FORM DATA CHECK (untuk warning refresh) ============
+    // ============ FORM DATA CHECK ============
     function hasUnsavedFormData() {
         const invoiceNum = $('invoice-number').value;
         const customerName = $('customer-name').value.trim();
         const customerPhone = $('customer-phone').value.trim();
-        
         let hasItems = false;
         $('items-table').querySelectorAll('tbody tr').forEach(r => {
             if (r.querySelector('.item-desc').value.trim() || r.querySelector('.item-price').value) {
                 hasItems = true;
             }
         });
-        
         return !!(invoiceNum || customerName || customerPhone || hasItems);
     }
 
@@ -700,7 +796,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const { data: items } = await supabaseClient.from('order_items').select('*').in('order_id', ids);
             (items||[]).forEach(it => {
                 if (!itemMap[it.order_id]) itemMap[it.order_id] = [];
-                itemMap[it.order_id].push({description:it.description, price:parseFloat(it.price)||0, quantity:it.quantity, total:parseFloat(it.total)||0});
+                itemMap[it.order_id].push({
+                    description: it.description,
+                    price: parseFloat(it.price)||0,
+                    quantity: it.quantity,
+                    total: parseFloat(it.total)||0
+                });
             });
             const result = orders.map(o => ({
                 id:o.id, invoiceNumber:o.invoice_number, customerName:o.customer_name,
@@ -816,6 +917,51 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     async function deleteTemplate(id) { await supabaseClient.from('item_templates').delete().eq('id', id); }
 
+    // ============ SIZE CATEGORIES CRUD ============
+    async function loadSizeCategories() {
+        try {
+            const { data, error } = await supabaseClient.from('size_categories').select('*').eq('active', true).order('sort_order', {ascending:true});
+            if (error) throw error;
+            allSizeCatsCache = (data||[]).map(c => ({
+                id: c.id,
+                name: c.name,
+                sizes: c.sizes || [],
+                default_price: parseFloat(c.default_price)||0,
+                sort_order: c.sort_order || 0
+            }));
+            return allSizeCatsCache;
+        } catch(e) { console.error('loadSizeCategories:', e); return []; }
+    }
+
+    async function addSizeCategory(name, sizes, price) {
+        try {
+            const maxOrder = allSizeCatsCache.reduce((m, c) => Math.max(m, c.sort_order || 0), 0);
+            const { error } = await supabaseClient.from('size_categories').insert({
+                name: name, sizes: sizes, default_price: price, sort_order: maxOrder + 1, active: true
+            });
+            if (error) throw error;
+            return true;
+        } catch(e) { console.error(e); alert('Gagal tambah: ' + e.message); return false; }
+    }
+
+    async function updateSizeCategory(id, name, sizes, price) {
+        try {
+            const { error } = await supabaseClient.from('size_categories').update({
+                name: name, sizes: sizes, default_price: price
+            }).eq('id', id);
+            if (error) throw error;
+            return true;
+        } catch(e) { console.error(e); alert('Gagal update: ' + e.message); return false; }
+    }
+
+    async function deleteSizeCategory(id) {
+        try {
+            const { error } = await supabaseClient.from('size_categories').delete().eq('id', id);
+            if (error) throw error;
+            return true;
+        } catch(e) { console.error(e); alert('Gagal padam: ' + e.message); return false; }
+    }
+
     // ============ LOCKS ============
     async function fetchActiveLocks() {
         const cutoff = new Date(Date.now() - 30*60*1000).toISOString();
@@ -873,12 +1019,12 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById(id).classList.add('active');
         orderDetailView.style.display = 'none';
         const map = {
-            'tab-invoice':[invoicePage, ()=>{populateSalesPersonDropdown(); updateAvailableInvoiceNumbers(); renderTemplateButtons(); updateCustomerDatalist();}],
+            'tab-invoice':[invoicePage, ()=>{populateSalesPersonDropdown(); updateAvailableInvoiceNumbers(); renderTemplateButtons(); updateCustomerDatalist(); loadSizeCategories();}],
             'tab-orders':[orderListPage, ()=>displayOrders()],
             'tab-active':[activeOrdersPage, ()=>displayActiveOrders()],
             'tab-dashboard':[dashboardPage, ()=>updateDashboard()],
             'tab-sales-person':[salesPersonPage, ()=>displaySalesPersonData()],
-            'tab-templates':[templatesPage, ()=>displayTemplates()],
+            'tab-templates':[templatesPage, ()=>{displayTemplates(); displaySizeCategories();}],
             'tab-deleted-bills':[deletedBillsPage, ()=>displayDeletedBills()]
         };
         if (map[id]) { const [p, fn] = map[id]; p.style.display='block'; p.classList.add('active'); fn(); }
@@ -903,35 +1049,25 @@ document.addEventListener('DOMContentLoaded', function() {
             hidePasswordPrompt(); performDeleteOrder(target, reason);
         } else if (action === 'access_tab') {
             sessionStorage.setItem('appAuthed','true');
-            applyBossMode();
-            hidePasswordPrompt();
+            applyBossMode(); hidePasswordPrompt();
             if (landingPage.style.display === 'flex') showContainer(target); else switchTab(target);
         } else if (action === 'clear_all_orders') {
             sessionStorage.setItem('appAuthed','true');
-            applyBossMode();
-            hidePasswordPrompt();
-            showDangerModal();
+            applyBossMode(); hidePasswordPrompt(); showDangerModal();
         }
     }
 
     // ============ DANGER MODAL ============
     function showDangerModal() {
-        $('danger-confirm-input').value = '';
-        $('danger-error').style.display = 'none';
+        $('danger-confirm-input').value = ''; $('danger-error').style.display = 'none';
         $('danger-confirm-btn').disabled = true;
         $('danger-modal').style.display = 'flex';
         setTimeout(() => $('danger-confirm-input').focus(), 100);
     }
-    function hideDangerModal() {
-        $('danger-modal').style.display = 'none';
-        $('danger-confirm-input').value = '';
-    }
+    function hideDangerModal() { $('danger-modal').style.display = 'none'; $('danger-confirm-input').value = ''; }
     async function executeClearAllOrders() {
-        if ($('danger-confirm-input').value.trim().toUpperCase() !== 'PADAM SEMUA') {
-            $('danger-error').style.display = 'block';
-            return;
-        }
-        if (!confirm('🚨 Pengesahan TERAKHIR!\n\nBetul-betul PASTI nak padam SEMUA order?\n\nTindakan ini TIDAK BOLEH dikembalikan!')) return;
+        if ($('danger-confirm-input').value.trim().toUpperCase() !== 'PADAM SEMUA') { $('danger-error').style.display = 'block'; return; }
+        if (!confirm('🚨 Pengesahan TERAKHIR!\n\nBetul-betul PASTI nak padam SEMUA order?')) return;
         try {
             $('danger-confirm-btn').disabled = true;
             $('danger-confirm-btn').textContent = '⏳ Memadam...';
@@ -939,9 +1075,8 @@ document.addEventListener('DOMContentLoaded', function() {
             hideDangerModal();
             alert('✅ Semua order telah dipadam.');
             displayOrders(); updateDashboard(); displayActiveOrders();
-        } catch(e) {
-            alert('❌ Gagal padam: ' + e.message);
-        } finally {
+        } catch(e) { alert('❌ Gagal padam: ' + e.message); }
+        finally {
             $('danger-confirm-btn').disabled = false;
             $('danger-confirm-btn').textContent = '🗑️ PADAM SEMUA';
         }
@@ -961,6 +1096,413 @@ document.addEventListener('DOMContentLoaded', function() {
         $('staff-badge').textContent = '👤 ' + n;
         $('name-modal').style.display = 'none';
         initRealtime();
+    }
+
+    // ============ SIZE CATEGORY MANAGEMENT ============
+    function displaySizeCategories() {
+        const list = $('size-cat-list');
+        if (!allSizeCatsCache.length) {
+            list.innerHTML = '<p style="text-align:center;color:#999;padding:20px;">Tiada kategori. Klik "Tambah Kategori Saiz" untuk mula.</p>';
+            return;
+        }
+        list.innerHTML = allSizeCatsCache.map(cat => `
+            <div class="size-cat-item">
+                <div class="cat-info">
+                    <div class="cat-name">${escapeHtml(cat.name)}</div>
+                    <div class="cat-sizes">${escapeHtml(cat.sizes.join(', '))}</div>
+                    <div class="cat-price">Harga Default: ${formatRM(cat.default_price)}</div>
+                </div>
+                <div class="cat-actions">
+                    <button class="btn-edit-cat" onclick="editSizeCategory('${cat.id}')">✏️ Edit</button>
+                    <button class="btn-del-cat" onclick="confirmDeleteSizeCategory('${cat.id}', '${escapeAttr(cat.name)}')">🗑️ Padam</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function openSizeCatModal(editId = null) {
+        $('sc-edit-id').value = editId || '';
+        if (editId) {
+            const cat = allSizeCatsCache.find(c => c.id === editId);
+            if (!cat) return;
+            $('size-cat-modal-title').textContent = '✏️ Edit Kategori Saiz';
+            $('sc-name').value = cat.name;
+            $('sc-sizes').value = cat.sizes.join(', ');
+            $('sc-price').value = cat.default_price;
+        } else {
+            $('size-cat-modal-title').textContent = '➕ Tambah Kategori Saiz';
+            $('sc-name').value = '';
+            $('sc-sizes').value = '';
+            $('sc-price').value = '';
+        }
+        $('size-cat-modal').style.display = 'flex';
+    }
+
+    function closeSizeCatModal() { $('size-cat-modal').style.display = 'none'; }
+
+    async function saveSizeCat() {
+        const editId = $('sc-edit-id').value;
+        const name = $('sc-name').value.trim();
+        const sizesText = $('sc-sizes').value.trim();
+        const price = parseFloat($('sc-price').value) || 0;
+
+        if (!name || !sizesText) { alert('Sila isi nama dan senarai saiz.'); return; }
+
+        const sizes = sizesText.split(',').map(s => s.trim()).filter(s => s);
+
+        let ok;
+        if (editId) {
+            ok = await updateSizeCategory(editId, name, sizes, price);
+        } else {
+            ok = await addSizeCategory(name, sizes, price);
+        }
+
+        if (ok) {
+            await loadSizeCategories();
+            displaySizeCategories();
+            closeSizeCatModal();
+        }
+    }
+
+    window.editSizeCategory = (id) => openSizeCatModal(id);
+    window.confirmDeleteSizeCategory = async (id, name) => {
+        if (!confirm(`Padam kategori "${name}"?`)) return;
+        if (await deleteSizeCategory(id)) {
+            await loadSizeCategories();
+            displaySizeCategories();
+        }
+    };
+
+    // ============ SIZE INPUT MODAL (dalam invoice) ============
+    let editingSizeItemIdx = null; // index dalam currentInvoiceItems
+
+    async function openSizeInputModal(editIdx = null) {
+        await loadSizeCategories();
+        if (!allSizeCatsCache.length) {
+            alert('Tiada kategori saiz. Sila tambah dalam tab "Template & Saiz" dahulu.');
+            return;
+        }
+
+        editingSizeItemIdx = editIdx;
+
+        const select = $('si-cat-select');
+        select.innerHTML = allSizeCatsCache.map(c =>
+            `<option value="${c.id}" data-sizes="${escapeAttr(c.sizes.join(','))}" data-price="${c.default_price}">${escapeHtml(c.name)}</option>`
+        ).join('');
+
+        if (editIdx !== null && currentInvoiceItems[editIdx]) {
+            const item = currentInvoiceItems[editIdx];
+            $('size-input-title').textContent = '✏️ Edit Item Saiz';
+            $('submit-size-input').textContent = '💾 Simpan Perubahan';
+            // Try match by category name
+            const matchedCat = allSizeCatsCache.find(c => c.name === item.categoryName);
+            if (matchedCat) select.value = matchedCat.id;
+            $('si-price').value = item.price;
+            buildSizeInputTable(item.sizes ? Object.keys(item.sizes) : (matchedCat ? matchedCat.sizes : []), item.sizes || {});
+        } else {
+            $('size-input-title').textContent = '📐 Input Saiz Pantas';
+            $('submit-size-input').textContent = '➕ Tambah ke Invoice';
+            onSizeCatChange();
+        }
+        $('size-input-modal').style.display = 'flex';
+    }
+
+    function closeSizeInputModal() {
+        $('size-input-modal').style.display = 'none';
+        editingSizeItemIdx = null;
+    }
+
+    function onSizeCatChange() {
+        const sel = $('si-cat-select');
+        const opt = sel.options[sel.selectedIndex];
+        const sizes = opt.dataset.sizes.split(',');
+        $('si-price').value = opt.dataset.price;
+        buildSizeInputTable(sizes, {});
+        recalcSizeInput();
+    }
+
+    function buildSizeInputTable(sizes, existingQty) {
+        const table = $('si-table');
+        table.innerHTML = `
+            <thead>
+                <tr><th>Saiz</th><th>Kuantiti</th><th style="text-align:right;">Jumlah</th></tr>
+            </thead>
+            <tbody>
+                ${sizes.map(s => {
+                    const q = existingQty[s] || 0;
+                    return `<tr>
+                        <td class="size-name">${escapeHtml(s)}</td>
+                        <td><input type="number" min="0" value="${q}" data-size="${escapeAttr(s)}" oninput="recalcSizeInput()"></td>
+                        <td class="size-total-cell" data-total="${escapeAttr(s)}">-</td>
+                    </tr>`;
+                }).join('')}
+            </tbody>
+        `;
+    }
+
+    function recalcSizeInput() {
+        const price = parseFloat($('si-price').value) || 0;
+        const inputs = $('si-table').querySelectorAll('input[data-size]');
+        let totalQty = 0, totalAmount = 0;
+        inputs.forEach(inp => {
+            const qty = parseInt(inp.value) || 0;
+            const size = inp.dataset.size;
+            const cell = $('si-table').querySelector(`[data-total="${size}"]`);
+            if (qty > 0) {
+                const total = qty * price;
+                if (cell) cell.textContent = 'RM ' + total.toFixed(2);
+                totalQty += qty;
+                totalAmount += total;
+            } else {
+                if (cell) cell.textContent = '-';
+            }
+        });
+        $('si-total').textContent = `${totalQty} pcs × RM${price.toFixed(2)} = RM ${totalAmount.toFixed(2)}`;
+    }
+
+    function submitSizeInput() {
+        const sel = $('si-cat-select');
+        const catId = sel.value;
+        const catName = sel.options[sel.selectedIndex].text;
+        const price = parseFloat($('si-price').value) || 0;
+        const inputs = $('si-table').querySelectorAll('input[data-size]');
+
+        const sizesObj = {};
+        let totalQty = 0;
+        inputs.forEach(inp => {
+            const qty = parseInt(inp.value) || 0;
+            if (qty > 0) { sizesObj[inp.dataset.size] = qty; totalQty += qty; }
+        });
+
+        if (totalQty === 0) { alert('Sila isi kuantiti untuk sekurang-kurangnya 1 saiz.'); return; }
+
+        // Format description padat
+        const sizesList = Object.entries(sizesObj).map(([s,q]) => `${s} (${q})`).join(', ');
+        const description = `${catName.toUpperCase()}\n${sizesList}`;
+
+        const newItem = {
+            description: description,
+            price: price,
+            quantity: totalQty,
+            total: totalQty * price,
+            categoryName: catName,
+            categoryId: catId,
+            sizes: sizesObj
+        };
+
+        if (editingSizeItemIdx !== null && editingSizeItemIdx >= 0) {
+            currentInvoiceItems[editingSizeItemIdx] = newItem;
+        } else {
+            currentInvoiceItems.push(newItem);
+        }
+
+        renderInvoiceTable();
+        closeSizeInputModal();
+    }
+
+    // ============ RENDER INVOICE TABLE (dari currentInvoiceItems) ============
+    function renderInvoiceTable() {
+        const tbody = $('items-table').querySelector('tbody');
+        tbody.innerHTML = '';
+
+        if (currentInvoiceItems.length === 0) {
+            // Empty row
+            const tr = tbody.insertRow();
+            tr.innerHTML = `
+                <td>1</td>
+                <td><input type="text" class="item-desc" placeholder="Keterangan item"></td>
+                <td><input type="number" class="item-price" placeholder="0.00" step="0.01"></td>
+                <td><div class="quantity-control"><button class="quantity-btn minus">-</button><input type="number" class="quantity-input" value="1" min="1"><button class="quantity-btn plus">+</button></div></td>
+                <td class="item-total">0.00</td>
+                <td><button class="btn btn-secondary remove-item no-print">Padam</button></td>
+            `;
+            attachSimpleRowListeners(tr);
+        } else {
+            currentInvoiceItems.forEach((item, idx) => {
+                const tr = tbody.insertRow();
+                if (item.categoryId) {
+                    // Size item - show breakdown
+                    const sizesList = Object.entries(item.sizes||{}).map(([s,q]) => `${s} (${q})`).join(', ');
+                    const lines = item.description.split('\n');
+                    tr.innerHTML = `
+                        <td>${idx + 1}</td>
+                        <td>
+                            <div style="font-weight:bold;font-size:13px;">${escapeHtml(lines[0]||'')}</div>
+                            <div style="font-size:11px;color:#666;font-family:'Courier New',monospace;margin-top:3px;">${escapeHtml(sizesList)}</div>
+                        </td>
+                        <td><input type="number" class="item-price" value="${item.price}" step="0.01" data-idx="${idx}"></td>
+                        <td style="text-align:center;font-weight:bold;font-size:16px;color:#6e48aa;">${item.quantity}</td>
+                        <td class="item-total">${item.total.toFixed(2)}</td>
+                        <td>
+                            <button class="btn btn-info no-print edit-size-item" data-idx="${idx}" style="padding:5px 10px;font-size:12px;">✏️</button>
+                            <button class="btn btn-secondary remove-size-item no-print" data-idx="${idx}" style="padding:5px 10px;font-size:12px;">Padam</button>
+                        </td>
+                    `;
+                    // Price change → recalculate
+                    tr.querySelector('.item-price').addEventListener('input', (e) => {
+                        const newPrice = parseFloat(e.target.value) || 0;
+                        const qty = currentInvoiceItems[idx].quantity;
+                        currentInvoiceItems[idx].price = newPrice;
+                        currentInvoiceItems[idx].total = qty * newPrice;
+                        renderInvoiceTable();
+                    });
+                    tr.querySelector('.edit-size-item').addEventListener('click', () => openSizeInputModal(idx));
+                    tr.querySelector('.remove-size-item').addEventListener('click', () => {
+                        currentInvoiceItems.splice(idx, 1);
+                        renderInvoiceTable();
+                    });
+                } else {
+                    // Simple item
+                    tr.innerHTML = `
+                        <td>${idx + 1}</td>
+                        <td><input type="text" class="item-desc" value="${escapeAttr(item.description)}" data-idx="${idx}"></td>
+                        <td><input type="number" class="item-price" value="${item.price}" step="0.01" data-idx="${idx}"></td>
+                        <td>
+                            <div class="quantity-control">
+                                <button class="quantity-btn minus" data-idx="${idx}">-</button>
+                                <input type="number" class="quantity-input" value="${item.quantity}" min="1" data-idx="${idx}">
+                                <button class="quantity-btn plus" data-idx="${idx}">+</button>
+                            </div>
+                        </td>
+                        <td class="item-total">${item.total.toFixed(2)}</td>
+                        <td><button class="btn btn-secondary remove-item no-print" data-idx="${idx}">Padam</button></td>
+                    `;
+                    attachSimpleRowListeners(tr, idx);
+                }
+            });
+        }
+        updateTotals();
+    }
+
+    function attachSimpleRowListeners(tr, idx = null) {
+        const minusBtn = tr.querySelector('.minus');
+        const plusBtn = tr.querySelector('.plus');
+        const qtyInput = tr.querySelector('.quantity-input');
+        const priceInput = tr.querySelector('.item-price');
+        const descInput = tr.querySelector('.item-desc');
+        const removeBtn = tr.querySelector('.remove-item');
+
+        minusBtn.addEventListener('click', () => {
+            const v = parseInt(qtyInput.value);
+            if (v > 1) { qtyInput.value = v - 1; updateSimpleItem(idx, tr); }
+        });
+        plusBtn.addEventListener('click', () => {
+            qtyInput.value = parseInt(qtyInput.value) + 1; updateSimpleItem(idx, tr);
+        });
+        qtyInput.addEventListener('change', () => updateSimpleItem(idx, tr));
+        priceInput.addEventListener('input', () => updateSimpleItem(idx, tr));
+        descInput.addEventListener('input', () => updateSimpleItem(idx, tr));
+        removeBtn.addEventListener('click', () => {
+            if (idx !== null && currentInvoiceItems[idx]) {
+                currentInvoiceItems.splice(idx, 1);
+                renderInvoiceTable();
+            } else {
+                // Nothing to remove (empty row)
+                tr.querySelector('.item-desc').value = '';
+                tr.querySelector('.item-price').value = '';
+                tr.querySelector('.quantity-input').value = '1';
+                tr.querySelector('.item-total').textContent = '0.00';
+                updateTotals();
+            }
+        });
+    }
+
+    function updateSimpleItem(idx, tr) {
+        if (idx === null || !currentInvoiceItems[idx]) return;
+        const desc = tr.querySelector('.item-desc').value;
+        const price = parseFloat(tr.querySelector('.item-price').value) || 0;
+        const qty = parseInt(tr.querySelector('.quantity-input').value) || 0;
+        tr.querySelector('.item-total').textContent = (price * qty).toFixed(2);
+        currentInvoiceItems[idx].description = desc;
+        currentInvoiceItems[idx].price = price;
+        currentInvoiceItems[idx].quantity = qty;
+        currentInvoiceItems[idx].total = price * qty;
+        updateTotals();
+    }
+
+    function updateTotals() {
+        let tq = 0, ta = 0;
+        currentInvoiceItems.forEach(item => { tq += item.quantity || 0; ta += item.total || 0; });
+        // Also count empty rows (nothing)
+        $('total-quantity').textContent = tq;
+        $('total-amount').textContent = ta.toFixed(2);
+    }
+
+    function getSimpleItemsFromTable() {
+        // Collect all items (including empty-row if filled)
+        let items = [...currentInvoiceItems];
+        // Check if there's an empty row with data
+        const tbody = $('items-table').querySelector('tbody');
+        const emptyRows = tbody.querySelectorAll('tr');
+        // If currentInvoiceItems empty but there's an empty row with data, add it
+        if (currentInvoiceItems.length === 0) {
+            emptyRows.forEach(tr => {
+                const desc = tr.querySelector('.item-desc');
+                if (desc && desc.value.trim()) {
+                    const price = parseFloat(tr.querySelector('.item-price').value) || 0;
+                    const qty = parseInt(tr.querySelector('.quantity-input').value) || 0;
+                    items.push({
+                        description: desc.value,
+                        price: price,
+                        quantity: qty,
+                        total: price * qty
+                    });
+                }
+            });
+        }
+        return items;
+    }
+
+    // ============ TEMPLATES ============
+    async function displayTemplates() {
+        const tpls = await loadTemplates();
+        const tb = $('template-list'); tb.innerHTML = '';
+        if (!tpls.length) { tb.innerHTML = '<tr><td colspan="4" style="text-align:center;">Tiada template.</td></tr>'; return; }
+        tpls.forEach(t => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>${escapeHtml(t.name)}</td><td>${escapeHtml(t.description)}</td><td>${t.price.toFixed(2)}</td>
+                <td class="no-print"><button class="btn btn-danger del-tpl" data-id="${t.id}" style="padding:5px 10px;font-size:12px;">Padam</button></td>`;
+            tb.appendChild(tr);
+        });
+        tb.querySelectorAll('.del-tpl').forEach(b => b.addEventListener('click', async e => {
+            if (!confirm('Padam template ini?')) return;
+            await deleteTemplate(e.target.dataset.id);
+            displayTemplates();
+        }));
+    }
+    async function handleAddTemplate() {
+        const name = $('new-template-name').value.trim();
+        const desc = $('new-template-desc').value.trim();
+        const price = parseFloat($('new-template-price').value) || 0;
+        if (!name || !desc) return alert('Sila isi nama dan keterangan.');
+        if (await addTemplate(name, desc, price)) {
+            $('new-template-name').value = ''; $('new-template-desc').value = ''; $('new-template-price').value = '';
+            displayTemplates(); renderTemplateButtons();
+        }
+    }
+    async function renderTemplateButtons() {
+        const tpls = await loadTemplates();
+        const cont = $('template-quick-add'); const btnCont = $('template-buttons');
+        if (!tpls.length) { cont.style.display = 'none'; return; }
+        cont.style.display = 'flex';
+        btnCont.innerHTML = '';
+        tpls.slice(0, 10).forEach(t => {
+            const b = document.createElement('button');
+            b.className = 'template-btn';
+            b.textContent = `${t.name} (RM${t.price.toFixed(2)})`;
+            b.title = t.description;
+            b.addEventListener('click', () => quickAddTemplate(t));
+            btnCont.appendChild(b);
+        });
+    }
+    function quickAddTemplate(t) {
+        currentInvoiceItems.push({
+            description: t.description,
+            price: t.price,
+            quantity: 1,
+            total: t.price
+        });
+        renderInvoiceTable();
     }
 
     // ============ DASHBOARD ============
@@ -1126,7 +1668,7 @@ document.addEventListener('DOMContentLoaded', function() {
         orders.forEach(o => {
             const st = getOrderStatus(o); const dr = getDaysRemaining(o.completionDate);
             if (dr.cls === 'late') late++; else if (dr.cls === 'today' || dr.cls === 'soon') urgent++;
-            const its = (o.items||[]).map(i=>`${escapeHtml(i.description)} (${i.quantity}x)`).join(', ') || '-';
+            const its = (o.items||[]).map(i=>`${escapeHtml(i.description.split('\n')[0])} (${i.quantity}x)`).join(', ') || '-';
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td><span class="order-number" data-invoice="${o.invoiceNumber}">${o.invoiceNumber||'-'}</span></td>
@@ -1173,7 +1715,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const dc = $('detail-items'); dc.innerHTML = '';
         (o.items||[]).forEach(it => {
             const d = document.createElement('div'); d.className = 'detail-item';
-            d.innerHTML = `<span>${escapeHtml(it.description)} (${it.quantity}x)</span><span>RM${(it.total||0).toFixed(2)}</span>`;
+            const lines = it.description.split('\n');
+            let descHtml = escapeHtml(lines[0]);
+            if (lines.length > 1) {
+                descHtml += `<div class="size-line">${escapeHtml(lines.slice(1).join(' '))}</div>`;
+            }
+            d.innerHTML = `<span class="detail-desc">${descHtml} (${it.quantity}x)</span><span>RM${(it.total||0).toFixed(2)}</span>`;
             dc.appendChild(d);
         });
         $('detail-total').textContent = formatRM(o.totalAmount);
@@ -1200,12 +1747,19 @@ document.addEventListener('DOMContentLoaded', function() {
         const stamp = isFinal ? '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-45deg);font-size:60px;color:rgba(0,0,0,0.2);font-weight:bold;border:5px solid rgba(0,0,0,0.2);padding:20px;z-index:1000;">SELESAI</div>' : '';
         let pay = '';
         if (o.paymentInfo) pay = `<div class="bank-info"><p><strong>MAKLUMAT PEMBAYARAN</strong></p><p>Tarikh: ${formatDate(o.paymentInfo.date)}</p><p>Kaedah: ${o.paymentInfo.method}</p><p>Jumlah: RM${o.paymentInfo.amount}</p></div>`;
+        
+        function renderItemDesc(desc) {
+            const lines = (desc||'').split('\n');
+            if (lines.length === 1) return lines[0];
+            return `${lines[0]}<div style="font-size:11px;color:#555;font-family:'Courier New',monospace;padding-left:15px;margin-top:3px;">${lines.slice(1).join(' ')}</div>`;
+        }
+
         return `<!DOCTYPE html><html><head><title>Cetak - ${o.invoiceNumber}</title><style>
             body{font-family:Arial,sans-serif;margin:20px;}.header{text-align:center;margin-bottom:20px;border-bottom:1px solid #eee;padding-bottom:15px;}
             .header img{max-width:120px;}.company-details{text-align:left;}.header h2{margin:0;}.header p{margin:2px 0;}
-            table{width:100%;border-collapse:collapse;margin-bottom:20px;}th,td{border:1px solid #ddd;padding:8px;text-align:left;}th{background:#f2f2f2;}
-            .invoice-totals{margin-top:20px;font-weight:bold;text-align:right;}.bank-info{margin-top:20px;padding:10px;background:#e8f4fc;border-radius:4px;}
-            .terms{font-size:12px;margin-top:20px;padding:10px;background:#f9f9f9;border-radius:4px;}.table-summary-row{background:#f9f9f9;font-weight:bold;}
+            table{width:100%;border-collapse:collapse;margin-bottom:20px;}th,td{border:1px solid #ddd;padding:8px;text-align:left;}th{background:#f2f2f2;font-size:12px;}
+            td{font-size:12px;}.invoice-totals{margin-top:20px;font-weight:bold;text-align:right;font-size:13px;}.bank-info{margin-top:20px;padding:10px;background:#e8f4fc;border-radius:4px;font-size:12px;}
+            .terms{font-size:11px;margin-top:20px;padding:10px;background:#f9f9f9;border-radius:4px;line-height:1.6;}.table-summary-row{background:#f9f9f9;font-weight:bold;}
         </style></head><body style="position:relative;">${stamp}
         <div class="header"><img src="https://arleta.site/interactivelink/68/Untitled-1.png">
         <div class="company-details"><h2>EMPAYAR S KREATIF</h2><p>Hadapan Sek.Ren.Keb Ketereh, 16450 Kota Bharu Kelantan<br>TEL: 01133387532<br>(KT0565538-X)</p></div><h3>${title}</h3></div>
@@ -1213,9 +1767,9 @@ document.addEventListener('DOMContentLoaded', function() {
         <p><strong>KEPADA:</strong> ${o.customerName||'-'}</p>
         <p><strong>NO. TELEFON:</strong> ${o.customerPhone||'-'}</p>
         <p><strong>TARIKH ORDER:</strong> ${formatDate(o.orderDate)}<br><strong>TARIKH JANJI SIAP:</strong> ${formatDate(o.completionDate)}</p>
-        <table><thead><tr><th>No.</th><th>Item</th><th>Harga/Unit</th><th>Kuantiti</th><th>Jumlah (RM)</th></tr></thead>
-        <tbody>${(o.items||[]).map((it,i)=>`<tr><td>${i+1}</td><td>${it.description}</td><td>${(it.price||0).toFixed(2)}</td><td>${it.quantity}</td><td>${(it.total||0).toFixed(2)}</td></tr>`).join('')}</tbody>
-        <tfoot><tr class="table-summary-row"><td colspan="3">JUMLAH</td><td>${(o.items||[]).reduce((s,i)=>s+(i.quantity||0),0)}</td><td>${(o.totalAmount||0).toFixed(2)}</td></tr></tfoot></table>
+        <table><thead><tr><th style="width:5%;">No.</th><th>Item</th><th style="width:15%;">Harga/Unit</th><th style="width:10%;">Kuantiti</th><th style="width:15%;">Jumlah (RM)</th></tr></thead>
+        <tbody>${(o.items||[]).map((it,i)=>`<tr><td>${i+1}</td><td>${renderItemDesc(it.description)}</td><td>${(it.price||0).toFixed(2)}</td><td style="text-align:center;">${it.quantity}</td><td style="text-align:right;">${(it.total||0).toFixed(2)}</td></tr>`).join('')}</tbody>
+        <tfoot><tr class="table-summary-row"><td colspan="3">JUMLAH</td><td style="text-align:center;">${(o.items||[]).reduce((s,i)=>s+(i.quantity||0),0)}</td><td style="text-align:right;">${(o.totalAmount||0).toFixed(2)}</td></tr></tfoot></table>
         <div class="invoice-totals"><p>JUMLAH RM${(o.totalAmount||0).toFixed(2)}</p><p>DISKAUN RM${(o.discount||0).toFixed(2)}</p><p>JUMLAH SELEPAS DISKAUN RM${(o.subtotal||0).toFixed(2)}</p><p>DEPOSIT RM${(o.deposit||0).toFixed(2)}</p><p>BAKI RM${(o.balance||0).toFixed(2)}</p></div>
         ${pay}
         <div class="bank-info"><p><strong>BAYARAN</strong></p><p><strong>Maybank</strong><br>553104624047<br>EMPAYAR S KREATIF SOLUTION</p></div>
@@ -1246,7 +1800,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else alert('Gagal simpan.');
     }
 
-    // ============ EDIT ============
+    // ============ EDIT ORDER ============
     function showEditOrderModal(o) {
         currentOrder = o;
         $('edit-invoice-number').value = o.invoiceNumber;
@@ -1270,7 +1824,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const num = n || tb.rows.length;
         tr.innerHTML = `
             <td>${num}</td>
-            <td><input type="text" class="edit-desc" value="${it?escapeHtml(it.description):''}"></td>
+            <td><input type="text" class="edit-desc" value="${it?escapeAttr(it.description):''}"></td>
             <td><input type="number" class="edit-price" step="0.01" value="${it?it.price:''}"></td>
             <td><div class="quantity-control"><button class="quantity-btn edit-minus">-</button><input type="number" class="edit-qty" value="${it?it.quantity:1}" min="1"><button class="quantity-btn edit-plus">+</button></div></td>
             <td class="edit-total">${it?(it.total||0).toFixed(2):'0.00'}</td>
@@ -1293,7 +1847,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     async function populateEditSalesDropdown() {
         const sp = await loadSalesPersons();
-        $('edit-sales-person').innerHTML = '<option value="">Pilih Jurujual</option>' + sp.map(p => `<option value="${escapeHtml(p.name)}">${escapeHtml(p.name)}</option>`).join('');
+        $('edit-sales-person').innerHTML = '<option value="">Pilih Jurujual</option>' + sp.map(p => `<option value="${escapeAttr(p.name)}">${escapeHtml(p.name)}</option>`).join('');
     }
     async function saveEditedOrder() {
         if (!currentOrder) return;
@@ -1370,7 +1924,7 @@ document.addEventListener('DOMContentLoaded', function() {
             formatDate(o.orderDate), formatDate(o.completionDate), o.salesPerson||'',
             getStatusText(getOrderStatus(o)), (o.totalAmount||0).toFixed(2), (o.discount||0).toFixed(2),
             (o.subtotal||0).toFixed(2), (o.deposit||0).toFixed(2), (o.balance||0).toFixed(2),
-            (o.items||[]).map(i=>`${i.description} (${i.quantity}x RM${i.price})`).join(' | ')
+            (o.items||[]).map(i=>`${i.description.replace(/\n/g, ' ')} (${i.quantity}x RM${i.price})`).join(' | ')
         ]);
         const csv = [headers, ...rows].map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
         const blob = new Blob(['\ufeff' + csv], {type:'text/csv;charset=utf-8'});
@@ -1386,11 +1940,11 @@ document.addEventListener('DOMContentLoaded', function() {
     async function populateSalesPersonDropdown() {
         const sp = await loadSalesPersons();
         const cur = $('sales-person').value;
-        $('sales-person').innerHTML = '<option value="">Pilih Jurujual</option>' + sp.map(p=>`<option value="${escapeHtml(p.name)}">${escapeHtml(p.name)}</option>`).join('');
+        $('sales-person').innerHTML = '<option value="">Pilih Jurujual</option>' + sp.map(p=>`<option value="${escapeAttr(p.name)}">${escapeHtml(p.name)}</option>`).join('');
         if (cur) $('sales-person').value = cur;
-        const opts = '<option value="">Semua Jurujual</option>' + sp.map(p=>`<option value="${escapeHtml(p.name)}">${escapeHtml(p.name)}</option>`).join('');
+        const opts = '<option value="">Semua Jurujual</option>' + sp.map(p=>`<option value="${escapeAttr(p.name)}">${escapeHtml(p.name)}</option>`).join('');
         $('filter-sales').innerHTML = opts; $('filter-active-sales').innerHTML = opts;
-        $('dash-sales').innerHTML = '<option value="">Semua</option>' + sp.map(p=>`<option value="${escapeHtml(p.name)}">${escapeHtml(p.name)}</option>`).join('');
+        $('dash-sales').innerHTML = '<option value="">Semua</option>' + sp.map(p=>`<option value="${escapeAttr(p.name)}">${escapeHtml(p.name)}</option>`).join('');
     }
     async function handleAddSalesPerson() {
         const n = $('new-sales-person-name').value.trim();
@@ -1416,10 +1970,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const d = data[p.name]; const c = (d.sales * d.pct)/100;
             const tr = document.createElement('tr');
             tr.innerHTML = `<td>${escapeHtml(p.name)}</td><td>${d.sales.toFixed(2)}</td><td>${d.deposit.toFixed(2)}</td>
-                <td class="bill-count" data-name="${escapeHtml(p.name)}">${d.count}</td>
-                <td><input type="number" class="commission-input" data-name="${escapeHtml(p.name)}" value="${d.pct}" min="0" step="0.1"></td>
+                <td class="bill-count" data-name="${escapeAttr(p.name)}">${d.count}</td>
+                <td><input type="number" class="commission-input" data-name="${escapeAttr(p.name)}" value="${d.pct}" min="0" step="0.1"></td>
                 <td>${c.toFixed(2)}</td>
-                <td class="no-print"><button class="btn btn-danger del-sp" data-name="${escapeHtml(p.name)}" style="padding:5px 10px;font-size:12px;">Padam</button></td>`;
+                <td class="no-print"><button class="btn btn-danger del-sp" data-name="${escapeAttr(p.name)}" style="padding:5px 10px;font-size:12px;">Padam</button></td>`;
             tb.appendChild(tr);
         });
         tb.querySelectorAll('.del-sp').forEach(b => b.addEventListener('click', e => handleDeleteSalesPerson(e.target.dataset.name)));
@@ -1432,63 +1986,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const list = orders.filter(o => o.salesPerson === n);
         $('bills-modal-list').innerHTML = list.length === 0 ? '<li>Tiada bil.</li>' : list.map(o => `<li>${o.invoiceNumber} - ${escapeHtml(o.customerName)} (${formatDate(o.orderDate)})</li>`).join('');
         $('bills-modal').style.display = 'flex';
-    }
-
-    // ============ TEMPLATES ============
-    async function displayTemplates() {
-        const tpls = await loadTemplates();
-        const tb = $('template-list'); tb.innerHTML = '';
-        if (!tpls.length) { tb.innerHTML = '<tr><td colspan="4" style="text-align:center;">Tiada template.</td></tr>'; return; }
-        tpls.forEach(t => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `<td>${escapeHtml(t.name)}</td><td>${escapeHtml(t.description)}</td><td>${t.price.toFixed(2)}</td>
-                <td class="no-print"><button class="btn btn-danger del-tpl" data-id="${t.id}" style="padding:5px 10px;font-size:12px;">Padam</button></td>`;
-            tb.appendChild(tr);
-        });
-        tb.querySelectorAll('.del-tpl').forEach(b => b.addEventListener('click', async e => {
-            if (!confirm('Padam template ini?')) return;
-            await deleteTemplate(e.target.dataset.id);
-            displayTemplates();
-        }));
-    }
-    async function handleAddTemplate() {
-        const name = $('new-template-name').value.trim();
-        const desc = $('new-template-desc').value.trim();
-        const price = parseFloat($('new-template-price').value) || 0;
-        if (!name || !desc) return alert('Sila isi nama dan keterangan.');
-        if (await addTemplate(name, desc, price)) {
-            $('new-template-name').value = ''; $('new-template-desc').value = ''; $('new-template-price').value = '';
-            displayTemplates(); renderTemplateButtons();
-        }
-    }
-    async function renderTemplateButtons() {
-        const tpls = await loadTemplates();
-        const cont = $('template-quick-add'); const btnCont = $('template-buttons');
-        if (!tpls.length) { cont.style.display = 'none'; return; }
-        cont.style.display = 'flex';
-        btnCont.innerHTML = '';
-        tpls.slice(0, 10).forEach(t => {
-            const b = document.createElement('button');
-            b.className = 'template-btn';
-            b.textContent = `${t.name} (RM${t.price.toFixed(2)})`;
-            b.title = t.description;
-            b.addEventListener('click', () => quickAddTemplate(t));
-            btnCont.appendChild(b);
-        });
-    }
-    function quickAddTemplate(t) {
-        const rows = $('items-table').querySelectorAll('tbody tr');
-        let target = null;
-        for (const r of rows) {
-            if (!r.querySelector('.item-desc').value) { target = r; break; }
-        }
-        if (!target) {
-            $('add-item').click();
-            target = $('items-table').querySelector('tbody').rows[$('items-table').querySelector('tbody').rows.length - 1];
-        }
-        target.querySelector('.item-desc').value = t.description;
-        target.querySelector('.item-price').value = t.price;
-        calcRow(target);
     }
 
     // ============ DELETED BILLS ============
@@ -1507,24 +2004,10 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateCustomerDatalist() {
         const names = [...new Set(allOrdersCache.map(o => o.customerName).filter(n => n && n !== '-'))];
         names.sort();
-        $('customer-list').innerHTML = names.map(n => `<option value="${escapeHtml(n)}">`).join('');
+        $('customer-list').innerHTML = names.map(n => `<option value="${escapeAttr(n)}">`).join('');
     }
 
-    // ============ INVOICE FORM ============
-    function attachRow(tr) {
-        tr.querySelector('.minus').addEventListener('click', () => { const i = tr.querySelector('.quantity-input'); if (parseInt(i.value) > 1) { i.value = parseInt(i.value)-1; calcRow(tr); }});
-        tr.querySelector('.plus').addEventListener('click', () => { const i = tr.querySelector('.quantity-input'); i.value = parseInt(i.value)+1; calcRow(tr); });
-        tr.querySelector('.quantity-input').addEventListener('change', () => calcRow(tr));
-        tr.querySelector('.item-price').addEventListener('input', () => calcRow(tr));
-        tr.querySelector('.remove-item').addEventListener('click', () => { if ($('items-table').querySelectorAll('tbody tr').length > 1) { tr.remove(); renumber(); updateTotals(); } else alert('Perlu 1 item minimum.'); });
-    }
-    function calcRow(tr) { const p = parseFloat(tr.querySelector('.item-price').value)||0; const q = parseInt(tr.querySelector('.quantity-input').value)||0; tr.querySelector('.item-total').textContent = (p*q).toFixed(2); updateTotals(); }
-    function renumber() { $('items-table').querySelectorAll('tbody tr').forEach((r,i) => r.cells[0].textContent = i+1); }
-    function updateTotals() {
-        let tq = 0, ta = 0;
-        $('items-table').querySelectorAll('tbody tr').forEach(r => { tq += parseInt(r.querySelector('.quantity-input').value)||0; ta += parseFloat(r.querySelector('.item-total').textContent)||0; });
-        $('total-quantity').textContent = tq; $('total-amount').textContent = ta.toFixed(2);
-    }
+    // ============ INVOICE FORM - UPDATE PREVIEW ============
     function updatePreview() {
         $('preview-invoice-number').textContent = $('invoice-number').value;
         $('preview-order-date').textContent = formatDate($('order-date').value);
@@ -1534,14 +2017,14 @@ document.addEventListener('DOMContentLoaded', function() {
         $('preview-sales-person').textContent = $('sales-person').value || '-';
         const pi = $('preview-items'); pi.innerHTML = '';
         let ta = 0, tq = 0;
-        $('items-table').querySelectorAll('tbody tr').forEach(r => {
-            const d = r.querySelector('.item-desc').value; if (!d) return;
-            const p = parseFloat(r.querySelector('.item-price').value)||0;
-            const q = parseInt(r.querySelector('.quantity-input').value)||0;
-            const t = parseFloat(r.querySelector('.item-total').textContent)||0;
+        currentInvoiceItems.forEach((item, i) => {
+            const lines = item.description.split('\n');
+            let descHTML = escapeHtml(lines[0]);
+            if (lines.length > 1) descHTML += `<div class="size-breakdown">${escapeHtml(lines.slice(1).join(' '))}</div>`;
             const tr = document.createElement('tr');
-            tr.innerHTML = `<td>${pi.children.length+1}</td><td>${escapeHtml(d)}</td><td>${p.toFixed(2)}</td><td>${q}</td><td>${t.toFixed(2)}</td>`;
-            pi.appendChild(tr); ta += t; tq += q;
+            tr.innerHTML = `<td>${i+1}</td><td>${descHTML}</td><td style="text-align:right;">${item.price.toFixed(2)}</td><td style="text-align:center;">${item.quantity}</td><td style="text-align:right;">${item.total.toFixed(2)}</td>`;
+            pi.appendChild(tr);
+            ta += item.total; tq += item.quantity;
         });
         const dv = parseFloat($('discount-value').value)||0;
         const dt = $('discount-type').value;
@@ -1564,6 +2047,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!inv) return alert('Sila pilih no. bil.');
         if (allOrdersCache.find(o => o.invoiceNumber === inv)) return alert('No. bil sudah wujud!');
 
+        if (currentInvoiceItems.length === 0) return alert('Sila tambah sekurang-kurangnya 1 item.');
+
         if (!confirm(`📤 Hantar order ${inv} & cetak invois?`)) return;
 
         const data = {
@@ -1578,23 +2063,17 @@ document.addEventListener('DOMContentLoaded', function() {
             subtotal: parseFloat($('preview-subtotal').textContent) || 0,
             deposit: parseFloat($('deposit').value) || 0,
             balance: parseFloat($('preview-balance').textContent) || 0,
-            status: 'normal', createdBy: STAFF_NAME, items: []
+            status: 'normal', createdBy: STAFF_NAME,
+            items: currentInvoiceItems.map(it => ({
+                description: it.description,
+                price: it.price,
+                quantity: it.quantity,
+                total: it.total
+            }))
         };
-        $('items-table').querySelectorAll('tbody tr').forEach(r => {
-            const d = r.querySelector('.item-desc').value;
-            if (d) data.items.push({
-                description: d,
-                price: parseFloat(r.querySelector('.item-price').value) || 0,
-                quantity: parseInt(r.querySelector('.quantity-input').value) || 0,
-                total: parseFloat(r.querySelector('.item-total').textContent) || 0
-            });
-        });
 
         const success = await addOrder(data);
-        if (!success) {
-            alert('❌ Gagal simpan order. Sila cuba lagi.');
-            return;
-        }
+        if (!success) { alert('❌ Gagal simpan order. Sila cuba lagi.'); return; }
 
         await unlockCurrentNumber();
 
@@ -1616,12 +2095,9 @@ document.addEventListener('DOMContentLoaded', function() {
         $('order-date').value = new Date().toISOString().split('T')[0];
         $('completion-date').value = ''; $('sales-person').value = '';
         $('deposit').value = ''; $('discount-value').value = ''; $('discount-type').value = 'fixed';
-        const tb = $('items-table').querySelector('tbody');
-        while (tb.rows.length > 1) tb.deleteRow(1);
-        const fr = tb.rows[0];
-        fr.querySelector('.item-desc').value = ''; fr.querySelector('.item-price').value = ''; fr.querySelector('.quantity-input').value = '1'; fr.querySelector('.item-total').textContent = '0.00';
+        currentInvoiceItems = [];
         $('invoice-number').value = ''; currentlyLockedNumber = null;
-        updateTotals();
+        renderInvoiceTable();
         invoicePage.style.display = 'block'; invoicePage.classList.add('active');
         previewPage.style.display = 'none'; previewPage.classList.remove('active');
     }
@@ -1652,7 +2128,11 @@ document.addEventListener('DOMContentLoaded', function() {
             renderTemplateButtons();
             if (document.querySelector('.tab-btn.active')?.id === 'tab-templates') displayTemplates();
         }).subscribe();
-        realtimeChannels = [c1, c2, c3, c4, c5];
+        const c6 = supabaseClient.channel('sizecat_ch').on('postgres_changes', {event:'*', schema:'public', table:'size_categories'}, async () => {
+            await loadSizeCategories();
+            if (document.querySelector('.tab-btn.active')?.id === 'tab-templates') displaySizeCategories();
+        }).subscribe();
+        realtimeChannels = [c1, c2, c3, c4, c5, c6];
     }
 
     // ============ INIT DROPDOWNS ============
@@ -1688,9 +2168,6 @@ document.addEventListener('DOMContentLoaded', function() {
         $('danger-confirm-btn').disabled = !ok;
         if (ok) $('danger-error').style.display = 'none';
     });
-    $('danger-confirm-input').addEventListener('keypress', e => {
-        if (e.key === 'Enter' && !$('danger-confirm-btn').disabled) executeClearAllOrders();
-    });
 
     $('close-bills-modal').addEventListener('click', () => $('bills-modal').style.display = 'none');
     $('close-payment-modal').addEventListener('click', hidePaymentModal);
@@ -1715,18 +2192,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
     $('add-template-btn').addEventListener('click', handleAddTemplate);
 
+    // SIZE INPUT MODAL
+    $('open-size-input-btn').addEventListener('click', () => openSizeInputModal());
+    $('close-size-input-modal').addEventListener('click', closeSizeInputModal);
+    $('cancel-size-input').addEventListener('click', closeSizeInputModal);
+    $('submit-size-input').addEventListener('click', submitSizeInput);
+    $('si-price').addEventListener('input', recalcSizeInput);
+
+    // SIZE CAT MODAL
+    $('add-size-cat-btn').addEventListener('click', () => openSizeCatModal());
+    $('close-size-cat-modal').addEventListener('click', closeSizeCatModal);
+    $('cancel-size-cat').addEventListener('click', closeSizeCatModal);
+    $('save-size-cat').addEventListener('click', saveSizeCat);
+
+    // ADD ITEM (biasa)
     $('add-item').addEventListener('click', () => {
-        const tb = $('items-table').querySelector('tbody');
-        const tr = tb.insertRow();
-        tr.innerHTML = `<td>${tb.rows.length}</td>
-            <td><input type="text" class="item-desc"></td>
-            <td><input type="number" class="item-price" step="0.01"></td>
-            <td><div class="quantity-control"><button class="quantity-btn minus">-</button><input type="number" class="quantity-input" value="1" min="1"><button class="quantity-btn plus">+</button></div></td>
-            <td class="item-total">0.00</td>
-            <td><button class="btn btn-secondary remove-item no-print">Padam</button></td>`;
-        attachRow(tr);
+        currentInvoiceItems.push({
+            description: '',
+            price: 0,
+            quantity: 1,
+            total: 0
+        });
+        renderInvoiceTable();
     });
-    $('items-table').querySelectorAll('tbody tr').forEach(attachRow);
 
     $('invoice-number').addEventListener('click', async () => { await updateAvailableInvoiceNumbers(); $('invoice-number-dropdown').style.display = 'block'; });
     $('invoice-number-dropdown').addEventListener('click', async e => {
@@ -1744,6 +2232,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     $('preview-invoice').addEventListener('click', () => {
         if (!$('invoice-number').value) return alert('Pilih no. bil dahulu.');
+        if (currentInvoiceItems.length === 0) return alert('Sila tambah sekurang-kurangnya 1 item.');
         updatePreview();
         invoicePage.style.display = 'none'; previewPage.style.display = 'block';
         invoicePage.classList.remove('active'); previewPage.classList.add('active');
@@ -1752,7 +2241,6 @@ document.addEventListener('DOMContentLoaded', function() {
         previewPage.style.display = 'none'; invoicePage.style.display = 'block';
         previewPage.classList.remove('active'); invoicePage.classList.add('active');
     });
-
     $('submit-and-print').addEventListener('click', submitAndPrint);
 
     $('search-orders').addEventListener('input', displayOrders);
@@ -1773,9 +2261,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }));
     $('export-csv-btn').addEventListener('click', exportCSV);
 
-    $('clear-all-orders-btn').addEventListener('click', () => {
-        showPasswordPrompt('clear_all_orders', 'Padam Semua Order');
-    });
+    $('clear-all-orders-btn').addEventListener('click', () => showPasswordPrompt('clear_all_orders', 'Padam Semua Order'));
 
     $('search-active').addEventListener('input', displayActiveOrders);
     $('filter-active-sales').addEventListener('change', displayActiveOrders);
@@ -1788,24 +2274,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
     window.addEventListener('online', () => offlineBanner.style.display = 'none');
     window.addEventListener('offline', () => offlineBanner.style.display = 'block');
-
-    // ============ BEFORE UNLOAD (Warning + Cleanup) ============
     window.addEventListener('beforeunload', (e) => {
-        // Cleanup lock no. bil
         if (currentlyLockedNumber) {
             const url = `${SUPABASE_URL}/rest/v1/invoice_locks?invoice_number=eq.${encodeURIComponent(currentlyLockedNumber)}&session_id=eq.${encodeURIComponent(SESSION_ID)}`;
             navigator.sendBeacon(url, JSON.stringify({}));
         }
-        
-        // Warning kalau ada data dalam borang
         const activeTab = document.querySelector('.tab-btn.active')?.id;
         const onInvoicePage = activeTab === 'tab-invoice' || activeTab === 'tab-preview';
-        
         if (onInvoicePage && hasUnsavedFormData()) {
             e.preventDefault();
             e.returnValue = 'Anda ada data yang belum disimpan. Yakin nak keluar?';
             return e.returnValue;
         }
+    });
+
+    // Close modal bila klik luar
+    ['size-input-modal', 'size-cat-modal'].forEach(id => {
+        document.getElementById(id).addEventListener('click', (e) => {
+            if (e.target.id === id) {
+                if (id === 'size-input-modal') closeSizeInputModal();
+                if (id === 'size-cat-modal') closeSizeCatModal();
+            }
+        });
     });
 
     // ============ INIT ============
@@ -1816,16 +2306,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
         applyBossMode();
 
-        if (!STAFF_NAME) {
-            showNameModal();
-        } else {
-            $('staff-badge').textContent = '👤 ' + STAFF_NAME;
-        }
+        if (!STAFF_NAME) showNameModal();
+        else $('staff-badge').textContent = '👤 ' + STAFF_NAME;
 
         await populateSalesPersonDropdown();
         await loadOrders();
+        await loadSizeCategories();
         updateCustomerDatalist();
-        updateTotals();
+        renderInvoiceTable();
         initRealtime();
         await updateAvailableInvoiceNumbers();
         await renderTemplateButtons();
