@@ -129,6 +129,15 @@
         #name-modal, #template-modal { position: fixed; z-index: 3500; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; }
         .name-modal-content, .template-modal-content { background: white; padding: 30px; border-radius: 8px; position: relative; width: 90%; max-width: 400px; }
         .template-modal-content { max-width: 600px; max-height: 80vh; overflow-y: auto; }
+
+        /* ============ SEMBUNYIKAN SUMMARY DARI STAF ============ */
+        /* Staf biasa tak nampak summary jualan/deposit/baki */
+        body:not(.boss-mode) #order-list-page .summary-row { display: none !important; }
+        body:not(.boss-mode) #active-orders-page .summary-row { display: none !important; }
+        /* Bila boss mode aktif, summary muncul semula */
+        body.boss-mode #order-list-page .summary-row { display: flex !important; }
+        body.boss-mode #active-orders-page .summary-row { display: flex !important; }
+
         @media print {
             .no-print, .action-buttons, .tab-nav, .home-button-container, #password-modal, .add-sales-person, #bills-modal, #install-app-btn { display: none !important; }
             body { background: none; padding: 0; }
@@ -576,6 +585,15 @@ document.addEventListener('DOMContentLoaded', function() {
     let allSalesPersonsCache = [];
     let allTemplatesCache = [];
 
+    // ============ BOSS MODE ============
+    function applyBossMode() {
+        if (sessionStorage.getItem('appAuthed') === 'true') {
+            document.body.classList.add('boss-mode');
+        } else {
+            document.body.classList.remove('boss-mode');
+        }
+    }
+
     // ============ UTILITIES ============
     function formatDate(d) {
         if (!d || d === '-') return '-';
@@ -728,7 +746,6 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch(e) { return []; }
     }
 
-    // TEMPLATES
     async function loadTemplates() {
         try {
             const { data } = await supabaseClient.from('item_templates').select('*').order('name');
@@ -828,7 +845,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!reason) { $('password-error').textContent='Sila nyatakan sebab!'; $('password-error').style.display='block'; return; }
             hidePasswordPrompt(); performDeleteOrder(target, reason);
         } else if (action === 'access_tab') {
-            sessionStorage.setItem('appAuthed','true'); hidePasswordPrompt();
+            sessionStorage.setItem('appAuthed','true');
+            applyBossMode();
+            hidePasswordPrompt();
             if (landingPage.style.display === 'flex') showContainer(target); else switchTab(target);
         }
     }
@@ -898,7 +917,6 @@ document.addEventListener('DOMContentLoaded', function() {
             await loadSalesPersons(); await updateDashboard();
         }));
 
-        // Top 10 Pelanggan
         const custMap = {};
         orders.forEach(o => {
             const key = (o.customerName||'').trim().toLowerCase();
@@ -1362,7 +1380,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     function quickAddTemplate(t) {
-        // Cari baris kosong, atau tambah baru
         const rows = $('items-table').querySelectorAll('tbody tr');
         let target = null;
         for (const r of rows) {
@@ -1672,13 +1689,16 @@ document.addEventListener('DOMContentLoaded', function() {
         offlineBanner.style.display = navigator.onLine ? 'none' : 'block';
         initYearDropdowns();
         $('order-date').value = new Date().toISOString().split('T')[0];
-        
+
+        // Terapkan boss mode semasa page load
+        applyBossMode();
+
         if (!STAFF_NAME) {
             showNameModal();
         } else {
             $('staff-badge').textContent = '👤 ' + STAFF_NAME;
         }
-        
+
         await populateSalesPersonDropdown();
         await loadOrders();
         updateCustomerDatalist();
@@ -1686,7 +1706,7 @@ document.addEventListener('DOMContentLoaded', function() {
         initRealtime();
         await updateAvailableInvoiceNumbers();
         await renderTemplateButtons();
-        
+
         setInterval(async () => { try { await supabaseClient.rpc('cleanup_old_locks'); } catch(e){} }, 5*60*1000);
         setInterval(async () => {
             if (container.style.display === 'block' && document.querySelector('.tab-btn.active')?.id === 'tab-invoice') {
