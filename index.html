@@ -130,11 +130,94 @@
         .name-modal-content, .template-modal-content { background: white; padding: 30px; border-radius: 8px; position: relative; width: 90%; max-width: 400px; }
         .template-modal-content { max-width: 600px; max-height: 80vh; overflow-y: auto; }
 
+        /* MODAL KHAS UNTUK PADAM SEMUA ORDER */
+        #danger-modal {
+            position: fixed;
+            z-index: 4000;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(20, 0, 0, 0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .danger-modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 10px 40px rgba(231, 76, 60, 0.5);
+            border-top: 6px solid #e74c3c;
+        }
+        .danger-modal-content h3 {
+            color: #e74c3c;
+            margin-top: 0;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .danger-modal-content .warning-box {
+            background: #fff5f5;
+            border-left: 4px solid #e74c3c;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .danger-modal-content .warning-box ul {
+            margin: 8px 0 0 20px;
+            padding: 0;
+        }
+        .danger-modal-content .warning-box li { margin-bottom: 4px; }
+        .danger-modal-content input[type="text"] {
+            padding: 12px;
+            font-size: 16px;
+            text-align: center;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin: 10px 0;
+            text-transform: uppercase;
+            border: 2px solid #ddd;
+        }
+        .danger-modal-content input[type="text"]:focus {
+            border-color: #e74c3c;
+            outline: none;
+        }
+        .danger-modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .danger-modal-buttons button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        #danger-cancel-btn { background: #95a5a6; color: white; }
+        #danger-cancel-btn:hover { background: #7f8c8d; }
+        #danger-confirm-btn { background: #e74c3c; color: white; }
+        #danger-confirm-btn:hover { background: #c0392b; }
+        #danger-confirm-btn:disabled { background: #ccc; cursor: not-allowed; }
+        #danger-error {
+            color: #e74c3c;
+            font-size: 13px;
+            font-weight: bold;
+            margin-top: 10px;
+            display: none;
+        }
+
         /* ============ SEMBUNYIKAN SUMMARY DARI STAF ============ */
-        /* Staf biasa tak nampak summary jualan/deposit/baki */
         body:not(.boss-mode) #order-list-page .summary-row { display: none !important; }
         body:not(.boss-mode) #active-orders-page .summary-row { display: none !important; }
-        /* Bila boss mode aktif, summary muncul semula */
         body.boss-mode #order-list-page .summary-row { display: flex !important; }
         body.boss-mode #active-orders-page .summary-row { display: flex !important; }
 
@@ -321,7 +404,7 @@
                 <button id="export-csv-btn" class="filter-btn" style="background:#27ae60;color:white;">📥 Export CSV</button>
             </div>
             <div class="action-buttons no-print" style="margin-bottom:20px; justify-content:flex-end;">
-                <button id="clear-all-orders-btn" class="btn btn-danger">Kosongkan Semua Order</button>
+                <button id="clear-all-orders-btn" class="btn btn-danger">🔒 Kosongkan Semua Order</button>
             </div>
             <div class="summary-row">
                 <div class="summary-box"><div class="label">Jumlah Order</div><div class="value" id="summary-count">0</div></div>
@@ -489,6 +572,28 @@
             </div>
             <input type="hidden" id="password-action" value="">
             <input type="hidden" id="password-target-id" value="">
+        </div>
+    </div>
+
+    <!-- DANGER MODAL - UNTUK PADAM SEMUA ORDER -->
+    <div id="danger-modal">
+        <div class="danger-modal-content">
+            <h3>⚠️ AMARAN — TINDAKAN BERBAHAYA</h3>
+            <div class="warning-box">
+                <strong>Anda akan PADAM SEMUA order berikut:</strong>
+                <ul>
+                    <li>Semua senarai order</li>
+                    <li>Semua item dalam order</li>
+                    <li>Data TIDAK boleh dikembalikan!</li>
+                </ul>
+            </div>
+            <p style="font-size:14px;color:#666;">Untuk teruskan, sila taip <strong style="color:#e74c3c;">PADAM SEMUA</strong> di bawah:</p>
+            <input type="text" id="danger-confirm-input" placeholder="Taip di sini..." autocomplete="off">
+            <div id="danger-error">❌ Taipan salah. Sila taip "PADAM SEMUA" dengan tepat.</div>
+            <div class="danger-modal-buttons">
+                <button id="danger-cancel-btn">❌ Batal</button>
+                <button id="danger-confirm-btn" disabled>🗑️ PADAM SEMUA</button>
+            </div>
         </div>
     </div>
 
@@ -826,6 +931,7 @@ document.addEventListener('DOMContentLoaded', function() {
             'tab-deleted-bills':[deletedBillsPage, ()=>displayDeletedBills()]
         };
         if (map[id]) { const [p, fn] = map[id]; p.style.display='block'; p.classList.add('active'); fn(); }
+        applyBossMode();
     }
 
     // ============ PASSWORD ============
@@ -849,6 +955,48 @@ document.addEventListener('DOMContentLoaded', function() {
             applyBossMode();
             hidePasswordPrompt();
             if (landingPage.style.display === 'flex') showContainer(target); else switchTab(target);
+        } else if (action === 'clear_all_orders') {
+            // Kata laluan betul → buka danger modal untuk pengesahan kedua
+            sessionStorage.setItem('appAuthed','true');
+            applyBossMode();
+            hidePasswordPrompt();
+            showDangerModal();
+        }
+    }
+
+    // ============ DANGER MODAL (Padam Semua Order) ============
+    function showDangerModal() {
+        $('danger-confirm-input').value = '';
+        $('danger-error').style.display = 'none';
+        $('danger-confirm-btn').disabled = true;
+        $('danger-modal').style.display = 'flex';
+        setTimeout(() => $('danger-confirm-input').focus(), 100);
+    }
+    function hideDangerModal() {
+        $('danger-modal').style.display = 'none';
+        $('danger-confirm-input').value = '';
+    }
+    async function executeClearAllOrders() {
+        if ($('danger-confirm-input').value.trim().toUpperCase() !== 'PADAM SEMUA') {
+            $('danger-error').style.display = 'block';
+            return;
+        }
+        // Pengesahan terakhir
+        if (!confirm('🚨 Pengesahan TERAKHIR!\n\nBetul-betul PASTI nak padam SEMUA order?\n\nTindakan ini TIDAK BOLEH dikembalikan!')) {
+            return;
+        }
+        try {
+            $('danger-confirm-btn').disabled = true;
+            $('danger-confirm-btn').textContent = '⏳ Memadam...';
+            await supabaseClient.from('orders').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+            hideDangerModal();
+            alert('✅ Semua order telah dipadam.');
+            displayOrders(); updateDashboard(); displayActiveOrders();
+        } catch(e) {
+            alert('❌ Gagal padam: ' + e.message);
+        } finally {
+            $('danger-confirm-btn').disabled = false;
+            $('danger-confirm-btn').textContent = '🗑️ PADAM SEMUA';
         }
     }
 
@@ -1013,6 +1161,7 @@ document.addEventListener('DOMContentLoaded', function() {
         tb.querySelectorAll('.edit-btn').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice); if (o) showEditOrderModal(o); }));
         tb.querySelectorAll('.complete-btn').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice); if (o) showPaymentModal(o); }));
         tb.querySelectorAll('.pending-btn').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice); if (o) markPending(o); }));
+        applyBossMode();
     }
     async function markPending(o) { await updateOrder({...o, status:'pending'}); displayOrders(); }
 
@@ -1064,6 +1213,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const w = window.open('', '_blank'); if (!w) return alert('Pop-up diblok');
             w.document.write(buildPrintHTML(o, false)); w.document.close(); setTimeout(()=>w.print(),500);
         }));
+        applyBossMode();
     }
 
     // ============ DETAIL ============
@@ -1558,6 +1708,18 @@ document.addEventListener('DOMContentLoaded', function() {
     $('password-input').addEventListener('keypress', e => { if (e.key === 'Enter') checkPassword(); });
     $('delete-reason-input').addEventListener('keypress', e => { if (e.key === 'Enter') checkPassword(); });
 
+    // DANGER MODAL listeners
+    $('danger-cancel-btn').addEventListener('click', hideDangerModal);
+    $('danger-confirm-btn').addEventListener('click', executeClearAllOrders);
+    $('danger-confirm-input').addEventListener('input', e => {
+        const ok = e.target.value.trim().toUpperCase() === 'PADAM SEMUA';
+        $('danger-confirm-btn').disabled = !ok;
+        if (ok) $('danger-error').style.display = 'none';
+    });
+    $('danger-confirm-input').addEventListener('keypress', e => {
+        if (e.key === 'Enter' && !$('danger-confirm-btn').disabled) executeClearAllOrders();
+    });
+
     $('close-bills-modal').addEventListener('click', () => $('bills-modal').style.display = 'none');
     $('close-payment-modal').addEventListener('click', hidePaymentModal);
     $('cancel-payment').addEventListener('click', hidePaymentModal);
@@ -1659,11 +1821,10 @@ document.addEventListener('DOMContentLoaded', function() {
         displayOrders();
     }));
     $('export-csv-btn').addEventListener('click', exportCSV);
-    $('clear-all-orders-btn').addEventListener('click', async () => {
-        if (confirm('Padam SEMUA order?') && confirm('Betul-betul PASTI?')) {
-            await supabaseClient.from('orders').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-            displayOrders(); updateDashboard(); displayActiveOrders();
-        }
+
+    // ============ KOSONGKAN SEMUA ORDER — PERLU PASSWORD ============
+    $('clear-all-orders-btn').addEventListener('click', () => {
+        showPasswordPrompt('clear_all_orders', 'Padam Semua Order');
     });
 
     $('search-active').addEventListener('input', displayActiveOrders);
@@ -1690,7 +1851,6 @@ document.addEventListener('DOMContentLoaded', function() {
         initYearDropdowns();
         $('order-date').value = new Date().toISOString().split('T')[0];
 
-        // Terapkan boss mode semasa page load
         applyBossMode();
 
         if (!STAFF_NAME) {
