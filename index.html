@@ -106,14 +106,14 @@ th { background-color: #f2f2f2; }
 #sales-person-table th:first-child, #sales-person-table td:first-child { text-align: left; }
 #sales-person-table .commission-input { width: 60px; padding: 5px; text-align: right; }
 #sales-person-table .bill-count { cursor: pointer; text-decoration: underline; color: #007bff; }
-#password-modal, #name-modal, #template-modal, #size-cat-modal, #size-input-modal, #qr-login-modal, #pin-login-modal, #staff-modal, #qr-display-modal, #idcard-modal, #staff-password-login-modal { position: fixed; z-index: 3500; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; padding: 20px; }
-.password-modal-content, .name-modal-content, .template-modal-content, .size-cat-modal-content, .size-input-modal-content, .qr-login-modal-content, .pin-login-modal-content, .staff-modal-content, .qr-display-modal-content, .idcard-modal-content, .staff-password-login-modal-content {
+#password-modal, #name-modal, #template-modal, #size-cat-modal, #size-input-modal, #qr-login-modal, #pin-login-modal, #staff-modal, #qr-display-modal, #idcard-modal, #staff-password-login-modal, #staff-pin-manual-modal { position: fixed; z-index: 3500; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; padding: 20px; }
+.password-modal-content, .name-modal-content, .template-modal-content, .size-cat-modal-content, .size-input-modal-content, .qr-login-modal-content, .pin-login-modal-content, .staff-modal-content, .qr-display-modal-content, .idcard-modal-content, .staff-password-login-modal-content, .staff-pin-manual-modal-content {
     background: white; padding: 30px; border-radius: 12px; position: relative;
     width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto;
 }
 .password-modal-content { max-width: 400px; }
 .size-input-modal-content { max-width: 600px; }
-.qr-login-modal-content, .pin-login-modal-content, .staff-password-login-modal-content { max-width: 450px; text-align: center; }
+.qr-login-modal-content, .pin-login-modal-content, .staff-password-login-modal-content, .staff-pin-manual-modal-content { max-width: 450px; text-align: center; }
 .idcard-modal-content { max-width: 600px; }
 .modal-close-x { color: #aaa; position: absolute; top: 10px; right: 15px; font-size: 28px; font-weight: bold; cursor: pointer; background: none; border: none; }
 #password-input, #delete-reason-input { padding: 10px; width: 100%; margin-bottom: 15px; box-sizing: border-box; }
@@ -208,6 +208,8 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
 .login-method-badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: bold; margin-left: 5px; }
 .login-method-qr_pin { background: #3498db; color: white; }
 .login-method-qr_only { background: #f39c12; color: white; }
+#manual-login-select { padding: 12px; font-size: 16px; width: 100%; margin: 10px 0; }
+#manual-login-pin { padding: 12px; font-size: 16px; text-align: center; letter-spacing: 5px; width: 100%; margin: 10px 0; border: 2px solid #ddd; border-radius: 8px; }
 @media print {
     .no-print, .action-buttons, .tab-nav, .home-button-container, #password-modal, .add-sales-person, #bills-modal, #install-app-btn { display: none !important; }
     body { background: none; padding: 0; }
@@ -235,8 +237,9 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
     <div class="logo">EMPAYAR S KREATIF</div>
     <div class="tagline">Sistem Pengurusan Invois & Order</div>
     <div class="action-buttons-landing">
-        <button id="login-staff-btn" class="btn-landing btn-primary-landing">🔐 Login Staf (QR + PIN)</button>
-        <button id="login-password-btn" class="btn-landing btn-secondary-landing">🔑 Login dengan Password</button>
+        <button id="login-staff-btn" class="btn-landing btn-primary-landing">📷 Login QR + PIN</button>
+        <button id="login-pin-manual-btn" class="btn-landing btn-secondary-landing" style="background:#f39c12;color:white;border-color:#f39c12;">👤 Login Staf (PIN)</button>
+        <button id="login-password-btn" class="btn-landing btn-secondary-landing">🔑 Login Boss (Password)</button>
         <button id="new-invoice-btn" class="btn-landing btn-secondary-landing">Buat Invois Baru</button>
         <button id="manage-orders-btn" class="btn-landing btn-secondary-landing">Urus Order</button>
         <button id="dashboard-btn" class="btn-landing btn-secondary-landing">Papan Pemuka Jualan</button>
@@ -247,7 +250,7 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
         <div class="feature-card"><div class="feature-icon">📊</div><div class="feature-title">Invois Profesional</div><div>Buat dan cetak invois dengan mudah</div></div>
         <div class="feature-card"><div class="feature-icon">📝</div><div class="feature-title">Urusan Order</div><div>Pantau status order dengan sistematik</div></div>
         <div class="feature-card"><div class="feature-icon">📈</div><div class="feature-title">Analisis Jualan</div><div>Ringkasan harian, mingguan, bulanan</div></div>
-        <div class="feature-card"><div class="feature-icon">📱</div><div class="feature-title">Login QR + PIN</div><div>Keselamatan staf dengan kad QR</div></div>
+        <div class="feature-card"><div class="feature-icon">📱</div><div class="feature-title">3 Cara Login</div><div>QR, PIN manual, atau password boss</div></div>
     </div>
 </div>
 
@@ -575,8 +578,8 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
         <div id="qr-reader"></div>
         <div id="qr-reader-status">Sedia scan...</div>
         <div style="margin-top:20px;padding-top:15px;border-top:1px solid #eee;">
-            <p style="color:#666;font-size:12px;margin:0 0 10px;">Kamera tak berfungsi?</p>
-            <button id="switch-to-password-btn" class="btn" style="background:#6e48aa;">🔑 Guna Password</button>
+            <p style="color:#666;font-size:12px;margin:0 0 10px;">Kamera tak berfungsi? Guna PIN manual:</p>
+            <button id="switch-to-manual-pin-btn" class="btn" style="background:#f39c12;">👤 Login PIN Manual</button>
         </div>
     </div>
 </div>
@@ -600,10 +603,28 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
     </div>
 </div>
 
+<!-- MODAL BARU: LOGIN PIN MANUAL (tanpa QR) -->
+<div id="staff-pin-manual-modal">
+    <div class="staff-pin-manual-modal-content">
+        <button class="modal-close-x" onclick="closeManualPinLogin()">×</button>
+        <h3 style="color:#f39c12;margin-top:0;">👤 Login Staf (PIN Manual)</h3>
+        <p style="color:#666;font-size:13px;">Pilih nama anda dan masukkan PIN 4 digit.</p>
+        <label style="font-weight:bold;text-align:left;display:block;margin-top:15px;">Pilih Nama Staf:</label>
+        <select id="manual-login-select"></select>
+        <label style="font-weight:bold;text-align:left;display:block;margin-top:10px;">PIN (4 digit):</label>
+        <input type="password" id="manual-login-pin" placeholder="••••" maxlength="4" inputmode="numeric">
+        <div id="manual-pin-error" style="color:red;font-size:13px;margin-bottom:10px;display:none;">PIN salah. Cuba lagi.</div>
+        <div class="action-buttons" style="justify-content:center;">
+            <button id="cancel-manual-pin" class="btn btn-secondary">Batal</button>
+            <button id="submit-manual-pin" class="btn" style="background:#f39c12;">Log Masuk</button>
+        </div>
+    </div>
+</div>
+
 <div id="staff-password-login-modal">
     <div class="staff-password-login-modal-content">
         <button class="modal-close-x" onclick="closePasswordLogin()">×</button>
-        <h3 style="color:#6e48aa;margin-top:0;">🔑 Login dengan Password</h3>
+        <h3 style="color:#6e48aa;margin-top:0;">🔑 Login Boss (Password)</h3>
         <p style="color:#666;font-size:13px;">Masukkan password boss untuk log masuk sebagai admin.</p>
         <input type="password" id="staff-login-password" placeholder="Password" style="width:100%;padding:12px;border:2px solid #ddd;border-radius:6px;margin:15px 0;font-size:16px;">
         <div id="staff-password-error" style="color:red;font-size:13px;margin-bottom:10px;display:none;">Password salah!</div>
@@ -626,7 +647,6 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
                 <option value="qr_pin">📷+🔢 QR + PIN (Selamat)</option>
                 <option value="qr_only">📷 QR Sahaja (Laju)</option>
             </select>
-            <small style="color:#666;font-size:12px;">QR + PIN: scan kemudian taip PIN. QR Sahaja: scan terus login.</small>
         </div>
         <div class="form-group"><label>PIN (4 digit):</label><input type="text" id="staff-pin-input" placeholder="1234" maxlength="4" inputmode="numeric"></div>
         <div class="action-buttons no-print" style="justify-content:flex-end;">
@@ -1342,7 +1362,51 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // ============ LOGIN PASSWORD (backup) ============
+    // ============ LOGIN PIN MANUAL (TANPA QR) ============
+    async function openManualPinLogin() {
+        await loadStaffCards();
+        const activeStaff = allStaffCardsCache.filter(s => s.active);
+        if (!activeStaff.length) {
+            alert('Tiada staf aktif. Sila tambah staf di Tetapan dahulu.');
+            return;
+        }
+        const select = $('manual-login-select');
+        select.innerHTML = '<option value="">-- Pilih Nama --</option>' + 
+            activeStaff.map(s => `<option value="${s.id}">${escapeHtml(s.staff_name)}${s.jawatan ? ' ('+escapeHtml(s.jawatan)+')' : ''}</option>`).join('');
+        $('manual-login-pin').value = '';
+        $('manual-pin-error').style.display = 'none';
+        $('staff-pin-manual-modal').style.display = 'flex';
+        setTimeout(() => $('manual-login-select').focus(), 100);
+    }
+    window.closeManualPinLogin = function() {
+        $('staff-pin-manual-modal').style.display = 'none';
+    };
+    async function submitManualPinLogin() {
+        const staffId = $('manual-login-select').value;
+        const pin = $('manual-login-pin').value;
+        if (!staffId) { $('manual-pin-error').textContent = 'Sila pilih nama staf.'; $('manual-pin-error').style.display = 'block'; return; }
+        if (pin.length !== 4) { $('manual-pin-error').textContent = 'PIN mesti 4 digit.'; $('manual-pin-error').style.display = 'block'; return; }
+        const staff = allStaffCardsCache.find(s => s.id === staffId);
+        if (!staff) { $('manual-pin-error').textContent = 'Staf tidak dijumpai.'; $('manual-pin-error').style.display = 'block'; return; }
+        const verified = await verifyPin(staffId, pin);
+        if (!verified) {
+            $('manual-pin-error').textContent = 'PIN salah. Cuba lagi.';
+            $('manual-pin-error').style.display = 'block';
+            $('manual-login-pin').value = '';
+            $('manual-login-pin').focus();
+            return;
+        }
+        STAFF_NAME = verified.staff_name;
+        localStorage.setItem('staffName', STAFF_NAME);
+        localStorage.setItem('staffLoggedInAt', Date.now());
+        $('staff-badge').textContent = '👤 ' + STAFF_NAME;
+        await updateLastLogin(verified.id);
+        closeManualPinLogin();
+        alert('✅ Selamat datang, ' + STAFF_NAME + '!');
+        showContainer('tab-invoice');
+    }
+
+    // ============ LOGIN PASSWORD (BOSS) ============
     function openPasswordLogin() {
         $('staff-login-password').value = '';
         $('staff-password-error').style.display = 'none';
@@ -2357,17 +2421,26 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         openQrLogin();
     });
+    $('login-pin-manual-btn').addEventListener('click', () => {
+        if (STAFF_NAME) {
+            if (!confirm('Anda sudah login sebagai ' + STAFF_NAME + '. Tukar staf?')) return;
+        }
+        openManualPinLogin();
+    });
     $('login-password-btn').addEventListener('click', openPasswordLogin);
     $('cancel-password-login').addEventListener('click', closePasswordLogin);
     $('submit-password-login').addEventListener('click', submitPasswordLogin);
     $('staff-login-password').addEventListener('keypress', e => { if (e.key === 'Enter') submitPasswordLogin(); });
-    $('switch-to-password-btn').addEventListener('click', () => {
+    $('switch-to-manual-pin-btn').addEventListener('click', () => {
         closeQrLogin();
-        setTimeout(() => openPasswordLogin(), 300);
+        setTimeout(() => openManualPinLogin(), 300);
     });
+    $('cancel-manual-pin').addEventListener('click', closeManualPinLogin);
+    $('submit-manual-pin').addEventListener('click', submitManualPinLogin);
+    $('manual-login-pin').addEventListener('keypress', e => { if (e.key === 'Enter') submitManualPinLogin(); });
     $('new-invoice-btn').addEventListener('click', () => {
         if (!STAFF_NAME) {
-            if (confirm('Sila login staf dahulu. Login sekarang?')) openQrLogin();
+            if (confirm('Sila login staf dahulu. Login PIN manual sekarang?')) openManualPinLogin();
             return;
         }
         showContainer('tab-invoice');
@@ -2380,7 +2453,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (STAFF_NAME) {
             if (!confirm('Tukar staf? Anda akan log keluar dari ' + STAFF_NAME + '.')) return;
         }
-        openQrLogin();
+        openManualPinLogin();
     });
     $('logout-btn').addEventListener('click', () => {
         if (!confirm('Log keluar dari sistem?')) return;
@@ -2389,7 +2462,7 @@ document.addEventListener('DOMContentLoaded', function() {
         STAFF_NAME = ''; CURRENT_STAFF = null;
         $('staff-badge').textContent = '👤 Belum Login';
         showLandingPage();
-        alert('✅ Anda telah log keluar.\n\nKlik "🔐 Login Staf" untuk login semula.');
+        alert('✅ Anda telah log keluar.');
     });
     document.querySelectorAll('.tab-btn').forEach(t => t.addEventListener('click', () => switchTab(t.id)));
 
