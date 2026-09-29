@@ -1,0 +1,2268 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <!-- SUPABASE CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empayar S Kreatif - Sistem Invois & Order</title>
+    <meta name="theme-color" content="#6e48aa"/>
+    <link rel="apple-touch-icon" href="https://arleta.site/interactivelink/68/Untitled-1.png">
+
+    <style>
+        body { font-family: 'Arial', sans-serif; margin: 0; padding: 0; background-color: #f5f5f5; color: #333; }
+        .landing-page { text-align: center; padding: 40px 20px; background: linear-gradient(135deg, #6e48aa 0%, #9d50bb 100%); color: white; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.5s ease-out; }
+        .logo { font-size: 3.5rem; font-weight: bold; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); animation: fadeInDown 1s ease-out; }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        .tagline { font-size: 1.2rem; margin-bottom: 40px; opacity: 0.9; animation: fadeInUp 1s ease-out 0.3s; animation-fill-mode: backwards; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .action-buttons-landing { display: flex; flex-direction: column; gap: 15px; max-width: 300px; margin: 20px auto; animation: fadeInUp 1s ease-out 0.6s; animation-fill-mode: backwards; }
+        .btn-landing { padding: 15px 25px; border-radius: 50px; font-size: 1.1rem; font-weight: bold; border: none; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .btn-primary-landing { background-color: #fff; color: #6e48aa; }
+        .btn-primary-landing:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+        .btn-secondary-landing { background-color: rgba(255,255,255,0.2); color: white; border: 2px solid white; }
+        .btn-secondary-landing:hover { background-color: rgba(255,255,255,0.3); transform: translateY(-3px); }
+        #install-app-btn { background-color: #2ecc71; color: white; display: none; }
+        #install-app-btn:hover { background-color: #27ae60; transform: translateY(-3px); }
+        .features { display: flex; justify-content: center; flex-wrap: wrap; gap: 30px; margin-top: 40px; animation: fadeInUp 1s ease-out 0.9s; animation-fill-mode: backwards; }
+        .feature-card { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 15px; padding: 25px; width: 250px; transition: all 0.3s ease; }
+        .feature-card:hover { transform: translateY(-10px); background: rgba(255,255,255,0.2); }
+        .feature-icon { font-size: 2.5rem; margin-bottom: 15px; }
+        .feature-title { font-weight: bold; margin-bottom: 10px; font-size: 1.2rem; }
+        .container { max-width: 1000px; margin: 20px auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 15px rgba(0,0,0,0.1); display: none; transition: opacity 0.5s ease-in; }
+        .home-button-container { text-align: right; margin-bottom: 10px; }
+        .btn-home { background: #6e48aa; color: white; border: none; padding: 8px 15px; cursor: pointer; border-radius: 4px; font-size: 14px; }
+        .btn-home:hover { background: #5a3a8a; }
+        .tab-nav { display: flex; border-bottom: 1px solid #ddd; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 10px 15px; background: none; border: none; cursor: pointer; font-size: 15px; font-weight: bold; color: #555; border-bottom: 3px solid transparent; transition: all 0.3s; margin-right: 5px; margin-bottom: -1px; }
+        .tab-btn.active { color: #aa4871; border-bottom: 3px solid #6e48aa; }
+        .order-list-container { display: none; }
+        .search-filter { display: flex; gap: 10px; margin-bottom: 20px; }
+        .search-input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
+        .filter-btn { padding: 10px 15px; background-color: #eee; border: none; border-radius: 4px; cursor: pointer; }
+        .filter-btn.active { background-color: #6e48aa; color: white; }
+        .order-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .order-table th { background-color: #f2f2f2; padding: 12px 15px; text-align: left; font-weight: bold; border-bottom: 1px solid #ddd; }
+        .order-table td { padding: 12px 15px; border-bottom: 1px solid #eee; }
+        .order-table tr:hover { background-color: #f9f9f9; }
+        .order-table tr:last-child td { border-bottom: none; }
+        .order-number { font-weight: bold; color: #6e48aa; cursor: pointer; text-decoration: underline; }
+        .order-number:hover { color: #5a3a8a; }
+        .status-indicator { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 5px; }
+        .status-new { background-color: #3498db; }
+        .status-warning { background-color: #f39c12; }
+        .status-urgent { background-color: #e74c3c; }
+        .status-normal { background-color: #2ecc71; }
+        .status-pending { background-color: #f39c12; }
+        .status-completed { background-color: #95a5a6; }
+        .status-cell { display: flex; align-items: center; }
+        .order-actions { display: flex; gap: 5px; }
+        .complete-btn, .pending-btn, .edit-btn { background-color: #2ecc71; color: white; border: none; border-radius: 4px; padding: 5px 10px; font-size: 12px; cursor: pointer; }
+        .pending-btn { background-color: #f39c12; }
+        .edit-btn { background-color: #3498db; }
+        .complete-btn:hover { background-color: #27ae60; }
+        .pending-btn:hover { background-color: #d35400; }
+        .edit-btn:hover { background-color: #2980b9; }
+        .order-detail-view { display: none; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 20px; margin-top: 20px; }
+        .detail-header { display: flex; justify-content: space-between; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
+        .detail-items { margin-bottom: 20px; }
+        .detail-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #eee; }
+        .detail-totals { margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee; }
+        .detail-total { display: flex; justify-content: space-between; margin-bottom: 10px; }
+        .detail-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+        .page { display: none; }
+        .page.active { display: block; }
+        .header-info { text-align: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .header-info img { max-width: 120px; height: auto; margin-right: 10px; }
+        .company-details { text-align: left; }
+        .header-info h2 { margin: 0; line-height: 1.2; }
+        .header-info p { margin: 2px 0; line-height: 1.4; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select, textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .quantity-control { display: flex; align-items: center; }
+        .quantity-btn { background: #3498db; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 3px; margin: 0 5px; }
+        .quantity-btn:hover { background: #2980b9; }
+        .quantity-input { width: 50px; text-align: center; }
+        .btn { background: #2ecc71; color: white; border: none; padding: 10px 15px; cursor: pointer; border-radius: 4px; font-size: 16px; }
+        .btn:hover { background: #27ae60; }
+        .btn-secondary { background: #95a5a6; }
+        .btn-secondary:hover { background: #7f8c8d; }
+        .btn-danger { background: #e74c3c; }
+        .btn-danger:hover { background: #c0392b; }
+        .btn-warning { background: #f39c12; }
+        .btn-warning:hover { background: #d35400; }
+        .btn-info { background: #3498db; }
+        .btn-info:hover { background: #2980b9; }
+        .terms { font-size: 12px; margin-top: 20px; padding: 10px; background: #f9f9f9; border-radius: 4px; }
+        .bank-info { margin-top: 20px; padding: 10px; background: #e8f4fc; border-radius: 4px; }
+        .action-buttons { display: flex; justify-content: space-between; margin-top: 20px; }
+        .invoice-totals { margin-top: 20px; font-weight: bold; text-align: right; }
+        .invoice-preview { border: 1px solid #ddd; padding: 20px; background: white; margin-bottom: 20px; }
+        #offline-banner { position: fixed; bottom: 0; left: 0; right: 0; background: #e74c3c; color: white; padding: 10px; text-align: center; display: none; z-index: 1000; transition: all 0.5s ease; }
+        .sync-status { font-size: 12px; color: #777; margin-top: 5px; }
+        .discount-container { display: flex; gap: 10px; }
+        #discount-type { width: 80px; }
+        #dashboard-page { padding: 20px; background-color: #fff; border-radius: 8px; }
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
+        .dashboard-card { background-color: #f9f9f9; border: 1px solid #eee; border-radius: 8px; padding: 25px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .dashboard-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .dashboard-card h3 { margin-top: 0; color: #6e48aa; font-size: 1.2rem; margin-bottom: 15px; }
+        .dashboard-card .amount { font-size: 2.5rem; font-weight: bold; color: #333; }
+        .dashboard-card .period { font-size: 0.9rem; color: #777; margin-top: 5px; }
+        #sales-person-page { padding: 20px; }
+        .add-sales-person { margin-bottom: 30px; padding: 20px; background-color: #f9f9f9; border-radius: 8px; display: flex; gap: 15px; align-items: center; }
+        .add-sales-person input { flex-grow: 1; }
+        .add-sales-person button { padding: 8px 15px; font-size: 14px; background-color: #6e48aa; color: white; }
+        #sales-person-table th, #sales-person-table td, #deleted-bills-table th, #deleted-bills-table td { text-align: right; vertical-align: middle; }
+        #sales-person-table th:first-child, #sales-person-table td:first-child, #deleted-bills-table th:first-child, #deleted-bills-table td:first-child, #deleted-bills-table th:nth-child(2), #deleted-bills-table td:nth-child(2) { text-align: left; }
+        #sales-person-table .commission-input { width: 60px; padding: 5px; text-align: right; border: 1px solid #ccc; border-radius: 3px; box-sizing: border-box; }
+        #sales-person-table .bill-count { cursor: pointer; text-decoration: underline; color: #007bff; }
+        #sales-person-table .bill-count:hover { color: #0056b3; }
+        #password-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center; z-index: 2000; }
+        .password-modal-content { background-color: white; padding: 30px 40px; border-radius: 8px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.3); width: 90%; max-width: 400px; }
+        .password-modal-content h3 { margin-top: 0; margin-bottom: 20px; }
+        #password-input { padding: 10px; width: 90%; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; }
+        #delete-reason-input { padding: 10px; width: 90%; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; height: 60px; resize: vertical; }
+        #password-error { color: red; font-size: 12px; margin-bottom: 10px; display: none; }
+        .password-buttons button { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; margin: 0 5px; }
+        #submit-password { background-color: #6e48aa; color: white; }
+        #cancel-password { background-color: #ccc; }
+        #bills-modal { position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; }
+        .bills-modal-content { background-color: #fefefe; margin: auto; padding: 20px 30px; border: 1px solid #888; width: 80%; max-width: 500px; border-radius: 8px; position: relative; }
+        #close-bills-modal { color: #aaa; position: absolute; top: 10px; right: 15px; font-size: 28px; font-weight: bold; cursor: pointer; }
+        #close-bills-modal:hover, #close-bills-modal:focus { color: black; text-decoration: none; cursor: pointer; }
+        #bills-modal-list { list-style: none; padding: 0; margin-top: 15px; max-height: 300px; overflow-y: auto; }
+        #bills-modal-list li { padding: 8px 0; border-bottom: 1px solid #eee; font-size: 14px; }
+        #bills-modal-list li:last-child { border-bottom: none; }
+        #payment-modal { position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; }
+        .payment-modal-content { background-color: #fefefe; margin: auto; padding: 20px 30px; border: 1px solid #888; width: 80%; max-width: 500px; border-radius: 8px; position: relative; }
+        #close-payment-modal { color: #aaa; position: absolute; top: 10px; right: 15px; font-size: 28px; font-weight: bold; cursor: pointer; }
+        #close-payment-modal:hover, #close-payment-modal:focus { color: black; text-decoration: none; cursor: pointer; }
+        #edit-order-modal { position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; }
+        .edit-order-modal-content { background-color: #fefefe; margin: auto; padding: 20px 30px; border: 1px solid #888; width: 90%; max-width: 800px; border-radius: 8px; position: relative; max-height: 90vh; overflow-y: auto; }
+        #close-edit-order-modal { color: #aaa; position: absolute; top: 10px; right: 15px; font-size: 28px; font-weight: bold; cursor: pointer; }
+        #close-edit-order-modal:hover, #close-edit-order-modal:focus { color: black; text-decoration: none; cursor: pointer; }
+        #deleted-bills-page h2 { margin-bottom: 20px; }
+        .table-summary { background-color: #f9f9f9; font-weight: bold; text-align: right; padding: 10px; border-top: 2px solid #ddd; }
+        .table-summary-row td { background-color: #f9f9f9; font-weight: bold; text-align: right; border-top: 2px solid #ddd; }
+        .invoice-number-container { position: relative; }
+        #invoice-number { width: 100%; }
+        #invoice-number-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #ddd; border-radius: 4px; max-height: 200px; overflow-y: auto; z-index: 100; display: none; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .invoice-number-option { padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #eee; }
+        .invoice-number-option:hover { background-color: #f5f5f5; }
+        .invoice-number-option.used { color: #e74c3c; text-decoration: line-through; background-color: #ffeaea; }
+        .invoice-number-option.locked { color: #f39c12; background-color: #fff8e1; font-weight: bold; }
+        .invoice-number-option.available { color: #2ecc71; }
+        @media print {
+            .no-print, .action-buttons, .tab-nav, .home-button-container, #password-modal, .add-sales-person, #bills-modal, #install-app-btn { display: none !important; }
+            #sales-person-table .no-print { display: none !important; }
+            #sales-person-table input { border: none; background: none; text-align: right; width: auto;}
+            body { background: none; padding: 0; }
+            .container { box-shadow: none; max-width: 100%; padding: 0; }
+            .header-info { justify-content: flex-start; gap: 10px; text-align: left; }
+            .header-info h2, .header-info p { text-align: left; }
+            .header-info img { margin-right: 15px; }
+            #invoice-number-dropdown { display: none !important; }
+        }
+        @media (max-width: 768px) {
+            .order-table { font-size: 12px; }
+            .order-table th, .order-table td { padding: 8px 10px; }
+            .order-actions { flex-direction: column; }
+            .search-filter { flex-direction: column; }
+            .detail-header { flex-direction: column; }
+            .features { flex-direction: column; align-items: center; }
+            .feature-card { width: 100%; max-width: 300px; }
+            .header-info { flex-direction: column; gap: 10px; }
+            .header-info img { margin-right: 0; margin-bottom: 10px; }
+            .company-details { text-align: center; }
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .add-sales-person { flex-direction: column; align-items: stretch;}
+            .tab-nav { justify-content: center; }
+            #sales-person-table, #deleted-bills-table { font-size: 12px; }
+            #sales-person-table th, #sales-person-table td, #deleted-bills-table th, #deleted-bills-table td { padding: 5px; }
+            .password-modal-content { padding: 20px; }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="offline-banner">Anda sedang di luar talian. Aplikasi mungkin berfungsi dengan data cache.</div>
+
+    <div id="landing-page" class="landing-page">
+        <div class="logo">EMPAYAR S KREATIF</div>
+        <div class="tagline">Sistem Pengurusan Invois & Order</div>
+
+        <div class="action-buttons-landing">
+            <button id="new-invoice-btn" class="btn-landing btn-primary-landing">Buat Invois Baru</button>
+            <button id="manage-orders-btn" class="btn-landing btn-secondary-landing">Urus Order</button>
+            <button id="dashboard-btn" class="btn-landing btn-secondary-landing">Papan Pemuka Jualan</button>
+            <button id="manage-sales-persons-btn" class="btn-landing btn-secondary-landing">Urus Jurujual</button>
+            <button id="install-app-btn" class="btn-landing">Pasang Aplikasi Ini</button>
+        </div>
+
+        <div class="features">
+            <div class="feature-card"><div class="feature-icon">📊</div><div class="feature-title">Invois Profesional</div><div>Buat dan cetak invois dengan mudah dalam pelbagai format</div></div>
+            <div class="feature-card"><div class="feature-icon">📝</div><div class="feature-title">Urusan Order</div><div>Pantau status order dan janji siap dengan sistematik</div></div>
+            <div class="feature-card"><div class="feature-icon">📈</div><div class="feature-title">Analisis Jualan</div><div>Lihat ringkasan jualan harian, bulanan & tahunan</div></div>
+            <div class="feature-card"><div class="feature-icon">🧑‍💼</div><div class="feature-title">Pengurusan Jurujual</div><div>Tambah, padam, dan jejak prestasi jurujual</div></div>
+            <div class="feature-card"><div class="feature-icon">📱</div><div class="feature-title">Boleh Pasang (PWA)</div><div>Guna seperti aplikasi biasa, walaupun tanpa internet.</div></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="home-button-container no-print">
+            <button id="home-btn" class="btn-home">Laman Utama</button>
+        </div>
+
+        <div class="tab-nav no-print">
+            <button class="tab-btn" id="tab-invoice">Buat Invois</button>
+            <button class="tab-btn" id="tab-orders">Senarai Order</button>
+            <button class="tab-btn" id="tab-dashboard">Papan Pemuka</button>
+            <button class="tab-btn" id="tab-sales-person">Jurujual</button>
+            <button class="tab-btn" id="tab-deleted-bills">Bil Dibatalkan</button>
+        </div>
+
+        <div id="invoice-page" class="page">
+            <div class="header-info">
+                <img src="https://arleta.site/interactivelink/68/Untitled-1.png" alt="Empayar S Kreatif Logo" id="invoice-logo">
+                <div class="company-details">
+                    <h2>EMPAYAR S KREATIF</h2>
+                    <p>Hadapan Sek.Ren.Keb Ketereh, 16450 Kota Bharu Kelantan<br>TEL: 01133387532<br>(KT0565538-X)</p>
+                </div>
+                <h3>INVOIS</h3>
+            </div>
+            <div class="form-group invoice-number-container">
+                <label for="invoice-number">NO.BIL</label>
+                <input type="text" id="invoice-number" placeholder="Klik untuk pilih nombor bil" readonly>
+                <div id="invoice-number-dropdown" class="invoice-number-dropdown"></div>
+                <div class="sync-status" id="sync-status"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="customer-name">KEPADA:</label>
+                <input type="text" id="customer-name" placeholder="Nama pelanggan">
+            </div>
+
+            <div class="form-group">
+                <label for="order-date">TARIKH ORDER:</label>
+                <input type="date" id="order-date">
+            </div>
+
+            <div class="form-group">
+                <label for="completion-date">TARIKH JANJI SIAP:</label>
+                <input type="date" id="completion-date">
+            </div>
+
+            <h3>Butiran Item</h3>
+            <table id="items-table">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Item/Keterangan</th>
+                        <th>Harga/Unit (RM)</th>
+                        <th>Kuantiti</th>
+                        <th>Jumlah (RM)</th>
+                        <th>Tindakan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td><input type="text" class="item-desc" placeholder="Keterangan item"></td>
+                        <td><input type="number" class="item-price" placeholder="0.00" step="0.01"></td>
+                        <td>
+                            <div class="quantity-control">
+                                <button class="quantity-btn minus">-</button>
+                                <input type="number" class="quantity-input" value="1" min="1">
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                        </td>
+                        <td class="item-total">0.00</td>
+                        <td><button class="btn btn-secondary remove-item no-print">Padam</button></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr class="table-summary-row">
+                        <td colspan="3">JUMLAH</td>
+                        <td id="total-quantity">0</td>
+                        <td id="total-amount">0.00</td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+            <button id="add-item" class="btn no-print">Tambah Item</button>
+
+            <div class="form-group">
+                <label for="discount">DISKAUN:</label>
+                <div class="discount-container">
+                    <input type="number" id="discount-value" placeholder="0.00" step="0.01">
+                    <select id="discount-type">
+                        <option value="fixed">RM</option>
+                        <option value="percent">%</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="deposit">DEPOSIT (RM):</label>
+                <input type="number" id="deposit" placeholder="0.00" step="0.01">
+            </div>
+
+            <div class="bank-info">
+                <p><strong>Maybank</strong><br>553104624047<br>EMPAYAR S KREATIF SOLUTION</p>
+            </div>
+
+            <div class="form-group">
+                <label for="sales-person">NAMA JURUJUAL:</label>
+                <select id="sales-person">
+                    <option value="">Pilih Jurujual</option>
+                </select>
+            </div>
+
+            <div class="action-buttons no-print">
+                <button id="preview-invoice" class="btn">Pratonton Invois</button>
+            </div>
+        </div>
+
+        <div id="preview-page" class="page">
+            <div class="header-info">
+                <img src="https://arleta.site/interactivelink/68/Untitled-1.png" alt="Empayar S Kreatif Logo" id="preview-logo">
+                <div class="company-details">
+                    <h2>EMPAYAR S KREATIF</h2>
+                    <p>Hadapan Sek.Ren.Keb Ketereh, 16450 Kota Bharu Kelantan<br>TEL: 01133387532<br>(KT0565538-X)</p>
+                </div>
+                <h3>INVOIS</h3>
+            </div>
+            <div class="invoice-preview">
+                <p style="margin-bottom: 0em;"><strong>NO.BIL:</strong> <span id="preview-invoice-number"></span></p>
+                <p style="margin-top: 0em;">(Pertanyaan Guna No Invois ini)</p>
+                <p><strong>KEPADA: </strong><span id="preview-customer-name"></span></p>
+                <p><strong>TARIKH ORDER: </strong><span id="preview-order-date"></span><br>
+                <strong>TARIKH JANJI SIAP: </strong><span id="preview-completion-date"></span><br>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Item/Keterangan</th>
+                            <th>Harga/Unit</th>
+                            <th>Kuantiti</th>
+                            <th>Jumlah (RM)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="preview-items"></tbody>
+                    <tfoot>
+                        <tr class="table-summary-row">
+                            <td colspan="3">JUMLAH</td>
+                            <td id="preview-total-quantity">0</td>
+                            <td id="preview-total-amount">0.00</td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <div class="invoice-totals">
+                    <p>JUMLAH RM<span id="preview-total">0.00</span></p>
+                    <p>DISKAUN RM<span id="preview-discount">0.00</span></p>
+                    <p>JUMLAH SELEPAS DISKAUN RM<span id="preview-subtotal">0.00</span></p>
+                    <p>DEPOSIT RM<span id="preview-deposit">0.00</span></p>
+                    <p>BAKI RM<span id="preview-balance">0.00</span></p>
+                </div>
+
+                <div class="bank-info">
+                    <p><strong>BAYARAN</strong></p>
+                    <p><strong>Maybank</strong><br>553104624047<br>EMPAYAR S KREATIF SOLUTION</p>
+                </div>
+
+                <p><strong>NAMA JURUJUAL: </strong><span id="preview-sales-person"></span></p>
+                <div class="terms">
+                    <p><strong>TERMA & SYARAT TEMPAHAN</strong></p>
+                    <p>*Setiap tempahan hendaklah disertakan DEPOSIT SEKURANG-KURANGNYA 50% DARIPADA NILAIAN TEMPAHAN</p>
+                    <p>*(tempahan tanpa deposit tidak akan di proses)*</p>
+                    <p>Tempahan yang dibuat TIDAK BOLEH DIBATALKAN, deposit TIDAK akan dikembalikan</p>
+                    <p>Untuk Tempahan baju, Pertukaran saiz baju dikenarkan SEBELUM baju di order dengan supplier</p>
+                    <p>Caj design yang dikenakan TIDAK AKAN DIKEMBALIKAN</p>
+                    <p>Preview design akan dibuat SEBELUM proceed cetakan</p>
+                </div>
+
+                <div class="action-buttons no-print">
+                    <button id="back-to-edit" class="btn btn-secondary">Kembali & Baiki</button>
+                    <button id="submit-to-sheets" class="btn">Hantar Pesanan</button>
+                    <button id="print-invoice" class="btn">Cetak Invois</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="order-list-page" class="order-list-container page">
+            <div class="search-filter no-print">
+                <input type="text" id="search-orders" class="search-input" placeholder="Cari no order atau nama pelanggan...">
+                <button class="filter-btn active" data-filter="all">Semua</button>
+                <button class="filter-btn" data-filter="pending">Tertunggak</button>
+                <button class="filter-btn" data-filter="completed">Selesai</button>
+            </div>
+            <div class="action-buttons no-print" style="margin-bottom: 20px; justify-content: flex-end;">
+                <button id="clear-all-orders-btn" class="btn btn-danger">Kosongkan Semua Order</button>
+            </div>
+
+            <table class="order-table" id="orders-table">
+                <thead>
+                    <tr>
+                        <th>No. Bil</th>
+                        <th>Pelanggan</th>
+                        <th>Tarikh Order</th>
+                        <th>Tarikh Siap</th>
+                        <th>Jurujual</th>
+                        <th>Status</th>
+                        <th class="no-print">Tindakan</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-container"></tbody>
+            </table>
+        </div>
+
+        <div class="order-detail-view" id="order-detail-view">
+            <div class="detail-header">
+                <div>
+                    <h3 id="detail-invoice-number"></h3>
+                    <p id="detail-customer-name"></p>
+                </div>
+                <div>
+                    <p>Tarikh Order: <span id="detail-order-date"></span></p>
+                    <p>Janji Siap: <span id="detail-completion-date"></span></p>
+                </div>
+            </div>
+
+            <div class="detail-items" id="detail-items"></div>
+
+            <div class="detail-totals">
+                <div class="detail-total"><span>Jumlah:</span><span id="detail-total">RM0.00</span></div>
+                <div class="detail-total"><span>Diskaun:</span><span id="detail-discount">RM0.00</span></div>
+                <div class="detail-total"><span>Deposit:</span><span id="detail-deposit">RM0.00</span></div>
+                <div class="detail-total"><span>Baki:</span><span id="detail-balance">RM0.00</span></div>
+            </div>
+
+            <div class="detail-actions no-print">
+                <button class="btn btn-secondary" id="btn-back-to-list">Kembali</button>
+                <button class="btn btn-warning" id="btn-print-order">Cetak Bil Asal</button>
+                <button class="btn btn-info" id="btn-edit-order">Edit Bill</button>
+                <button class="btn btn-danger" id="btn-delete-order">Padam</button>
+                <button class="btn" id="btn-complete-order" style="background-color: #2ecc71;">Selesai</button>
+                <button class="btn" id="btn-pending-order" style="background-color: #f39c12;">Pending</button>
+                <button class="btn" id="btn-print-final" style="background-color: #3498db;">Cetak Bil Akhir</button>
+            </div>
+        </div>
+
+        <div id="dashboard-page" class="page">
+            <h2>Papan Pemuka Jualan</h2>
+            <div class="dashboard-grid">
+                <div class="dashboard-card"><h3>Jualan Harian</h3><div class="amount" id="daily-sales">RM 0.00</div><div class="period">Hari Ini</div></div>
+                <div class="dashboard-card"><h3>Deposit Harian</h3><div class="amount" id="daily-deposit">RM 0.00</div><div class="period">Hari Ini</div></div>
+                <div class="dashboard-card"><h3>Jualan Bulanan</h3><div class="amount" id="monthly-sales">RM 0.00</div><div class="period">Bulan Ini</div></div>
+                <div class="dashboard-card"><h3>Deposit Bulanan</h3><div class="amount" id="monthly-deposit">RM 0.00</div><div class="period">Bulan Ini</div></div>
+                <div class="dashboard-card"><h3>Jualan Tahunan</h3><div class="amount" id="yearly-sales">RM 0.00</div><div class="period">Tahun Ini</div></div>
+                <div class="dashboard-card"><h3>Deposit Tahunan</h3><div class="amount" id="yearly-deposit">RM 0.00</div><div class="period">Tahun Ini</div></div>
+            </div>
+        </div>
+
+        <div id="sales-person-page" class="page">
+            <h2>Pengurusan & Jualan Jurujual</h2>
+            <div class="add-sales-person no-print">
+                <input type="text" id="new-sales-person-name" placeholder="Nama Jurujual Baru">
+                <button id="add-sales-person-btn" class="btn">Tambah Jurujual</button>
+            </div>
+            <table id="sales-person-table">
+                <thead>
+                    <tr>
+                        <th>Nama Jurujual</th>
+                        <th>Jumlah Jualan (RM)</th>
+                        <th>Jumlah Deposit (RM)</th>
+                        <th>Jumlah Bil</th>
+                        <th>Komisen (%)</th>
+                        <th>Jumlah Komisen (RM)</th>
+                        <th class="no-print">Tindakan</th>
+                    </tr>
+                </thead>
+                <tbody id="sales-person-list"></tbody>
+            </table>
+        </div>
+
+        <div id="deleted-bills-page" class="page">
+            <h2>Senarai Bil yang Dibatalkan</h2>
+            <table id="deleted-bills-table">
+                <thead>
+                    <tr>
+                        <th>No. Bil</th>
+                        <th>Sebab Dibatalkan</th>
+                        <th>Nama Pelanggan</th>
+                        <th>Tarikh Batal</th>
+                        <th>Jumlah (RM)</th>
+                    </tr>
+                </thead>
+                <tbody id="deleted-bills-list"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="password-modal" style="display: none;">
+        <div class="password-modal-content">
+            <h3>Masukkan Kata Laluan</h3>
+            <p id="password-prompt-message">Anda memerlukan kata laluan untuk mengakses bahagian ini.</p>
+            <input type="password" id="password-input" placeholder="Kata Laluan">
+            <textarea id="delete-reason-input" placeholder="Sila nyatakan sebab pembatalan order ini..." style="display: none;"></textarea>
+            <div id="password-error">Kata laluan salah atau sebab tidak diisi!</div>
+            <div class="password-buttons">
+                <button id="cancel-password">Batal</button>
+                <button id="submit-password">Hantar</button>
+            </div>
+            <input type="hidden" id="password-action" value="">
+            <input type="hidden" id="password-target-id" value="">
+        </div>
+    </div>
+
+    <div id="bills-modal" class="bills-modal">
+        <div class="bills-modal-content">
+            <span id="close-bills-modal">×</span>
+            <h3 id="bills-modal-title">Senarai Bil untuk Jurujual</h3>
+            <ul id="bills-modal-list"></ul>
+        </div>
+    </div>
+
+    <div id="payment-modal" style="display: none;">
+        <div class="payment-modal-content">
+            <span id="close-payment-modal">×</span>
+            <h3>Maklumat Pembayaran Penuh</h3>
+            <div class="form-group">
+                <label for="payment-date">Tarikh Pembayaran:</label>
+                <input type="date" id="payment-date">
+            </div>
+            <div class="form-group">
+                <label for="payment-method">Kaedah Pembayaran:</label>
+                <select id="payment-method">
+                    <option value="tunai">Tunai</option>
+                    <option value="bank-transfer">Bank Transfer</option>
+                    <option value="kad-kredit">Kad Kredit</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="payment-amount">Jumlah Dibayar (RM):</label>
+                <input type="number" id="payment-amount" placeholder="0.00" step="0.01">
+            </div>
+            <div class="form-group">
+                <label for="payment-reference">No. Rujukan (jika ada):</label>
+                <input type="text" id="payment-reference" placeholder="No. rujukan pembayaran">
+            </div>
+            <div class="action-buttons">
+                <button id="cancel-payment" class="btn btn-secondary">Batal</button>
+                <button id="confirm-payment" class="btn">Simpan & Cetak</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="edit-order-modal" style="display: none;">
+        <div class="edit-order-modal-content">
+            <span id="close-edit-order-modal">×</span>
+            <h3>Edit Order</h3>
+            <div class="form-group">
+                <label for="edit-invoice-number">NO.BIL</label>
+                <input type="text" id="edit-invoice-number" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="edit-customer-name">KEPADA:</label>
+                <input type="text" id="edit-customer-name" placeholder="Nama pelanggan">
+            </div>
+
+            <div class="form-group">
+                <label for="edit-order-date">TARIKH ORDER:</label>
+                <input type="date" id="edit-order-date">
+            </div>
+
+            <div class="form-group">
+                <label for="edit-completion-date">TARIKH JANJI SIAP:</label>
+                <input type="date" id="edit-completion-date">
+            </div>
+
+            <h3>Butiran Item</h3>
+            <table id="edit-items-table">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Item/Keterangan</th>
+                        <th>Harga/Unit (RM)</th>
+                        <th>Kuantiti</th>
+                        <th>Jumlah (RM)</th>
+                        <th>Tindakan</th>
+                    </tr>
+                </thead>
+                <tbody id="edit-items-tbody"></tbody>
+                <tfoot>
+                    <tr class="table-summary-row">
+                        <td colspan="3">JUMLAH</td>
+                        <td id="edit-total-quantity">0</td>
+                        <td id="edit-total-amount">0.00</td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+            <button id="edit-add-item" class="btn no-print">Tambah Item</button>
+
+            <div class="form-group">
+                <label for="edit-discount">DISKAUN:</label>
+                <div class="discount-container">
+                    <input type="number" id="edit-discount-value" placeholder="0.00" step="0.01">
+                    <select id="edit-discount-type">
+                        <option value="fixed">RM</option>
+                        <option value="percent">%</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="edit-deposit">DEPOSIT (RM):</label>
+                <input type="number" id="edit-deposit" placeholder="0.00" step="0.01">
+            </div>
+
+            <div class="form-group">
+                <label for="edit-sales-person">NAMA JURUJUAL:</label>
+                <select id="edit-sales-person">
+                    <option value="">Pilih Jurujual</option>
+                </select>
+            </div>
+
+            <div class="action-buttons no-print">
+                <button id="cancel-edit-order" class="btn btn-secondary">Batal</button>
+                <button id="save-edit-order" class="btn">Simpan Perubahan</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // ============================================================
+        // SUPABASE INITIALIZATION
+        // ============================================================
+        const SUPABASE_URL = 'https://lgnbravmaqgdcgldkose.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_C4Vg3j2N-4u6Ro26RsoF7A_Nqh1oKSi';
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        console.log("Supabase initialized");
+
+        // Session & Staff identity
+        const SESSION_ID = 'staff_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+        let STAFF_NAME = localStorage.getItem('staffName');
+        if (!STAFF_NAME) {
+            STAFF_NAME = prompt("Masukkan nama anda (untuk paparan lock no. bil):") || 'Staff';
+            localStorage.setItem('staffName', STAFF_NAME);
+        }
+        console.log("Session:", SESSION_ID, "| Staff:", STAFF_NAME);
+
+        // ============================================================
+        // DOM ELEMENTS
+        // ============================================================
+        const landingPage = document.getElementById('landing-page');
+        const container = document.querySelector('.container');
+        const offlineBanner = document.getElementById('offline-banner');
+
+        const newInvoiceBtn = document.getElementById('new-invoice-btn');
+        const manageOrdersBtn = document.getElementById('manage-orders-btn');
+        const dashboardBtnLanding = document.getElementById('dashboard-btn');
+        const manageSalesPersonsBtn = document.getElementById('manage-sales-persons-btn');
+        const installAppBtn = document.getElementById('install-app-btn');
+
+        const homeBtn = document.getElementById('home-btn');
+        const tabs = document.querySelectorAll('.tab-btn');
+        const pages = document.querySelectorAll('.page');
+
+        const invoicePage = document.getElementById('invoice-page');
+        const previewPage = document.getElementById('preview-page');
+        const orderListPage = document.getElementById('order-list-page');
+        const orderDetailView = document.getElementById('order-detail-view');
+        const dashboardPage = document.getElementById('dashboard-page');
+        const salesPersonPage = document.getElementById('sales-person-page');
+        const deletedBillsPage = document.getElementById('deleted-bills-page');
+
+        const ordersContainer = document.getElementById('orders-container');
+        const searchInput = document.getElementById('search-orders');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const clearAllOrdersBtn = document.getElementById('clear-all-orders-btn');
+
+        const btnBackToList = document.getElementById('btn-back-to-list');
+        const btnPrintOrder = document.getElementById('btn-print-order');
+        const btnEditOrder = document.getElementById('btn-edit-order');
+        const btnDeleteOrder = document.getElementById('btn-delete-order');
+        const btnCompleteOrder = document.getElementById('btn-complete-order');
+        const btnPendingOrder = document.getElementById('btn-pending-order');
+        const btnPrintFinal = document.getElementById('btn-print-final');
+
+        const previewInvoiceBtn = document.getElementById('preview-invoice');
+        const backToEditBtn = document.getElementById('back-to-edit');
+        const printInvoiceBtn = document.getElementById('print-invoice');
+        const submitOrderBtn = document.getElementById('submit-to-sheets');
+        const addItemBtn = document.getElementById('add-item');
+        const itemsTable = document.getElementById('items-table');
+        const invoiceNumberInput = document.getElementById('invoice-number');
+        const invoiceNumberDropdown = document.getElementById('invoice-number-dropdown');
+        const salesPersonSelect = document.getElementById('sales-person');
+        const totalQuantityEl = document.getElementById('total-quantity');
+        const totalAmountEl = document.getElementById('total-amount');
+
+        const dailySalesEl = document.getElementById('daily-sales');
+        const monthlySalesEl = document.getElementById('monthly-sales');
+        const yearlySalesEl = document.getElementById('yearly-sales');
+        const dailyDepositEl = document.getElementById('daily-deposit');
+        const monthlyDepositEl = document.getElementById('monthly-deposit');
+        const yearlyDepositEl = document.getElementById('yearly-deposit');
+
+        const newSalesPersonNameInput = document.getElementById('new-sales-person-name');
+        const addSalesPersonBtn = document.getElementById('add-sales-person-btn');
+        const salesPersonList = document.getElementById('sales-person-list');
+
+        const passwordModal = document.getElementById('password-modal');
+        const passwordInput = document.getElementById('password-input');
+        const deleteReasonInput = document.getElementById('delete-reason-input');
+        const submitPasswordBtn = document.getElementById('submit-password');
+        const cancelPasswordBtn = document.getElementById('cancel-password');
+        const passwordError = document.getElementById('password-error');
+        const passwordPromptMessage = document.getElementById('password-prompt-message');
+        const passwordActionInput = document.getElementById('password-action');
+        const passwordTargetIdInput = document.getElementById('password-target-id');
+
+        const billsModal = document.getElementById('bills-modal');
+        const closeBillsModalBtn = document.getElementById('close-bills-modal');
+        const billsModalTitle = document.getElementById('bills-modal-title');
+        const billsModalList = document.getElementById('bills-modal-list');
+
+        const paymentModal = document.getElementById('payment-modal');
+        const closePaymentModalBtn = document.getElementById('close-payment-modal');
+        const cancelPaymentBtn = document.getElementById('cancel-payment');
+        const confirmPaymentBtn = document.getElementById('confirm-payment');
+        const paymentDateInput = document.getElementById('payment-date');
+        const paymentMethodInput = document.getElementById('payment-method');
+        const paymentAmountInput = document.getElementById('payment-amount');
+        const paymentReferenceInput = document.getElementById('payment-reference');
+
+        const editOrderModal = document.getElementById('edit-order-modal');
+        const closeEditOrderModalBtn = document.getElementById('close-edit-order-modal');
+        const cancelEditOrderBtn = document.getElementById('cancel-edit-order');
+        const saveEditOrderBtn = document.getElementById('save-edit-order');
+        const editInvoiceNumberInput = document.getElementById('edit-invoice-number');
+        const editCustomerNameInput = document.getElementById('edit-customer-name');
+        const editOrderDateInput = document.getElementById('edit-order-date');
+        const editCompletionDateInput = document.getElementById('edit-completion-date');
+        const editItemsTbody = document.getElementById('edit-items-tbody');
+        const editAddItemBtn = document.getElementById('edit-add-item');
+        const editDiscountValueInput = document.getElementById('edit-discount-value');
+        const editDiscountTypeInput = document.getElementById('edit-discount-type');
+        const editDepositInput = document.getElementById('edit-deposit');
+        const editSalesPersonSelect = document.getElementById('edit-sales-person');
+        const editTotalQuantityEl = document.getElementById('edit-total-quantity');
+        const editTotalAmountEl = document.getElementById('edit-total-amount');
+
+        const deletedBillsList = document.getElementById('deleted-bills-list');
+        const syncStatusEl = document.getElementById('sync-status');
+
+        // ============================================================
+        // STATE
+        // ============================================================
+        let currentOrder = null;
+        const CORRECT_PASSWORD = '7532wan';
+        let deferredInstallPrompt = null;
+        let availableInvoiceNumbers = [];
+        let currentlyLockedNumber = null;
+        let lockedNumbersMap = {};
+
+        // ============================================================
+        // UTILITIES
+        // ============================================================
+        function generateInvoiceNumbers() {
+            const numbers = [];
+            for (let i = 1; i <= 9999; i++) {
+                numbers.push('25D' + i.toString().padStart(4, '0'));
+            }
+            return numbers;
+        }
+
+        function formatDate(dateString) {
+            if (!dateString || dateString === '-') return '-';
+            try {
+                const date = new Date(dateString);
+                if (isNaN(date.getTime())) return '-';
+                const day = date.getDate().toString().padStart(2, '0');
+                const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                const year = date.getFullYear();
+                return `${day}/${month}/${year}`;
+            } catch (e) { return '-'; }
+        }
+
+        function getCurrentDateTimeFormatted() {
+            const now = new Date();
+            const day = now.getDate().toString().padStart(2, '0');
+            const month = (now.getMonth() + 1).toString().padStart(2, '0');
+            const year = now.getFullYear();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            return `${day}/${month}/${year} ${hours}:${minutes}`;
+        }
+
+        function getOrderStatus(order) {
+            if (order.status === 'completed') return 'completed';
+            if (order.status === 'pending') return 'pending';
+            if (!order.completionDate || order.completionDate === '-') return 'normal';
+            const today = new Date(); today.setHours(0, 0, 0, 0);
+            const completionDate = new Date(order.completionDate); completionDate.setHours(0, 0, 0, 0);
+            const orderDate = new Date(order.orderDate); orderDate.setHours(0, 0, 0, 0);
+            if (isNaN(completionDate.getTime())) return 'normal';
+            if (isNaN(orderDate.getTime())) return 'normal';
+            if (orderDate.getTime() === today.getTime()) return 'new';
+            const timeDiff = completionDate.getTime() - today.getTime();
+            const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            if (daysDiff < 0) return 'urgent';
+            if (daysDiff <= 3) return 'urgent';
+            if (daysDiff <= 6) return 'warning';
+            return 'normal';
+        }
+
+        function getStatusText(status) {
+            switch (status) {
+                case 'new': return 'BARU';
+                case 'warning': return 'PERHATIAN';
+                case 'urgent': return 'SEGERA';
+                case 'completed': return 'SELESAI';
+                case 'pending': return 'PENDING';
+                default: return 'DALAM PROSES';
+            }
+        }
+
+        // ============================================================
+        // SUPABASE: ORDERS CRUD
+        // ============================================================
+        async function loadOrders() {
+            try {
+                const { data: orders, error } = await supabaseClient
+                    .from('orders')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                if (error) throw error;
+                if (!orders || orders.length === 0) return [];
+
+                const orderIds = orders.map(o => o.id);
+                let itemsMap = {};
+                const { data: items, error: itemErr } = await supabaseClient
+                    .from('order_items')
+                    .select('*')
+                    .in('order_id', orderIds);
+
+                if (!itemErr && items) {
+                    items.forEach(item => {
+                        if (!itemsMap[item.order_id]) itemsMap[item.order_id] = [];
+                        itemsMap[item.order_id].push({
+                            description: item.description,
+                            price: parseFloat(item.price) || 0,
+                            quantity: item.quantity,
+                            total: parseFloat(item.total) || 0
+                        });
+                    });
+                }
+
+                return orders.map(o => ({
+                    id: o.id,
+                    invoiceNumber: o.invoice_number,
+                    customerName: o.customer_name,
+                    orderDate: o.order_date,
+                    completionDate: o.completion_date,
+                    salesPerson: o.sales_person,
+                    totalAmount: parseFloat(o.total_amount) || 0,
+                    discount: parseFloat(o.discount) || 0,
+                    subtotal: parseFloat(o.subtotal) || 0,
+                    deposit: parseFloat(o.deposit) || 0,
+                    balance: parseFloat(o.balance) || 0,
+                    status: o.status,
+                    paymentInfo: o.payment_info,
+                    createdBy: o.created_by,
+                    createdAt: o.created_at,
+                    updatedAt: o.updated_at,
+                    items: itemsMap[o.id] || []
+                }));
+            } catch (error) {
+                console.error("Error loading orders:", error);
+                return [];
+            }
+        }
+
+        async function addOrder(order) {
+            try {
+                const { data: existing } = await supabaseClient
+                    .from('orders').select('id').eq('invoice_number', order.invoiceNumber).maybeSingle();
+                if (existing) {
+                    alert(`No. Bil ${order.invoiceNumber} sudah wujud!`);
+                    return false;
+                }
+                const { data: newOrder, error } = await supabaseClient
+                    .from('orders')
+                    .insert({
+                        invoice_number: order.invoiceNumber,
+                        customer_name: order.customerName,
+                        order_date: order.orderDate === '-' ? null : order.orderDate,
+                        completion_date: order.completionDate === '-' ? null : order.completionDate,
+                        sales_person: order.salesPerson,
+                        total_amount: order.totalAmount,
+                        discount: order.discount,
+                        subtotal: order.subtotal,
+                        deposit: order.deposit,
+                        balance: order.balance,
+                        status: order.status || 'normal',
+                        created_by: order.createdBy || STAFF_NAME
+                    })
+                    .select().single();
+                if (error) throw error;
+
+                if (order.items && order.items.length > 0) {
+                    const itemsToInsert = order.items.map(it => ({
+                        order_id: newOrder.id,
+                        description: it.description,
+                        price: it.price,
+                        quantity: it.quantity,
+                        total: it.total
+                    }));
+                    const { error: itemErr } = await supabaseClient.from('order_items').insert(itemsToInsert);
+                    if (itemErr) console.error("Items insert error:", itemErr);
+                }
+                return true;
+            } catch (error) {
+                console.error("Error adding order:", error);
+                alert("Gagal simpan order: " + error.message);
+                return false;
+            }
+        }
+
+        async function updateOrder(updatedOrder) {
+            try {
+                const { error } = await supabaseClient
+                    .from('orders')
+                    .update({
+                        customer_name: updatedOrder.customerName,
+                        order_date: updatedOrder.orderDate === '-' ? null : updatedOrder.orderDate,
+                        completion_date: updatedOrder.completionDate === '-' ? null : updatedOrder.completionDate,
+                        sales_person: updatedOrder.salesPerson,
+                        total_amount: updatedOrder.totalAmount,
+                        discount: updatedOrder.discount,
+                        subtotal: updatedOrder.subtotal,
+                        deposit: updatedOrder.deposit,
+                        balance: updatedOrder.balance,
+                        status: updatedOrder.status,
+                        payment_info: updatedOrder.paymentInfo || null
+                    })
+                    .eq('invoice_number', updatedOrder.invoiceNumber);
+                if (error) throw error;
+
+                const { data: orderRow } = await supabaseClient
+                    .from('orders').select('id').eq('invoice_number', updatedOrder.invoiceNumber).single();
+                if (orderRow) {
+                    await supabaseClient.from('order_items').delete().eq('order_id', orderRow.id);
+                    if (updatedOrder.items && updatedOrder.items.length > 0) {
+                        const itemsToInsert = updatedOrder.items.map(it => ({
+                            order_id: orderRow.id,
+                            description: it.description,
+                            price: it.price,
+                            quantity: it.quantity,
+                            total: it.total
+                        }));
+                        await supabaseClient.from('order_items').insert(itemsToInsert);
+                    }
+                }
+                return true;
+            } catch (error) {
+                console.error("Error updating order:", error);
+                return false;
+            }
+        }
+
+        async function deleteOrder(orderId, reason) {
+            try {
+                const orders = await loadOrders();
+                const order = orders.find(o => o.invoiceNumber === orderId);
+                if (!order) { alert('Order tidak ditemui.'); return false; }
+
+                await supabaseClient.from('deleted_bills').insert({
+                    invoice_number: order.invoiceNumber,
+                    customer_name: order.customerName,
+                    subtotal: order.subtotal,
+                    deletion_reason: reason,
+                    original_data: order
+                });
+
+                const { error } = await supabaseClient.from('orders').delete().eq('invoice_number', orderId);
+                if (error) throw error;
+                return true;
+            } catch (error) {
+                console.error("Error deleting order:", error);
+                return false;
+            }
+        }
+
+        // ============================================================
+        // SUPABASE: SALES PERSONS
+        // ============================================================
+        async function loadSalesPersons() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('sales_persons').select('*').order('created_at', { ascending: true });
+                if (error) throw error;
+                return (data || []).map(p => ({ name: p.name, commission: parseFloat(p.commission) || 0 }));
+            } catch (error) {
+                console.error("Error loading sales persons:", error);
+                return [];
+            }
+        }
+
+        async function addSalesPerson(name, commission = 0) {
+            try {
+                const { error } = await supabaseClient.from('sales_persons').insert({ name, commission });
+                if (error) {
+                    if (error.code === '23505') { alert("Nama jurujual sudah wujud."); return false; }
+                    throw error;
+                }
+                return true;
+            } catch (error) {
+                console.error("Error adding sales person:", error);
+                return false;
+            }
+        }
+
+        async function deleteSalesPerson(name) {
+            try {
+                const { error } = await supabaseClient.from('sales_persons').delete().eq('name', name);
+                if (error) throw error;
+                return true;
+            } catch (error) {
+                console.error("Error deleting:", error);
+                return false;
+            }
+        }
+
+        async function updateSalesPersonCommission(name, commission) {
+            try {
+                const { error } = await supabaseClient.from('sales_persons').update({ commission }).eq('name', name);
+                if (error) throw error;
+                return true;
+            } catch (error) {
+                console.error("Error updating commission:", error);
+                return false;
+            }
+        }
+
+        // ============================================================
+        // SUPABASE: DELETED BILLS
+        // ============================================================
+        async function loadDeletedBills() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('deleted_bills').select('*').order('deletion_date', { ascending: false });
+                if (error) throw error;
+                return (data || []).map(b => ({
+                    invoiceNumber: b.invoice_number,
+                    customerName: b.customer_name,
+                    subtotal: parseFloat(b.subtotal) || 0,
+                    deletionReason: b.deletion_reason,
+                    deletionDate: b.deletion_date ? new Date(b.deletion_date).toLocaleString('ms-MY') : '-'
+                }));
+            } catch (error) {
+                console.error("Error loading deleted bills:", error);
+                return [];
+            }
+        }
+
+        // ============================================================
+        // SUPABASE: INVOICE LOCKS
+        // ============================================================
+        async function fetchActiveLocks() {
+            try {
+                const cutoff = new Date(Date.now() - 30 * 60 * 1000).toISOString();
+                const { data, error } = await supabaseClient
+                    .from('invoice_locks')
+                    .select('invoice_number, locked_by, session_id, locked_at')
+                    .gt('locked_at', cutoff);
+                if (error) { console.error("Fetch locks error:", error); return {}; }
+                const map = {};
+                (data || []).forEach(lock => { map[lock.invoice_number] = lock; });
+                return map;
+            } catch (e) { console.error("Fetch locks exception:", e); return {}; }
+        }
+
+        async function lockInvoiceNumber(invoiceNumber) {
+            try {
+                if (currentlyLockedNumber && currentlyLockedNumber !== invoiceNumber) {
+                    await unlockInvoiceNumber(currentlyLockedNumber);
+                }
+                const { error } = await supabaseClient
+                    .from('invoice_locks')
+                    .insert({ invoice_number: invoiceNumber, locked_by: STAFF_NAME, session_id: SESSION_ID });
+                if (error) {
+                    if (error.code === '23505') {
+                        const { data: existing } = await supabaseClient
+                            .from('invoice_locks').select('locked_by').eq('invoice_number', invoiceNumber).single();
+                        alert(`❌ No. Bil ${invoiceNumber} sedang digunakan oleh ${existing?.locked_by || 'staf lain'}.\n\nSila pilih nombor lain.`);
+                        return false;
+                    }
+                    console.error("Lock error:", error);
+                    alert("Gagal lock no. bil: " + error.message);
+                    return false;
+                }
+                currentlyLockedNumber = invoiceNumber;
+                return true;
+            } catch (e) { console.error("Lock exception:", e); return false; }
+        }
+
+        async function unlockInvoiceNumber(invoiceNumber) {
+            if (!invoiceNumber) return;
+            try {
+                await supabaseClient
+                    .from('invoice_locks')
+                    .delete()
+                    .eq('invoice_number', invoiceNumber)
+                    .eq('session_id', SESSION_ID);
+            } catch (e) { console.error("Unlock exception:", e); }
+        }
+
+        async function unlockCurrentNumber() {
+            if (currentlyLockedNumber) {
+                await unlockInvoiceNumber(currentlyLockedNumber);
+                currentlyLockedNumber = null;
+            }
+        }
+
+        // ============================================================
+        // INVOICE NUMBER DROPDOWN
+        // ============================================================
+        async function updateAvailableInvoiceNumbers() {
+            const orders = await loadOrders();
+            const usedNumbers = orders.map(order => order.invoiceNumber);
+            lockedNumbersMap = await fetchActiveLocks();
+            const lockedNumbers = Object.keys(lockedNumbersMap);
+            availableInvoiceNumbers = generateInvoiceNumbers()
+                .filter(num => !usedNumbers.includes(num))
+                .filter(num => !lockedNumbers.includes(num));
+            populateInvoiceNumberDropdown(usedNumbers, lockedNumbers);
+            updateSyncStatus();
+            return availableInvoiceNumbers;
+        }
+
+        function populateInvoiceNumberDropdown(usedNumbers = [], lockedNumbers = []) {
+            invoiceNumberDropdown.innerHTML = '';
+            availableInvoiceNumbers.forEach(num => {
+                const option = document.createElement('div');
+                option.className = 'invoice-number-option available';
+                option.textContent = num;
+                option.dataset.value = num;
+                invoiceNumberDropdown.appendChild(option);
+            });
+            lockedNumbers.forEach(num => {
+                const lock = lockedNumbersMap[num];
+                const isMine = lock.session_id === SESSION_ID;
+                const option = document.createElement('div');
+                option.className = 'invoice-number-option locked';
+                option.textContent = num + ' 🔒 (' + (isMine ? 'Anda' : lock.locked_by) + ')';
+                option.dataset.value = num;
+                invoiceNumberDropdown.appendChild(option);
+            });
+            usedNumbers.forEach(num => {
+                if (!lockedNumbers.includes(num)) {
+                    const option = document.createElement('div');
+                    option.className = 'invoice-number-option used';
+                    option.textContent = num + ' (Sudah Digunakan)';
+                    option.dataset.value = num;
+                    invoiceNumberDropdown.appendChild(option);
+                }
+            });
+        }
+
+        function updateSyncStatus() {
+            if (!syncStatusEl) return;
+            const now = new Date();
+            const lockCount = Object.keys(lockedNumbersMap).length;
+            syncStatusEl.textContent = `🔄 Real-time aktif | ${lockCount} no. bil di-lock | ${now.toLocaleTimeString('ms-MY')}`;
+        }
+
+        // ============================================================
+        // REALTIME SUBSCRIPTIONS
+        // ============================================================
+        function initRealtimeSubscriptions() {
+            // Locks
+            supabaseClient.channel('locks_ch')
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'invoice_locks' },
+                    () => updateAvailableInvoiceNumbers())
+                .subscribe((status) => {
+                    if (syncStatusEl) {
+                        if (status === 'SUBSCRIBED') syncStatusEl.textContent = '🟢 Real-time aktif - no. bil dikongsi antara staf';
+                        else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') syncStatusEl.textContent = '🔴 Sambungan terputus - refresh page';
+                    }
+                });
+
+            // Orders
+            supabaseClient.channel('orders_ch')
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, () => {
+                    const activeTab = document.querySelector('.tab-btn.active');
+                    if (!activeTab) return;
+                    if (activeTab.id === 'tab-orders') displayOrders();
+                    else if (activeTab.id === 'tab-dashboard') updateDashboard();
+                    else if (activeTab.id === 'tab-sales-person') displaySalesPersonData();
+                    else if (activeTab.id === 'tab-invoice') updateAvailableInvoiceNumbers();
+                })
+                .subscribe();
+
+            // Sales persons
+            supabaseClient.channel('sp_ch')
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'sales_persons' }, () => {
+                    const activeTab = document.querySelector('.tab-btn.active');
+                    if (activeTab && activeTab.id === 'tab-sales-person') displaySalesPersonData();
+                    populateSalesPersonDropdown();
+                })
+                .subscribe();
+
+            // Deleted bills
+            supabaseClient.channel('del_ch')
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'deleted_bills' }, () => {
+                    const activeTab = document.querySelector('.tab-btn.active');
+                    if (activeTab && activeTab.id === 'tab-deleted-bills') displayDeletedBills();
+                })
+                .subscribe();
+        }
+
+        // ============================================================
+        // APP STATE
+        // ============================================================
+        function saveAppState() {
+            localStorage.setItem('appState', JSON.stringify({
+                currentPage: container.style.display === 'none' ? 'landing' : 'main',
+                currentTab: document.querySelector('.tab-btn.active')?.id || 'tab-invoice',
+                appAuthed: sessionStorage.getItem('appAuthed') === 'true'
+            }));
+        }
+
+        function loadAppState() {
+            try { return JSON.parse(localStorage.getItem('appState')) || {}; } catch(e) { return {}; }
+        }
+
+        function restoreAppState() {
+            const state = loadAppState();
+            if (state.appAuthed) sessionStorage.setItem('appAuthed', 'true');
+            if (state.currentPage === 'main') showContainer(state.currentTab);
+            else showLandingPage();
+        }
+
+        // ============================================================
+        // PWA
+        // ============================================================
+        if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(() => {});
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault(); deferredInstallPrompt = e; installAppBtn.style.display = 'block';
+        });
+        installAppBtn.addEventListener('click', async () => {
+            installAppBtn.style.display = 'none';
+            if (!deferredInstallPrompt) { alert("Chrome > 3 titik > Pasang Aplikasi.\niOS: Kongsi > Tambah ke Skrin Utama."); return; }
+            deferredInstallPrompt.prompt(); await deferredInstallPrompt.userChoice; deferredInstallPrompt = null;
+        });
+
+        // ============================================================
+        // OFFLINE STATUS
+        // ============================================================
+        function updateOnlineStatus() { offlineBanner.style.display = navigator.onLine ? 'none' : 'block'; }
+        window.addEventListener('online', updateOnlineStatus);
+        window.addEventListener('offline', updateOnlineStatus);
+
+        // ============================================================
+        // CLEANUP ON CLOSE
+        // ============================================================
+        window.addEventListener('beforeunload', () => {
+            if (currentlyLockedNumber) {
+                const url = `${SUPABASE_URL}/rest/v1/invoice_locks?invoice_number=eq.${encodeURIComponent(currentlyLockedNumber)}&session_id=eq.${encodeURIComponent(SESSION_ID)}`;
+                navigator.sendBeacon(url, JSON.stringify({}));
+            }
+        });
+
+        // ============================================================
+        // PAGE NAVIGATION
+        // ============================================================
+        function showLandingPage() {
+            landingPage.style.display = 'flex';
+            container.style.display = 'none';
+            saveAppState();
+            installAppBtn.style.display = deferredInstallPrompt ? 'block' : 'none';
+        }
+
+        function showContainer(targetTabId = 'tab-invoice') {
+            landingPage.style.display = 'none';
+            container.style.display = 'block';
+            document.getElementById(targetTabId).click();
+            saveAppState();
+        }
+
+        function switchTab(targetId) {
+            const isProtected = ['tab-dashboard', 'tab-sales-person', 'tab-deleted-bills'].includes(targetId);
+            if (isProtected && sessionStorage.getItem('appAuthed') !== 'true') {
+                showPasswordPrompt('access_tab', targetId);
+                return;
+            }
+            tabs.forEach(tab => tab.classList.remove('active'));
+            pages.forEach(page => page.classList.remove('active'));
+            document.getElementById(targetId).classList.add('active');
+
+            [invoicePage, previewPage, orderListPage, orderDetailView, dashboardPage, salesPersonPage, deletedBillsPage]
+                .forEach(p => { if (p) p.style.display = 'none'; });
+
+            if (targetId === 'tab-invoice') {
+                invoicePage.style.display = 'block';
+                invoicePage.classList.add('active');
+                populateSalesPersonDropdown();
+                updateAvailableInvoiceNumbers();
+            } else if (targetId === 'tab-orders') {
+                orderListPage.style.display = 'block';
+                orderListPage.classList.add('active');
+                displayOrders();
+            } else if (targetId === 'tab-dashboard') {
+                dashboardPage.style.display = 'block';
+                dashboardPage.classList.add('active');
+                updateDashboard();
+            } else if (targetId === 'tab-sales-person') {
+                salesPersonPage.style.display = 'block';
+                salesPersonPage.classList.add('active');
+                displaySalesPersonData();
+            } else if (targetId === 'tab-deleted-bills') {
+                deletedBillsPage.style.display = 'block';
+                deletedBillsPage.classList.add('active');
+                displayDeletedBills();
+            }
+            saveAppState();
+        }
+
+        // ============================================================
+        // PASSWORD MODAL
+        // ============================================================
+        function showPasswordPrompt(action, targetId) {
+            passwordInput.value = ''; deleteReasonInput.value = '';
+            passwordError.style.display = 'none';
+            passwordActionInput.value = action;
+            passwordTargetIdInput.value = targetId;
+            if (action === 'delete_order') {
+                passwordPromptMessage.textContent = `Sila masukkan kata laluan & sebab untuk memadam order ${targetId}.`;
+                deleteReasonInput.style.display = 'block';
+                submitPasswordBtn.textContent = 'Hantar';
+            } else {
+                const tabName = document.getElementById(targetId)?.textContent || 'bahagian ini';
+                passwordPromptMessage.textContent = `Anda memerlukan kata laluan untuk mengakses ${tabName}.`;
+                deleteReasonInput.style.display = 'none';
+                submitPasswordBtn.textContent = 'Masuk';
+            }
+            passwordModal.style.display = 'flex';
+            passwordInput.focus();
+        }
+
+        function hidePasswordPrompt() {
+            passwordModal.style.display = 'none';
+            passwordActionInput.value = ''; passwordTargetIdInput.value = '';
+            deleteReasonInput.style.display = 'none';
+            passwordInput.value = ''; deleteReasonInput.value = '';
+        }
+
+        function checkPassword() {
+            const password = passwordInput.value;
+            const action = passwordActionInput.value;
+            const targetId = passwordTargetIdInput.value;
+            const reason = deleteReasonInput.value.trim();
+            if (password !== CORRECT_PASSWORD) {
+                passwordError.textContent = 'Kata laluan salah!';
+                passwordError.style.display = 'block';
+                return;
+            }
+            if (action === 'delete_order') {
+                if (!reason) {
+                    passwordError.textContent = 'Sila nyatakan sebab pembatalan!';
+                    passwordError.style.display = 'block';
+                    return;
+                }
+                performDeleteOrder(targetId, reason);
+                hidePasswordPrompt();
+            } else if (action === 'access_tab') {
+                sessionStorage.setItem('appAuthed', 'true');
+                hidePasswordPrompt();
+                if (landingPage.style.display === 'flex' || landingPage.style.display === '') showContainer(targetId);
+                else switchTab(targetId);
+            }
+        }
+
+        // ============================================================
+        // DASHBOARD
+        // ============================================================
+        async function updateDashboard() {
+            const orders = await loadOrders();
+            const today = new Date();
+            const currentDay = today.getDate();
+            const currentMonth = today.getMonth();
+            const currentYear = today.getFullYear();
+            let dSales = 0, mSales = 0, ySales = 0, dDeposit = 0, mDeposit = 0, yDeposit = 0;
+
+            orders.forEach(order => {
+                if (!order.orderDate || order.orderDate === '-') return;
+                try {
+                    const orderDate = new Date(order.orderDate);
+                    if (isNaN(orderDate.getTime())) return;
+                    if (orderDate.getFullYear() === currentYear) {
+                        ySales += order.subtotal || 0;
+                        yDeposit += order.deposit || 0;
+                        if (orderDate.getMonth() === currentMonth) {
+                            mSales += order.subtotal || 0;
+                            mDeposit += order.deposit || 0;
+                            if (orderDate.getDate() === currentDay) {
+                                dSales += order.subtotal || 0;
+                                dDeposit += order.deposit || 0;
+                            }
+                        }
+                    }
+                } catch (e) {}
+            });
+
+            dailySalesEl.textContent = `RM ${dSales.toFixed(2)}`;
+            monthlySalesEl.textContent = `RM ${mSales.toFixed(2)}`;
+            yearlySalesEl.textContent = `RM ${ySales.toFixed(2)}`;
+            dailyDepositEl.textContent = `RM ${dDeposit.toFixed(2)}`;
+            monthlyDepositEl.textContent = `RM ${mDeposit.toFixed(2)}`;
+            yearlyDepositEl.textContent = `RM ${yDeposit.toFixed(2)}`;
+        }
+
+        // ============================================================
+        // ORDER LIST
+        // ============================================================
+        async function displayOrders(filter = 'all', searchTerm = '') {
+            let orders = await loadOrders();
+            orders = orders.filter(order => {
+                const status = getOrderStatus(order);
+                if (filter === 'completed') return status === 'completed';
+                if (filter === 'pending') return status !== 'completed';
+                return true;
+            });
+            if (searchTerm) {
+                searchTerm = searchTerm.toLowerCase();
+                orders = orders.filter(order =>
+                    (order.invoiceNumber && order.invoiceNumber.toLowerCase().includes(searchTerm)) ||
+                    (order.customerName && order.customerName.toLowerCase().includes(searchTerm)) ||
+                    (order.salesPerson && order.salesPerson.toLowerCase().includes(searchTerm))
+                );
+            }
+            orders.sort((a, b) => {
+                try { return new Date(b.orderDate || 0) - new Date(a.orderDate || 0); } catch(e) { return 0; }
+            });
+            ordersContainer.innerHTML = '';
+            if (orders.length === 0) {
+                ordersContainer.innerHTML = '<tr><td colspan="7" style="text-align:center;">Tiada order ditemui</td></tr>';
+                return;
+            }
+            orders.forEach(order => {
+                const status = getOrderStatus(order);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><span class="order-number" data-invoice="${order.invoiceNumber}">${order.invoiceNumber || 'Tiada No'}</span></td>
+                    <td>${order.customerName || '-'}</td>
+                    <td>${formatDate(order.orderDate)}</td>
+                    <td>${formatDate(order.completionDate)}</td>
+                    <td>${order.salesPerson || '-'}</td>
+                    <td class="status-cell"><span class="status-indicator status-${status}"></span>${getStatusText(status)}</td>
+                    <td class="no-print">
+                        <div class="order-actions">
+                            <button class="edit-btn" data-invoice="${order.invoiceNumber}">Edit</button>
+                            ${status !== 'completed' ? `<button class="complete-btn" data-invoice="${order.invoiceNumber}">Selesai</button>` : ''}
+                            ${status !== 'pending' ? `<button class="pending-btn" data-invoice="${order.invoiceNumber}">Pending</button>` : ''}
+                        </div>
+                    </td>
+                `;
+                ordersContainer.appendChild(row);
+            });
+
+            document.querySelectorAll('.order-number').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    const inv = e.target.dataset.invoice;
+                    const order = orders.find(o => o.invoiceNumber === inv);
+                    if (order) showOrderDetail(order);
+                });
+            });
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const order = orders.find(o => o.invoiceNumber === e.target.dataset.invoice);
+                    if (order) showEditOrderModal(order);
+                });
+            });
+            document.querySelectorAll('.complete-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const order = orders.find(o => o.invoiceNumber === e.target.dataset.invoice);
+                    if (order) showPaymentModal(order);
+                });
+            });
+            document.querySelectorAll('.pending-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const order = orders.find(o => o.invoiceNumber === e.target.dataset.invoice);
+                    if (order) markOrderAsPending(order);
+                });
+            });
+        }
+
+        async function markOrderAsPending(orderToMark) {
+            const updated = { ...orderToMark, status: 'pending' };
+            await updateOrder(updated);
+            displayOrders(document.querySelector('.filter-btn.active').dataset.filter, searchInput.value);
+            if (currentOrder && currentOrder.invoiceNumber === orderToMark.invoiceNumber) {
+                currentOrder.status = 'pending';
+                showOrderDetail(currentOrder);
+            }
+        }
+
+        function showOrderDetail(order) {
+            currentOrder = order;
+            document.getElementById('detail-invoice-number').textContent = order.invoiceNumber;
+            document.getElementById('detail-customer-name').textContent = `${order.customerName || '-'} (Jurujual: ${order.salesPerson || '-'})`;
+            document.getElementById('detail-order-date').textContent = formatDate(order.orderDate);
+            document.getElementById('detail-completion-date').textContent = formatDate(order.completionDate);
+            const itemsContainer = document.getElementById('detail-items');
+            itemsContainer.innerHTML = '';
+            (order.items || []).forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'detail-item';
+                div.innerHTML = `<span>${item.description} (${item.quantity}x)</span><span>RM${(item.total || 0).toFixed(2)}</span>`;
+                itemsContainer.appendChild(div);
+            });
+            document.getElementById('detail-total').textContent = `RM${(order.totalAmount || 0).toFixed(2)}`;
+            document.getElementById('detail-discount').textContent = `RM${(order.discount || 0).toFixed(2)}`;
+            document.getElementById('detail-deposit').textContent = `RM${(order.deposit || 0).toFixed(2)}`;
+            document.getElementById('detail-balance').textContent = `RM${(order.balance || 0).toFixed(2)}`;
+            const status = getOrderStatus(order);
+            btnCompleteOrder.style.display = status === 'completed' ? 'none' : 'block';
+            btnPendingOrder.style.display = status === 'pending' ? 'none' : 'block';
+            btnPrintFinal.style.display = status === 'completed' ? 'block' : 'none';
+            orderListPage.style.display = 'none';
+            orderDetailView.style.display = 'block';
+        }
+
+        function backToOrderList() {
+            orderListPage.style.display = 'block';
+            orderDetailView.style.display = 'none';
+            currentOrder = null;
+            switchTab('tab-orders');
+        }
+
+        // ============================================================
+        // PRINT
+        // ============================================================
+        function printOrder() {
+            if (!currentOrder) return;
+            const w = window.open('', '_blank');
+            if (!w) { alert('Pop-up blocker menghalang cetak.'); return; }
+            w.document.write(buildPrintHTML(currentOrder, false));
+            w.document.close();
+            setTimeout(() => w.print(), 500);
+        }
+        function printFinalInvoice() {
+            if (!currentOrder) return;
+            const w = window.open('', '_blank');
+            if (!w) { alert('Pop-up blocker menghalang cetak.'); return; }
+            w.document.write(buildPrintHTML(currentOrder, true));
+            w.document.close();
+            setTimeout(() => w.print(), 500);
+        }
+        function buildPrintHTML(order, isFinal) {
+            const title = isFinal ? 'INVOIS AKHIR' : 'INVOIS';
+            const stamp = isFinal ? '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-45deg);font-size:60px;color:rgba(0,0,0,0.2);font-weight:bold;border:5px solid rgba(0,0,0,0.2);padding:20px;z-index:1000;">SELESAI</div>' : '';
+            let paymentInfoHTML = '';
+            if (order.paymentInfo) {
+                paymentInfoHTML = `<div class="bank-info"><p><strong>MAKLUMAT PEMBAYARAN PENUH</strong></p><p>Tarikh: ${formatDate(order.paymentInfo.date)}</p><p>Kaedah: ${order.paymentInfo.method}</p><p>Jumlah: RM${order.paymentInfo.amount}</p>${order.paymentInfo.reference ? `<p>Rujukan: ${order.paymentInfo.reference}</p>` : ''}</div>`;
+            }
+            return `<!DOCTYPE html><html><head><title>Cetak - ${order.invoiceNumber}</title>
+            <style>
+                body { font-family: Arial, sans-serif; margin: 20px; }
+                .header { text-align: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
+                .header img { max-width: 120px; height: auto; }
+                .company-details { text-align: left; }
+                .header h2 { margin: 0; line-height: 1.2; }
+                .header p { margin: 2px 0; line-height: 1.4; }
+                table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+                th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                th { background-color: #f2f2f2; }
+                .invoice-totals { margin-top: 20px; font-weight: bold; text-align: right; }
+                .bank-info { margin-top: 20px; padding: 10px; background: #e8f4fc; border-radius: 4px; }
+                .terms { font-size: 12px; margin-top: 20px; padding: 10px; background: #f9f9f9; border-radius: 4px; }
+                .table-summary-row { background-color: #f9f9f9; font-weight: bold; }
+            </style></head><body style="position:relative;">
+            ${stamp}
+            <div class="header">
+                <img src="https://arleta.site/interactivelink/68/Untitled-1.png" alt="Logo">
+                <div class="company-details"><h2>EMPAYAR S KREATIF</h2><p>Hadapan Sek.Ren.Keb Ketereh, 16450 Kota Bharu Kelantan<br>TEL: 01133387532<br>(KT0565538-X)</p></div>
+                <h3>${title}</h3>
+            </div>
+            <p><strong>NO.BIL:</strong> ${order.invoiceNumber}</p>
+            <p><strong>KEPADA:</strong> ${order.customerName || '-'}</p>
+            <p><strong>TARIKH ORDER:</strong> ${formatDate(order.orderDate)}<br><strong>TARIKH JANJI SIAP:</strong> ${formatDate(order.completionDate)}</p>
+            <table><thead><tr><th>No.</th><th>Item/Keterangan</th><th>Harga/Unit</th><th>Kuantiti</th><th>Jumlah (RM)</th></tr></thead>
+            <tbody>${(order.items || []).map((it, i) => `<tr><td>${i+1}</td><td>${it.description}</td><td>${(it.price||0).toFixed(2)}</td><td>${it.quantity}</td><td>${(it.total||0).toFixed(2)}</td></tr>`).join('')}</tbody>
+            <tfoot><tr class="table-summary-row"><td colspan="3">JUMLAH</td><td>${(order.items||[]).reduce((s,i)=>s+(i.quantity||0),0)}</td><td>${(order.totalAmount||0).toFixed(2)}</td></tr></tfoot></table>
+            <div class="invoice-totals">
+                <p>JUMLAH RM${(order.totalAmount||0).toFixed(2)}</p>
+                <p>DISKAUN RM${(order.discount||0).toFixed(2)}</p>
+                <p>JUMLAH SELEPAS DISKAUN RM${(order.subtotal||0).toFixed(2)}</p>
+                <p>DEPOSIT RM${(order.deposit||0).toFixed(2)}</p>
+                <p>BAKI RM${(order.balance||0).toFixed(2)}</p>
+            </div>
+            ${paymentInfoHTML}
+            <div class="bank-info"><p><strong>BAYARAN</strong></p><p><strong>Maybank</strong><br>553104624047<br>EMPAYAR S KREATIF SOLUTION</p></div>
+            <p><strong>NAMA JURUJUAL:</strong> ${order.salesPerson || '-'}</p>
+            <div class="terms">
+                <p><strong>TERMA & SYARAT TEMPAHAN</strong></p>
+                <p>*Setiap tempahan hendaklah disertakan DEPOSIT SEKURANG-KURANGNYA 50% DARIPADA NILAIAN TEMPAHAN</p>
+                <p>*(tempahan tanpa deposit tidak akan di proses)*</p>
+                <p>Tempahan yang dibuat TIDAK BOLEH DIBATALKAN, deposit TIDAK akan dikembalikan</p>
+                <p>Untuk Tempahan baju, Pertukaran saiz baju dikenarkan SEBELUM baju di order dengan supplier</p>
+                <p>Caj design yang dikenakan TIDAK AKAN DIKEMBALIKAN</p>
+                <p>Preview design akan dibuat SEBELUM proceed cetakan</p>
+            </div></body></html>`;
+        }
+
+        // ============================================================
+        // PAYMENT MODAL
+        // ============================================================
+        function showPaymentModal(order) {
+            currentOrder = order;
+            paymentDateInput.value = new Date().toISOString().split('T')[0];
+            paymentAmountInput.value = order.balance || 0;
+            paymentReferenceInput.value = '';
+            paymentModal.style.display = 'flex';
+        }
+        function hidePaymentModal() { paymentModal.style.display = 'none'; }
+
+        async function confirmPayment() {
+            if (!currentOrder) return;
+            const paymentInfo = {
+                date: paymentDateInput.value,
+                method: paymentMethodInput.value,
+                amount: parseFloat(paymentAmountInput.value) || 0,
+                reference: paymentReferenceInput.value
+            };
+            const updatedOrder = { ...currentOrder, paymentInfo, status: 'completed' };
+            const success = await updateOrder(updatedOrder);
+            if (success) {
+                alert(`Pembayaran untuk order ${currentOrder.invoiceNumber} berjaya direkodkan.`);
+                hidePaymentModal();
+                backToOrderList();
+                displayOrders();
+                updateDashboard();
+                currentOrder = updatedOrder;
+                printFinalInvoice();
+            } else {
+                alert('Gagal menyimpan maklumat pembayaran.');
+            }
+        }
+
+        // ============================================================
+        // EDIT ORDER MODAL
+        // ============================================================
+        function showEditOrderModal(order) {
+            currentOrder = order;
+            editInvoiceNumberInput.value = order.invoiceNumber;
+            editCustomerNameInput.value = order.customerName || '';
+            editOrderDateInput.value = order.orderDate || '';
+            editCompletionDateInput.value = order.completionDate || '';
+            editDiscountValueInput.value = order.discount || 0;
+            editDiscountTypeInput.value = 'fixed';
+            editDepositInput.value = order.deposit || 0;
+            populateEditSalesPersonDropdown();
+            editSalesPersonSelect.value = order.salesPerson || '';
+            editItemsTbody.innerHTML = '';
+            (order.items || []).forEach((item, index) => addEditItemRow(item, index + 1));
+            updateEditTotals();
+            editOrderModal.style.display = 'flex';
+        }
+        function hideEditOrderModal() { editOrderModal.style.display = 'none'; }
+
+        function addEditItemRow(item = null, rowNumber = null) {
+            const rowCount = editItemsTbody.rows.length;
+            const newRow = editItemsTbody.insertRow();
+            const rowNum = rowNumber || rowCount + 1;
+            newRow.innerHTML = `
+                <td>${rowNum}</td>
+                <td><input type="text" class="edit-item-desc" placeholder="Keterangan item" value="${item ? item.description : ''}"></td>
+                <td><input type="number" class="edit-item-price" placeholder="0.00" step="0.01" value="${item ? item.price : ''}"></td>
+                <td><div class="quantity-control"><button class="quantity-btn edit-minus">-</button><input type="number" class="edit-quantity-input" value="${item ? item.quantity : 1}" min="1"><button class="quantity-btn edit-plus">+</button></div></td>
+                <td class="edit-item-total">${item ? (item.total || 0).toFixed(2) : '0.00'}</td>
+                <td><button class="btn btn-secondary edit-remove-item no-print">Padam</button></td>
+            `;
+            addEditRowEventListeners(newRow);
+            renumberEditRows();
+        }
+
+        function addEditRowEventListeners(row) {
+            const minusBtn = row.querySelector('.edit-minus');
+            const plusBtn = row.querySelector('.edit-plus');
+            const quantityInput = row.querySelector('.edit-quantity-input');
+            const priceInput = row.querySelector('.edit-item-price');
+            const removeBtn = row.querySelector('.edit-remove-item');
+            minusBtn.addEventListener('click', () => {
+                const v = parseInt(quantityInput.value);
+                if (v > 1) { quantityInput.value = v - 1; calculateEditRowTotal(row); }
+            });
+            plusBtn.addEventListener('click', () => {
+                quantityInput.value = parseInt(quantityInput.value) + 1;
+                calculateEditRowTotal(row);
+            });
+            quantityInput.addEventListener('change', () => {
+                if (quantityInput.value < 1) quantityInput.value = 1;
+                calculateEditRowTotal(row);
+            });
+            priceInput.addEventListener('input', () => calculateEditRowTotal(row));
+            removeBtn.addEventListener('click', () => {
+                if (editItemsTbody.querySelectorAll('tr').length > 1) {
+                    row.remove(); renumberEditRows(); updateEditTotals();
+                } else alert('Perlu sekurang-kurangnya satu item');
+            });
+        }
+
+        function calculateEditRowTotal(row) {
+            const price = parseFloat(row.querySelector('.edit-item-price').value) || 0;
+            const quantity = parseInt(row.querySelector('.edit-quantity-input').value) || 0;
+            row.querySelector('.edit-item-total').textContent = (price * quantity).toFixed(2);
+            updateEditTotals();
+        }
+        function renumberEditRows() {
+            editItemsTbody.querySelectorAll('tr').forEach((row, i) => { row.cells[0].textContent = i + 1; });
+        }
+        function updateEditTotals() {
+            let tq = 0, ta = 0;
+            editItemsTbody.querySelectorAll('tr').forEach(row => {
+                tq += parseInt(row.querySelector('.edit-quantity-input').value) || 0;
+                ta += parseFloat(row.querySelector('.edit-item-total').textContent) || 0;
+            });
+            editTotalQuantityEl.textContent = tq;
+            editTotalAmountEl.textContent = ta.toFixed(2);
+        }
+
+        async function populateEditSalesPersonDropdown() {
+            const persons = await loadSalesPersons();
+            editSalesPersonSelect.innerHTML = '<option value="">Pilih Jurujual</option>';
+            persons.forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p.name; opt.textContent = p.name;
+                editSalesPersonSelect.appendChild(opt);
+            });
+        }
+
+        async function saveEditedOrder() {
+            if (!currentOrder) return;
+            const updatedOrder = {
+                ...currentOrder,
+                customerName: editCustomerNameInput.value || '-',
+                orderDate: editOrderDateInput.value || '-',
+                completionDate: editCompletionDateInput.value || '-',
+                salesPerson: editSalesPersonSelect.value || '-',
+                discount: parseFloat(editDiscountValueInput.value) || 0,
+                deposit: parseFloat(editDepositInput.value) || 0,
+                items: []
+            };
+            let totalAmount = 0;
+            editItemsTbody.querySelectorAll('tr').forEach(row => {
+                const desc = row.querySelector('.edit-item-desc').value;
+                const price = parseFloat(row.querySelector('.edit-item-price').value) || 0;
+                const quantity = parseInt(row.querySelector('.edit-quantity-input').value) || 0;
+                const rowTotal = parseFloat(row.querySelector('.edit-item-total').textContent) || 0;
+                if (desc) {
+                    updatedOrder.items.push({ description: desc, price, quantity, total: rowTotal });
+                    totalAmount += rowTotal;
+                }
+            });
+            updatedOrder.totalAmount = totalAmount;
+            updatedOrder.subtotal = totalAmount - updatedOrder.discount;
+            updatedOrder.balance = updatedOrder.subtotal - updatedOrder.deposit;
+            const success = await updateOrder(updatedOrder);
+            if (success) {
+                alert(`Order ${updatedOrder.invoiceNumber} berjaya dikemaskini.`);
+                hideEditOrderModal(); backToOrderList(); displayOrders(); updateDashboard();
+            } else alert('Gagal mengemaskini order.');
+        }
+
+        // ============================================================
+        // DELETE ORDER
+        // ============================================================
+        function promptDeleteOrder() {
+            if (!currentOrder) return;
+            showPasswordPrompt('delete_order', currentOrder.invoiceNumber);
+        }
+        async function performDeleteOrder(orderId, reason) {
+            const success = await deleteOrder(orderId, reason);
+            if (success) {
+                alert(`Order ${orderId} berjaya dipadam.`);
+                backToOrderList(); displayOrders(); updateDashboard(); displayDeletedBills();
+            } else alert('Gagal memadam order.');
+        }
+        async function clearAllOrders() {
+            if (confirm("Adakah anda PASTI ingin memadam SEMUA data order?") && confirm("Pengesahan kedua: Betul-betul PASTI?")) {
+                await supabaseClient.from('orders').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+                displayOrders(); updateDashboard();
+                alert("Semua data order telah dipadam.");
+            }
+        }
+
+        // ============================================================
+        // SALES PERSON MANAGEMENT
+        // ============================================================
+        async function populateSalesPersonDropdown() {
+            const persons = await loadSalesPersons();
+            const currentVal = salesPersonSelect.value;
+            salesPersonSelect.innerHTML = '<option value="">Pilih Jurujual</option>';
+            persons.forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p.name; opt.textContent = p.name;
+                salesPersonSelect.appendChild(opt);
+            });
+            if (currentVal) salesPersonSelect.value = currentVal;
+        }
+
+        async function handleAddSalesPerson() {
+            const name = newSalesPersonNameInput.value.trim();
+            if (!name) { alert("Sila masukkan nama jurujual."); return; }
+            const ok = await addSalesPerson(name, 0);
+            if (ok) {
+                newSalesPersonNameInput.value = '';
+                await displaySalesPersonData();
+                await populateSalesPersonDropdown();
+                alert(`Jurujual "${name}" ditambah.`);
+            }
+        }
+
+        async function handleDeleteSalesPerson(name) {
+            if (!confirm(`Padam jurujual "${name}"?`)) return;
+            const ok = await deleteSalesPerson(name);
+            if (ok) {
+                await displaySalesPersonData();
+                await populateSalesPersonDropdown();
+                alert(`Jurujual "${name}" dipadam.`);
+            }
+        }
+
+        async function updateCommission(name, value, inputElement) {
+            await updateSalesPersonCommission(name, value);
+            const row = inputElement.closest('tr');
+            const salesCell = row.cells[1];
+            const commissionAmountCell = row.cells[5];
+            const totalSales = parseFloat(salesCell.textContent) || 0;
+            commissionAmountCell.textContent = ((totalSales * value) / 100).toFixed(2);
+        }
+
+        async function showBillsModal(salesPersonName) {
+            const orders = await loadOrders();
+            billsModalList.innerHTML = '';
+            billsModalTitle.textContent = `Senarai Bil untuk ${salesPersonName}`;
+            const filtered = orders.filter(o => o.salesPerson === salesPersonName);
+            if (filtered.length === 0) billsModalList.innerHTML = '<li>Tiada bil ditemui.</li>';
+            else filtered.forEach(o => {
+                const li = document.createElement('li');
+                li.textContent = `${o.invoiceNumber || '-'} - ${o.customerName || '-'} (${formatDate(o.orderDate)})`;
+                billsModalList.appendChild(li);
+            });
+            billsModal.style.display = 'flex';
+        }
+
+        async function displaySalesPersonData() {
+            const persons = await loadSalesPersons();
+            const orders = await loadOrders();
+            const salesData = {};
+            persons.forEach(p => { salesData[p.name] = { totalSales: 0, totalDeposit: 0, billCount: 0, commissionPercent: p.commission || 0 }; });
+            orders.forEach(o => {
+                if (o.salesPerson && salesData[o.salesPerson]) {
+                    salesData[o.salesPerson].totalSales += (o.subtotal || 0);
+                    salesData[o.salesPerson].totalDeposit += (o.deposit || 0);
+                    salesData[o.salesPerson].billCount++;
+                }
+            });
+            salesPersonList.innerHTML = '';
+            if (persons.length === 0) {
+                salesPersonList.innerHTML = '<tr><td colspan="7" style="text-align:center;">Tiada jurujual.</td></tr>';
+                return;
+            }
+            persons.forEach(p => {
+                const d = salesData[p.name];
+                const comm = (d.totalSales * d.commissionPercent) / 100;
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${p.name}</td>
+                    <td>${d.totalSales.toFixed(2)}</td>
+                    <td>${d.totalDeposit.toFixed(2)}</td>
+                    <td class="bill-count" data-name="${p.name}">${d.billCount}</td>
+                    <td><input type="number" class="commission-input" data-name="${p.name}" value="${d.commissionPercent}" min="0" step="0.1"></td>
+                    <td class="commission-amount">${comm.toFixed(2)}</td>
+                    <td class="no-print"><button class="btn btn-danger delete-sp-btn" data-name="${p.name}" style="padding:5px 10px;font-size:12px;">Padam</button></td>
+                `;
+                salesPersonList.appendChild(row);
+            });
+            document.querySelectorAll('.delete-sp-btn').forEach(btn => btn.addEventListener('click', (e) => handleDeleteSalesPerson(e.target.dataset.name)));
+            document.querySelectorAll('.commission-input').forEach(inp => inp.addEventListener('change', (e) => updateCommission(e.target.dataset.name, parseFloat(e.target.value) || 0, e.target)));
+            document.querySelectorAll('.bill-count').forEach(td => td.addEventListener('click', (e) => showBillsModal(e.target.dataset.name)));
+        }
+
+        // ============================================================
+        // DELETED BILLS
+        // ============================================================
+        async function displayDeletedBills() {
+            const bills = await loadDeletedBills();
+            deletedBillsList.innerHTML = '';
+            if (bills.length === 0) {
+                deletedBillsList.innerHTML = '<tr><td colspan="5" style="text-align:center;">Tiada bil dibatalkan.</td></tr>';
+                return;
+            }
+            bills.forEach(b => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${b.invoiceNumber || '-'}</td><td>${b.deletionReason || '-'}</td><td>${b.customerName || '-'}</td><td>${b.deletionDate || '-'}</td><td>${(b.subtotal || 0).toFixed(2)}</td>`;
+                deletedBillsList.appendChild(row);
+            });
+        }
+
+        // ============================================================
+        // INVOICE FORM
+        // ============================================================
+        function addRowEventListeners(row) {
+            const minusBtn = row.querySelector('.minus');
+            const plusBtn = row.querySelector('.plus');
+            const quantityInput = row.querySelector('.quantity-input');
+            const priceInput = row.querySelector('.item-price');
+            const removeBtn = row.querySelector('.remove-item');
+            minusBtn.addEventListener('click', () => {
+                const v = parseInt(quantityInput.value);
+                if (v > 1) { quantityInput.value = v - 1; calculateRowTotal(row); }
+            });
+            plusBtn.addEventListener('click', () => {
+                quantityInput.value = parseInt(quantityInput.value) + 1;
+                calculateRowTotal(row);
+            });
+            quantityInput.addEventListener('change', () => {
+                if (quantityInput.value < 1) quantityInput.value = 1;
+                calculateRowTotal(row);
+            });
+            priceInput.addEventListener('input', () => calculateRowTotal(row));
+            removeBtn.addEventListener('click', () => {
+                if (itemsTable.querySelectorAll('tbody tr').length > 1) {
+                    row.remove(); renumberRows(); updateTotals();
+                } else alert('Perlu sekurang-kurangnya satu item');
+            });
+        }
+
+        function calculateRowTotal(row) {
+            const price = parseFloat(row.querySelector('.item-price').value) || 0;
+            const quantity = parseInt(row.querySelector('.quantity-input').value) || 0;
+            row.querySelector('.item-total').textContent = (price * quantity).toFixed(2);
+            updateTotals();
+        }
+        function renumberRows() {
+            itemsTable.querySelectorAll('tbody tr').forEach((row, i) => { row.cells[0].textContent = i + 1; });
+        }
+        function updateTotals() {
+            let tq = 0, ta = 0;
+            itemsTable.querySelectorAll('tbody tr').forEach(row => {
+                tq += parseInt(row.querySelector('.quantity-input').value) || 0;
+                ta += parseFloat(row.querySelector('.item-total').textContent) || 0;
+            });
+            totalQuantityEl.textContent = tq;
+            totalAmountEl.textContent = ta.toFixed(2);
+        }
+
+        function updatePreview() {
+            document.getElementById('preview-invoice-number').textContent = invoiceNumberInput.value;
+            document.getElementById('preview-order-date').textContent = formatDate(document.getElementById('order-date').value) || '-';
+            document.getElementById('preview-completion-date').textContent = formatDate(document.getElementById('completion-date').value) || '-';
+            document.getElementById('preview-customer-name').textContent = document.getElementById('customer-name').value || '-';
+            document.getElementById('preview-sales-person').textContent = salesPersonSelect.value || '-';
+            const previewItems = document.getElementById('preview-items');
+            previewItems.innerHTML = '';
+            let totalAmount = 0, totalQuantity = 0;
+            itemsTable.querySelectorAll('tbody tr').forEach(row => {
+                const desc = row.querySelector('.item-desc').value;
+                const price = parseFloat(row.querySelector('.item-price').value) || 0;
+                const quantity = parseInt(row.querySelector('.quantity-input').value) || 0;
+                const rowTotal = parseFloat(row.querySelector('.item-total').textContent) || 0;
+                if (desc) {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `<td>${previewItems.children.length + 1}</td><td>${desc}</td><td>${price.toFixed(2)}</td><td>${quantity}</td><td>${rowTotal.toFixed(2)}</td>`;
+                    previewItems.appendChild(tr);
+                    totalAmount += rowTotal;
+                    totalQuantity += quantity;
+                }
+            });
+            const discVal = parseFloat(document.getElementById('discount-value').value) || 0;
+            const discType = document.getElementById('discount-type').value;
+            let discAmt = (discType === 'percent') ? totalAmount * (discVal / 100) : discVal;
+            const subtotal = totalAmount - discAmt;
+            const deposit = parseFloat(document.getElementById('deposit').value) || 0;
+            const balance = subtotal - deposit;
+            document.getElementById('preview-total').textContent = totalAmount.toFixed(2);
+            document.getElementById('preview-discount').textContent = discAmt.toFixed(2);
+            document.getElementById('preview-subtotal').textContent = subtotal.toFixed(2);
+            document.getElementById('preview-deposit').textContent = deposit.toFixed(2);
+            document.getElementById('preview-balance').textContent = balance.toFixed(2);
+            document.getElementById('preview-total-quantity').textContent = totalQuantity;
+            document.getElementById('preview-total-amount').textContent = totalAmount.toFixed(2);
+        }
+
+        async function submitOrder() {
+            if (!salesPersonSelect.value) { alert("Sila pilih nama jurujual."); return; }
+            const invoiceNumber = invoiceNumberInput.value;
+            if (!invoiceNumber) { alert("Sila pilih no. bil."); return; }
+            const existingOrders = await loadOrders();
+            if (existingOrders.find(o => o.invoiceNumber === invoiceNumber)) {
+                alert(`No. Bil ${invoiceNumber} sudah wujud!`);
+                return;
+            }
+            const invoiceData = {
+                invoiceNumber,
+                customerName: document.getElementById('customer-name').value || '-',
+                orderDate: document.getElementById('order-date').value || '-',
+                completionDate: document.getElementById('completion-date').value || '-',
+                salesPerson: salesPersonSelect.value || '-',
+                totalAmount: parseFloat(document.getElementById('preview-total').textContent) || 0,
+                discount: parseFloat(document.getElementById('preview-discount').textContent) || 0,
+                subtotal: parseFloat(document.getElementById('preview-subtotal').textContent) || 0,
+                deposit: parseFloat(document.getElementById('deposit').value) || 0,
+                balance: parseFloat(document.getElementById('preview-balance').textContent) || 0,
+                status: 'normal',
+                items: [],
+                createdBy: STAFF_NAME
+            };
+            itemsTable.querySelectorAll('tbody tr').forEach(row => {
+                const desc = row.querySelector('.item-desc').value;
+                if (desc) {
+                    invoiceData.items.push({
+                        description: desc,
+                        price: parseFloat(row.querySelector('.item-price').value) || 0,
+                        quantity: parseInt(row.querySelector('.quantity-input').value) || 0,
+                        total: parseFloat(row.querySelector('.item-total').textContent) || 0
+                    });
+                }
+            });
+            try {
+                const success = await addOrder(invoiceData);
+                if (success) {
+                    localStorage.setItem('lastInvoiceNumber', invoiceNumber);
+                    await unlockCurrentNumber();
+                    alert(`Order ${invoiceNumber} berjaya disimpan!`);
+                    resetForm();
+                    tabOrders.click();
+                }
+            } catch (err) {
+                console.error('Gagal simpan:', err);
+                alert('Gagal menyimpan order.');
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('customer-name').value = '';
+            document.getElementById('order-date').value = new Date().toISOString().split('T')[0];
+            document.getElementById('completion-date').value = '';
+            salesPersonSelect.value = '';
+            document.getElementById('deposit').value = '';
+            document.getElementById('discount-value').value = '';
+            document.getElementById('discount-type').value = 'fixed';
+            const tbody = itemsTable.querySelector('tbody');
+            while (tbody.rows.length > 1) tbody.deleteRow(1);
+            const firstRow = tbody.rows[0];
+            firstRow.querySelector('.item-desc').value = '';
+            firstRow.querySelector('.item-price').value = '';
+            firstRow.querySelector('.quantity-input').value = '1';
+            firstRow.querySelector('.item-total').textContent = '0.00';
+            invoiceNumberInput.value = '';
+            currentlyLockedNumber = null;
+            updateTotals();
+            invoicePage.classList.add('active');
+            previewPage.classList.remove('active');
+            previewPage.style.display = 'none';
+            invoicePage.style.display = 'block';
+        }
+
+        // ============================================================
+        // EVENT LISTENERS
+        // ============================================================
+        newInvoiceBtn.addEventListener('click', () => showContainer('tab-invoice'));
+        manageOrdersBtn.addEventListener('click', () => showContainer('tab-orders'));
+        dashboardBtnLanding.addEventListener('click', () => showPasswordPrompt('access_tab', 'tab-dashboard'));
+        manageSalesPersonsBtn.addEventListener('click', () => showPasswordPrompt('access_tab', 'tab-sales-person'));
+
+        homeBtn.addEventListener('click', showLandingPage);
+        tabs.forEach(tab => tab.addEventListener('click', () => switchTab(tab.id)));
+
+        submitPasswordBtn.addEventListener('click', checkPassword);
+        cancelPasswordBtn.addEventListener('click', hidePasswordPrompt);
+        passwordInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') checkPassword(); });
+        deleteReasonInput.addEventListener('keypress', (e) => { if (e.key === 'Enter' && passwordActionInput.value === 'delete_order') checkPassword(); });
+
+        closeBillsModalBtn.addEventListener('click', () => { billsModal.style.display = 'none'; });
+        window.addEventListener('click', (event) => { if (event.target == billsModal) billsModal.style.display = 'none'; });
+
+        closePaymentModalBtn.addEventListener('click', hidePaymentModal);
+        cancelPaymentBtn.addEventListener('click', hidePaymentModal);
+        confirmPaymentBtn.addEventListener('click', confirmPayment);
+        window.addEventListener('click', (event) => { if (event.target == paymentModal) paymentModal.style.display = 'none'; });
+
+        closeEditOrderModalBtn.addEventListener('click', hideEditOrderModal);
+        cancelEditOrderBtn.addEventListener('click', hideEditOrderModal);
+        saveEditOrderBtn.addEventListener('click', saveEditedOrder);
+        editAddItemBtn.addEventListener('click', () => addEditItemRow());
+        window.addEventListener('click', (event) => { if (event.target == editOrderModal) editOrderModal.style.display = 'none'; });
+
+        searchInput.addEventListener('input', (e) => {
+            const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+            displayOrders(activeFilter, e.target.value);
+        });
+        filterBtns.forEach(btn => btn.addEventListener('click', (e) => {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            displayOrders(e.target.dataset.filter, searchInput.value);
+        }));
+        clearAllOrdersBtn.addEventListener('click', clearAllOrders);
+
+        btnBackToList.addEventListener('click', backToOrderList);
+        btnPrintOrder.addEventListener('click', printOrder);
+        btnEditOrder.addEventListener('click', () => { if (currentOrder) showEditOrderModal(currentOrder); });
+        btnDeleteOrder.addEventListener('click', promptDeleteOrder);
+        btnCompleteOrder.addEventListener('click', () => { if (currentOrder) showPaymentModal(currentOrder); });
+        btnPendingOrder.addEventListener('click', () => { if (currentOrder) markOrderAsPending(currentOrder); });
+        btnPrintFinal.addEventListener('click', printFinalInvoice);
+
+        addSalesPersonBtn.addEventListener('click', handleAddSalesPerson);
+        newSalesPersonNameInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleAddSalesPerson(); });
+
+        addItemBtn.addEventListener('click', () => {
+            const tbody = itemsTable.querySelector('tbody');
+            const rowCount = tbody.rows.length;
+            const newRow = tbody.insertRow();
+            newRow.innerHTML = `
+                <td>${rowCount + 1}</td>
+                <td><input type="text" class="item-desc" placeholder="Keterangan item"></td>
+                <td><input type="number" class="item-price" placeholder="0.00" step="0.01"></td>
+                <td><div class="quantity-control"><button class="quantity-btn minus">-</button><input type="number" class="quantity-input" value="1" min="1"><button class="quantity-btn plus">+</button></div></td>
+                <td class="item-total">0.00</td>
+                <td><button class="btn btn-secondary remove-item no-print">Padam</button></td>
+            `;
+            addRowEventListeners(newRow);
+        });
+
+        invoiceNumberInput.addEventListener('click', async () => {
+            await updateAvailableInvoiceNumbers();
+            invoiceNumberDropdown.style.display = 'block';
+        });
+
+        invoiceNumberDropdown.addEventListener('click', async (e) => {
+            const option = e.target.closest('.invoice-number-option');
+            if (!option) return;
+            if (option.classList.contains('used')) { alert('❌ No. bil ini sudah digunakan.'); return; }
+            if (option.classList.contains('locked')) {
+                const num = option.dataset.value;
+                const lock = lockedNumbersMap[num];
+                if (lock && lock.session_id === SESSION_ID) {
+                    invoiceNumberInput.value = num;
+                    invoiceNumberDropdown.style.display = 'none';
+                } else alert(`❌ No. Bil ${num} sedang digunakan oleh ${lock ? lock.locked_by : 'staf lain'}.`);
+                return;
+            }
+            const selectedNum = option.dataset.value;
+            const locked = await lockInvoiceNumber(selectedNum);
+            if (locked) {
+                invoiceNumberInput.value = selectedNum;
+                invoiceNumberDropdown.style.display = 'none';
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.invoice-number-container')) invoiceNumberDropdown.style.display = 'none';
+        });
+
+        previewInvoiceBtn.addEventListener('click', () => {
+            if (!invoiceNumberInput.value) { alert("Sila pilih nombor bil terlebih dahulu."); return; }
+            updatePreview();
+            invoicePage.style.display = 'none';
+            previewPage.style.display = 'block';
+            invoicePage.classList.remove('active');
+            previewPage.classList.add('active');
+        });
+
+        backToEditBtn.addEventListener('click', () => {
+            previewPage.style.display = 'none';
+            invoicePage.style.display = 'block';
+            previewPage.classList.remove('active');
+            invoicePage.classList.add('active');
+        });
+
+        printInvoiceBtn.addEventListener('click', () => {
+            if (!invoiceNumberInput.value) { alert("Sila pilih nombor bil terlebih dahulu."); return; }
+            const w = window.open('', '_blank');
+            if (!w) { alert('Pop-up blocker menghalang cetak.'); return; }
+            const tempOrder = {
+                invoiceNumber: document.getElementById('preview-invoice-number').textContent,
+                customerName: document.getElementById('preview-customer-name').textContent,
+                orderDate: document.getElementById('order-date').value,
+                completionDate: document.getElementById('completion-date').value,
+                salesPerson: document.getElementById('preview-sales-person').textContent,
+                totalAmount: parseFloat(document.getElementById('preview-total').textContent) || 0,
+                discount: parseFloat(document.getElementById('preview-discount').textContent) || 0,
+                subtotal: parseFloat(document.getElementById('preview-subtotal').textContent) || 0,
+                deposit: parseFloat(document.getElementById('preview-deposit').textContent) || 0,
+                balance: parseFloat(document.getElementById('preview-balance').textContent) || 0,
+                items: []
+            };
+            itemsTable.querySelectorAll('tbody tr').forEach(row => {
+                const desc = row.querySelector('.item-desc').value;
+                if (desc) {
+                    tempOrder.items.push({
+                        description: desc,
+                        price: parseFloat(row.querySelector('.item-price').value) || 0,
+                        quantity: parseInt(row.querySelector('.quantity-input').value) || 0,
+                        total: parseFloat(row.querySelector('.item-total').textContent) || 0
+                    });
+                }
+            });
+            w.document.write(buildPrintHTML(tempOrder, false));
+            w.document.close();
+            setTimeout(() => w.print(), 500);
+        });
+
+        submitOrderBtn.addEventListener('click', submitOrder);
+
+        // ============================================================
+        // INITIALIZATION
+        // ============================================================
+        restoreAppState();
+        document.getElementById('order-date').value = new Date().toISOString().split('T')[0];
+        populateSalesPersonDropdown();
+        displayDeletedBills();
+        updateOnlineStatus();
+        updateTotals();
+        initRealtimeSubscriptions();
+        updateAvailableInvoiceNumbers();
+
+        // Fallback refresh
+        setInterval(() => {
+            const activeTab = document.querySelector('.tab-btn.active');
+            if (activeTab && activeTab.id === 'tab-invoice' && container.style.display === 'block') {
+                updateAvailableInvoiceNumbers();
+            }
+        }, 60000);
+
+        // Cleanup old locks setiap 5 minit
+        setInterval(async () => {
+            try { await supabaseClient.rpc('cleanup_old_locks'); } catch (e) {}
+        }, 5 * 60 * 1000);
+
+        setTimeout(() => {
+            if (container.style.display === 'block') {
+                const activeTab = document.querySelector('.tab-btn.active');
+                if (activeTab) switchTab(activeTab.id);
+            }
+        }, 100);
+    });
+</script>
+</body>
+</html>
