@@ -232,7 +232,6 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
 <body>
 <div id="offline-banner">Anda sedang di luar talian.</div>
 
-<!-- LANDING PAGE -->
 <div id="landing-page" class="landing-page">
     <div class="logo">EMPAYAR S KREATIF</div>
     <div class="tagline">Sistem Pengurusan Invois & Order</div>
@@ -275,7 +274,6 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
         <button class="tab-btn" id="tab-settings">⚙️ Tetapan</button>
     </div>
 
-    <!-- INVOICE PAGE -->
     <div id="invoice-page" class="page">
         <div class="header-info">
             <img src="https://arleta.site/interactivelink/68/Untitled-1.png" alt="Logo">
@@ -321,7 +319,6 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
         <div class="action-buttons no-print"><button id="preview-invoice" class="btn">Pratonton Invois</button></div>
     </div>
 
-    <!-- PREVIEW PAGE -->
     <div id="preview-page" class="page">
         <div class="header-info">
             <img src="https://arleta.site/interactivelink/68/Untitled-1.png" alt="Logo">
@@ -363,7 +360,6 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
         </div>
     </div>
 
-    <!-- ORDER LIST -->
     <div id="order-list-page" class="page">
         <div class="search-filter no-print">
             <input type="text" id="search-orders" class="search-input" placeholder="Cari no order, nama, telefon...">
@@ -394,7 +390,6 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
         </table>
     </div>
 
-    <!-- ORDER AKTIF -->
     <div id="active-orders-page" class="page">
         <h2 style="margin-top:0;">📋 Order Aktif (Belum Siap)</h2>
         <p style="color:#666;margin-top:-10px;">Disusun mengikut tarikh janji siap (paling urgent di atas).</p>
@@ -414,7 +409,6 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
         </table>
     </div>
 
-    <!-- ORDER DETAIL -->
     <div class="order-detail-view" id="order-detail-view">
         <div class="detail-header">
             <div><h3 id="detail-invoice-number"></h3><p id="detail-customer-name"></p></div>
@@ -442,7 +436,6 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
         </div>
     </div>
 
-    <!-- DASHBOARD -->
     <div id="dashboard-page" class="page">
         <h2 style="margin-top:0;">📊 Papan Pemuka Jualan</h2>
         <div class="dashboard-filters">
@@ -488,7 +481,6 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
         </div>
     </div>
 
-    <!-- SALES PERSON -->
     <div id="sales-person-page" class="page">
         <h2 style="margin-top:0;">📊 Jualan & Komisen Staf</h2>
         <p style="color:#666;margin-top:-10px;">Senarai ini diambil dari <strong>⚙️ Tetapan → Kad Staf</strong>. Tambah/padam staf di sana.</p>
@@ -501,7 +493,6 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
         </table>
     </div>
 
-    <!-- TEMPLATES -->
     <div id="templates-page" class="page">
         <h2 style="margin-top:0;">⚡ Template Item</h2>
         <p style="color:#666;margin-top:-10px;">Simpan item yang sering dijual.</p>
@@ -522,7 +513,6 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
         <div class="size-cat-list" id="size-cat-list"></div>
     </div>
 
-    <!-- DELETED BILLS -->
     <div id="deleted-bills-page" class="page">
         <h2 style="margin-top:0;">Senarai Bil yang Dibatalkan</h2>
         <table>
@@ -531,7 +521,6 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
         </table>
     </div>
 
-    <!-- SETTINGS PAGE -->
     <div id="settings-page" class="page">
         <h2 style="margin-top:0;">⚙️ Tetapan Sistem</h2>
         <div class="settings-section">
@@ -544,7 +533,7 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
         </div>
         <div class="settings-section">
             <h3>👥 Kad Staf (QR + PIN)</h3>
-            <p style="font-size:13px;color:#666;">Staf yang ditambah di sini akan muncul di dropdown <strong>Jurujual</strong> dalam invoice. Ini sumber tunggal untuk staf.</p>
+            <p style="font-size:13px;color:#666;">Staf yang ditambah di sini akan muncul di dropdown <strong>Jurujual</strong> dalam invoice.</p>
             <div class="action-buttons no-print" style="justify-content:flex-start; margin-bottom:15px;">
                 <button id="add-staff-btn" class="btn" style="background:#6e48aa;">➕ Tambah Staf Baru</button>
             </div>
@@ -553,7 +542,6 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
     </div>
 </div>
 
-<!-- MODALS -->
 <div id="password-modal" style="display: none;">
     <div class="password-modal-content">
         <h3>🔒 Masukkan Kata Laluan</h3>
@@ -796,6 +784,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let STAFF_NAME = localStorage.getItem('staffName') || '';
     let CORRECT_PASSWORD = '7532wan';
     let CURRENT_STAFF = null;
+    let isBoss = sessionStorage.getItem('isBoss') === 'true';
 
     const $ = id => document.getElementById(id);
     const landingPage = $('landing-page');
@@ -866,10 +855,25 @@ document.addEventListener('DOMContentLoaded', function() {
         if (days <= 3) return {text:`${days} hari lagi`,cls:'soon'};
         return {text:`${days} hari lagi`,cls:'normal'};
     }
+
+    // ============ BOSS MODE + ROLE ============
     function applyBossMode() {
-        if (sessionStorage.getItem('appAuthed') === 'true') document.body.classList.add('boss-mode');
-        else document.body.classList.remove('boss-mode');
+        const hasBossAccess = (sessionStorage.getItem('appAuthed') === 'true' || isBoss);
+        if (hasBossAccess) {
+            document.body.classList.add('boss-mode');
+            ['tab-dashboard','tab-sales-person','tab-templates','tab-deleted-bills','tab-settings'].forEach(id => {
+                const btn = document.getElementById(id);
+                if (btn) btn.style.display = '';
+            });
+        } else {
+            document.body.classList.remove('boss-mode');
+            ['tab-dashboard','tab-sales-person','tab-templates','tab-deleted-bills','tab-settings'].forEach(id => {
+                const btn = document.getElementById(id);
+                if (btn) btn.style.display = 'none';
+            });
+        }
     }
+
     function hasUnsavedFormData() {
         const invoiceNum = $('invoice-number').value;
         const customerName = $('customer-name').value.trim();
@@ -914,7 +918,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 active: true, login_method: loginMethod || 'qr_pin'
             });
             if (error) throw error;
-            // Sync ke sales_persons untuk simpan komisen
             const { data: sp } = await supabaseClient.from('sales_persons').select('name').eq('name', name).maybeSingle();
             if (!sp) await supabaseClient.from('sales_persons').insert({ name: name, commission: 0 });
             await populateSalesPersonDropdown();
@@ -923,16 +926,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     async function updateStaffCard(id, name, jawatan, pin, loginMethod) {
         try {
-            // Ambil nama lama untuk sync
             const { data: old } = await supabaseClient.from('staff_cards').select('staff_name').eq('id', id).maybeSingle();
             const { error } = await supabaseClient.from('staff_cards').update({
                 staff_name: name, jawatan: jawatan, pin_code: pin, login_method: loginMethod || 'qr_pin'
             }).eq('id', id);
             if (error) throw error;
-            // Sync nama baru ke sales_persons
             if (old && old.staff_name !== name) {
                 await supabaseClient.from('sales_persons').update({name: name}).eq('name', old.staff_name);
-                // Sync nama dalam orders lama juga
                 await supabaseClient.from('orders').update({sales_person: name}).eq('sales_person', old.staff_name);
             }
             await populateSalesPersonDropdown();
@@ -941,10 +941,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     async function deleteStaffCard(id) {
         try {
-            const { data: staff } = await supabaseClient.from('staff_cards').select('staff_name').eq('id', id).maybeSingle();
-            const { error } = await supabaseClient.from('staff_cards').delete().eq('id', id);
-            if (error) throw error;
-            // Jangan padam dari sales_persons (untuk kekalkan rekod komisen lama)
+            await supabaseClient.from('staff_cards').delete().eq('id', id);
             await populateSalesPersonDropdown();
             return true;
         } catch(e) { alert('Gagal: ' + e.message); return false; }
@@ -1084,11 +1081,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return allSalesPersonsCache;
         } catch(e) { return []; }
     }
-    async function addSalesPerson(name) {
-        const { error } = await supabaseClient.from('sales_persons').insert({name, commission:0});
-        if (error) { if (error.code === '23505') return true; return false; }
-        return true;
-    }
     async function updateSalesCommission(name, c) { 
         try {
             const { data: ex } = await supabaseClient.from('sales_persons').select('name').eq('name', name).maybeSingle();
@@ -1191,7 +1183,11 @@ document.addEventListener('DOMContentLoaded', function() {
     function showContainer(tab) { landingPage.style.display='none'; container.style.display='block'; document.getElementById(tab).click(); }
     function switchTab(id) {
         const prot = ['tab-dashboard','tab-sales-person','tab-deleted-bills','tab-settings'];
-        if (prot.includes(id) && sessionStorage.getItem('appAuthed') !== 'true') { showPasswordPrompt('access_tab', id); return; }
+        // Tab sensitif perlu: isBoss = true ATAU session Authed
+        if (prot.includes(id) && !isBoss && sessionStorage.getItem('appAuthed') !== 'true') { 
+            showPasswordPrompt('access_tab', id); 
+            return; 
+        }
         document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.page').forEach(p => { p.classList.remove('active'); p.style.display = 'none'; });
         document.getElementById(id).classList.add('active');
@@ -1214,7 +1210,7 @@ document.addEventListener('DOMContentLoaded', function() {
         $('password-input').value=''; $('delete-reason-input').value=''; $('password-error').style.display='none';
         $('password-action').value=action; $('password-target-id').value=target;
         if (action === 'delete_order') { $('password-prompt-message').textContent = `Kata laluan & sebab untuk padam order ${target}.`; $('delete-reason-input').style.display='block'; }
-        else { $('password-prompt-message').textContent = `Kata laluan diperlukan untuk akses ${target}.`; $('delete-reason-input').style.display='none'; }
+        else { $('password-prompt-message').textContent = `🔒 Kata laluan BOSS diperlukan untuk akses ${target}.`; $('delete-reason-input').style.display='none'; }
         $('password-modal').style.display='flex'; $('password-input').focus();
     }
     function hidePasswordPrompt() { $('password-modal').style.display='none'; }
@@ -1227,10 +1223,14 @@ document.addEventListener('DOMContentLoaded', function() {
             hidePasswordPrompt(); performDeleteOrder(target, reason);
         } else if (action === 'access_tab') {
             sessionStorage.setItem('appAuthed','true');
+            sessionStorage.setItem('isBoss','true');
+            isBoss = true;
             applyBossMode(); hidePasswordPrompt();
             if (landingPage.style.display === 'flex') showContainer(target); else switchTab(target);
         } else if (action === 'clear_all_orders') {
             sessionStorage.setItem('appAuthed','true');
+            sessionStorage.setItem('isBoss','true');
+            isBoss = true;
             applyBossMode(); hidePasswordPrompt(); showDangerModal();
         }
     }
@@ -1320,11 +1320,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const loginMethod = staff.login_method || 'qr_pin';
         if (loginMethod === 'qr_only') {
             STAFF_NAME = staff.staff_name;
+            isBoss = false;
+            sessionStorage.setItem('isBoss', 'false');
+            sessionStorage.removeItem('appAuthed');
             localStorage.setItem('staffName', STAFF_NAME);
             localStorage.setItem('staffLoggedInAt', Date.now());
             $('staff-badge').textContent = '👤 ' + STAFF_NAME;
             await updateLastLogin(staff.id);
             CURRENT_STAFF = null;
+            applyBossMode();
             alert('✅ Selamat datang, ' + staff.staff_name + '!');
             showContainer('tab-invoice');
         } else {
@@ -1356,11 +1360,15 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         STAFF_NAME = verified.staff_name;
+        isBoss = false;
+        sessionStorage.setItem('isBoss', 'false');
+        sessionStorage.removeItem('appAuthed');
         localStorage.setItem('staffName', STAFF_NAME);
         localStorage.setItem('staffLoggedInAt', Date.now());
         $('staff-badge').textContent = '👤 ' + STAFF_NAME;
         await updateLastLogin(verified.id);
         closePinLogin();
+        applyBossMode();
         showContainer('tab-invoice');
     }
     ['pin-1','pin-2','pin-3','pin-4'].forEach((id, idx) => {
@@ -1409,11 +1417,15 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         STAFF_NAME = verified.staff_name;
+        isBoss = false;
+        sessionStorage.setItem('isBoss', 'false');
+        sessionStorage.removeItem('appAuthed');
         localStorage.setItem('staffName', STAFF_NAME);
         localStorage.setItem('staffLoggedInAt', Date.now());
         $('staff-badge').textContent = '👤 ' + STAFF_NAME;
         await updateLastLogin(verified.id);
         closeManualPinLogin();
+        applyBossMode();
         alert('✅ Selamat datang, ' + STAFF_NAME + '!');
         showContainer('tab-invoice');
     }
@@ -1434,9 +1446,11 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         STAFF_NAME = 'BOSS';
+        isBoss = true;
         localStorage.setItem('staffName', STAFF_NAME);
         localStorage.setItem('staffLoggedInAt', Date.now());
         sessionStorage.setItem('appAuthed', 'true');
+        sessionStorage.setItem('isBoss', 'true');
         $('staff-badge').textContent = '👤 BOSS';
         applyBossMode();
         closePasswordLogin();
@@ -1524,7 +1538,7 @@ document.addEventListener('DOMContentLoaded', function() {
         displayStaffCards();
     };
     window.delStaff = async (id, name) => {
-        if (!confirm(`Padam staf "${name}"?\n\nOrder lama masih kekal (nama dalam orders tak berubah).`)) return;
+        if (!confirm(`Padam staf "${name}"?\n\nOrder lama masih kekal.`)) return;
         if (await deleteStaffCard(id)) {
             await loadStaffCards();
             displayStaffCards();
@@ -2090,7 +2104,6 @@ document.addEventListener('DOMContentLoaded', function() {
         $('edit-total-quantity').textContent = tq; $('edit-total-amount').textContent = ta.toFixed(2);
     }
     async function populateEditSalesDropdown() {
-        // Guna staff_cards untuk dropdown edit
         await loadStaffCards();
         const names = allStaffCardsCache.filter(s => s.active).map(s => s.staff_name);
         $('edit-sales-person').innerHTML = '<option value="">Pilih Jurujual</option>' + names.map(n => `<option value="${escapeAttr(n)}">${escapeHtml(n)}</option>`).join('');
@@ -2172,16 +2185,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // ============ DROPDOWN JURUJUAL — SUMBER TUNGGAL: staff_cards ============
     async function populateSalesPersonDropdown() {
-        // Sumber tunggal: staff_cards (aktif sahaja)
         await loadStaffCards();
         const staffList = allStaffCardsCache.filter(s => s.active);
         const names = staffList.map(s => s.staff_name);
         const cur = $('sales-person').value;
-        
         $('sales-person').innerHTML = '<option value="">Pilih Jurujual</option>' + 
             names.map(n => `<option value="${escapeAttr(n)}">${escapeHtml(n)}</option>`).join('');
         if (cur && names.includes(cur)) $('sales-person').value = cur;
-        
         const opts = '<option value="">Semua Jurujual</option>' + 
             names.map(n => `<option value="${escapeAttr(n)}">${escapeHtml(n)}</option>`).join('');
         $('filter-sales').innerHTML = opts; 
@@ -2190,24 +2200,25 @@ document.addEventListener('DOMContentLoaded', function() {
             names.map(n => `<option value="${escapeAttr(n)}">${escapeHtml(n)}</option>`).join('');
     }
     async function handleAddSalesPerson() {
-        alert('💡 Untuk tambah jurujual, sila pergi ke tab "⚙️ Tetapan" → section "Kad Staf" → klik "Tambah Staf Baru".\n\nSemua staf di sana akan muncul sebagai jurujual di sini.');
-        switchTab('tab-settings');
+        alert('💡 Untuk tambah jurujual, sila pergi ke tab "⚙️ Tetapan" → section "Kad Staf" → klik "Tambah Staf Baru".');
+        if (sessionStorage.getItem('appAuthed') !== 'true' && !isBoss) {
+            showPasswordPrompt('access_tab', 'tab-settings');
+        } else {
+            switchTab('tab-settings');
+        }
     }
     async function handleDeleteSalesPerson(n) {
         if (!confirm(`Padam jurujual "${n}"?\n\nSila padam dari ⚙️ Tetapan → Kad Staf.`)) return;
     }
     async function displaySalesPersonData() {
-        // Guna staff_cards untuk senarai staf
         await loadStaffCards();
         const activeStaff = allStaffCardsCache.filter(s => s.active);
-        const spList = await loadSalesPersons(); // Untuk commission
+        const spList = await loadSalesPersons();
         const orders = await loadOrders();
-        
         const persons = activeStaff.map(s => {
             const found = spList.find(x => x.name === s.staff_name);
             return { name: s.staff_name, commission: found ? found.commission : 0 };
         });
-        
         const data = {};
         persons.forEach(p => data[p.name] = {sales:0, deposit:0, count:0, pct:p.commission||0});
         orders.forEach(o => { if (o.salesPerson && data[o.salesPerson]) { data[o.salesPerson].sales += o.subtotal||0; data[o.salesPerson].deposit += o.deposit||0; data[o.salesPerson].count++; }});
@@ -2259,7 +2270,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     async function updateDashboard() {
         const orders = await loadOrders();
-        // Guna staff_cards untuk senarai staf
         await loadStaffCards();
         const activeStaff = allStaffCardsCache.filter(s => s.active);
         const spList = await loadSalesPersons();
@@ -2267,7 +2277,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const found = spList.find(x => x.name === s.staff_name);
             return { name: s.staff_name, commission: found ? found.commission : 0 };
         });
-        
         const period = $('dash-period').value, monthSel = $('dash-month').value, yearSel = $('dash-year').value, sf = $('dash-sales').value;
         const [start, end] = getPeriodRange(period, monthSel, yearSel);
         const filtered = orders.filter(o => {
@@ -2494,13 +2503,16 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!confirm('Log keluar dari sistem?')) return;
         localStorage.removeItem('staffName'); 
         localStorage.removeItem('staffLoggedInAt');
-        STAFF_NAME = ''; CURRENT_STAFF = null;
+        sessionStorage.removeItem('isBoss');
+        sessionStorage.removeItem('appAuthed');
+        STAFF_NAME = ''; CURRENT_STAFF = null; isBoss = false;
         $('staff-badge').textContent = '👤 Belum Login';
+        applyBossMode();
         showLandingPage();
         alert('✅ Anda telah log keluar.');
     });
     $('goto-settings-btn').addEventListener('click', () => {
-        if (sessionStorage.getItem('appAuthed') !== 'true') {
+        if (sessionStorage.getItem('appAuthed') !== 'true' && !isBoss) {
             showPasswordPrompt('access_tab', 'tab-settings');
         } else {
             switchTab('tab-settings');
@@ -2636,6 +2648,8 @@ document.addEventListener('DOMContentLoaded', function() {
         offlineBanner.style.display = navigator.onLine ? 'none' : 'block';
         initYearDropdowns();
         $('order-date').value = new Date().toISOString().split('T')[0];
+        // Restore role
+        isBoss = sessionStorage.getItem('isBoss') === 'true';
         applyBossMode();
         await loadAppSettings();
         await loadStaffCards();
@@ -2656,7 +2670,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 await updateAvailableInvoiceNumbers();
             }
         }, 60000);
-        console.log('✅ Sistem sedia. Staff:', STAFF_NAME);
+        console.log('✅ Sistem sedia. Staff:', STAFF_NAME, '| Boss mode:', isBoss);
     })();
 });
 </script>
