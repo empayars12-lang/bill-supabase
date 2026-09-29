@@ -15,7 +15,7 @@ body { font-family: 'Arial', sans-serif; margin: 0; padding: 0; background-color
 .landing-page { text-align: center; padding: 40px 20px; background: linear-gradient(135deg, #6e48aa 0%, #9d50bb 100%); color: white; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
 .logo { font-size: 3.5rem; font-weight: bold; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
 .tagline { font-size: 1.2rem; margin-bottom: 40px; opacity: 0.9; }
-.action-buttons-landing { display: flex; flex-direction: column; gap: 15px; max-width: 300px; margin: 20px auto; }
+.action-buttons-landing { display: flex; flex-direction: column; gap: 15px; max-width: 350px; margin: 20px auto; }
 .btn-landing { padding: 15px 25px; border-radius: 50px; font-size: 1.1rem; font-weight: bold; border: none; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
 .btn-primary-landing { background-color: #fff; color: #6e48aa; }
 .btn-primary-landing:hover { transform: translateY(-3px); }
@@ -176,31 +176,22 @@ body:not(.boss-mode) #order-list-page .summary-row { display: none !important; }
 body:not(.boss-mode) #active-orders-page .summary-row { display: none !important; }
 body.boss-mode #order-list-page .summary-row { display: flex !important; }
 body.boss-mode #active-orders-page .summary-row { display: flex !important; }
-
-/* SETTINGS PAGE */
 .settings-section { background: #f9f9f9; padding: 25px; border-radius: 10px; margin-bottom: 25px; border-left: 5px solid #6e48aa; }
 .settings-section h3 { margin-top: 0; color: #6e48aa; display: flex; align-items: center; gap: 10px; }
 .staff-card-item { display: flex; align-items: center; gap: 15px; padding: 15px; background: white; border-radius: 8px; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); flex-wrap: wrap; }
 .staff-card-item .staff-info { flex: 1; min-width: 180px; }
 .staff-card-item .staff-name { font-weight: bold; color: #333; font-size: 15px; }
 .staff-card-item .staff-meta { font-size: 12px; color: #666; margin-top: 3px; }
-.staff-card-item .staff-qr-preview { width: 60px; height: 60px; }
 .staff-card-item .staff-actions { display: flex; gap: 5px; flex-wrap: wrap; }
 .staff-card-item .staff-actions button { padding: 6px 10px; font-size: 12px; border: none; border-radius: 4px; cursor: pointer; color: white; }
 .staff-active { background: #2ecc71; } .staff-inactive { background: #95a5a6; }
 .btn-edit-staff { background: #3498db; } .btn-qr-staff { background: #9b59b6; } .btn-del-staff { background: #e74c3c; } .btn-toggle-staff { background: #f39c12; }
-
-/* QR SCANNER */
 #qr-reader { width: 100%; max-width: 400px; margin: 20px auto; }
 #qr-reader video { border-radius: 8px; }
-#qr-reader-status { text-align: center; margin-top: 10px; font-weight: bold; color: #6e48aa; }
-
-/* PIN INPUT */
+#qr-reader-status { text-align: center; margin-top: 10px; font-weight: bold; color: #6e48aa; font-size: 13px; line-height: 1.5; }
 .pin-input-wrapper { display: flex; gap: 10px; justify-content: center; margin: 20px 0; }
 .pin-digit { width: 50px; height: 60px; font-size: 24px; text-align: center; border: 2px solid #ddd; border-radius: 8px; font-weight: bold; }
 .pin-digit:focus { border-color: #6e48aa; outline: none; }
-
-/* ID CARD PREVIEW */
 .id-card-print { width: 100%; max-width: 500px; border: 2px solid #6e48aa; border-radius: 12px; padding: 20px; margin: 15px auto; background: white; }
 .id-card-header { background: linear-gradient(135deg, #6e48aa, #9d50bb); color: white; padding: 12px; margin: -20px -20px 20px -20px; border-radius: 10px 10px 0 0; text-align: center; }
 .id-card-header h3 { margin: 0; font-size: 16px; }
@@ -213,6 +204,10 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
 .id-card-body .id-card-qr canvas, .id-card-body .id-card-qr img { width: 130px; height: 130px; }
 .id-card-footer { margin-top: 15px; padding-top: 10px; border-top: 1px dashed #ddd; font-size: 10px; color: #888; text-align: center; }
 .print-btn-bar { display: flex; gap: 10px; justify-content: center; margin-top: 15px; }
+#staff-login-method { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
+.login-method-badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: bold; margin-left: 5px; }
+.login-method-qr_pin { background: #3498db; color: white; }
+.login-method-qr_only { background: #f39c12; color: white; }
 @media print {
     .no-print, .action-buttons, .tab-nav, .home-button-container, #password-modal, .add-sales-person, #bills-modal, #install-app-btn { display: none !important; }
     body { background: none; padding: 0; }
@@ -240,7 +235,8 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
     <div class="logo">EMPAYAR S KREATIF</div>
     <div class="tagline">Sistem Pengurusan Invois & Order</div>
     <div class="action-buttons-landing">
-        <button id="new-invoice-btn" class="btn-landing btn-primary-landing">Buat Invois Baru</button>
+        <button id="login-staff-btn" class="btn-landing btn-primary-landing">🔐 Login Staf (QR + PIN)</button>
+        <button id="new-invoice-btn" class="btn-landing btn-secondary-landing">Buat Invois Baru</button>
         <button id="manage-orders-btn" class="btn-landing btn-secondary-landing">Urus Order</button>
         <button id="dashboard-btn" class="btn-landing btn-secondary-landing">Papan Pemuka Jualan</button>
         <button id="settings-btn" class="btn-landing btn-secondary-landing">⚙️ Tetapan</button>
@@ -257,7 +253,7 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
 <div class="container">
     <div class="home-button-container no-print">
         <div>
-            <span class="staff-badge" id="staff-badge">👤 Staff</span>
+            <span class="staff-badge" id="staff-badge">👤 Belum Login</span>
             <button id="change-name-btn" class="btn-home" style="background:#3498db;margin-left:8px;">Tukar Staf</button>
             <button id="logout-btn" class="btn-home" style="background:#e74c3c;margin-left:5px;">Log Keluar</button>
         </div>
@@ -295,7 +291,6 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
         <div class="form-group"><label>NO. TELEFON:</label><input type="text" id="customer-phone" placeholder="Contoh: 0123456789"></div>
         <div class="form-group"><label>TARIKH ORDER:</label><input type="date" id="order-date"></div>
         <div class="form-group"><label>TARIKH JANJI SIAP:</label><input type="date" id="completion-date"></div>
-
         <h3>Butiran Item</h3>
         <div class="template-quick-add no-print" id="template-quick-add" style="display:none;">
             <strong>⚡ Item Pantas:</strong>
@@ -310,7 +305,6 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
             <tbody></tbody>
             <tfoot><tr class="table-summary-row"><td colspan="3">JUMLAH</td><td id="total-quantity">0</td><td id="total-amount">0.00</td><td></td></tr></tfoot>
         </table>
-
         <div class="form-group"><label>DISKAUN:</label>
             <div class="discount-container">
                 <input type="number" id="discount-value" placeholder="0.00" step="0.01">
@@ -517,7 +511,6 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
             <thead><tr><th>Nama</th><th>Keterangan</th><th>Harga (RM)</th><th class="no-print">Tindakan</th></tr></thead>
             <tbody id="template-list"></tbody>
         </table>
-
         <h2 style="margin-top:40px;">📐 Kategori Saiz</h2>
         <div class="action-buttons no-print" style="justify-content:flex-start; margin-bottom:15px;">
             <button id="add-size-cat-btn" class="btn" style="background:#6e48aa;">➕ Tambah Kategori Saiz</button>
@@ -537,21 +530,17 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
     <!-- SETTINGS PAGE -->
     <div id="settings-page" class="page">
         <h2 style="margin-top:0;">⚙️ Tetapan Sistem</h2>
-
-        <!-- PASSWORD SECTION -->
         <div class="settings-section">
             <h3>🔒 Tetapan Kata Laluan</h3>
-            <p style="font-size:13px;color:#666;">Kata laluan untuk akses tab sensitif (Papan Pemuka, Tetapan, dll).</p>
-            <div class="form-group"><label>Kata Laluan Semasa:</label><input type="password" id="old-password" placeholder="Masukkan kata laluan semasa"></div>
+            <p style="font-size:13px;color:#666;">Kata laluan untuk akses tab sensitif.</p>
+            <div class="form-group"><label>Kata Laluan Semasa:</label><input type="password" id="old-password" placeholder="Kata laluan semasa"></div>
             <div class="form-group"><label>Kata Laluan Baru:</label><input type="password" id="new-password" placeholder="Kata laluan baru"></div>
             <div class="form-group"><label>Sahkan Kata Laluan Baru:</label><input type="password" id="confirm-password" placeholder="Ulang kata laluan baru"></div>
             <button id="change-password-btn" class="btn">💾 Tukar Kata Laluan</button>
         </div>
-
-        <!-- STAFF CARDS SECTION -->
         <div class="settings-section">
             <h3>👥 Kad Staf (QR + PIN)</h3>
-            <p style="font-size:13px;color:#666;">Setiap staf ada kad QR + PIN untuk login ke sistem.</p>
+            <p style="font-size:13px;color:#666;">Setiap staf ada kad QR + PIN. Boleh pilih kaedah login per-staf.</p>
             <div class="action-buttons no-print" style="justify-content:flex-start; margin-bottom:15px;">
                 <button id="add-staff-btn" class="btn" style="background:#6e48aa;">➕ Tambah Staf Baru</button>
             </div>
@@ -566,7 +555,7 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
         <h3>🔒 Masukkan Kata Laluan</h3>
         <p id="password-prompt-message"></p>
         <input type="password" id="password-input" placeholder="Kata Laluan">
-        <textarea id="delete-reason-input" placeholder="Sebab pembatalan..." style="display: none;"></textarea>
+        <textarea id="delete-reason-input" placeholder="Sebab..." style="display: none;"></textarea>
         <div id="password-error">Kata laluan salah!</div>
         <div class="password-buttons">
             <button id="cancel-password">Batal</button>
@@ -574,15 +563,6 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
         </div>
         <input type="hidden" id="password-action" value="">
         <input type="hidden" id="password-target-id" value="">
-    </div>
-</div>
-
-<div id="name-modal">
-    <div class="name-modal-content">
-        <h3>👤 Siapa Nama Anda?</h3>
-        <p style="color:#666;font-size:14px;">Nama untuk paparan lock & tracking.</p>
-        <input type="text" id="name-modal-input" placeholder="Contoh: Ali" style="padding:12px;font-size:16px;margin:10px 0;">
-        <div class="action-buttons"><button id="save-name-btn" class="btn">Simpan Nama</button></div>
     </div>
 </div>
 
@@ -621,6 +601,14 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
         <h3 id="staff-modal-title">➕ Tambah Staf</h3>
         <div class="form-group"><label>Nama Staf:</label><input type="text" id="staff-name-input" placeholder="Nama penuh staf"></div>
         <div class="form-group"><label>Jawatan:</label><input type="text" id="staff-jawatan-input" placeholder="Contoh: Sales Executive"></div>
+        <div class="form-group">
+            <label>Kaedah Login:</label>
+            <select id="staff-login-method">
+                <option value="qr_pin">📷+🔢 QR + PIN (Selamat)</option>
+                <option value="qr_only">📷 QR Sahaja (Laju)</option>
+            </select>
+            <small style="color:#666;font-size:12px;">QR + PIN: scan kemudian taip PIN. QR Sahaja: scan terus login.</small>
+        </div>
         <div class="form-group"><label>PIN (4 digit):</label><input type="text" id="staff-pin-input" placeholder="1234" maxlength="4" inputmode="numeric"></div>
         <div class="action-buttons no-print" style="justify-content:flex-end;">
             <button id="cancel-staff-modal" class="btn btn-secondary">Batal</button>
@@ -658,7 +646,7 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
         <button class="modal-close-x" onclick="closeSizeCatModal()">×</button>
         <h3 id="size-cat-modal-title">➕ Tambah Kategori Saiz</h3>
         <div class="form-group"><label>Nama Kategori:</label><input type="text" id="sc-name" placeholder="Contoh: Baju Dewasa Lelaki"></div>
-        <div class="form-group"><label>Senarai Saiz (pisah dengan koma):</label><input type="text" id="sc-sizes" placeholder="3XL, 2XL, XL, L, M, S, XS"></div>
+        <div class="form-group"><label>Senarai Saiz:</label><input type="text" id="sc-sizes" placeholder="3XL, 2XL, XL, L, M, S, XS"></div>
         <div class="form-group"><label>Harga Default (RM):</label><input type="number" id="sc-price" placeholder="35" step="0.01"></div>
         <div class="action-buttons no-print" style="justify-content:flex-end;">
             <button id="cancel-size-cat" class="btn btn-secondary">Batal</button>
@@ -840,12 +828,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (days <= 3) return {text:`${days} hari lagi`,cls:'soon'};
         return {text:`${days} hari lagi`,cls:'normal'};
     }
-
     function applyBossMode() {
         if (sessionStorage.getItem('appAuthed') === 'true') document.body.classList.add('boss-mode');
         else document.body.classList.remove('boss-mode');
     }
-
     function hasUnsavedFormData() {
         const invoiceNum = $('invoice-number').value;
         const customerName = $('customer-name').value.trim();
@@ -854,7 +840,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return !!(invoiceNum || customerName || customerPhone || hasItems);
     }
 
-    // ============ APP SETTINGS (Password) ============
+    // ============ APP SETTINGS ============
     async function loadAppSettings() {
         try {
             const { data } = await supabaseClient.from('app_settings').select('*').eq('key', 'boss_password').maybeSingle();
@@ -864,14 +850,11 @@ document.addEventListener('DOMContentLoaded', function() {
     async function updatePassword(newPwd) {
         try {
             const { data: ex } = await supabaseClient.from('app_settings').select('key').eq('key', 'boss_password').maybeSingle();
-            if (ex) {
-                await supabaseClient.from('app_settings').update({ value: newPwd, updated_at: new Date() }).eq('key', 'boss_password');
-            } else {
-                await supabaseClient.from('app_settings').insert({ key: 'boss_password', value: newPwd });
-            }
+            if (ex) await supabaseClient.from('app_settings').update({ value: newPwd, updated_at: new Date() }).eq('key', 'boss_password');
+            else await supabaseClient.from('app_settings').insert({ key: 'boss_password', value: newPwd });
             CORRECT_PASSWORD = newPwd;
             return true;
-        } catch(e) { console.error(e); alert('Gagal: ' + e.message); return false; }
+        } catch(e) { alert('Gagal: ' + e.message); return false; }
     }
 
     // ============ STAFF CARDS ============
@@ -880,56 +863,52 @@ document.addEventListener('DOMContentLoaded', function() {
             const { data, error } = await supabaseClient.from('staff_cards').select('*').order('created_at', {ascending: true});
             if (error) throw error;
             allStaffCardsCache = (data||[]).map(s => ({
-                id: s.id,
-                staff_name: s.staff_name,
-                qr_token: s.qr_token,
-                pin_code: s.pin_code,
-                jawatan: s.jawatan || '',
-                active: s.active,
-                last_login: s.last_login
+                id: s.id, staff_name: s.staff_name, qr_token: s.qr_token,
+                pin_code: s.pin_code, jawatan: s.jawatan || '', active: s.active,
+                last_login: s.last_login, login_method: s.login_method || 'qr_pin'
             }));
             return allStaffCardsCache;
         } catch(e) { console.error(e); return []; }
     }
-    async function addStaffCard(name, jawatan, pin) {
+    async function addStaffCard(name, jawatan, pin, loginMethod) {
         try {
-            // Generate QR token
             const token = 'esk_' + name.toLowerCase().replace(/\s/g, '_') + '_' + Math.random().toString(36).substr(2, 8);
             const { error } = await supabaseClient.from('staff_cards').insert({
-                staff_name: name, qr_token: token, pin_code: pin, jawatan: jawatan, active: true
+                staff_name: name, qr_token: token, pin_code: pin, jawatan: jawatan,
+                active: true, login_method: loginMethod || 'qr_pin'
             });
             if (error) throw error;
-            // Auto-add ke sales_persons kalau belum ada
             const { data: sp } = await supabaseClient.from('sales_persons').select('name').eq('name', name).maybeSingle();
             if (!sp) await supabaseClient.from('sales_persons').insert({ name: name, commission: 0 });
+            await populateSalesPersonDropdown();
             return true;
-        } catch(e) { console.error(e); alert('Gagal: ' + e.message); return false; }
+        } catch(e) { alert('Gagal: ' + e.message); return false; }
     }
-    async function updateStaffCard(id, name, jawatan, pin) {
+    async function updateStaffCard(id, name, jawatan, pin, loginMethod) {
         try {
             const { error } = await supabaseClient.from('staff_cards').update({
-                staff_name: name, jawatan: jawatan, pin_code: pin
+                staff_name: name, jawatan: jawatan, pin_code: pin, login_method: loginMethod || 'qr_pin'
             }).eq('id', id);
             if (error) throw error;
+            await populateSalesPersonDropdown();
             return true;
         } catch(e) { alert('Gagal: ' + e.message); return false; }
     }
     async function deleteStaffCard(id) {
         try {
+            const { data: staff } = await supabaseClient.from('staff_cards').select('staff_name').eq('id', id).maybeSingle();
             const { error } = await supabaseClient.from('staff_cards').delete().eq('id', id);
             if (error) throw error;
+            if (staff && staff.staff_name) await supabaseClient.from('sales_persons').delete().eq('name', staff.staff_name);
+            await populateSalesPersonDropdown();
             return true;
         } catch(e) { alert('Gagal: ' + e.message); return false; }
     }
     async function toggleStaffActive(id, active) {
-        try {
-            await supabaseClient.from('staff_cards').update({active: active}).eq('id', id);
-            return true;
-        } catch(e) { return false; }
+        try { await supabaseClient.from('staff_cards').update({active: active}).eq('id', id); return true; }
+        catch(e) { return false; }
     }
-
     async function loginStaffByQR(qrToken) {
-        // Find staff by token
         const { data } = await supabaseClient.from('staff_cards').select('*').eq('qr_token', qrToken).eq('active', true).maybeSingle();
         return data;
     }
@@ -945,13 +924,10 @@ document.addEventListener('DOMContentLoaded', function() {
     async function addAuditLog(invoiceNumber, action, fieldChanged, oldValue, newValue, notes) {
         try {
             await supabaseClient.from('audit_logs').insert({
-                invoice_number: invoiceNumber,
-                staff_name: STAFF_NAME || 'Unknown',
-                action: action,
-                field_changed: fieldChanged || null,
+                invoice_number: invoiceNumber, staff_name: STAFF_NAME || 'Unknown',
+                action: action, field_changed: fieldChanged || null,
                 old_value: oldValue ? String(oldValue) : null,
-                new_value: newValue ? String(newValue) : null,
-                notes: notes || null
+                new_value: newValue ? String(newValue) : null, notes: notes || null
             });
         } catch(e) { console.error('auditLog:', e); }
     }
@@ -962,7 +938,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch(e) { return []; }
     }
 
-    // ============ CRUD ORDERS ============
+    // ============ ORDERS CRUD ============
     async function loadOrders() {
         try {
             const { data: orders, error } = await supabaseClient.from('orders').select('*').order('created_at',{ascending:false});
@@ -973,10 +949,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const { data: items } = await supabaseClient.from('order_items').select('*').in('order_id', ids);
             (items||[]).forEach(it => {
                 if (!itemMap[it.order_id]) itemMap[it.order_id] = [];
-                itemMap[it.order_id].push({
-                    description: it.description, price: parseFloat(it.price)||0,
-                    quantity: it.quantity, total: parseFloat(it.total)||0
-                });
+                itemMap[it.order_id].push({description: it.description, price: parseFloat(it.price)||0, quantity: it.quantity, total: parseFloat(it.total)||0});
             });
             const result = orders.map(o => ({
                 id:o.id, invoiceNumber:o.invoice_number, customerName:o.customer_name,
@@ -991,7 +964,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return result;
         } catch(e) { console.error('loadOrders:', e); return []; }
     }
-
     async function addOrder(o) {
         try {
             const { data: ex } = await supabaseClient.from('orders').select('id').eq('invoice_number', o.invoiceNumber).maybeSingle();
@@ -1010,13 +982,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     order_id:newO.id, description:it.description, price:it.price, quantity:it.quantity, total:it.total
                 })));
             }
-            // Log create
-            await addAuditLog(o.invoiceNumber, 'create', null, null, null, 
-                `Order dicipta. Jumlah: RM${o.totalAmount}, Deposit: RM${o.deposit}`);
+            await addAuditLog(o.invoiceNumber, 'create', null, null, null, `Order dicipta. Jumlah: RM${o.totalAmount}, Deposit: RM${o.deposit}`);
             return true;
         } catch(e) { console.error('addOrder:', e); alert('Gagal simpan: ' + e.message); return false; }
     }
-
     async function updateOrderWithLog(newOrder, oldOrder) {
         try {
             const { error } = await supabaseClient.from('orders').update({
@@ -1037,32 +1006,20 @@ document.addEventListener('DOMContentLoaded', function() {
                     })));
                 }
             }
-            // Log changes
             if (oldOrder) {
                 const changes = [];
-                if (oldOrder.customerName !== newOrder.customerName) 
-                    changes.push({f:'Nama Pelanggan', o:oldOrder.customerName, n:newOrder.customerName});
-                if (oldOrder.customerPhone !== newOrder.customerPhone) 
-                    changes.push({f:'Telefon', o:oldOrder.customerPhone, n:newOrder.customerPhone});
-                if (oldOrder.completionDate !== newOrder.completionDate) 
-                    changes.push({f:'Tarikh Siap', o:formatDate(oldOrder.completionDate), n:formatDate(newOrder.completionDate)});
-                if (Math.abs(oldOrder.deposit - newOrder.deposit) > 0.01) 
-                    changes.push({f:'Deposit', o:`RM${oldOrder.deposit}`, n:`RM${newOrder.deposit}`});
-                if (Math.abs(oldOrder.totalAmount - newOrder.totalAmount) > 0.01) 
-                    changes.push({f:'Jumlah Item', o:`RM${oldOrder.totalAmount}`, n:`RM${newOrder.totalAmount}`});
-                if (oldOrder.salesPerson !== newOrder.salesPerson) 
-                    changes.push({f:'Jurujual', o:oldOrder.salesPerson, n:newOrder.salesPerson});
-                if (oldOrder.status !== newOrder.status) 
-                    changes.push({f:'Status', o:oldOrder.status, n:newOrder.status});
-                
-                for (const c of changes) {
-                    await addAuditLog(newOrder.invoiceNumber, 'update', c.f, c.o, c.n, null);
-                }
+                if (oldOrder.customerName !== newOrder.customerName) changes.push({f:'Nama Pelanggan', o:oldOrder.customerName, n:newOrder.customerName});
+                if (oldOrder.customerPhone !== newOrder.customerPhone) changes.push({f:'Telefon', o:oldOrder.customerPhone, n:newOrder.customerPhone});
+                if (oldOrder.completionDate !== newOrder.completionDate) changes.push({f:'Tarikh Siap', o:formatDate(oldOrder.completionDate), n:formatDate(newOrder.completionDate)});
+                if (Math.abs(oldOrder.deposit - newOrder.deposit) > 0.01) changes.push({f:'Deposit', o:`RM${oldOrder.deposit}`, n:`RM${newOrder.deposit}`});
+                if (Math.abs(oldOrder.totalAmount - newOrder.totalAmount) > 0.01) changes.push({f:'Jumlah Item', o:`RM${oldOrder.totalAmount}`, n:`RM${newOrder.totalAmount}`});
+                if (oldOrder.salesPerson !== newOrder.salesPerson) changes.push({f:'Jurujual', o:oldOrder.salesPerson, n:newOrder.salesPerson});
+                if (oldOrder.status !== newOrder.status) changes.push({f:'Status', o:oldOrder.status, n:newOrder.status});
+                for (const c of changes) await addAuditLog(newOrder.invoiceNumber, 'update', c.f, c.o, c.n, null);
             }
             return true;
         } catch(e) { console.error('updateOrder:', e); return false; }
     }
-
     async function deleteOrder(inv, reason) {
         try {
             const orders = await loadOrders();
@@ -1077,8 +1034,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return true;
         } catch(e) { console.error('deleteOrder:', e); return false; }
     }
-
-    // ============ SALES PERSONS ============
     async function loadSalesPersons() {
         try {
             const { data } = await supabaseClient.from('sales_persons').select('*').order('created_at',{ascending:true});
@@ -1093,7 +1048,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     async function deleteSalesPerson(name) { await supabaseClient.from('sales_persons').delete().eq('name', name); }
     async function updateSalesCommission(name, c) { await supabaseClient.from('sales_persons').update({commission:c}).eq('name', name); }
-
     async function loadDeletedBills() {
         try {
             const { data } = await supabaseClient.from('deleted_bills').select('*').order('deletion_date',{ascending:false});
@@ -1104,7 +1058,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }));
         } catch(e) { return []; }
     }
-
     async function loadTemplates() {
         try {
             const { data } = await supabaseClient.from('item_templates').select('*').order('name');
@@ -1118,7 +1071,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return true;
     }
     async function deleteTemplate(id) { await supabaseClient.from('item_templates').delete().eq('id', id); }
-
     async function loadSizeCategories() {
         try {
             const { data, error } = await supabaseClient.from('size_categories').select('*').eq('active', true).order('sort_order', {ascending:true});
@@ -1135,10 +1087,8 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch(e) { alert('Gagal: ' + e.message); return false; }
     }
     async function updateSizeCategory(id, name, sizes, price) {
-        try {
-            await supabaseClient.from('size_categories').update({name, sizes, default_price:price}).eq('id', id);
-            return true;
-        } catch(e) { alert('Gagal: ' + e.message); return false; }
+        try { await supabaseClient.from('size_categories').update({name, sizes, default_price:price}).eq('id', id); return true; }
+        catch(e) { alert('Gagal: ' + e.message); return false; }
     }
     async function deleteSizeCategory(id) {
         try { await supabaseClient.from('size_categories').delete().eq('id', id); return true; }
@@ -1219,7 +1169,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function showPasswordPrompt(action, target) {
         $('password-input').value=''; $('delete-reason-input').value=''; $('password-error').style.display='none';
         $('password-action').value=action; $('password-target-id').value=target;
-        if (action === 'delete_order') { $('password-prompt-message').textContent = `Masukkan kata laluan & sebab untuk padam order ${target}.`; $('delete-reason-input').style.display='block'; }
+        if (action === 'delete_order') { $('password-prompt-message').textContent = `Kata laluan & sebab untuk padam order ${target}.`; $('delete-reason-input').style.display='block'; }
         else { $('password-prompt-message').textContent = `Kata laluan diperlukan untuk akses ${target}.`; $('delete-reason-input').style.display='none'; }
         $('password-modal').style.display='flex'; $('password-input').focus();
     }
@@ -1267,22 +1217,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // ============ NAME MODAL ============
-    function showNameModal() {
-        $('name-modal-input').value = STAFF_NAME || '';
-        $('name-modal').style.display = 'flex';
-        setTimeout(() => $('name-modal-input').focus(), 100);
-    }
-    function saveStaffName() {
-        const n = $('name-modal-input').value.trim();
-        if (!n) { alert('Sila masukkan nama.'); return; }
-        STAFF_NAME = n;
-        localStorage.setItem('staffName', n);
-        $('staff-badge').textContent = '👤 ' + n;
-        $('name-modal').style.display = 'none';
-        initRealtime();
-    }
-
     // ============ QR LOGIN ============
     function openQrLogin() {
         $('qr-login-modal').style.display = 'flex';
@@ -1295,23 +1229,34 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     async function startQrScanner() {
         if (typeof Html5Qrcode === 'undefined') {
-            $('qr-reader-status').textContent = '❌ Scanner tak loaded. Refresh page.';
+            $('qr-reader-status').innerHTML = '❌ Scanner tak loaded.<br><small>Sila refresh page (Ctrl+Shift+R)</small>';
+            return;
+        }
+        if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+            $('qr-reader-status').innerHTML = '❌ Kamera perlukan HTTPS.<br><small>Sila akses sistem melalui https://</small>';
+            return;
+        }
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            $('qr-reader-status').innerHTML = '❌ Browser tak support kamera.<br><small>Guna Chrome / Safari terbaru</small>';
             return;
         }
         try {
             html5QrCode = new Html5Qrcode("qr-reader");
             await html5QrCode.start(
                 { facingMode: "environment" },
-                { fps: 10, qrbox: 250 },
-                (decodedText) => {
-                    onQrScanned(decodedText);
-                },
-                () => {}
+                { fps: 10, qrbox: { width: 250, height: 250 } },
+                (decodedText) => { onQrScanned(decodedText); },
+                (errorMessage) => {}
             );
             $('qr-reader-status').textContent = '📷 Arahkan kamera ke QR code...';
         } catch(e) {
-            console.error(e);
-            $('qr-reader-status').textContent = '❌ Kamera gagal: ' + e.message;
+            console.error('QR Error:', e);
+            let msg = '❌ Kamera gagal.';
+            if (e.name === 'NotAllowedError') msg = '❌ Kebenaran kamera ditolak.<br><small>Benarkan akses kamera di Settings browser.</small>';
+            else if (e.name === 'NotFoundError') msg = '❌ Tiada kamera dijumpai.';
+            else if (e.name === 'NotReadableError') msg = '❌ Kamera sedang digunakan oleh app lain.';
+            else if (e.message) msg = '❌ Kamera gagal: ' + e.message;
+            $('qr-reader-status').innerHTML = msg;
         }
     }
     async function stopQrScanner() {
@@ -1329,7 +1274,22 @@ document.addEventListener('DOMContentLoaded', function() {
         $('qr-reader-status').textContent = '✅ Dijumpai: ' + staff.staff_name;
         await stopQrScanner();
         closeQrLogin();
-        openPinLogin(staff);
+        
+        const loginMethod = staff.login_method || 'qr_pin';
+        if (loginMethod === 'qr_only') {
+            // Terus login
+            STAFF_NAME = staff.staff_name;
+            localStorage.setItem('staffName', STAFF_NAME);
+            localStorage.setItem('staffLoggedInAt', Date.now());
+            $('staff-badge').textContent = '👤 ' + STAFF_NAME;
+            await updateLastLogin(staff.id);
+            CURRENT_STAFF = null;
+            alert('✅ Selamat datang, ' + staff.staff_name + '!');
+            showContainer('tab-invoice');
+        } else {
+            // Perlu PIN
+            openPinLogin(staff);
+        }
     }
     function openPinLogin(staff) {
         CURRENT_STAFF = staff;
@@ -1355,7 +1315,6 @@ document.addEventListener('DOMContentLoaded', function() {
             $('pin-1').focus();
             return;
         }
-        // Login success
         STAFF_NAME = verified.staff_name;
         localStorage.setItem('staffName', STAFF_NAME);
         localStorage.setItem('staffLoggedInAt', Date.now());
@@ -1365,23 +1324,19 @@ document.addEventListener('DOMContentLoaded', function() {
         showContainer('tab-invoice');
     }
 
-    // Auto-move focus PIN inputs
     ['pin-1','pin-2','pin-3','pin-4'].forEach((id, idx) => {
         const el = $(id);
         if (!el) return;
         el.addEventListener('input', () => {
             if (el.value && idx < 3) $('pin-' + (idx+2)).focus();
-            if (idx === 3 && el.value) {
-                // Auto submit kalau 4 dah penuh
-                setTimeout(submitPinLogin, 200);
-            }
+            if (idx === 3 && el.value) setTimeout(submitPinLogin, 200);
         });
         el.addEventListener('keydown', (e) => {
             if (e.key === 'Backspace' && !el.value && idx > 0) $('pin-' + idx).focus();
         });
     });
 
-    // ============ SETTINGS - Password Change ============
+    // ============ PASSWORD CHANGE ============
     async function changePassword() {
         const oldPwd = $('old-password').value;
         const newPwd = $('new-password').value;
@@ -1395,18 +1350,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // ============ SETTINGS - Staff Cards ============
+    // ============ STAFF CARDS DISPLAY ============
     function displayStaffCards() {
         const cont = $('staff-cards-list');
         if (!allStaffCardsCache.length) {
             cont.innerHTML = '<p style="text-align:center;color:#999;padding:20px;">Tiada staf. Klik "Tambah Staf Baru".</p>';
             return;
         }
-        cont.innerHTML = allStaffCardsCache.map(s => `
+        cont.innerHTML = allStaffCardsCache.map(s => {
+            const methodBadge = s.login_method === 'qr_only' 
+                ? '<span class="login-method-badge login-method-qr_only">📷 QR</span>' 
+                : '<span class="login-method-badge login-method-qr_pin">📷🔢 QR+PIN</span>';
+            return `
             <div class="staff-card-item">
                 <div class="staff-info">
-                    <div class="staff-name">${escapeHtml(s.staff_name)} ${s.active ? '' : '<span style="color:#999;font-size:11px;">(Tidak Aktif)</span>'}</div>
-                    <div class="staff-meta">${escapeHtml(s.jawatan||'-')} • PIN: <span style="font-family:monospace;">${'•'.repeat(s.pin_code.length)}</span> • Login terakhir: ${s.last_login ? formatTime(s.last_login) : 'Belum pernah'}</div>
+                    <div class="staff-name">${escapeHtml(s.staff_name)} ${methodBadge} ${s.active ? '' : '<span style="color:#999;font-size:11px;">(Tidak Aktif)</span>'}</div>
+                    <div class="staff-meta">${escapeHtml(s.jawatan||'-')} • PIN: <span style="font-family:monospace;">${'•'.repeat(s.pin_code.length)}</span> • Login: ${s.last_login ? formatTime(s.last_login) : 'Belum pernah'}</div>
                 </div>
                 <div class="staff-actions">
                     <button class="btn-edit-staff" onclick="editStaff('${s.id}')">✏️ Edit</button>
@@ -1414,8 +1373,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     <button class="btn-toggle-staff" onclick="toggleStaff('${s.id}', ${!s.active})">${s.active ? '⏸️' : '▶️'}</button>
                     <button class="btn-del-staff" onclick="delStaff('${s.id}', '${escapeAttr(s.staff_name)}')">🗑️</button>
                 </div>
-            </div>
-        `).join('');
+            </div>`;
+        }).join('');
     }
     function openStaffModal(editId = null) {
         editingStaffId = editId;
@@ -1426,9 +1385,11 @@ document.addEventListener('DOMContentLoaded', function() {
             $('staff-name-input').value = s.staff_name;
             $('staff-jawatan-input').value = s.jawatan || '';
             $('staff-pin-input').value = s.pin_code;
+            $('staff-login-method').value = s.login_method || 'qr_pin';
         } else {
             $('staff-modal-title').textContent = '➕ Tambah Staf';
             $('staff-name-input').value = ''; $('staff-jawatan-input').value = ''; $('staff-pin-input').value = '';
+            $('staff-login-method').value = 'qr_pin';
         }
         $('staff-modal').style.display = 'flex';
     }
@@ -1437,20 +1398,19 @@ document.addEventListener('DOMContentLoaded', function() {
         const name = $('staff-name-input').value.trim();
         const jawatan = $('staff-jawatan-input').value.trim();
         const pin = $('staff-pin-input').value.trim();
+        const loginMethod = $('staff-login-method').value;
         if (!name) { alert('Sila isi nama.'); return; }
         if (!/^\d{4}$/.test(pin)) { alert('PIN mesti 4 digit nombor.'); return; }
-        
         let ok;
-        if (editingStaffId) ok = await updateStaffCard(editingStaffId, name, jawatan, pin);
-        else ok = await addStaffCard(name, jawatan, pin);
-        
+        if (editingStaffId) ok = await updateStaffCard(editingStaffId, name, jawatan, pin, loginMethod);
+        else ok = await addStaffCard(name, jawatan, pin, loginMethod);
         if (ok) {
             await loadStaffCards();
             displayStaffCards();
+            await populateSalesPersonDropdown();
             closeStaffModal();
         }
     }
-
     window.editStaff = (id) => openStaffModal(id);
     window.toggleStaff = async (id, active) => {
         await toggleStaffActive(id, active);
@@ -1458,7 +1418,7 @@ document.addEventListener('DOMContentLoaded', function() {
         displayStaffCards();
     };
     window.delStaff = async (id, name) => {
-        if (!confirm(`Padam staf "${name}"?`)) return;
+        if (!confirm(`Padam staf "${name}"? Ini akan buang dari senarai jurujual juga.`)) return;
         if (await deleteStaffCard(id)) {
             await loadStaffCards();
             displayStaffCards();
@@ -1467,7 +1427,6 @@ document.addEventListener('DOMContentLoaded', function() {
     window.showQr = async (id) => {
         const s = allStaffCardsCache.find(x => x.id === id);
         if (!s) return;
-        // Generate QR using QRCode library
         const container = $('qr-display-container');
         container.innerHTML = `<p style="font-weight:bold;margin-bottom:5px;">${escapeHtml(s.staff_name)}</p>
             <p style="font-size:12px;color:#666;margin-top:0;">${escapeHtml(s.jawatan||'')}</p>
@@ -1477,15 +1436,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const canvas = document.createElement('canvas');
             await QRCode.toCanvas(canvas, s.qr_token, { width: 200, margin: 1 });
             $('qr-canvas-container').appendChild(canvas);
-        } catch(e) {
-            $('qr-canvas-container').textContent = 'Gagal generate QR';
-        }
+        } catch(e) { $('qr-canvas-container').textContent = 'Gagal generate QR'; }
         $('qr-display-modal').style.display = 'flex';
         $('print-idcard-btn').onclick = () => printIdCard(s);
     };
     window.closeQrDisplay = function() { $('qr-display-modal').style.display = 'none'; };
     async function printIdCard(staff) {
-        // Build ID card HTML
         const container = $('idcard-preview');
         container.innerHTML = `
             <div class="id-card-print" id="id-card-content">
@@ -1502,8 +1458,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="id-card-qr" id="idcard-qr-target"></div>
                 </div>
                 <div class="id-card-footer">
-                    Kad ini hak milik Empayar S Kreatif.<br>
-                    Kalau jumpa, sila pulangkan ke kedai.
+                    Kad ini hak milik Empayar S Kreatif.<br>Kalau jumpa, sila pulangkan ke kedai.
                 </div>
             </div>`;
         try {
@@ -1561,10 +1516,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.editSizeCategory = (id) => openSizeCatModal(id);
     window.confirmDeleteSizeCategory = async (id, name) => {
         if (!confirm(`Padam kategori "${name}"?`)) return;
-        if (await deleteSizeCategory(id)) {
-            await loadSizeCategories();
-            displaySizeCategories();
-        }
+        if (await deleteSizeCategory(id)) { await loadSizeCategories(); displaySizeCategories(); }
     };
     function openSizeCatModal(editId = null) {
         $('sc-edit-id').value = editId || '';
@@ -1596,7 +1548,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ============ SIZE INPUT ============
     async function openSizeInputModal(editIdx = null) {
         await loadSizeCategories();
-        if (!allSizeCatsCache.length) { alert('Tiada kategori saiz. Sila tambah dalam tab "Template & Saiz".'); return; }
+        if (!allSizeCatsCache.length) { alert('Tiada kategori saiz. Tambah dalam tab "Template & Saiz".'); return; }
         editingSizeItemIdx = editIdx;
         const select = $('si-cat-select');
         select.innerHTML = allSizeCatsCache.map(c => `<option value="${c.id}" data-sizes="${escapeAttr(c.sizes.join(','))}" data-price="${c.default_price}">${escapeHtml(c.name)}</option>`).join('');
@@ -1920,27 +1872,16 @@ document.addEventListener('DOMContentLoaded', function() {
         $('btn-complete-order').style.display = st === 'completed' ? 'none' : 'block';
         $('btn-pending-order').style.display = st === 'pending' ? 'none' : 'block';
         $('btn-print-final').style.display = st === 'completed' ? 'block' : 'none';
-        
-        // Load audit logs
         const logs = await loadAuditLogs(o.invoiceNumber);
         if (logs.length) {
             $('audit-log-section').style.display = 'block';
             $('audit-log-list').innerHTML = logs.map(l => `
                 <div class="audit-log-item">
-                    <div class="log-header">
-                        ${l.action === 'create' ? '🆕' : l.action === 'delete' ? '🗑️' : l.action === 'update' ? '✏️' : '📝'} 
-                        ${formatTime(l.changed_at)} - ${escapeHtml(l.staff_name)}
-                    </div>
-                    <div class="log-detail">
-                        ${l.field_changed ? `<strong>${escapeHtml(l.field_changed)}:</strong> ${escapeHtml(l.old_value||'')} → ${escapeHtml(l.new_value||'')}` : ''}
-                        ${l.notes ? escapeHtml(l.notes) : ''}
-                    </div>
+                    <div class="log-header">${l.action === 'create' ? '🆕' : l.action === 'delete' ? '🗑️' : l.action === 'update' ? '✏️' : '📝'} ${formatTime(l.changed_at)} - ${escapeHtml(l.staff_name)}</div>
+                    <div class="log-detail">${l.field_changed ? `<strong>${escapeHtml(l.field_changed)}:</strong> ${escapeHtml(l.old_value||'')} → ${escapeHtml(l.new_value||'')}` : ''}${l.notes ? escapeHtml(l.notes) : ''}</div>
                 </div>
             `).join('');
-        } else {
-            $('audit-log-section').style.display = 'none';
-        }
-        
+        } else $('audit-log-section').style.display = 'none';
         orderListPage.style.display = 'none'; activeOrdersPage.style.display = 'none'; orderDetailView.style.display = 'block';
     }
     function backToList() {
@@ -2132,7 +2073,7 @@ document.addEventListener('DOMContentLoaded', function() {
         URL.revokeObjectURL(url);
     }
 
-    // ============ SALES PERSON DISPLAY ============
+    // ============ SALES PERSON ============
     async function populateSalesPersonDropdown() {
         const sp = await loadSalesPersons();
         const cur = $('sales-person').value;
@@ -2183,7 +2124,6 @@ document.addEventListener('DOMContentLoaded', function() {
         $('bills-modal-list').innerHTML = list.length === 0 ? '<li>Tiada bil.</li>' : list.map(o => `<li>${o.invoiceNumber} - ${escapeHtml(o.customerName)} (${formatDate(o.orderDate)})</li>`).join('');
         $('bills-modal').style.display = 'flex';
     }
-
     async function displayDeletedBills() {
         const bills = await loadDeletedBills();
         const tb = $('deleted-bills-list'); tb.innerHTML = '';
@@ -2194,8 +2134,6 @@ document.addEventListener('DOMContentLoaded', function() {
             tb.appendChild(tr);
         });
     }
-
-    // ============ CUSTOMER AUTOCOMPLETE ============
     function updateCustomerDatalist() {
         const names = [...new Set(allOrdersCache.map(o => o.customerName).filter(n => n && n !== '-'))];
         names.sort();
@@ -2226,13 +2164,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const totalSales = filtered.reduce((s,o)=>s+(o.subtotal||0),0);
         const totalDeposit = filtered.reduce((s,o)=>s+(o.deposit||0),0);
         const totalBalance = filtered.reduce((s,o)=>s+(o.balance||0),0);
-
         const today = new Date(); today.setHours(0,0,0,0);
         const weekStart = new Date(today); weekStart.setDate(today.getDate()-today.getDay());
         const monthStart = new Date(today.getFullYear(),today.getMonth(),1);
         const yearStart = new Date(today.getFullYear(),0,1);
         function sumRange(from, field) { return orders.filter(o => o.orderDate && new Date(o.orderDate) >= from).reduce((s,o)=>s+(o[field]||0),0); }
-
         const commMap = {};
         salesPersons.forEach(p => commMap[p.name] = {count:0, sales:0, pct:p.commission||0});
         filtered.forEach(o => { if (o.salesPerson && commMap[o.salesPerson]) { commMap[o.salesPerson].count++; commMap[o.salesPerson].sales += o.subtotal||0; }});
@@ -2250,7 +2186,6 @@ document.addEventListener('DOMContentLoaded', function() {
             await updateSalesCommission(e.target.dataset.name, parseFloat(e.target.value)||0);
             await loadSalesPersons(); await updateDashboard();
         }));
-
         const custMap = {};
         orders.forEach(o => {
             const key = (o.customerName||'').trim().toLowerCase();
@@ -2267,7 +2202,6 @@ document.addEventListener('DOMContentLoaded', function() {
             tct.appendChild(tr);
         });
         if (top.length === 0) tct.innerHTML = '<tr><td colspan="5" style="text-align:center;">Tiada data</td></tr>';
-
         $('dash-count').textContent = filtered.length;
         $('dash-sales').textContent = formatRM(totalSales);
         $('dash-deposit').textContent = formatRM(totalDeposit);
@@ -2290,7 +2224,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (allOrdersCache.find(o => o.invoiceNumber === inv)) return alert('No. bil sudah wujud!');
         if (currentInvoiceItems.length === 0) return alert('Sila tambah sekurang-kurangnya 1 item.');
         if (!confirm(`📤 Hantar order ${inv} & cetak invois?`)) return;
-
         const data = {
             invoiceNumber: inv, customerName: $('customer-name').value || '-',
             customerPhone: $('customer-phone').value || '-',
@@ -2304,14 +2237,11 @@ document.addEventListener('DOMContentLoaded', function() {
             status: 'normal', createdBy: STAFF_NAME,
             items: currentInvoiceItems.map(it => ({ description: it.description, price: it.price, quantity: it.quantity, total: it.total }))
         };
-
         if (!await addOrder(data)) { alert('❌ Gagal simpan.'); return; }
         await unlockCurrentNumber();
-
         const w = window.open('', '_blank');
         if (w) { w.document.write(buildPrintHTML(data, false)); w.document.close(); setTimeout(() => w.print(), 500); }
         else alert('⚠️ Pop-up diblok. Order disimpan, cetak manual.');
-
         resetForm();
         switchTab('tab-orders');
     }
@@ -2326,7 +2256,6 @@ document.addEventListener('DOMContentLoaded', function() {
         invoicePage.style.display = 'block'; invoicePage.classList.add('active');
         previewPage.style.display = 'none'; previewPage.classList.remove('active');
     }
-
     function updatePreview() {
         $('preview-invoice-number').textContent = $('invoice-number').value;
         $('preview-order-date').textContent = formatDate($('order-date').value);
@@ -2407,23 +2336,40 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ============ EVENT LISTENERS ============
-    $('new-invoice-btn').addEventListener('click', () => showContainer('tab-invoice'));
+    $('login-staff-btn').addEventListener('click', () => {
+        if (STAFF_NAME) {
+            if (!confirm('Anda sudah login sebagai ' + STAFF_NAME + '. Tukar staf?')) return;
+        }
+        openQrLogin();
+    });
+    $('new-invoice-btn').addEventListener('click', () => {
+        if (!STAFF_NAME) {
+            if (confirm('Sila login staf dahulu. Login sekarang?')) openQrLogin();
+            return;
+        }
+        showContainer('tab-invoice');
+    });
     $('manage-orders-btn').addEventListener('click', () => showContainer('tab-orders'));
     $('dashboard-btn').addEventListener('click', () => showPasswordPrompt('access_tab','tab-dashboard'));
     $('settings-btn').addEventListener('click', () => showPasswordPrompt('access_tab','tab-settings'));
     $('home-btn').addEventListener('click', showLandingPage);
-    $('change-name-btn').addEventListener('click', () => openQrLogin());
-    $('logout-btn').addEventListener('click', () => {
-        if (!confirm('Log keluar?')) return;
-        localStorage.removeItem('staffName'); localStorage.removeItem('staffLoggedInAt');
-        STAFF_NAME = ''; CURRENT_STAFF = null;
-        $('staff-badge').textContent = '👤 Staff';
+    $('change-name-btn').addEventListener('click', () => {
+        if (STAFF_NAME) {
+            if (!confirm('Tukar staf? Anda akan log keluar dari ' + STAFF_NAME + '.')) return;
+        }
         openQrLogin();
+    });
+    $('logout-btn').addEventListener('click', () => {
+        if (!confirm('Log keluar dari sistem?')) return;
+        localStorage.removeItem('staffName'); 
+        localStorage.removeItem('staffLoggedInAt');
+        STAFF_NAME = ''; CURRENT_STAFF = null;
+        $('staff-badge').textContent = '👤 Belum Login';
+        showLandingPage();
+        alert('✅ Anda telah log keluar.\n\nKlik "🔐 Login Staf" untuk login semula.');
     });
     document.querySelectorAll('.tab-btn').forEach(t => t.addEventListener('click', () => switchTab(t.id)));
 
-    $('save-name-btn').addEventListener('click', saveStaffName);
-    $('name-modal-input').addEventListener('keypress', e => { if (e.key === 'Enter') saveStaffName(); });
     $('submit-password').addEventListener('click', checkPassword);
     $('cancel-password').addEventListener('click', hidePasswordPrompt);
     $('password-input').addEventListener('keypress', e => { if (e.key === 'Enter') checkPassword(); });
@@ -2437,16 +2383,13 @@ document.addEventListener('DOMContentLoaded', function() {
         if (ok) $('danger-error').style.display = 'none';
     });
 
-    // QR Login events
     $('cancel-pin-login').addEventListener('click', closePinLogin);
     $('submit-pin-login').addEventListener('click', submitPinLogin);
 
-    // Settings events
     $('change-password-btn').addEventListener('click', changePassword);
     $('add-staff-btn').addEventListener('click', () => openStaffModal());
     $('cancel-staff-modal').addEventListener('click', closeStaffModal);
     $('save-staff-btn').addEventListener('click', saveStaff);
-    $('print-idcard-btn').addEventListener('click', () => {});
     $('do-print-idcard-btn').addEventListener('click', doPrintIdCard);
     $('close-idcard-btn').addEventListener('click', closeIdCard);
 
@@ -2469,7 +2412,6 @@ document.addEventListener('DOMContentLoaded', function() {
     $('add-sales-person-btn').addEventListener('click', handleAddSalesPerson);
     $('add-template-btn').addEventListener('click', handleAddTemplate);
 
-    // Size input modal
     $('open-size-input-btn').addEventListener('click', () => openSizeInputModal());
     $('cancel-size-input').addEventListener('click', closeSizeInputModal);
     $('submit-size-input').addEventListener('click', submitSizeInput);
@@ -2557,7 +2499,6 @@ document.addEventListener('DOMContentLoaded', function() {
         initYearDropdowns();
         $('order-date').value = new Date().toISOString().split('T')[0];
         applyBossMode();
-
         await loadAppSettings();
         await loadSalesPersons();
         await loadOrders();
@@ -2568,13 +2509,8 @@ document.addEventListener('DOMContentLoaded', function() {
         initRealtime();
         await updateAvailableInvoiceNumbers();
         await renderTemplateButtons();
-
-        if (STAFF_NAME) {
-            $('staff-badge').textContent = '👤 ' + STAFF_NAME;
-        } else {
-            $('staff-badge').textContent = '👤 Belum Login';
-        }
-
+        if (STAFF_NAME) $('staff-badge').textContent = '👤 ' + STAFF_NAME;
+        else $('staff-badge').textContent = '👤 Belum Login';
         setInterval(async () => { try { await supabaseClient.rpc('cleanup_old_locks'); } catch(e){} }, 5*60*1000);
         setInterval(async () => {
             if (container.style.display === 'block' && document.querySelector('.tab-btn.active')?.id === 'tab-invoice') {
