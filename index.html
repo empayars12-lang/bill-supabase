@@ -106,14 +106,14 @@ th { background-color: #f2f2f2; }
 #sales-person-table th:first-child, #sales-person-table td:first-child { text-align: left; }
 #sales-person-table .commission-input { width: 60px; padding: 5px; text-align: right; }
 #sales-person-table .bill-count { cursor: pointer; text-decoration: underline; color: #007bff; }
-#password-modal, #name-modal, #template-modal, #size-cat-modal, #size-input-modal, #qr-login-modal, #pin-login-modal, #staff-modal, #qr-display-modal, #idcard-modal { position: fixed; z-index: 3500; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; padding: 20px; }
-.password-modal-content, .name-modal-content, .template-modal-content, .size-cat-modal-content, .size-input-modal-content, .qr-login-modal-content, .pin-login-modal-content, .staff-modal-content, .qr-display-modal-content, .idcard-modal-content {
+#password-modal, #name-modal, #template-modal, #size-cat-modal, #size-input-modal, #qr-login-modal, #pin-login-modal, #staff-modal, #qr-display-modal, #idcard-modal, #staff-password-login-modal { position: fixed; z-index: 3500; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; padding: 20px; }
+.password-modal-content, .name-modal-content, .template-modal-content, .size-cat-modal-content, .size-input-modal-content, .qr-login-modal-content, .pin-login-modal-content, .staff-modal-content, .qr-display-modal-content, .idcard-modal-content, .staff-password-login-modal-content {
     background: white; padding: 30px; border-radius: 12px; position: relative;
     width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto;
 }
 .password-modal-content { max-width: 400px; }
 .size-input-modal-content { max-width: 600px; }
-.qr-login-modal-content, .pin-login-modal-content { max-width: 450px; text-align: center; }
+.qr-login-modal-content, .pin-login-modal-content, .staff-password-login-modal-content { max-width: 450px; text-align: center; }
 .idcard-modal-content { max-width: 600px; }
 .modal-close-x { color: #aaa; position: absolute; top: 10px; right: 15px; font-size: 28px; font-weight: bold; cursor: pointer; background: none; border: none; }
 #password-input, #delete-reason-input { padding: 10px; width: 100%; margin-bottom: 15px; box-sizing: border-box; }
@@ -236,6 +236,7 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
     <div class="tagline">Sistem Pengurusan Invois & Order</div>
     <div class="action-buttons-landing">
         <button id="login-staff-btn" class="btn-landing btn-primary-landing">🔐 Login Staf (QR + PIN)</button>
+        <button id="login-password-btn" class="btn-landing btn-secondary-landing">🔑 Login dengan Password</button>
         <button id="new-invoice-btn" class="btn-landing btn-secondary-landing">Buat Invois Baru</button>
         <button id="manage-orders-btn" class="btn-landing btn-secondary-landing">Urus Order</button>
         <button id="dashboard-btn" class="btn-landing btn-secondary-landing">Papan Pemuka Jualan</button>
@@ -573,6 +574,10 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
         <p style="color:#666;font-size:13px;">Halakan kamera ke QR code pada kad staf.</p>
         <div id="qr-reader"></div>
         <div id="qr-reader-status">Sedia scan...</div>
+        <div style="margin-top:20px;padding-top:15px;border-top:1px solid #eee;">
+            <p style="color:#666;font-size:12px;margin:0 0 10px;">Kamera tak berfungsi?</p>
+            <button id="switch-to-password-btn" class="btn" style="background:#6e48aa;">🔑 Guna Password</button>
+        </div>
     </div>
 </div>
 
@@ -591,6 +596,20 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
         <div class="action-buttons" style="justify-content:center;">
             <button id="cancel-pin-login" class="btn btn-secondary">Batal</button>
             <button id="submit-pin-login" class="btn">Log Masuk</button>
+        </div>
+    </div>
+</div>
+
+<div id="staff-password-login-modal">
+    <div class="staff-password-login-modal-content">
+        <button class="modal-close-x" onclick="closePasswordLogin()">×</button>
+        <h3 style="color:#6e48aa;margin-top:0;">🔑 Login dengan Password</h3>
+        <p style="color:#666;font-size:13px;">Masukkan password boss untuk log masuk sebagai admin.</p>
+        <input type="password" id="staff-login-password" placeholder="Password" style="width:100%;padding:12px;border:2px solid #ddd;border-radius:6px;margin:15px 0;font-size:16px;">
+        <div id="staff-password-error" style="color:red;font-size:13px;margin-bottom:10px;display:none;">Password salah!</div>
+        <div class="action-buttons" style="justify-content:center;">
+            <button id="cancel-password-login" class="btn btn-secondary">Batal</button>
+            <button id="submit-password-login" class="btn" style="background:#6e48aa;">Log Masuk</button>
         </div>
     </div>
 </div>
@@ -840,7 +859,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return !!(invoiceNum || customerName || customerPhone || hasItems);
     }
 
-    // ============ APP SETTINGS ============
     async function loadAppSettings() {
         try {
             const { data } = await supabaseClient.from('app_settings').select('*').eq('key', 'boss_password').maybeSingle();
@@ -857,7 +875,6 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch(e) { alert('Gagal: ' + e.message); return false; }
     }
 
-    // ============ STAFF CARDS ============
     async function loadStaffCards() {
         try {
             const { data, error } = await supabaseClient.from('staff_cards').select('*').order('created_at', {ascending: true});
@@ -920,7 +937,6 @@ document.addEventListener('DOMContentLoaded', function() {
         await supabaseClient.from('staff_cards').update({last_login: new Date()}).eq('id', staffId);
     }
 
-    // ============ AUDIT LOGS ============
     async function addAuditLog(invoiceNumber, action, fieldChanged, oldValue, newValue, notes) {
         try {
             await supabaseClient.from('audit_logs').insert({
@@ -938,7 +954,6 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch(e) { return []; }
     }
 
-    // ============ ORDERS CRUD ============
     async function loadOrders() {
         try {
             const { data: orders, error } = await supabaseClient.from('orders').select('*').order('created_at',{ascending:false});
@@ -1095,7 +1110,6 @@ document.addEventListener('DOMContentLoaded', function() {
         catch(e) { alert('Gagal: ' + e.message); return false; }
     }
 
-    // ============ LOCKS ============
     async function fetchActiveLocks() {
         const cutoff = new Date(Date.now() - 30*60*1000).toISOString();
         const { data } = await supabaseClient.from('invoice_locks').select('*').gt('locked_at', cutoff);
@@ -1123,7 +1137,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (currentlyLockedNumber) { await unlockInvoiceNumber(currentlyLockedNumber); currentlyLockedNumber = null; }
     }
 
-    // ============ INVOICE NUMBERS ============
     function generateInvoiceNumbers() { const a=[]; for (let i=1;i<=9999;i++) a.push('25D'+i.toString().padStart(4,'0')); return a; }
     async function updateAvailableInvoiceNumbers() {
         const orders = await loadOrders();
@@ -1141,7 +1154,6 @@ document.addEventListener('DOMContentLoaded', function() {
         used.forEach(n => { if (!locked.includes(n)) { const o = document.createElement('div'); o.className='invoice-number-option used'; o.textContent=n+' (Sudah Digunakan)'; o.dataset.value=n; d.appendChild(o); }});
     }
 
-    // ============ NAVIGATION ============
     function showLandingPage() { landingPage.style.display='flex'; container.style.display='none'; }
     function showContainer(tab) { landingPage.style.display='none'; container.style.display='block'; document.getElementById(tab).click(); }
     function switchTab(id) {
@@ -1165,7 +1177,6 @@ document.addEventListener('DOMContentLoaded', function() {
         applyBossMode();
     }
 
-    // ============ PASSWORD ============
     function showPasswordPrompt(action, target) {
         $('password-input').value=''; $('delete-reason-input').value=''; $('password-error').style.display='none';
         $('password-action').value=action; $('password-target-id').value=target;
@@ -1191,7 +1202,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // ============ DANGER MODAL ============
     function showDangerModal() {
         $('danger-confirm-input').value = ''; $('danger-error').style.display = 'none';
         $('danger-confirm-btn').disabled = true;
@@ -1274,10 +1284,8 @@ document.addEventListener('DOMContentLoaded', function() {
         $('qr-reader-status').textContent = '✅ Dijumpai: ' + staff.staff_name;
         await stopQrScanner();
         closeQrLogin();
-        
         const loginMethod = staff.login_method || 'qr_pin';
         if (loginMethod === 'qr_only') {
-            // Terus login
             STAFF_NAME = staff.staff_name;
             localStorage.setItem('staffName', STAFF_NAME);
             localStorage.setItem('staffLoggedInAt', Date.now());
@@ -1287,7 +1295,6 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('✅ Selamat datang, ' + staff.staff_name + '!');
             showContainer('tab-invoice');
         } else {
-            // Perlu PIN
             openPinLogin(staff);
         }
     }
@@ -1323,7 +1330,6 @@ document.addEventListener('DOMContentLoaded', function() {
         closePinLogin();
         showContainer('tab-invoice');
     }
-
     ['pin-1','pin-2','pin-3','pin-4'].forEach((id, idx) => {
         const el = $(id);
         if (!el) return;
@@ -1336,7 +1342,33 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // ============ PASSWORD CHANGE ============
+    // ============ LOGIN PASSWORD (backup) ============
+    function openPasswordLogin() {
+        $('staff-login-password').value = '';
+        $('staff-password-error').style.display = 'none';
+        $('staff-password-login-modal').style.display = 'flex';
+        setTimeout(() => $('staff-login-password').focus(), 100);
+    }
+    window.closePasswordLogin = function() {
+        $('staff-password-login-modal').style.display = 'none';
+    };
+    async function submitPasswordLogin() {
+        const pwd = $('staff-login-password').value;
+        if (pwd !== CORRECT_PASSWORD) {
+            $('staff-password-error').style.display = 'block';
+            return;
+        }
+        STAFF_NAME = 'BOSS';
+        localStorage.setItem('staffName', STAFF_NAME);
+        localStorage.setItem('staffLoggedInAt', Date.now());
+        sessionStorage.setItem('appAuthed', 'true');
+        $('staff-badge').textContent = '👤 BOSS';
+        applyBossMode();
+        closePasswordLogin();
+        alert('✅ Selamat datang, BOSS!');
+        showContainer('tab-invoice');
+    }
+
     async function changePassword() {
         const oldPwd = $('old-password').value;
         const newPwd = $('new-password').value;
@@ -1350,7 +1382,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // ============ STAFF CARDS DISPLAY ============
     function displayStaffCards() {
         const cont = $('staff-cards-list');
         if (!allStaffCardsCache.length) {
@@ -1492,7 +1523,6 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => { w.print(); }, 500);
     }
 
-    // ============ SIZE CATEGORIES ============
     function displaySizeCategories() {
         const list = $('size-cat-list');
         if (!allSizeCatsCache.length) {
@@ -1545,7 +1575,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (ok) { await loadSizeCategories(); displaySizeCategories(); closeSizeCatModal(); }
     }
 
-    // ============ SIZE INPUT ============
     async function openSizeInputModal(editIdx = null) {
         await loadSizeCategories();
         if (!allSizeCatsCache.length) { alert('Tiada kategori saiz. Tambah dalam tab "Template & Saiz".'); return; }
@@ -1618,7 +1647,6 @@ document.addEventListener('DOMContentLoaded', function() {
         closeSizeInputModal();
     }
 
-    // ============ RENDER INVOICE TABLE ============
     function renderInvoiceTable() {
         const tbody = $('items-table').querySelector('tbody');
         tbody.innerHTML = '';
@@ -1696,7 +1724,6 @@ document.addEventListener('DOMContentLoaded', function() {
         $('total-amount').textContent = ta.toFixed(2);
     }
 
-    // ============ TEMPLATES ============
     async function displayTemplates() {
         const tpls = await loadTemplates();
         const tb = $('template-list'); tb.innerHTML = '';
@@ -1739,7 +1766,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // ============ ORDER LIST ============
     function getFilteredOrders() {
         let orders = [...allOrdersCache];
         const sf = document.querySelector('#order-list-page .filter-btn.active')?.dataset.filter || 'all';
@@ -1800,7 +1826,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     async function markPending(o) { await updateOrderWithLog({...o, status:'pending'}, o); displayOrders(); }
 
-    // ============ ORDER AKTIF ============
     async function displayActiveOrders() {
         await loadOrders();
         const s = $('filter-active-sales').value, srch = $('search-active').value.toLowerCase();
@@ -1848,7 +1873,6 @@ document.addEventListener('DOMContentLoaded', function() {
         applyBossMode();
     }
 
-    // ============ DETAIL ============
     async function showOrderDetail(o) {
         currentOrder = o;
         $('detail-invoice-number').textContent = o.invoiceNumber;
@@ -1892,7 +1916,6 @@ document.addEventListener('DOMContentLoaded', function() {
         currentOrder = null;
     }
 
-    // ============ PRINT ============
     function buildPrintHTML(o, isFinal) {
         const title = isFinal ? 'INVOIS AKHIR' : 'INVOIS';
         const stamp = isFinal ? '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-45deg);font-size:60px;color:rgba(0,0,0,0.2);font-weight:bold;border:5px solid rgba(0,0,0,0.2);padding:20px;z-index:1000;">SELESAI</div>' : '';
@@ -1929,7 +1952,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function printOrder() { if (!currentOrder) return; const w = window.open('','_blank'); if (!w) return alert('Pop-up diblok'); w.document.write(buildPrintHTML(currentOrder,false)); w.document.close(); setTimeout(()=>w.print(),500); }
     function printFinal() { if (!currentOrder) return; const w = window.open('','_blank'); if (!w) return alert('Pop-up diblok'); w.document.write(buildPrintHTML(currentOrder,true)); w.document.close(); setTimeout(()=>w.print(),500); }
 
-    // ============ PAYMENT ============
     function showPaymentModal(o) {
         currentOrder = o;
         $('payment-date').value = new Date().toISOString().split('T')[0];
@@ -1949,7 +1971,6 @@ document.addEventListener('DOMContentLoaded', function() {
         } else alert('Gagal simpan.');
     }
 
-    // ============ EDIT ORDER ============
     function showEditOrderModal(o) {
         currentOrder = o;
         $('edit-invoice-number').value = o.invoiceNumber;
@@ -2050,7 +2071,6 @@ document.addEventListener('DOMContentLoaded', function() {
         w.document.write(buildPrintHTML(temp, false)); w.document.close(); setTimeout(()=>w.print(),500);
     }
 
-    // ============ DELETE ============
     function promptDeleteOrder() { if (currentOrder) showPasswordPrompt('delete_order', currentOrder.invoiceNumber); }
     async function performDeleteOrder(inv, reason) {
         if (await deleteOrder(inv, reason)) {
@@ -2059,7 +2079,6 @@ document.addEventListener('DOMContentLoaded', function() {
         } else alert('Gagal padam.');
     }
 
-    // ============ EXPORT CSV ============
     function exportCSV() {
         const orders = getFilteredOrders();
         if (!orders.length) return alert('Tiada order untuk export.');
@@ -2073,7 +2092,6 @@ document.addEventListener('DOMContentLoaded', function() {
         URL.revokeObjectURL(url);
     }
 
-    // ============ SALES PERSON ============
     async function populateSalesPersonDropdown() {
         const sp = await loadSalesPersons();
         const cur = $('sales-person').value;
@@ -2140,7 +2158,6 @@ document.addEventListener('DOMContentLoaded', function() {
         $('customer-list').innerHTML = names.map(n => `<option value="${escapeAttr(n)}">`).join('');
     }
 
-    // ============ DASHBOARD ============
     function getPeriodRange(period, monthSel, yearSel) {
         const now = new Date();
         const year = yearSel ? parseInt(yearSel) : now.getFullYear();
@@ -2216,7 +2233,6 @@ document.addEventListener('DOMContentLoaded', function() {
         $('yearly-sales').textContent = formatRM(sumRange(yearStart, 'subtotal'));
     }
 
-    // ============ SUBMIT & PRINT ============
     async function submitAndPrint() {
         if (!$('sales-person').value) return alert('Sila pilih jurujual.');
         const inv = $('invoice-number').value;
@@ -2287,7 +2303,6 @@ document.addEventListener('DOMContentLoaded', function() {
         $('preview-total-amount').textContent = ta.toFixed(2);
     }
 
-    // ============ REALTIME ============
     let realtimeChannels = [];
     function initRealtime() {
         realtimeChannels.forEach(c => supabaseClient.removeChannel(c));
@@ -2341,6 +2356,14 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!confirm('Anda sudah login sebagai ' + STAFF_NAME + '. Tukar staf?')) return;
         }
         openQrLogin();
+    });
+    $('login-password-btn').addEventListener('click', openPasswordLogin);
+    $('cancel-password-login').addEventListener('click', closePasswordLogin);
+    $('submit-password-login').addEventListener('click', submitPasswordLogin);
+    $('staff-login-password').addEventListener('keypress', e => { if (e.key === 'Enter') submitPasswordLogin(); });
+    $('switch-to-password-btn').addEventListener('click', () => {
+        closeQrLogin();
+        setTimeout(() => openPasswordLogin(), 300);
     });
     $('new-invoice-btn').addEventListener('click', () => {
         if (!STAFF_NAME) {
