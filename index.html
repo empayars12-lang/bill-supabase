@@ -71,6 +71,8 @@
         .btn-danger { background: #e74c3c; } .btn-danger:hover { background: #c0392b; }
         .btn-warning { background: #f39c12; } .btn-warning:hover { background: #d35400; }
         .btn-info { background: #3498db; } .btn-info:hover { background: #2980b9; }
+        .btn-print-hantar { background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); font-weight: bold; padding: 12px 25px; font-size: 17px; box-shadow: 0 3px 10px rgba(46, 204, 113, 0.4); }
+        .btn-print-hantar:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(46, 204, 113, 0.5); }
         .terms { font-size: 12px; margin-top: 20px; padding: 10px; background: #f9f9f9; border-radius: 4px; }
         .bank-info { margin-top: 20px; padding: 10px; background: #e8f4fc; border-radius: 4px; }
         .action-buttons { display: flex; justify-content: space-between; margin-top: 20px; gap: 10px; flex-wrap: wrap; }
@@ -130,92 +132,26 @@
         .name-modal-content, .template-modal-content { background: white; padding: 30px; border-radius: 8px; position: relative; width: 90%; max-width: 400px; }
         .template-modal-content { max-width: 600px; max-height: 80vh; overflow-y: auto; }
 
-        /* MODAL KHAS UNTUK PADAM SEMUA ORDER */
         #danger-modal {
-            position: fixed;
-            z-index: 4000;
-            left: 0; top: 0;
-            width: 100%; height: 100%;
-            background-color: rgba(20, 0, 0, 0.85);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            position: fixed; z-index: 4000; left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(20, 0, 0, 0.85); display: none; justify-content: center; align-items: center; padding: 20px;
         }
-        .danger-modal-content {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            width: 100%;
-            max-width: 500px;
-            box-shadow: 0 10px 40px rgba(231, 76, 60, 0.5);
-            border-top: 6px solid #e74c3c;
-        }
-        .danger-modal-content h3 {
-            color: #e74c3c;
-            margin-top: 0;
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .danger-modal-content .warning-box {
-            background: #fff5f5;
-            border-left: 4px solid #e74c3c;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 4px;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-        .danger-modal-content .warning-box ul {
-            margin: 8px 0 0 20px;
-            padding: 0;
-        }
+        .danger-modal-content { background: white; padding: 30px; border-radius: 12px; width: 100%; max-width: 500px; box-shadow: 0 10px 40px rgba(231, 76, 60, 0.5); border-top: 6px solid #e74c3c; }
+        .danger-modal-content h3 { color: #e74c3c; margin-top: 0; font-size: 1.5rem; display: flex; align-items: center; gap: 10px; }
+        .danger-modal-content .warning-box { background: #fff5f5; border-left: 4px solid #e74c3c; padding: 15px; margin: 15px 0; border-radius: 4px; font-size: 14px; line-height: 1.6; }
+        .danger-modal-content .warning-box ul { margin: 8px 0 0 20px; padding: 0; }
         .danger-modal-content .warning-box li { margin-bottom: 4px; }
-        .danger-modal-content input[type="text"] {
-            padding: 12px;
-            font-size: 16px;
-            text-align: center;
-            font-weight: bold;
-            letter-spacing: 2px;
-            margin: 10px 0;
-            text-transform: uppercase;
-            border: 2px solid #ddd;
-        }
-        .danger-modal-content input[type="text"]:focus {
-            border-color: #e74c3c;
-            outline: none;
-        }
-        .danger-modal-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        .danger-modal-buttons button {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 6px;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
+        .danger-modal-content input[type="text"] { padding: 12px; font-size: 16px; text-align: center; font-weight: bold; letter-spacing: 2px; margin: 10px 0; text-transform: uppercase; border: 2px solid #ddd; }
+        .danger-modal-content input[type="text"]:focus { border-color: #e74c3c; outline: none; }
+        .danger-modal-buttons { display: flex; gap: 10px; margin-top: 20px; }
+        .danger-modal-buttons button { flex: 1; padding: 12px; border: none; border-radius: 6px; font-size: 15px; font-weight: bold; cursor: pointer; transition: all 0.2s; }
         #danger-cancel-btn { background: #95a5a6; color: white; }
         #danger-cancel-btn:hover { background: #7f8c8d; }
         #danger-confirm-btn { background: #e74c3c; color: white; }
         #danger-confirm-btn:hover { background: #c0392b; }
         #danger-confirm-btn:disabled { background: #ccc; cursor: not-allowed; }
-        #danger-error {
-            color: #e74c3c;
-            font-size: 13px;
-            font-weight: bold;
-            margin-top: 10px;
-            display: none;
-        }
+        #danger-error { color: #e74c3c; font-size: 13px; font-weight: bold; margin-top: 10px; display: none; }
 
-        /* ============ SEMBUNYIKAN SUMMARY DARI STAF ============ */
         body:not(.boss-mode) #order-list-page .summary-row { display: none !important; }
         body:not(.boss-mode) #active-orders-page .summary-row { display: none !important; }
         body.boss-mode #order-list-page .summary-row { display: flex !important; }
@@ -381,8 +317,7 @@
                 </div>
                 <div class="action-buttons no-print">
                     <button id="back-to-edit" class="btn btn-secondary">Kembali & Baiki</button>
-                    <button id="submit-to-sheets" class="btn">Hantar Pesanan</button>
-                    <button id="print-invoice" class="btn">Cetak Invois</button>
+                    <button id="submit-and-print" class="btn btn-print-hantar">📤 Hantar & Cetak</button>
                 </div>
             </div>
         </div>
@@ -575,7 +510,6 @@
         </div>
     </div>
 
-    <!-- DANGER MODAL - UNTUK PADAM SEMUA ORDER -->
     <div id="danger-modal">
         <div class="danger-modal-content">
             <h3>⚠️ AMARAN — TINDAKAN BERBAHAYA</h3>
@@ -956,7 +890,6 @@ document.addEventListener('DOMContentLoaded', function() {
             hidePasswordPrompt();
             if (landingPage.style.display === 'flex') showContainer(target); else switchTab(target);
         } else if (action === 'clear_all_orders') {
-            // Kata laluan betul → buka danger modal untuk pengesahan kedua
             sessionStorage.setItem('appAuthed','true');
             applyBossMode();
             hidePasswordPrompt();
@@ -964,7 +897,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // ============ DANGER MODAL (Padam Semua Order) ============
+    // ============ DANGER MODAL ============
     function showDangerModal() {
         $('danger-confirm-input').value = '';
         $('danger-error').style.display = 'none';
@@ -981,10 +914,7 @@ document.addEventListener('DOMContentLoaded', function() {
             $('danger-error').style.display = 'block';
             return;
         }
-        // Pengesahan terakhir
-        if (!confirm('🚨 Pengesahan TERAKHIR!\n\nBetul-betul PASTI nak padam SEMUA order?\n\nTindakan ini TIDAK BOLEH dikembalikan!')) {
-            return;
-        }
+        if (!confirm('🚨 Pengesahan TERAKHIR!\n\nBetul-betul PASTI nak padam SEMUA order?\n\nTindakan ini TIDAK BOLEH dikembalikan!')) return;
         try {
             $('danger-confirm-btn').disabled = true;
             $('danger-confirm-btn').textContent = '⏳ Memadam...';
@@ -1609,35 +1539,62 @@ document.addEventListener('DOMContentLoaded', function() {
         $('preview-total-quantity').textContent = tq;
         $('preview-total-amount').textContent = ta.toFixed(2);
     }
-    async function submitOrder() {
+
+    // ============ HANTAR & CETAK ============
+    async function submitAndPrint() {
         if (!$('sales-person').value) return alert('Sila pilih jurujual.');
         const inv = $('invoice-number').value;
         if (!inv) return alert('Sila pilih no. bil.');
         if (allOrdersCache.find(o => o.invoiceNumber === inv)) return alert('No. bil sudah wujud!');
+
+        if (!confirm(`📤 Hantar order ${inv} & cetak invois?`)) return;
+
         const data = {
-            invoiceNumber:inv,
-            customerName:$('customer-name').value||'-',
-            customerPhone:$('customer-phone').value||'-',
-            orderDate:$('order-date').value||'-',
-            completionDate:$('completion-date').value||'-',
-            salesPerson:$('sales-person').value||'-',
-            totalAmount:parseFloat($('preview-total').textContent)||0,
-            discount:parseFloat($('preview-discount').textContent)||0,
-            subtotal:parseFloat($('preview-subtotal').textContent)||0,
-            deposit:parseFloat($('deposit').value)||0,
-            balance:parseFloat($('preview-balance').textContent)||0,
-            status:'normal', createdBy:STAFF_NAME, items:[]
+            invoiceNumber: inv,
+            customerName: $('customer-name').value || '-',
+            customerPhone: $('customer-phone').value || '-',
+            orderDate: $('order-date').value || '-',
+            completionDate: $('completion-date').value || '-',
+            salesPerson: $('sales-person').value || '-',
+            totalAmount: parseFloat($('preview-total').textContent) || 0,
+            discount: parseFloat($('preview-discount').textContent) || 0,
+            subtotal: parseFloat($('preview-subtotal').textContent) || 0,
+            deposit: parseFloat($('deposit').value) || 0,
+            balance: parseFloat($('preview-balance').textContent) || 0,
+            status: 'normal', createdBy: STAFF_NAME, items: []
         };
         $('items-table').querySelectorAll('tbody tr').forEach(r => {
             const d = r.querySelector('.item-desc').value;
-            if (d) data.items.push({description:d, price:parseFloat(r.querySelector('.item-price').value)||0, quantity:parseInt(r.querySelector('.quantity-input').value)||0, total:parseFloat(r.querySelector('.item-total').textContent)||0});
+            if (d) data.items.push({
+                description: d,
+                price: parseFloat(r.querySelector('.item-price').value) || 0,
+                quantity: parseInt(r.querySelector('.quantity-input').value) || 0,
+                total: parseFloat(r.querySelector('.item-total').textContent) || 0
+            });
         });
-        if (await addOrder(data)) {
-            await unlockCurrentNumber();
-            alert(`Order ${inv} berjaya disimpan!`);
-            resetForm(); switchTab('tab-orders');
+
+        const success = await addOrder(data);
+        if (!success) {
+            alert('❌ Gagal simpan order. Sila cuba lagi.');
+            return;
         }
+
+        await unlockCurrentNumber();
+
+        // Buka tetingkap cetak
+        const w = window.open('', '_blank');
+        if (w) {
+            w.document.write(buildPrintHTML(data, false));
+            w.document.close();
+            setTimeout(() => w.print(), 500);
+        } else {
+            alert('⚠️ Pop-up diblok. Order berjaya disimpan, tapi cetak perlu buka manual.');
+        }
+
+        resetForm();
+        switchTab('tab-orders');
     }
+
     function resetForm() {
         $('customer-name').value = ''; $('customer-phone').value = '';
         $('order-date').value = new Date().toISOString().split('T')[0];
@@ -1708,7 +1665,6 @@ document.addEventListener('DOMContentLoaded', function() {
     $('password-input').addEventListener('keypress', e => { if (e.key === 'Enter') checkPassword(); });
     $('delete-reason-input').addEventListener('keypress', e => { if (e.key === 'Enter') checkPassword(); });
 
-    // DANGER MODAL listeners
     $('danger-cancel-btn').addEventListener('click', hideDangerModal);
     $('danger-confirm-btn').addEventListener('click', executeClearAllOrders);
     $('danger-confirm-input').addEventListener('input', e => {
@@ -1780,29 +1736,9 @@ document.addEventListener('DOMContentLoaded', function() {
         previewPage.style.display = 'none'; invoicePage.style.display = 'block';
         previewPage.classList.remove('active'); invoicePage.classList.add('active');
     });
-    $('print-invoice').addEventListener('click', () => {
-        if (!$('invoice-number').value) return alert('Pilih no. bil.');
-        const temp = {
-            invoiceNumber:$('preview-invoice-number').textContent,
-            customerName:$('preview-customer-name').textContent,
-            customerPhone:$('preview-customer-phone').textContent,
-            orderDate:$('order-date').value, completionDate:$('completion-date').value,
-            salesPerson:$('preview-sales-person').textContent,
-            totalAmount:parseFloat($('preview-total').textContent)||0,
-            discount:parseFloat($('preview-discount').textContent)||0,
-            subtotal:parseFloat($('preview-subtotal').textContent)||0,
-            deposit:parseFloat($('preview-deposit').textContent)||0,
-            balance:parseFloat($('preview-balance').textContent)||0,
-            items:[]
-        };
-        $('items-table').querySelectorAll('tbody tr').forEach(r => {
-            const d = r.querySelector('.item-desc').value;
-            if (d) temp.items.push({description:d, price:parseFloat(r.querySelector('.item-price').value)||0, quantity:parseInt(r.querySelector('.quantity-input').value)||0, total:parseFloat(r.querySelector('.item-total').textContent)||0});
-        });
-        const w = window.open('','_blank'); if (!w) return alert('Pop-up diblok.');
-        w.document.write(buildPrintHTML(temp, false)); w.document.close(); setTimeout(()=>w.print(),500);
-    });
-    $('submit-to-sheets').addEventListener('click', submitOrder);
+
+    // BUTANG BAHARU: Hantar & Cetak
+    $('submit-and-print').addEventListener('click', submitAndPrint);
 
     $('search-orders').addEventListener('input', displayOrders);
     $('filter-period').addEventListener('change', displayOrders);
@@ -1822,7 +1758,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }));
     $('export-csv-btn').addEventListener('click', exportCSV);
 
-    // ============ KOSONGKAN SEMUA ORDER — PERLU PASSWORD ============
     $('clear-all-orders-btn').addEventListener('click', () => {
         showPasswordPrompt('clear_all_orders', 'Padam Semua Order');
     });
