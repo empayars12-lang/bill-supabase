@@ -60,8 +60,15 @@ body { font-family: 'Arial', sans-serif; margin: 0; padding: 0; background-color
 .audit-log-section { margin-top: 25px; padding: 15px; background: #f9f9f9; border-radius: 8px; }
 .audit-log-section h4 { margin-top: 0; color: #6e48aa; }
 .audit-log-item { padding: 10px; border-left: 3px solid #6e48aa; background: white; margin-bottom: 8px; border-radius: 4px; font-size: 13px; }
-.audit-log-item .log-header { font-weight: bold; color: #333; margin-bottom: 3px; }
-.audit-log-item .log-detail { color: #666; font-size: 12px; }
+.audit-log-item .log-header { font-weight: bold; color: #333; margin-bottom: 5px; }
+.audit-log-item .log-detail { color: #666; font-size: 12px; line-height: 1.6; }
+.audit-log-item .log-detail strong { color: #333; }
+.audit-log-item.log-create { border-left-color: #2ecc71; }
+.audit-log-item.log-delete { border-left-color: #e74c3c; }
+.audit-log-item.log-update { border-left-color: #3498db; }
+.audit-log-item.log-item_add { border-left-color: #27ae60; background: #f0fff5; }
+.audit-log-item.log-item_remove { border-left-color: #e74c3c; background: #fff5f5; }
+.audit-log-item.log-item_update { border-left-color: #f39c12; background: #fffbf0; }
 .page { display: none; } .page.active { display: block; }
 .header-info { text-align: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; }
 .header-info img { max-width: 120px; height: auto; }
@@ -483,7 +490,7 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
 
     <div id="sales-person-page" class="page">
         <h2 style="margin-top:0;">📊 Jualan & Komisen Staf</h2>
-        <p style="color:#666;margin-top:-10px;">Senarai ini diambil dari <strong>⚙️ Tetapan → Kad Staf</strong>. Tambah/padam staf di sana.</p>
+        <p style="color:#666;margin-top:-10px;">Senarai ini diambil dari <strong>⚙️ Tetapan → Kad Staf</strong>.</p>
         <div class="action-buttons no-print" style="justify-content:flex-start; margin-bottom:15px;">
             <button id="goto-settings-btn" class="btn" style="background:#6e48aa;">⚙️ Buka Tetapan (Tambah Staf)</button>
         </div>
@@ -856,7 +863,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return {text:`${days} hari lagi`,cls:'normal'};
     }
 
-    // ============ BOSS MODE + ROLE ============
     function applyBossMode() {
         const hasBossAccess = (sessionStorage.getItem('appAuthed') === 'true' || isBoss);
         if (hasBossAccess) {
@@ -1026,6 +1032,8 @@ document.addEventListener('DOMContentLoaded', function() {
             return true;
         } catch(e) { console.error('addOrder:', e); alert('Gagal simpan: ' + e.message); return false; }
     }
+
+    // ============ UPDATE ORDER + DETAILED AUDIT LOG ============
     async function updateOrderWithLog(newOrder, oldOrder) {
         try {
             const { error } = await supabaseClient.from('orders').update({
@@ -1047,19 +1055,99 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
             if (oldOrder) {
+                // ===== 1. LOG FIELD UTAMA =====
                 const changes = [];
-                if (oldOrder.customerName !== newOrder.customerName) changes.push({f:'Nama Pelanggan', o:oldOrder.customerName, n:newOrder.customerName});
-                if (oldOrder.customerPhone !== newOrder.customerPhone) changes.push({f:'Telefon', o:oldOrder.customerPhone, n:newOrder.customerPhone});
-                if (oldOrder.completionDate !== newOrder.completionDate) changes.push({f:'Tarikh Siap', o:formatDate(oldOrder.completionDate), n:formatDate(newOrder.completionDate)});
-                if (Math.abs(oldOrder.deposit - newOrder.deposit) > 0.01) changes.push({f:'Deposit', o:`RM${oldOrder.deposit}`, n:`RM${newOrder.deposit}`});
-                if (Math.abs(oldOrder.totalAmount - newOrder.totalAmount) > 0.01) changes.push({f:'Jumlah Item', o:`RM${oldOrder.totalAmount}`, n:`RM${newOrder.totalAmount}`});
-                if (oldOrder.salesPerson !== newOrder.salesPerson) changes.push({f:'Jurujual', o:oldOrder.salesPerson, n:newOrder.salesPerson});
-                if (oldOrder.status !== newOrder.status) changes.push({f:'Status', o:oldOrder.status, n:newOrder.status});
-                for (const c of changes) await addAuditLog(newOrder.invoiceNumber, 'update', c.f, c.o, c.n, null);
+                if (oldOrder.customerName !== newOrder.customerName) 
+                    changes.push({f:'Nama Pelanggan', o:oldOrder.customerName, n:newOrder.customerName});
+                if (oldOrder.customerPhone !== newOrder.customerPhone) 
+                    changes.push({f:'Telefon', o:oldOrder.customerPhone, n:newOrder.customerPhone});
+                if (oldOrder.orderDate !== newOrder.orderDate)
+                    changes.push({f:'Tarikh Order', o:formatDate(oldOrder.orderDate), n:formatDate(newOrder.orderDate)});
+                if (oldOrder.completionDate !== newOrder.completionDate) 
+                    changes.push({f:'Tarikh Siap', o:formatDate(oldOrder.completionDate), n:formatDate(newOrder.completionDate)});
+                if (Math.abs((oldOrder.discount||0) - (newOrder.discount||0)) > 0.01) 
+                    changes.push({f:'Diskaun', o:`RM${(oldOrder.discount||0).toFixed(2)}`, n:`RM${(newOrder.discount||0).toFixed(2)}`});
+                if (Math.abs((oldOrder.deposit||0) - (newOrder.deposit||0)) > 0.01) 
+                    changes.push({f:'Deposit', o:`RM${(oldOrder.deposit||0).toFixed(2)}`, n:`RM${(newOrder.deposit||0).toFixed(2)}`});
+                if (Math.abs((oldOrder.totalAmount||0) - (newOrder.totalAmount||0)) > 0.01) 
+                    changes.push({f:'Jumlah Item', o:`RM${(oldOrder.totalAmount||0).toFixed(2)}`, n:`RM${(newOrder.totalAmount||0).toFixed(2)}`});
+                if (Math.abs((oldOrder.balance||0) - (newOrder.balance||0)) > 0.01) 
+                    changes.push({f:'Baki', o:`RM${(oldOrder.balance||0).toFixed(2)}`, n:`RM${(newOrder.balance||0).toFixed(2)}`});
+                if ((oldOrder.salesPerson||'-') !== (newOrder.salesPerson||'-')) 
+                    changes.push({f:'Jurujual', o:oldOrder.salesPerson||'-', n:newOrder.salesPerson||'-'});
+                if (oldOrder.status !== newOrder.status) 
+                    changes.push({f:'Status', o:getStatusText(oldOrder.status), n:getStatusText(newOrder.status)});
+                
+                for (const c of changes) {
+                    await addAuditLog(newOrder.invoiceNumber, 'update', c.f, c.o, c.n, null);
+                }
+                
+                // ===== 2. LOG PERUBAHAN ITEM =====
+                const oldItems = oldOrder.items || [];
+                const newItems = newOrder.items || [];
+                
+                function itemLabel(it) {
+                    const lines = (it.description || '').split('\n');
+                    const main = lines[0].trim();
+                    const size = lines.length > 1 ? ' [' + lines.slice(1).join(' ') + ']' : '';
+                    return main + size;
+                }
+                
+                const oldMap = {};
+                oldItems.forEach(it => {
+                    const key = (it.description || '').trim();
+                    if (!oldMap[key]) oldMap[key] = [];
+                    oldMap[key].push(it);
+                });
+                const newMap = {};
+                newItems.forEach(it => {
+                    const key = (it.description || '').trim();
+                    if (!newMap[key]) newMap[key] = [];
+                    newMap[key].push(it);
+                });
+                
+                // Item DITAMBAH
+                for (const [desc, items] of Object.entries(newMap)) {
+                    if (!oldMap[desc]) {
+                        for (const it of items) {
+                            await addAuditLog(newOrder.invoiceNumber, 'item_add', 'Item Ditambah', 
+                                null, 
+                                `${itemLabel(it)} (${it.quantity}x RM${(it.price||0).toFixed(2)}) = RM${(it.total||0).toFixed(2)}`);
+                        }
+                    } else {
+                        const oldItems2 = oldMap[desc];
+                        const newIt = items[0]; const oldIt = oldItems2[0];
+                        const oldQty = oldItems2.reduce((s,i) => s + (i.quantity||0), 0);
+                        const newQty = items.reduce((s,i) => s + (i.quantity||0), 0);
+                        
+                        if (oldQty !== newQty) {
+                            await addAuditLog(newOrder.invoiceNumber, 'item_update', 'Kuantiti Item', 
+                                `${itemLabel(oldIt)}: ${oldQty}x`, 
+                                `${itemLabel(newIt)}: ${newQty}x`);
+                        }
+                        if (Math.abs((oldIt.price||0) - (newIt.price||0)) > 0.01) {
+                            await addAuditLog(newOrder.invoiceNumber, 'item_update', 'Harga Item', 
+                                `${itemLabel(oldIt)}: RM${(oldIt.price||0).toFixed(2)}`, 
+                                `${itemLabel(newIt)}: RM${(newIt.price||0).toFixed(2)}`);
+                        }
+                    }
+                }
+                
+                // Item DIBUANG
+                for (const [desc, items] of Object.entries(oldMap)) {
+                    if (!newMap[desc]) {
+                        for (const it of items) {
+                            await addAuditLog(newOrder.invoiceNumber, 'item_remove', 'Item Dibuang', 
+                                `${itemLabel(it)} (${it.quantity}x RM${(it.price||0).toFixed(2)}) = RM${(it.total||0).toFixed(2)}`, 
+                                null);
+                        }
+                    }
+                }
             }
             return true;
         } catch(e) { console.error('updateOrder:', e); return false; }
     }
+
     async function deleteOrder(inv, reason) {
         try {
             const orders = await loadOrders();
@@ -1183,7 +1271,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function showContainer(tab) { landingPage.style.display='none'; container.style.display='block'; document.getElementById(tab).click(); }
     function switchTab(id) {
         const prot = ['tab-dashboard','tab-sales-person','tab-deleted-bills','tab-settings'];
-        // Tab sensitif perlu: isBoss = true ATAU session Authed
         if (prot.includes(id) && !isBoss && sessionStorage.getItem('appAuthed') !== 'true') { 
             showPasswordPrompt('access_tab', id); 
             return; 
@@ -1260,7 +1347,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // ============ QR LOGIN ============
     function openQrLogin() {
         $('qr-login-modal').style.display = 'flex';
         $('qr-reader-status').textContent = 'Sedia scan...';
@@ -1989,12 +2075,36 @@ document.addEventListener('DOMContentLoaded', function() {
         const logs = await loadAuditLogs(o.invoiceNumber);
         if (logs.length) {
             $('audit-log-section').style.display = 'block';
-            $('audit-log-list').innerHTML = logs.map(l => `
-                <div class="audit-log-item">
-                    <div class="log-header">${l.action === 'create' ? '🆕' : l.action === 'delete' ? '🗑️' : l.action === 'update' ? '✏️' : '📝'} ${formatTime(l.changed_at)} - ${escapeHtml(l.staff_name)}</div>
-                    <div class="log-detail">${l.field_changed ? `<strong>${escapeHtml(l.field_changed)}:</strong> ${escapeHtml(l.old_value||'')} → ${escapeHtml(l.new_value||'')}` : ''}${l.notes ? escapeHtml(l.notes) : ''}</div>
-                </div>
-            `).join('');
+            $('audit-log-list').innerHTML = logs.map(l => {
+                let icon = '📝';
+                let logClass = 'log-update';
+                if (l.action === 'create') { icon = '🆕'; logClass = 'log-create'; }
+                else if (l.action === 'delete') { icon = '🗑️'; logClass = 'log-delete'; }
+                else if (l.action === 'update') { icon = '✏️'; logClass = 'log-update'; }
+                else if (l.action === 'item_add') { icon = '➕'; logClass = 'log-item_add'; }
+                else if (l.action === 'item_remove') { icon = '➖'; logClass = 'log-item_remove'; }
+                else if (l.action === 'item_update') { icon = '🔧'; logClass = 'log-item_update'; }
+                
+                let detail = '';
+                if (l.old_value && l.new_value) {
+                    detail = `<strong>${escapeHtml(l.field_changed)}:</strong><br>` +
+                             `<span style="color:#e74c3c;">❌ ${escapeHtml(l.old_value)}</span><br>` +
+                             `<span style="color:#27ae60;">✅ ${escapeHtml(l.new_value)}</span>`;
+                } else if (l.new_value) {
+                    detail = `<strong>${escapeHtml(l.field_changed)}:</strong> <span style="color:#27ae60;">${escapeHtml(l.new_value)}</span>`;
+                } else if (l.old_value) {
+                    detail = `<strong>${escapeHtml(l.field_changed)}:</strong> <span style="color:#e74c3c;">${escapeHtml(l.old_value)}</span>`;
+                } else if (l.notes) {
+                    detail = escapeHtml(l.notes);
+                }
+                
+                return `
+                    <div class="audit-log-item ${logClass}">
+                        <div class="log-header">${icon} ${formatTime(l.changed_at)} - ${escapeHtml(l.staff_name)}</div>
+                        <div class="log-detail">${detail}</div>
+                    </div>
+                `;
+            }).join('');
         } else $('audit-log-section').style.display = 'none';
         orderListPage.style.display = 'none'; activeOrdersPage.style.display = 'none'; orderDetailView.style.display = 'block';
     }
@@ -2183,7 +2293,6 @@ document.addEventListener('DOMContentLoaded', function() {
         URL.revokeObjectURL(url);
     }
 
-    // ============ DROPDOWN JURUJUAL — SUMBER TUNGGAL: staff_cards ============
     async function populateSalesPersonDropdown() {
         await loadStaffCards();
         const staffList = allStaffCardsCache.filter(s => s.active);
@@ -2206,9 +2315,6 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             switchTab('tab-settings');
         }
-    }
-    async function handleDeleteSalesPerson(n) {
-        if (!confirm(`Padam jurujual "${n}"?\n\nSila padam dari ⚙️ Tetapan → Kad Staf.`)) return;
     }
     async function displaySalesPersonData() {
         await loadStaffCards();
@@ -2648,7 +2754,6 @@ document.addEventListener('DOMContentLoaded', function() {
         offlineBanner.style.display = navigator.onLine ? 'none' : 'block';
         initYearDropdowns();
         $('order-date').value = new Date().toISOString().split('T')[0];
-        // Restore role
         isBoss = sessionStorage.getItem('isBoss') === 'true';
         applyBossMode();
         await loadAppSettings();
@@ -2670,7 +2775,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 await updateAvailableInvoiceNumbers();
             }
         }, 60000);
-        console.log('✅ Sistem sedia. Staff:', STAFF_NAME, '| Boss mode:', isBoss);
+        console.log('✅ Sistem sedia. Staff:', STAFF_NAME, '| Boss:', isBoss);
     })();
 });
 </script>
