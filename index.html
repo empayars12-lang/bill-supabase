@@ -8,7 +8,8 @@
     <meta name="theme-color" content="#6e48aa"/>
     <link rel="apple-touch-icon" href="https://arleta.site/interactivelink/68/Untitled-1.png">
     <style>
-        body { font-family: 'Arial', sans-serif; margin: 0; padding: 0; background-color: #f5f5f5; color: #333; }
+        html { overscroll-behavior-y: contain; overscroll-behavior-x: none; }
+        body { font-family: 'Arial', sans-serif; margin: 0; padding: 0; background-color: #f5f5f5; color: #333; overscroll-behavior-y: contain; touch-action: pan-x pan-y; }
         .landing-page { text-align: center; padding: 40px 20px; background: linear-gradient(135deg, #6e48aa 0%, #9d50bb 100%); color: white; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         .logo { font-size: 3.5rem; font-weight: bold; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
         .tagline { font-size: 1.2rem; margin-bottom: 40px; opacity: 0.9; }
@@ -670,6 +671,22 @@ document.addEventListener('DOMContentLoaded', function() {
         if (days === 1) return {text:'Esok',cls:'soon'};
         if (days <= 3) return {text:`${days} hari lagi`,cls:'soon'};
         return {text:`${days} hari lagi`,cls:'normal'};
+    }
+
+    // ============ FORM DATA CHECK (untuk warning refresh) ============
+    function hasUnsavedFormData() {
+        const invoiceNum = $('invoice-number').value;
+        const customerName = $('customer-name').value.trim();
+        const customerPhone = $('customer-phone').value.trim();
+        
+        let hasItems = false;
+        $('items-table').querySelectorAll('tbody tr').forEach(r => {
+            if (r.querySelector('.item-desc').value.trim() || r.querySelector('.item-price').value) {
+                hasItems = true;
+            }
+        });
+        
+        return !!(invoiceNum || customerName || customerPhone || hasItems);
     }
 
     // ============ SUPABASE CRUD ============
@@ -1581,7 +1598,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         await unlockCurrentNumber();
 
-        // Buka tetingkap cetak
         const w = window.open('', '_blank');
         if (w) {
             w.document.write(buildPrintHTML(data, false));
@@ -1737,7 +1753,6 @@ document.addEventListener('DOMContentLoaded', function() {
         previewPage.classList.remove('active'); invoicePage.classList.add('active');
     });
 
-    // BUTANG BAHARU: Hantar & Cetak
     $('submit-and-print').addEventListener('click', submitAndPrint);
 
     $('search-orders').addEventListener('input', displayOrders);
@@ -1773,10 +1788,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
     window.addEventListener('online', () => offlineBanner.style.display = 'none');
     window.addEventListener('offline', () => offlineBanner.style.display = 'block');
-    window.addEventListener('beforeunload', () => {
+
+    // ============ BEFORE UNLOAD (Warning + Cleanup) ============
+    window.addEventListener('beforeunload', (e) => {
+        // Cleanup lock no. bil
         if (currentlyLockedNumber) {
             const url = `${SUPABASE_URL}/rest/v1/invoice_locks?invoice_number=eq.${encodeURIComponent(currentlyLockedNumber)}&session_id=eq.${encodeURIComponent(SESSION_ID)}`;
             navigator.sendBeacon(url, JSON.stringify({}));
+        }
+        
+        // Warning kalau ada data dalam borang
+        const activeTab = document.querySelector('.tab-btn.active')?.id;
+        const onInvoicePage = activeTab === 'tab-invoice' || activeTab === 'tab-preview';
+        
+        if (onInvoicePage && hasUnsavedFormData()) {
+            e.preventDefault();
+            e.returnValue = 'Anda ada data yang belum disimpan. Yakin nak keluar?';
+            return e.returnValue;
         }
     });
 
