@@ -114,7 +114,7 @@ th { background-color: #f2f2f2; }
 #sales-person-table th:first-child, #sales-person-table td:first-child { text-align: left; }
 #sales-person-table .commission-input { width: 60px; padding: 5px; text-align: right; }
 #sales-person-table .bill-count { cursor: pointer; text-decoration: underline; color: #007bff; }
-#password-modal, #name-modal, #template-modal, #size-cat-modal, #size-input-modal, #qr-login-modal, #pin-login-modal, #staff-modal, #qr-display-modal, #idcard-modal, #staff-password-login-modal, #staff-pin-manual-modal, #upload-modal, #pass-designer-modal, #file-notes-modal { position: fixed; z-index: 3500; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; padding: 20px; }
+#dept-modal, #password-modal, #name-modal, #template-modal, #size-cat-modal, #size-input-modal, #qr-login-modal, #pin-login-modal, #staff-modal, #qr-display-modal, #idcard-modal, #staff-password-login-modal, #staff-pin-manual-modal, #upload-modal, #pass-designer-modal, #file-notes-modal { position: fixed; z-index: 3500; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; padding: 20px; }
 .password-modal-content, .name-modal-content, .template-modal-content, .size-cat-modal-content, .size-input-modal-content, .qr-login-modal-content, .pin-login-modal-content, .staff-modal-content, .qr-display-modal-content, .idcard-modal-content, .staff-password-login-modal-content, .staff-pin-manual-modal-content, .upload-modal-content, .pass-designer-modal-content, .file-notes-modal-content {
     background: white; padding: 30px; border-radius: 12px; position: relative;
     width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto;
@@ -682,6 +682,14 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
             <button id="change-password-btn" class="btn">💾 Tukar Kata Laluan</button>
         </div>
         <div class="settings-section">
+            <h3>🏭 Jabatan Production</h3>
+            <p style="font-size:13px;color:#666;">Jabatan untuk production tracking. Contoh: Cetak, Jahit, Finishing, Packaging.</p>
+            <div class="action-buttons no-print" style="justify-content:flex-start; margin-bottom:15px;">
+                <button id="add-dept-btn" class="btn" style="background:#6e48aa;">➕ Tambah Jabatan</button>
+            </div>
+            <div id="department-list"></div>
+        </div>
+        <div class="settings-section">
             <h3>👥 Kad Staf (QR + PIN)</h3>
             <p style="font-size:13px;color:#666;">Staf yang ditambah di sini akan muncul di dropdown <strong>Jurujual</strong>. Tanda "Designer" untuk staf yang juga buat design.</p>
             <div class="action-buttons no-print" style="justify-content:flex-start; margin-bottom:15px;">
@@ -689,6 +697,21 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
             </div>
             <div id="staff-cards-list"></div>
         </div>
+    </div>
+</div>
+
+<div id="dept-modal" style="display:none;">
+    <div class="size-cat-modal-content">
+        <button class="modal-close-x" onclick="closeDeptModal()">×</button>
+        <h3 id="dept-modal-title">➕ Tambah Jabatan</h3>
+        <div class="form-group"><label>Nama Jabatan:</label><input type="text" id="dept-name" placeholder="Contoh: Cetak"></div>
+        <div class="form-group"><label>Keterangan:</label><input type="text" id="dept-desc" placeholder="Contoh: Cetakan design / printing"></div>
+        <div class="form-group"><label>Susunan (nombor kecil dulu):</label><input type="number" id="dept-sort" value="0"></div>
+        <div class="action-buttons no-print" style="justify-content:flex-end;">
+            <button id="cancel-dept" class="btn btn-secondary">Batal</button>
+            <button id="save-dept" class="btn">💾 Simpan</button>
+        </div>
+        <input type="hidden" id="dept-edit-id" value="">
     </div>
 </div>
 
@@ -1333,7 +1356,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 subtotal:o.subtotal, deposit:o.deposit, balance:o.balance,
                 status:o.status||'normal', created_by:o.createdBy||STAFF_NAME
             };
-            // Add design fields if assigned
             if (o.assignedDesigner) {
                 insertData.assigned_designer = o.assignedDesigner;
                 insertData.design_status = 'pending';
@@ -1367,7 +1389,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 subtotal:newOrder.subtotal, deposit:newOrder.deposit, balance:newOrder.balance,
                 status:newOrder.status, payment_info:newOrder.paymentInfo||null
             };
-            // Handle design fields if provided
             if (newOrder.hasOwnProperty('assignedDesigner')) {
                 updateData.assigned_designer = newOrder.assignedDesigner;
             }
@@ -1606,7 +1627,7 @@ document.addEventListener('DOMContentLoaded', function() {
             'tab-sales-person':[salesPersonPage, ()=>displaySalesPersonData()],
             'tab-templates':[templatesPage, ()=>{displayTemplates(); displaySizeCategories();}],
             'tab-deleted-bills':[deletedBillsPage, ()=>displayDeletedBills()],
-            'tab-settings':[settingsPage, ()=>{loadStaffCards().then(displayStaffCards);}]
+            'tab-settings':[settingsPage, ()=>{loadStaffCards().then(displayStaffCards); window.loadDepartments().then(window.displayDepartments);}]
         };
         if (map[id]) { const [p, fn] = map[id]; p.style.display='block'; p.classList.add('active'); fn(); }
         applyBossMode();
@@ -2264,9 +2285,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const sel = $('sales-person');
         const note = $('sales-person-auto-note');
         if (!sel || !note) return;
-        // If staff login (not BOSS) → auto-assign
         if (STAFF_NAME && STAFF_NAME !== 'BOSS') {
-            // Check if STAFF_NAME is in staff list
             const isStaff = allStaffCardsCache.some(s => s.staff_name === STAFF_NAME);
             if (isStaff) {
                 sel.value = STAFF_NAME;
@@ -2276,7 +2295,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
         }
-        // BOSS → show dropdown
         sel.style.display = 'block';
         note.style.display = 'none';
     }
@@ -2399,7 +2417,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const designerName = STAFF_NAME;
         const allMyOrders = allOrdersCache.filter(o => o.assignedDesigner === designerName);
         
-        // Summary cards
         const statusCounts = { pending:0, in_progress:0, sent_to_customer:0, revision:0, confirmed:0, completed:0 };
         allMyOrders.forEach(o => { const s = o.designStatus || 'pending'; if (statusCounts[s] !== undefined) statusCounts[s]++; });
         $('design-summary-cards').innerHTML = Object.entries(DESIGN_STATUS).map(([key, val]) => 
@@ -2409,7 +2426,6 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>`
         ).join('');
         
-        // Update notif badge (pending + revision)
         const notifCount = statusCounts.pending + statusCounts.revision;
         const badge = $('design-notif-badge');
         if (badge) {
@@ -2417,7 +2433,6 @@ document.addEventListener('DOMContentLoaded', function() {
             else badge.style.display = 'none';
         }
         
-        // Filter
         const search = $('search-design').value.toLowerCase();
         const statusFilter = $('filter-design-only-status').value;
         let orders = allMyOrders;
@@ -2470,19 +2485,15 @@ document.addEventListener('DOMContentLoaded', function() {
         $('btn-pending-order').style.display = st === 'pending' ? 'none' : 'block';
         $('btn-print-final').style.display = st === 'completed' ? 'block' : 'none';
         
-        // Design panel
         await populateDesignerDropdown('detail-designer-select', o.assignedDesigner || '');
         $('detail-design-status-badge').outerHTML = getDesignStatusBadge(o.designStatus || 'pending').replace('class="design-status-badge', 'id="detail-design-status-badge" class="design-status-badge');
         $('detail-design-notes').value = o.designNotes || '';
-        // Highlight active status button
         document.querySelectorAll('.design-status-btn').forEach(b => {
             if (b.dataset.status === (o.designStatus || 'pending')) b.classList.add('active');
             else b.classList.remove('active');
         });
-        // Load activity
         loadDesignActivityForDetail(o.invoiceNumber);
         
-        // Order audit logs
         const logs = await loadAuditLogs(o.invoiceNumber);
         if (logs.length) {
             $('audit-log-section').style.display = 'block';
@@ -2567,7 +2578,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function printOrder() { if (!currentOrder) return; const w = window.open('','_blank'); if (!w) return alert('Pop-up diblok'); w.document.write(buildPrintHTML(currentOrder,false)); w.document.close(); setTimeout(()=>w.print(),500); }
     function printFinal() { if (!currentOrder) return; const w = window.open('','_blank'); if (!w) return alert('Pop-up diblok'); w.document.write(buildPrintHTML(currentOrder,true)); w.document.close(); setTimeout(()=>w.print(),500); }
 
-    // ============ DESIGN FUNCTIONS ============
     window.updateDesignerFromDetail = async function() {
         if (!currentOrder) return;
         const newDesigner = $('detail-designer-select').value;
@@ -2616,7 +2626,6 @@ document.addEventListener('DOMContentLoaded', function() {
     window.openPassDesignerModal = async function() {
         if (!currentOrder) return;
         await populateDesignerDropdown('pass-new-designer');
-        // Remove current designer from list
         const sel = $('pass-new-designer');
         Array.from(sel.options).forEach(opt => {
             if (opt.value === currentOrder.assignedDesigner) opt.remove();
@@ -2644,7 +2653,6 @@ document.addEventListener('DOMContentLoaded', function() {
         } else alert('❌ Gagal pass');
     };
 
-    // ============ FILE UPLOAD FUNCTIONS ============
     function openUploadModal(invoiceNumber) {
         currentUploadInvoice = invoiceNumber;
         selectedFile = null;
@@ -2807,7 +2815,6 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch (err) { alert('❌ Gagal: ' + err.message); }
     };
 
-    // ============ PREVIEW/SALES PERSON ============
     function showPaymentModal(o) {
         currentOrder = o;
         $('payment-date').value = new Date().toISOString().split('T')[0];
@@ -2969,7 +2976,6 @@ document.addEventListener('DOMContentLoaded', function() {
         $('filter-sales').innerHTML = opts; 
         $('filter-active-sales').innerHTML = opts;
         $('dash-sales').innerHTML = '<option value="">Semua</option>' + names.map(n => `<option value="${escapeAttr(n)}">${escapeHtml(n)}</option>`).join('');
-        // Designer filter
         await loadDesigners();
         const designerNames = allDesignersCache.map(d => d.staff_name);
         $('filter-designer').innerHTML = '<option value="">Semua Designer</option>' + designerNames.map(n => `<option value="${escapeAttr(n)}">${escapeHtml(n)}</option>`).join('');
@@ -3115,7 +3121,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function submitAndPrint() {
         let salesPerson = $('sales-person').value;
-        // If auto-assign (staff login), use STAFF_NAME
         if (!salesPerson && STAFF_NAME && STAFF_NAME !== 'BOSS') {
             const isStaff = allStaffCardsCache.some(s => s.staff_name === STAFF_NAME);
             if (isStaff) salesPerson = STAFF_NAME;
@@ -3244,7 +3249,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 loadDesignActivityForDetail(currentOrder.invoiceNumber);
             }
         }).subscribe();
-        realtimeChannels = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10];
+        const c11 = supabaseClient.channel('dept_ch').on('postgres_changes', {event:'*', schema:'public', table:'departments'}, async () => {
+            await window.loadDepartments();
+            if (document.querySelector('.tab-btn.active')?.id === 'tab-settings') window.displayDepartments();
+        }).subscribe();
+        realtimeChannels = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11];
     }
 
     function initYearDropdowns() {
@@ -3255,7 +3264,6 @@ document.addEventListener('DOMContentLoaded', function() {
         $('dash-year').innerHTML = '<option value="">Auto</option>' + html;
     }
 
-    // ============ EVENT LISTENERS ============
     $('login-staff-btn').addEventListener('click', () => { if (STAFF_NAME && !confirm('Tukar staf?')) return; openQrLogin(); });
     $('login-pin-manual-btn').addEventListener('click', () => { if (STAFF_NAME && !confirm('Tukar staf?')) return; openManualPinLogin(); });
     $('login-password-btn').addEventListener('click', openPasswordLogin);
@@ -3306,6 +3314,9 @@ document.addEventListener('DOMContentLoaded', function() {
     $('submit-pin-login').addEventListener('click', submitPinLogin);
 
     $('change-password-btn').addEventListener('click', changePassword);
+    $('add-dept-btn').addEventListener('click', () => window.openDeptModal());
+    $('cancel-dept').addEventListener('click', window.closeDeptModal);
+    $('save-dept').addEventListener('click', window.saveDepartment);
     $('add-staff-btn').addEventListener('click', () => openStaffModal());
     $('cancel-staff-modal').addEventListener('click', closeStaffModal);
     $('save-staff-btn').addEventListener('click', saveStaff);
@@ -3429,6 +3440,110 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // ============ DEPARTMENTS (FASA 4) ============
+    let allDepartmentsCache = [];
+
+    window.loadDepartments = async function() {
+        try {
+            const { data, error } = await supabaseClient
+                .from('departments')
+                .select('*')
+                .order('sort_order', { ascending: true });
+            if (error) throw error;
+            allDepartmentsCache = data || [];
+            return allDepartmentsCache;
+        } catch(e) { console.error('loadDepartments:', e); return []; }
+    };
+
+    window.displayDepartments = function() {
+        const list = $('department-list');
+        if (!list) return;
+        if (!allDepartmentsCache.length) {
+            list.innerHTML = '<p style="text-align:center;color:#999;padding:20px;">Tiada jabatan. Klik "Tambah Jabatan".</p>';
+            return;
+        }
+        list.innerHTML = allDepartmentsCache.map(d => `
+            <div class="size-cat-item">
+                <div class="cat-info">
+                    <div class="cat-name">${escapeHtml(d.name)} ${d.active ? '' : '<span style="color:#999;font-size:11px;">(Tidak Aktif)</span>'}</div>
+                    <div class="cat-sizes">${escapeHtml(d.description || '-')}</div>
+                    <div class="cat-price">Susunan: ${d.sort_order}</div>
+                </div>
+                <div class="cat-actions">
+                    <button class="btn-edit-cat" onclick="editDepartment('${d.id}')">✏️ Edit</button>
+                    <button style="background:${d.active ? '#f39c12' : '#2ecc71'};color:white;border:none;padding:6px 12px;font-size:12px;border-radius:4px;cursor:pointer;" onclick="toggleDepartment('${d.id}', ${!d.active})">${d.active ? '⏸️' : '▶️'}</button>
+                    <button class="btn-del-cat" onclick="deleteDepartment('${d.id}', '${escapeAttr(d.name)}')">🗑️</button>
+                </div>
+            </div>
+        `).join('');
+    };
+
+    window.openDeptModal = function(editId = null) {
+        $('dept-edit-id').value = editId || '';
+        if (editId) {
+            const d = allDepartmentsCache.find(x => x.id === editId);
+            if (!d) return;
+            $('dept-modal-title').textContent = '✏️ Edit Jabatan';
+            $('dept-name').value = d.name;
+            $('dept-desc').value = d.description || '';
+            $('dept-sort').value = d.sort_order || 0;
+        } else {
+            $('dept-modal-title').textContent = '➕ Tambah Jabatan';
+            $('dept-name').value = '';
+            $('dept-desc').value = '';
+            $('dept-sort').value = allDepartmentsCache.reduce((m,x) => Math.max(m, x.sort_order||0), 0) + 1;
+        }
+        $('dept-modal').style.display = 'flex';
+    };
+
+    window.closeDeptModal = function() { $('dept-modal').style.display = 'none'; };
+
+    window.saveDepartment = async function() {
+        const editId = $('dept-edit-id').value;
+        const name = $('dept-name').value.trim();
+        const desc = $('dept-desc').value.trim();
+        const sort = parseInt($('dept-sort').value) || 0;
+        if (!name) { alert('Sila isi nama jabatan.'); return; }
+        try {
+            if (editId) {
+                const { error } = await supabaseClient.from('departments')
+                    .update({ name, description: desc || null, sort_order: sort })
+                    .eq('id', editId);
+                if (error) throw error;
+            } else {
+                const { error } = await supabaseClient.from('departments')
+                    .insert({ name, description: desc || null, sort_order: sort, active: true });
+                if (error) throw error;
+            }
+            await window.loadDepartments();
+            window.displayDepartments();
+            window.closeDeptModal();
+        } catch(e) { alert('Gagal: ' + e.message); }
+    };
+
+    window.editDepartment = function(id) { window.openDeptModal(id); };
+
+    window.toggleDepartment = async function(id, active) {
+        try {
+            const { error } = await supabaseClient.from('departments')
+                .update({ active }).eq('id', id);
+            if (error) throw error;
+            await window.loadDepartments();
+            window.displayDepartments();
+        } catch(e) { alert('Gagal: ' + e.message); }
+    };
+
+    window.deleteDepartment = async function(id, name) {
+        if (!confirm('Padam jabatan "' + name + '"?')) return;
+        try {
+            const { error } = await supabaseClient.from('departments')
+                .delete().eq('id', id);
+            if (error) throw error;
+            await window.loadDepartments();
+            window.displayDepartments();
+        } catch(e) { alert('Gagal: ' + e.message); }
+    };
+
     // ============ INIT ============
     (async function init() {
         offlineBanner.style.display = navigator.onLine ? 'none' : 'block';
@@ -3439,7 +3554,6 @@ document.addEventListener('DOMContentLoaded', function() {
         await loadAppSettings();
         await loadStaffCards();
         await loadDesigners();
-        // Check if current staff is designer
         if (STAFF_NAME && STAFF_NAME !== 'BOSS') {
             const s = allStaffCardsCache.find(x => x.staff_name === STAFF_NAME);
             if (s) isDesigner = s.is_designer || false;
@@ -3447,6 +3561,7 @@ document.addEventListener('DOMContentLoaded', function() {
         await loadSalesPersons();
         await loadOrders();
         await loadSizeCategories();
+        await window.loadDepartments();
         await populateSalesPersonDropdown();
         updateCustomerDatalist();
         renderInvoiceTable();
@@ -3464,7 +3579,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 await updateAvailableInvoiceNumbers();
             }
         }, 60000);
-        // Update notif for designer
         if (isDesigner) {
             setInterval(() => { if (document.querySelector('.tab-btn.active')?.id === 'tab-design') displayDesignerOrders(); }, 60000);
         }
