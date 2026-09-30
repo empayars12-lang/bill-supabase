@@ -114,7 +114,7 @@ th { background-color: #f2f2f2; }
 #sales-person-table th:first-child, #sales-person-table td:first-child { text-align: left; }
 #sales-person-table .commission-input { width: 60px; padding: 5px; text-align: right; }
 #sales-person-table .bill-count { cursor: pointer; text-decoration: underline; color: #007bff; }
-#dept-modal, #password-modal, #name-modal, #template-modal, #size-cat-modal, #size-input-modal, #qr-login-modal, #pin-login-modal, #staff-modal, #qr-display-modal, #idcard-modal, #staff-password-login-modal, #staff-pin-manual-modal, #upload-modal, #pass-designer-modal, #file-notes-modal { position: fixed; z-index: 3500; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; padding: 20px; }
+#send-production-modal, #pause-production-modal, #dept-modal, #password-modal, #name-modal, #template-modal, #size-cat-modal, #size-input-modal, #qr-login-modal, #pin-login-modal, #staff-modal, #qr-display-modal, #idcard-modal, #staff-password-login-modal, #staff-pin-manual-modal, #upload-modal, #pass-designer-modal, #file-notes-modal { position: fixed; z-index: 3500; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; padding: 20px; }
 .password-modal-content, .name-modal-content, .template-modal-content, .size-cat-modal-content, .size-input-modal-content, .qr-login-modal-content, .pin-login-modal-content, .staff-modal-content, .qr-display-modal-content, .idcard-modal-content, .staff-password-login-modal-content, .staff-pin-manual-modal-content, .upload-modal-content, .pass-designer-modal-content, .file-notes-modal-content {
     background: white; padding: 30px; border-radius: 12px; position: relative;
     width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto;
@@ -199,6 +199,7 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
 .staff-active { background: #2ecc71; } .staff-inactive { background: #95a5a6; }
 .btn-edit-staff { background: #3498db; } .btn-qr-staff { background: #9b59b6; } .btn-del-staff { background: #e74c3c; } .btn-toggle-staff { background: #f39c12; }
 .designer-badge { display: inline-block; background: linear-gradient(135deg, #e67e22, #d35400); color: white; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: bold; margin-left: 5px; }
+.production-badge { display: inline-block; background: linear-gradient(135deg, #0284c7, #0369a1); color: white; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: bold; margin-left: 5px; }
 #qr-reader { width: 100%; max-width: 400px; margin: 20px auto; }
 #qr-reader video { border-radius: 8px; }
 #qr-reader-status { text-align: center; margin-top: 10px; font-weight: bold; color: #6e48aa; font-size: 13px; line-height: 1.5; }
@@ -258,6 +259,9 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
 .design-activity-item { padding: 10px 12px; background: white; border-left: 3px solid #e67e22; border-radius: 4px; margin-bottom: 8px; font-size: 13px; }
 .design-activity-item .log-header { font-weight: bold; color: #333; margin-bottom: 5px; }
 .design-activity-item .log-detail { color: #666; font-size: 12px; line-height: 1.6; }
+.production-activity-item { padding: 10px 12px; background: white; border-left: 3px solid #0284c7; border-radius: 4px; margin-bottom: 8px; font-size: 13px; }
+.production-activity-item .log-header { font-weight: bold; color: #333; margin-bottom: 5px; }
+.production-activity-item .log-detail { color: #666; font-size: 12px; line-height: 1.6; }
 .design-summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; margin-bottom: 20px; }
 .design-summary-card { padding: 18px; border-radius: 10px; text-align: center; color: white; box-shadow: 0 3px 8px rgba(0,0,0,0.1); }
 .design-summary-card .amount { font-size: 2rem; font-weight: bold; }
@@ -268,9 +272,16 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
 .design-summary-revision { background: linear-gradient(135deg, #e67e22, #d35400); }
 .design-summary-confirmed { background: linear-gradient(135deg, #2ecc71, #27ae60); }
 .design-summary-completed { background: linear-gradient(135deg, #95a5a6, #7f8c8d); }
+.production-panel { margin-top: 20px; padding: 20px; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius: 10px; border-left: 5px solid #0284c7; }
+.production-panel h4 { margin: 0 0 15px; color: #0284c7; display: flex; align-items: center; gap: 8px; }
+.production-status-badge { display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+.prod-pending { background: #f1c40f; color: #333; }
+.prod-in_progress { background: #3498db; color: white; }
+.prod-paused { background: #e67e22; color: white; }
+.prod-done { background: #2ecc71; color: white; }
 .auto-assign-note { font-size: 12px; color: #666; font-style: italic; margin-top: 3px; }
 @media print {
-    .no-print, .action-buttons, .tab-nav, .home-button-container, #password-modal, .add-sales-person, #bills-modal, #install-app-btn, #upload-modal, #pass-designer-modal, #file-notes-modal { display: none !important; }
+    .no-print, .action-buttons, .tab-nav, .home-button-container, #password-modal, .add-sales-person, #bills-modal, #install-app-btn, #upload-modal, #pass-designer-modal, #file-notes-modal, #send-production-modal, #pause-production-modal { display: none !important; }
     body { background: none; padding: 0; }
     .container { box-shadow: none; max-width: 100%; padding: 0; }
     #invoice-number-dropdown { display: none !important; }
@@ -310,7 +321,7 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
         <div class="feature-card"><div class="feature-icon">📊</div><div class="feature-title">Invois Profesional</div><div>Buat dan cetak invois dengan mudah</div></div>
         <div class="feature-card"><div class="feature-icon">📝</div><div class="feature-title">Urusan Order</div><div>Pantau status order dengan sistematik</div></div>
         <div class="feature-card"><div class="feature-icon">🎨</div><div class="feature-title">Design Tracking</div><div>Track status design secara real-time</div></div>
-        <div class="feature-card"><div class="feature-icon">📈</div><div class="feature-title">Analisis Jualan</div><div>Ringkasan harian, mingguan, bulanan</div></div>
+        <div class="feature-card"><div class="feature-icon">🏭</div><div class="feature-title">Production Tracking</div><div>Track kerja production ikut jabatan</div></div>
     </div>
 </div>
 
@@ -329,6 +340,7 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
         <button class="tab-btn" id="tab-orders">Senarai Order</button>
         <button class="tab-btn" id="tab-active">Order Aktif</button>
         <button class="tab-btn" id="tab-design" style="display:none;">🎨 Design Saya<span id="design-notif-badge" class="badge-notif" style="display:none;">0</span></button>
+        <button class="tab-btn" id="tab-production" style="display:none;">🏭 Kerja Saya<span id="production-notif-badge" class="badge-notif" style="display:none;">0</span></button>
         <button class="tab-btn" id="tab-dashboard">Papan Pemuka</button>
         <button class="tab-btn" id="tab-sales-person">Jurujual</button>
         <button class="tab-btn" id="tab-templates">Template & Saiz</button>
@@ -519,8 +531,41 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
         </div>
         <div style="overflow-x:auto;">
         <table class="order-table">
-            <thead><tr><th>No. Bil</th><th>Pelanggan</th><th>Tarikh Janji</th><th>Status Design</th><th>Nota</th><th class="no-print">Tindakan</th></tr></thead>
+            <thead><tr><th>No. Bil</th><th>Pelanggan</th><th>Tarikh Janji</th><th>Status Design</th><th>Status Production</th><th>Nota</th><th class="no-print">Tindakan</th></tr></thead>
             <tbody id="design-orders-container"></tbody>
+        </table>
+        </div>
+    </div>
+
+    <div id="production-page" class="page">
+        <h2 style="margin-top:0;">🏭 Kerja Saya</h2>
+        <p style="color:#666;margin-top:-10px;">Jabatan: <strong id="production-dept-name">-</strong> | Staff: <strong id="production-staff-name">-</strong></p>
+        <div class="design-summary-cards" id="production-summary-cards"></div>
+        <div class="search-filter no-print">
+            <input type="text" id="search-production" class="search-input" placeholder="Cari no order, nama pelanggan...">
+            <select id="filter-production-status" class="filter-select">
+                <option value="">Semua Status</option>
+                <option value="pending">🟡 Pending</option>
+                <option value="in_progress">🔵 In Progress</option>
+                <option value="paused">🟠 Paused</option>
+                <option value="done">✅ Done</option>
+            </select>
+        </div>
+        <div style="overflow-x:auto;">
+        <table class="order-table">
+            <thead>
+                <tr>
+                    <th>No. Bil</th>
+                    <th>Pelanggan / Tel</th>
+                    <th>Item</th>
+                    <th>Fail</th>
+                    <th>Nota</th>
+                    <th>Tarikh Janji</th>
+                    <th>Status</th>
+                    <th class="no-print">Tindakan</th>
+                </tr>
+            </thead>
+            <tbody id="production-orders-container"></tbody>
         </table>
         </div>
     </div>
@@ -567,6 +612,33 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
             <div id="design-activity-section" style="margin-top:15px;">
                 <h5 style="color:#e67e22;margin-bottom:8px;">📋 Sejarah Design</h5>
                 <div id="design-activity-list"><p style="color:#999;font-size:13px;">Tiada aktiviti.</p></div>
+            </div>
+        </div>
+
+        <div class="production-panel" id="production-panel">
+            <h4>🏭 Info Production</h4>
+            <div class="design-row">
+                <label>Jabatan:</label>
+                <span id="detail-production-dept" style="font-weight:bold;">-</span>
+            </div>
+            <div class="design-row">
+                <label>Assigned To:</label>
+                <span id="detail-production-assigned" style="font-weight:bold;">-</span>
+            </div>
+            <div class="design-row">
+                <label>Status:</label>
+                <span id="detail-production-status-badge" class="production-status-badge" style="background:#ddd;color:#777;">Belum dihantar</span>
+            </div>
+            <div class="form-group">
+                <label>📝 Nota Production:</label>
+                <textarea id="detail-production-notes" placeholder="Nota..." style="height:60px;resize:vertical;" readonly></textarea>
+            </div>
+            <div class="action-buttons" style="justify-content:flex-start;">
+                <button class="btn" id="btn-send-to-production" style="background:#0284c7;" onclick="openSendToProductionModal()">📤 Hantar ke Production</button>
+            </div>
+            <div id="production-activity-section" style="margin-top:15px;">
+                <h5 style="color:#0284c7;margin-bottom:8px;">📋 Sejarah Production</h5>
+                <div id="production-activity-list"><p style="color:#999;font-size:13px;">Belum ada aktiviti.</p></div>
             </div>
         </div>
 
@@ -691,11 +763,53 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
         </div>
         <div class="settings-section">
             <h3>👥 Kad Staf (QR + PIN)</h3>
-            <p style="font-size:13px;color:#666;">Staf yang ditambah di sini akan muncul di dropdown <strong>Jurujual</strong>. Tanda "Designer" untuk staf yang juga buat design.</p>
+            <p style="font-size:13px;color:#666;">Tanda "Designer" untuk staff design, "Production" untuk staff production (pilih jabatan).</p>
             <div class="action-buttons no-print" style="justify-content:flex-start; margin-bottom:15px;">
                 <button id="add-staff-btn" class="btn" style="background:#6e48aa;">➕ Tambah Staf Baru</button>
             </div>
             <div id="staff-cards-list"></div>
+        </div>
+    </div>
+</div>
+
+<div id="send-production-modal">
+    <div class="staff-modal-content">
+        <button class="modal-close-x" onclick="closeSendProductionModal()">×</button>
+        <h3 style="color:#0284c7;margin-top:0;">📤 Hantar ke Production</h3>
+        <p style="color:#666;font-size:13px;margin-top:0;">Order: <strong id="send-prod-invoice">-</strong></p>
+        <div class="form-group">
+            <label>Pilih Jabatan: <span style="color:#e74c3c;">*WAJIB</span></label>
+            <select id="send-prod-dept"><option value="">-- Pilih Jabatan --</option></select>
+        </div>
+        <div class="form-group">
+            <label>Assign ke Staff (optional):</label>
+            <select id="send-prod-staff"><option value="">-- Belum assign --</option></select>
+        </div>
+        <div class="form-group">
+            <label>📝 Nota untuk Production:</label>
+            <textarea id="send-prod-notes" placeholder="Contoh: Kertas guna glossy, warna biru..." style="height:80px;resize:vertical;"></textarea>
+        </div>
+        <div id="send-prod-error" style="color:red;font-size:13px;margin-bottom:10px;display:none;"></div>
+        <div class="action-buttons" style="justify-content:flex-end;">
+            <button class="btn btn-secondary" onclick="closeSendProductionModal()">Batal</button>
+            <button class="btn" style="background:#0284c7;" onclick="executeSendProduction()">📤 Hantar Sekarang</button>
+        </div>
+    </div>
+</div>
+
+<div id="pause-production-modal">
+    <div class="staff-modal-content">
+        <button class="modal-close-x" onclick="closePauseProductionModal()">×</button>
+        <h3 style="color:#e67e22;margin-top:0;">⏸️ Pause Production</h3>
+        <p style="color:#666;font-size:13px;margin-top:0;">Order: <strong id="pause-prod-invoice">-</strong></p>
+        <div class="form-group">
+            <label>Nota Masalah: <span style="color:#e74c3c;">*WAJIB</span></label>
+            <textarea id="pause-prod-notes" placeholder="Contoh: Kain habis stok, mesin rosak, tunggu customer reply..." style="height:100px;resize:vertical;"></textarea>
+        </div>
+        <div id="pause-prod-error" style="color:red;font-size:13px;margin-bottom:10px;display:none;"></div>
+        <div class="action-buttons" style="justify-content:flex-end;">
+            <button class="btn btn-secondary" onclick="closePauseProductionModal()">Batal</button>
+            <button class="btn" style="background:#e67e22;" onclick="executePauseProduction()">⏸️ Pause Sekarang</button>
         </div>
     </div>
 </div>
@@ -815,6 +929,17 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
                 <span>🎨 <strong>Staf ini juga Designer</strong></span>
             </label>
             <p style="font-size:11px;color:#666;margin:5px 0 0;">Jika ditanda, staf ini boleh di-assign ke order design dan ada tab "Design Saya".</p>
+        </div>
+        <div class="form-group" style="background:#f0f9ff;padding:12px;border-radius:6px;border-left:3px solid #0284c7;">
+            <label style="cursor:pointer;display:flex;align-items:center;gap:8px;margin:0;">
+                <input type="checkbox" id="staff-is-production-input" style="width:auto;margin:0;">
+                <span>🏭 <strong>Staf ini juga Production Staff</strong></span>
+            </label>
+            <p style="font-size:11px;color:#666;margin:5px 0 0;">Jika ditanda, staf ini boleh proses order production dan ada tab "Kerja Saya".</p>
+        </div>
+        <div class="form-group" id="staff-department-group" style="display:none;background:#f0f9ff;padding:12px;border-radius:6px;">
+            <label>🏭 Pilih Jabatan Production: <span style="color:#e74c3c;">*WAJIB</span></label>
+            <select id="staff-department-input"><option value="">-- Pilih Jabatan --</option></select>
         </div>
         <div class="action-buttons no-print" style="justify-content:flex-end;">
             <button id="cancel-staff-modal" class="btn btn-secondary">Batal</button>
@@ -1070,6 +1195,8 @@ document.addEventListener('DOMContentLoaded', function() {
     let CURRENT_STAFF = null;
     let isBoss = sessionStorage.getItem('isBoss') === 'true';
     let isDesigner = false;
+    let isProduction = false;
+    let currentDepartmentId = null;
 
     const $ = id => document.getElementById(id);
     const landingPage = $('landing-page');
@@ -1078,7 +1205,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const invoicePage = $('invoice-page'), previewPage = $('preview-page');
     const orderListPage = $('order-list-page'), activeOrdersPage = $('active-orders-page');
-    const designPage = $('design-page');
+    const designPage = $('design-page'), productionPage = $('production-page');
     const orderDetailView = $('order-detail-view'), dashboardPage = $('dashboard-page');
     const salesPersonPage = $('sales-person-page'), templatesPage = $('templates-page');
     const deletedBillsPage = $('deleted-bills-page'), settingsPage = $('settings-page');
@@ -1100,6 +1227,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentUploadInvoice = null;
     let selectedFile = null;
     let currentFileNotesId = null;
+    let allDepartmentsCache = [];
 
     const DESIGN_STATUS = {
         pending: { label: 'Pending', icon: '🟡', cls: 'design-pending' },
@@ -1108,6 +1236,13 @@ document.addEventListener('DOMContentLoaded', function() {
         revision: { label: 'Revision', icon: '🟠', cls: 'design-revision' },
         confirmed: { label: 'Confirmed', icon: '🟢', cls: 'design-confirmed' },
         completed: { label: 'Selesai', icon: '⚫', cls: 'design-completed' }
+    };
+
+    const PRODUCTION_STATUS = {
+        pending: { label: 'Pending', icon: '🟡', cls: 'prod-pending' },
+        in_progress: { label: 'In Progress', icon: '🔵', cls: 'prod-in_progress' },
+        paused: { label: 'Paused', icon: '🟠', cls: 'prod-paused' },
+        done: { label: 'Siap', icon: '✅', cls: 'prod-done' }
     };
 
     function formatDate(d) {
@@ -1129,6 +1264,11 @@ document.addEventListener('DOMContentLoaded', function() {
     function getDesignStatusBadge(status) {
         const s = DESIGN_STATUS[status] || DESIGN_STATUS.pending;
         return `<span class="design-status-badge ${s.cls}">${s.icon} ${s.label}</span>`;
+    }
+    function getProductionStatusBadge(status) {
+        if (!status) return '<span class="production-status-badge" style="background:#ddd;color:#777;">Belum dihantar</span>';
+        const s = PRODUCTION_STATUS[status] || PRODUCTION_STATUS.pending;
+        return `<span class="production-status-badge ${s.cls}">${s.icon} ${s.label}</span>`;
     }
 
     function getOrderStatus(o) {
@@ -1180,6 +1320,11 @@ document.addEventListener('DOMContentLoaded', function() {
             if (isDesigner || hasBossAccess) designTab.style.display = '';
             else designTab.style.display = 'none';
         }
+        const prodTab = $('tab-production');
+        if (prodTab) {
+            if (isProduction || hasBossAccess) prodTab.style.display = '';
+            else prodTab.style.display = 'none';
+        }
     }
 
     function hasUnsavedFormData() {
@@ -1214,7 +1359,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 id: s.id, staff_name: s.staff_name, qr_token: s.qr_token,
                 pin_code: s.pin_code, jawatan: s.jawatan || '', active: s.active,
                 last_login: s.last_login, login_method: s.login_method || 'qr_pin',
-                is_designer: s.is_designer || false
+                is_designer: s.is_designer || false,
+                is_production: s.is_production || false,
+                department_id: s.department_id || null
             }));
             return allStaffCardsCache;
         } catch(e) { console.error(e); return []; }
@@ -1224,12 +1371,15 @@ document.addEventListener('DOMContentLoaded', function() {
         allDesignersCache = allStaffCardsCache.filter(s => s.active && s.is_designer);
         return allDesignersCache;
     }
-    async function addStaffCard(name, jawatan, pin, loginMethod, isDesignerFlag) {
+    async function addStaffCard(name, jawatan, pin, loginMethod, isDesignerFlag, isProductionFlag, departmentId) {
         try {
             const token = 'esk_' + name.toLowerCase().replace(/\s/g, '_') + '_' + Math.random().toString(36).substr(2, 8);
             const { error } = await supabaseClient.from('staff_cards').insert({
                 staff_name: name, qr_token: token, pin_code: pin, jawatan: jawatan,
-                active: true, login_method: loginMethod || 'qr_pin', is_designer: isDesignerFlag || false
+                active: true, login_method: loginMethod || 'qr_pin', 
+                is_designer: isDesignerFlag || false,
+                is_production: isProductionFlag || false,
+                department_id: isProductionFlag ? (departmentId || null) : null
             });
             if (error) throw error;
             const { data: sp } = await supabaseClient.from('sales_persons').select('name').eq('name', name).maybeSingle();
@@ -1239,12 +1389,15 @@ document.addEventListener('DOMContentLoaded', function() {
             return true;
         } catch(e) { alert('Gagal: ' + e.message); return false; }
     }
-    async function updateStaffCard(id, name, jawatan, pin, loginMethod, isDesignerFlag) {
+    async function updateStaffCard(id, name, jawatan, pin, loginMethod, isDesignerFlag, isProductionFlag, departmentId) {
         try {
             const { data: old } = await supabaseClient.from('staff_cards').select('staff_name').eq('id', id).maybeSingle();
             const { error } = await supabaseClient.from('staff_cards').update({
                 staff_name: name, jawatan: jawatan, pin_code: pin, 
-                login_method: loginMethod || 'qr_pin', is_designer: isDesignerFlag || false
+                login_method: loginMethod || 'qr_pin', 
+                is_designer: isDesignerFlag || false,
+                is_production: isProductionFlag || false,
+                department_id: isProductionFlag ? (departmentId || null) : null
             }).eq('id', id);
             if (error) throw error;
             if (old && old.staff_name !== name) {
@@ -1312,6 +1465,21 @@ document.addEventListener('DOMContentLoaded', function() {
             return data || [];
         } catch(e) { return []; }
     }
+    async function addProductionActivity(invoiceNumber, action, oldStatus, newStatus, notes) {
+        try {
+            await supabaseClient.from('production_activity').insert({
+                invoice_number: invoiceNumber, staff_name: STAFF_NAME || 'Unknown',
+                action: action, old_status: oldStatus || null,
+                new_status: newStatus || null, notes: notes || null
+            });
+        } catch(e) { console.error('productionActivity:', e); }
+    }
+    async function loadProductionActivity(invoiceNumber) {
+        try {
+            const { data } = await supabaseClient.from('production_activity').select('*').eq('invoice_number', invoiceNumber).order('created_at', {ascending: false});
+            return data || [];
+        } catch(e) { return []; }
+    }
 
     async function loadOrders() {
         try {
@@ -1337,7 +1505,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 designStatus: o.design_status || 'pending',
                 designNotes: o.design_notes || '',
                 designUpdatedAt: o.design_updated_at,
-                designUpdatedBy: o.design_updated_by
+                designUpdatedBy: o.design_updated_by,
+                productionDepartment: o.production_department || null,
+                productionStatus: o.production_status || null,
+                productionNotes: o.production_notes || '',
+                productionAssignedTo: o.production_assigned_to || null,
+                productionUpdatedAt: o.production_updated_at,
+                productionUpdatedBy: o.production_updated_by
             }));
             allOrdersCache = result;
             return result;
@@ -1393,6 +1567,13 @@ document.addEventListener('DOMContentLoaded', function() {
             if (newOrder.hasOwnProperty('designNotes')) updateData.design_notes = newOrder.designNotes;
             if (newOrder.hasOwnProperty('designUpdatedAt')) updateData.design_updated_at = newOrder.designUpdatedAt;
             if (newOrder.hasOwnProperty('designUpdatedBy')) updateData.design_updated_by = newOrder.designUpdatedBy;
+            if (newOrder.hasOwnProperty('productionDepartment')) updateData.production_department = newOrder.productionDepartment;
+            if (newOrder.hasOwnProperty('productionStatus')) updateData.production_status = newOrder.productionStatus;
+            if (newOrder.hasOwnProperty('productionNotes')) updateData.production_notes = newOrder.productionNotes;
+            if (newOrder.hasOwnProperty('productionAssignedTo')) updateData.production_assigned_to = newOrder.productionAssignedTo;
+            if (newOrder.hasOwnProperty('productionUpdatedAt')) updateData.production_updated_at = newOrder.productionUpdatedAt;
+            if (newOrder.hasOwnProperty('productionUpdatedBy')) updateData.production_updated_by = newOrder.productionUpdatedBy;
+
             const { error } = await supabaseClient.from('orders').update(updateData).eq('invoice_number', newOrder.invoiceNumber);
             if (error) throw error;
             const { data: row } = await supabaseClient.from('orders').select('id').eq('invoice_number', newOrder.invoiceNumber).single();
@@ -1612,6 +1793,7 @@ document.addEventListener('DOMContentLoaded', function() {
             'tab-orders':[orderListPage, ()=>displayOrders()],
             'tab-active':[activeOrdersPage, ()=>displayActiveOrders()],
             'tab-design':[designPage, ()=>displayDesignerOrders()],
+            'tab-production':[productionPage, ()=>displayProductionOrders()],
             'tab-dashboard':[dashboardPage, ()=>updateDashboard()],
             'tab-sales-person':[salesPersonPage, ()=>displaySalesPersonData()],
             'tab-templates':[templatesPage, ()=>{displayTemplates(); displaySizeCategories();}],
@@ -1742,15 +1924,24 @@ document.addEventListener('DOMContentLoaded', function() {
         STAFF_NAME = staff.staff_name;
         isBoss = false;
         isDesigner = staff.is_designer || false;
+        isProduction = staff.is_production || false;
+        currentDepartmentId = staff.department_id || null;
         sessionStorage.setItem('isBoss', 'false');
         sessionStorage.removeItem('appAuthed');
         localStorage.setItem('staffName', STAFF_NAME);
         localStorage.setItem('staffLoggedInAt', Date.now());
-        $('staff-badge').textContent = (isDesigner ? '🎨 ' : '👤 ') + STAFF_NAME;
+        const prefix = isDesigner ? '🎨 ' : (isProduction ? '🏭 ' : '👤 ');
+        $('staff-badge').textContent = prefix + STAFF_NAME;
         await updateLastLogin(staff.id);
         CURRENT_STAFF = null;
         applyBossMode();
-        alert('✅ Selamat datang, ' + staff.staff_name + '!' + (isDesigner ? '\n🎨 Anda Designer. Tab "Design Saya" tersedia.' : ''));
+        let msg = '✅ Selamat datang, ' + staff.staff_name + '!';
+        if (isDesigner) msg += '\n🎨 Tab "Design Saya" tersedia.';
+        if (isProduction) {
+            const dept = allDepartmentsCache.find(d => d.id === currentDepartmentId);
+            msg += '\n🏭 Tab "Kerja Saya" tersedia' + (dept ? ' (' + dept.name + ')' : '');
+        }
+        alert(msg);
         showContainer('tab-invoice');
     }
     function openPinLogin(staff) {
@@ -1801,7 +1992,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         const select = $('manual-login-select');
         select.innerHTML = '<option value="">-- Pilih Nama --</option>' + 
-            activeStaff.map(s => `<option value="${s.id}">${escapeHtml(s.staff_name)}${s.jawatan ? ' ('+escapeHtml(s.jawatan)+')' : ''}${s.is_designer ? ' 🎨' : ''}</option>`).join('');
+            activeStaff.map(s => `<option value="${s.id}">${escapeHtml(s.staff_name)}${s.jawatan ? ' ('+escapeHtml(s.jawatan)+')' : ''}${s.is_designer ? ' 🎨' : ''}${s.is_production ? ' 🏭' : ''}</option>`).join('');
         $('manual-login-pin').value = '';
         $('manual-pin-error').style.display = 'none';
         $('staff-pin-manual-modal').style.display = 'flex';
@@ -1847,6 +2038,8 @@ document.addEventListener('DOMContentLoaded', function() {
         STAFF_NAME = 'BOSS';
         isBoss = true;
         isDesigner = false;
+        isProduction = false;
+        currentDepartmentId = null;
         localStorage.setItem('staffName', STAFF_NAME);
         localStorage.setItem('staffLoggedInAt', Date.now());
         sessionStorage.setItem('appAuthed', 'true');
@@ -1882,10 +2075,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 ? '<span class="login-method-badge login-method-qr_only">📷 QR</span>' 
                 : '<span class="login-method-badge login-method-qr_pin">📷🔢 QR+PIN</span>';
             const designerBadge = s.is_designer ? '<span class="designer-badge">🎨 DESIGNER</span>' : '';
+            const deptName = s.department_id ? (allDepartmentsCache.find(d => d.id === s.department_id)?.name || '?') : '';
+            const productionBadge = s.is_production ? `<span class="production-badge">🏭 ${escapeHtml(deptName || 'PRODUCTION')}</span>` : '';
             return `
             <div class="staff-card-item">
                 <div class="staff-info">
-                    <div class="staff-name">${escapeHtml(s.staff_name)} ${methodBadge} ${designerBadge} ${s.active ? '' : '<span style="color:#999;font-size:11px;">(Tidak Aktif)</span>'}</div>
+                    <div class="staff-name">${escapeHtml(s.staff_name)} ${methodBadge} ${designerBadge} ${productionBadge} ${s.active ? '' : '<span style="color:#999;font-size:11px;">(Tidak Aktif)</span>'}</div>
                     <div class="staff-meta">${escapeHtml(s.jawatan||'-')} • PIN: <span style="font-family:monospace;">${'•'.repeat(s.pin_code.length)}</span> • Login: ${s.last_login ? formatTime(s.last_login) : 'Belum pernah'}</div>
                 </div>
                 <div class="staff-actions">
@@ -1897,8 +2092,13 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>`;
         }).join('');
     }
-    function openStaffModal(editId = null) {
+    async function openStaffModal(editId = null) {
         editingStaffId = editId;
+        await window.loadDepartments();
+        const activeDepts = allDepartmentsCache.filter(d => d.active);
+        $('staff-department-input').innerHTML = '<option value="">-- Pilih Jabatan --</option>' + 
+            activeDepts.map(d => `<option value="${d.id}">${escapeHtml(d.name)}</option>`).join('');
+        
         if (editId) {
             const s = allStaffCardsCache.find(x => x.id === editId);
             if (!s) return;
@@ -1908,11 +2108,17 @@ document.addEventListener('DOMContentLoaded', function() {
             $('staff-pin-input').value = s.pin_code;
             $('staff-login-method').value = s.login_method || 'qr_pin';
             $('staff-is-designer-input').checked = s.is_designer || false;
+            $('staff-is-production-input').checked = s.is_production || false;
+            $('staff-department-input').value = s.department_id || '';
+            $('staff-department-group').style.display = s.is_production ? 'block' : 'none';
         } else {
             $('staff-modal-title').textContent = '➕ Tambah Staf';
             $('staff-name-input').value = ''; $('staff-jawatan-input').value = ''; $('staff-pin-input').value = '';
             $('staff-login-method').value = 'qr_pin';
             $('staff-is-designer-input').checked = false;
+            $('staff-is-production-input').checked = false;
+            $('staff-department-input').value = '';
+            $('staff-department-group').style.display = 'none';
         }
         $('staff-modal').style.display = 'flex';
     }
@@ -1923,11 +2129,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const pin = $('staff-pin-input').value.trim();
         const loginMethod = $('staff-login-method').value;
         const isDesignerFlag = $('staff-is-designer-input').checked;
+        const isProductionFlag = $('staff-is-production-input').checked;
+        const departmentId = $('staff-department-input').value;
         if (!name) { alert('Sila isi nama.'); return; }
         if (!/^\d{4}$/.test(pin)) { alert('PIN mesti 4 digit nombor.'); return; }
+        if (isProductionFlag && !departmentId) { alert('Sila pilih jabatan untuk staff production.'); return; }
         let ok;
-        if (editingStaffId) ok = await updateStaffCard(editingStaffId, name, jawatan, pin, loginMethod, isDesignerFlag);
-        else ok = await addStaffCard(name, jawatan, pin, loginMethod, isDesignerFlag);
+        if (editingStaffId) ok = await updateStaffCard(editingStaffId, name, jawatan, pin, loginMethod, isDesignerFlag, isProductionFlag, departmentId);
+        else ok = await addStaffCard(name, jawatan, pin, loginMethod, isDesignerFlag, isProductionFlag, departmentId);
         if (ok) {
             await loadStaffCards();
             displayStaffCards();
@@ -2430,16 +2639,22 @@ document.addEventListener('DOMContentLoaded', function() {
         orders.sort((a,b) => { if (!a.completionDate && !b.completionDate) return 0; if (!a.completionDate) return 1; if (!b.completionDate) return -1; return new Date(a.completionDate) - new Date(b.completionDate); });
         
         const tb = $('design-orders-container'); tb.innerHTML = '';
-        if (!orders.length) tb.innerHTML = '<tr><td colspan="6" style="text-align:center;">Tiada order assigned. 🎉</td></tr>';
+        if (!orders.length) tb.innerHTML = '<tr><td colspan="7" style="text-align:center;">Tiada order assigned. 🎉</td></tr>';
         orders.forEach(o => {
             const tr = document.createElement('tr');
             const notesPreview = (o.designNotes||'').substring(0, 50) + ((o.designNotes||'').length > 50 ? '...' : '');
+            let actionButtons = '';
+            if (!o.productionStatus) {
+                actionButtons = `<button class="btn" style="background:#0284c7;padding:5px 10px;font-size:12px;margin-right:3px;" onclick="openSendToProductionModalForInvoice('${o.invoiceNumber}')">📤 Hantar</button>`;
+            }
+            actionButtons += `<button class="edit-btn" data-invoice="${o.invoiceNumber}">Buka</button>`;
             tr.innerHTML = `<td><span class="order-number" data-invoice="${o.invoiceNumber}">${o.invoiceNumber||'-'}</span></td>
                 <td>${escapeHtml(o.customerName)||'-'}</td>
                 <td>${formatDate(o.completionDate)}</td>
                 <td>${getDesignStatusBadge(o.designStatus || 'pending')}</td>
-                <td style="font-size:11px;color:#666;max-width:200px;">${escapeHtml(notesPreview)||'-'}</td>
-                <td class="no-print"><button class="edit-btn" data-invoice="${o.invoiceNumber}">Buka</button></td>`;
+                <td>${getProductionStatusBadge(o.productionStatus)}</td>
+                <td style="font-size:11px;color:#666;max-width:180px;">${escapeHtml(notesPreview)||'-'}</td>
+                <td class="no-print">${actionButtons}</td>`;
             tb.appendChild(tr);
         });
         tb.querySelectorAll('.order-number, .edit-btn').forEach(el => el.addEventListener('click', e => {
@@ -2449,6 +2664,264 @@ document.addEventListener('DOMContentLoaded', function() {
         }));
     }
     window.displayDesignerOrders = displayDesignerOrders;
+
+    window.openSendToProductionModalForInvoice = function(invoiceNumber) {
+        const o = allOrdersCache.find(x => x.invoiceNumber === invoiceNumber);
+        if (!o) return;
+        currentOrder = o;
+        window.openSendToProductionModal();
+    };
+
+    async function displayProductionOrders() {
+        if (!STAFF_NAME) return;
+        await loadOrders();
+        const myStaff = allStaffCardsCache.find(s => s.staff_name === STAFF_NAME);
+        const myDeptId = myStaff?.department_id || currentDepartmentId;
+        const hasBossAccess = (sessionStorage.getItem('appAuthed') === 'true' || isBoss);
+        
+        const myDept = allDepartmentsCache.find(d => d.id === myDeptId);
+        $('production-dept-name').textContent = hasBossAccess ? 'BOSS — Semua Jabatan' : (myDept ? myDept.name : '-');
+        $('production-staff-name').textContent = STAFF_NAME;
+        
+        let orders = allOrdersCache.filter(o => o.productionStatus && o.productionDepartment);
+        if (!hasBossAccess) {
+            if (!myDeptId) {
+                $('production-orders-container').innerHTML = '<tr><td colspan="8" style="text-align:center;color:#e74c3c;padding:20px;">⚠️ Anda belum di-assign ke jabatan. Sila hubungi Boss.</td></tr>';
+                $('production-summary-cards').innerHTML = '';
+                return;
+            }
+            orders = orders.filter(o => o.productionDepartment === myDeptId);
+        }
+        
+        const search = $('search-production').value.toLowerCase();
+        const statusFilter = $('filter-production-status').value;
+        if (statusFilter) orders = orders.filter(o => o.productionStatus === statusFilter);
+        if (search) orders = orders.filter(o => 
+            (o.invoiceNumber||'').toLowerCase().includes(search) || 
+            (o.customerName||'').toLowerCase().includes(search) ||
+            (o.customerPhone||'').toLowerCase().includes(search)
+        );
+        orders.sort((a,b) => {
+            if (!a.completionDate && !b.completionDate) return 0;
+            if (!a.completionDate) return 1;
+            if (!b.completionDate) return -1;
+            return new Date(a.completionDate) - new Date(b.completionDate);
+        });
+        
+        const statusCounts = { pending: 0, in_progress: 0, paused: 0, done: 0 };
+        orders.forEach(o => { const s = o.productionStatus || 'pending'; if (statusCounts[s] !== undefined) statusCounts[s]++; });
+        $('production-summary-cards').innerHTML = `
+            <div class="design-summary-card" style="background:linear-gradient(135deg,#f1c40f,#f39c12);">
+                <div class="amount">${statusCounts.pending}</div><div class="label">🟡 Pending</div>
+            </div>
+            <div class="design-summary-card" style="background:linear-gradient(135deg,#3498db,#2980b9);">
+                <div class="amount">${statusCounts.in_progress}</div><div class="label">🔵 In Progress</div>
+            </div>
+            <div class="design-summary-card" style="background:linear-gradient(135deg,#e67e22,#d35400);">
+                <div class="amount">${statusCounts.paused}</div><div class="label">🟠 Paused</div>
+            </div>
+            <div class="design-summary-card" style="background:linear-gradient(135deg,#2ecc71,#27ae60);">
+                <div class="amount">${statusCounts.done}</div><div class="label">✅ Done</div>
+            </div>`;
+        
+        const notifCount = statusCounts.pending + statusCounts.in_progress;
+        const badge = $('production-notif-badge');
+        if (badge) {
+            if (notifCount > 0) { badge.textContent = notifCount; badge.style.display = 'block'; }
+            else badge.style.display = 'none';
+        }
+        
+        // Fetch file counts in batch
+        const orderInvoices = orders.map(o => o.invoiceNumber);
+        let fileCountMap = {};
+        if (orderInvoices.length) {
+            try {
+                const { data: files } = await supabaseClient.from('order_files').select('invoice_number').in('invoice_number', orderInvoices);
+                (files || []).forEach(f => { fileCountMap[f.invoice_number] = (fileCountMap[f.invoice_number] || 0) + 1; });
+            } catch(e) {}
+        }
+        
+        const tb = $('production-orders-container'); tb.innerHTML = '';
+        if (!orders.length) tb.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:20px;">Tiada kerja production. 🎉</td></tr>';
+        
+        orders.forEach(o => {
+            const tr = document.createElement('tr');
+            const dr = getDaysRemaining(o.completionDate);
+            const itemsText = (o.items||[]).map(it => it.description.split('\n')[0]).join(', ');
+            const itemsPreview = itemsText.substring(0, 40) + (itemsText.length > 40 ? '...' : '');
+            const fileCount = fileCountMap[o.invoiceNumber] || 0;
+            const fileHtml = fileCount > 0 
+                ? `<button class="btn btn-info" onclick="openUploadModal('${o.invoiceNumber}')" style="padding:3px 8px;font-size:11px;">📎 ${fileCount}</button>` 
+                : '<span style="color:#999;">-</span>';
+            const notesPreview = (o.productionNotes || '').substring(0, 40) + ((o.productionNotes || '').length > 40 ? '...' : '');
+            const notesHtml = o.productionStatus === 'paused' 
+                ? `<span style="color:#e67e22;font-weight:bold;">⚠️ ${escapeHtml(notesPreview)}</span>` 
+                : escapeHtml(notesPreview) || '-';
+            
+            let actions = '';
+            if (o.productionStatus === 'pending') {
+                actions = `<button class="btn" style="background:#3498db;padding:5px 10px;font-size:12px;" onclick="startProduction('${o.invoiceNumber}')">▶️ Start</button>`;
+            } else if (o.productionStatus === 'in_progress') {
+                actions = `<button class="btn" style="background:#e67e22;padding:5px 10px;font-size:12px;margin-right:3px;" onclick="openPauseProductionModal('${o.invoiceNumber}')">⏸️ Pause</button>
+                           <button class="btn" style="background:#2ecc71;padding:5px 10px;font-size:12px;" onclick="markProductionDone('${o.invoiceNumber}')">✅ Done</button>`;
+            } else if (o.productionStatus === 'paused') {
+                actions = `<button class="btn" style="background:#3498db;padding:5px 10px;font-size:12px;" onclick="resumeProduction('${o.invoiceNumber}')">▶️ Resume</button>`;
+            } else if (o.productionStatus === 'done') {
+                actions = '<span style="color:#2ecc71;font-weight:bold;">✅ Siap</span>';
+            }
+            
+            tr.innerHTML = `<td><strong style="color:#0284c7;">${o.invoiceNumber}</strong></td>
+                <td>${escapeHtml(o.customerName)||'-'}<br><small style="color:#666;">${escapeHtml(o.customerPhone)||''}</small></td>
+                <td style="font-size:12px;max-width:180px;">${escapeHtml(itemsPreview)}</td>
+                <td>${fileHtml}</td>
+                <td style="font-size:11px;max-width:150px;">${notesHtml}</td>
+                <td>${formatDate(o.completionDate)}<br><span class="day-badge ${dr.cls}">${dr.text}</span></td>
+                <td>${getProductionStatusBadge(o.productionStatus)}</td>
+                <td class="no-print">${actions}</td>`;
+            tb.appendChild(tr);
+        });
+    }
+    window.displayProductionOrders = displayProductionOrders;
+
+    window.startProduction = async function(invoiceNumber) {
+        const o = allOrdersCache.find(x => x.invoiceNumber === invoiceNumber);
+        if (!o) return;
+        const upd = { ...o, productionStatus: 'in_progress', productionUpdatedAt: new Date(), productionUpdatedBy: STAFF_NAME };
+        if (await updateOrderWithLog(upd, o)) {
+            await addProductionActivity(invoiceNumber, 'start', 'pending', 'in_progress', null);
+            await loadOrders();
+            await displayProductionOrders();
+        }
+    };
+    window.openPauseProductionModal = function(invoiceNumber) {
+        const o = allOrdersCache.find(x => x.invoiceNumber === invoiceNumber);
+        if (!o) return;
+        currentOrder = o;
+        $('pause-prod-invoice').textContent = invoiceNumber;
+        $('pause-prod-notes').value = '';
+        $('pause-prod-error').style.display = 'none';
+        $('pause-production-modal').style.display = 'flex';
+    };
+    window.closePauseProductionModal = function() { $('pause-production-modal').style.display = 'none'; };
+    window.executePauseProduction = async function() {
+        if (!currentOrder) return;
+        const notes = $('pause-prod-notes').value.trim();
+        if (!notes) { $('pause-prod-error').textContent = '⚠️ Nota WAJIB diisi bila pause.'; $('pause-prod-error').style.display = 'block'; return; }
+        const oldStatus = currentOrder.productionStatus;
+        const upd = { ...currentOrder, productionStatus: 'paused', productionNotes: notes, productionUpdatedAt: new Date(), productionUpdatedBy: STAFF_NAME };
+        if (await updateOrderWithLog(upd, currentOrder)) {
+            await addProductionActivity(currentOrder.invoiceNumber, 'paused', oldStatus, 'paused', notes);
+            closePauseProductionModal();
+            await loadOrders();
+            await displayProductionOrders();
+        }
+    };
+    window.resumeProduction = async function(invoiceNumber) {
+        const o = allOrdersCache.find(x => x.invoiceNumber === invoiceNumber);
+        if (!o) return;
+        const upd = { ...o, productionStatus: 'in_progress', productionUpdatedAt: new Date(), productionUpdatedBy: STAFF_NAME };
+        if (await updateOrderWithLog(upd, o)) {
+            await addProductionActivity(invoiceNumber, 'resumed', 'paused', 'in_progress', null);
+            await loadOrders();
+            await displayProductionOrders();
+        }
+    };
+    window.markProductionDone = async function(invoiceNumber) {
+        const o = allOrdersCache.find(x => x.invoiceNumber === invoiceNumber);
+        if (!o) return;
+        if (!confirm(`Tandakan production ${invoiceNumber} sebagai SIAP?\n\nOrder akan auto-completed.`)) return;
+        const upd = { ...o, productionStatus: 'done', status: 'completed', productionUpdatedAt: new Date(), productionUpdatedBy: STAFF_NAME };
+        if (await updateOrderWithLog(upd, o)) {
+            await addProductionActivity(invoiceNumber, 'done', 'in_progress', 'done', 'Production siap. Order auto-completed.');
+            await addAuditLog(invoiceNumber, 'update', 'Status', 'DALAM PROSES', 'SELESAI', 'Auto-completed selepas production siap');
+            await loadOrders();
+            await displayProductionOrders();
+            alert('✅ Production SIAP! Order auto-completed.');
+        }
+    };
+
+    window.openSendToProductionModal = async function() {
+        if (!currentOrder) return;
+        await window.loadDepartments();
+        const activeDepts = allDepartmentsCache.filter(d => d.active);
+        if (!activeDepts.length) { alert('Tiada jabatan aktif. Tambah di Tetapan → Jabatan Production.'); return; }
+        
+        const deptSelect = $('send-prod-dept');
+        deptSelect.innerHTML = '<option value="">-- Pilih Jabatan --</option>' + 
+            activeDepts.map(d => `<option value="${d.id}">${escapeHtml(d.name)}</option>`).join('');
+        
+        $('send-prod-staff').innerHTML = '<option value="">-- Belum assign --</option>';
+        $('send-prod-invoice').textContent = currentOrder.invoiceNumber;
+        $('send-prod-notes').value = currentOrder.productionNotes || '';
+        $('send-prod-error').style.display = 'none';
+        $('send-production-modal').style.display = 'flex';
+    };
+    window.closeSendProductionModal = function() { $('send-production-modal').style.display = 'none'; };
+    window.executeSendProduction = async function() {
+        if (!currentOrder) return;
+        const deptId = $('send-prod-dept').value;
+        const staffName = $('send-prod-staff').value;
+        const notes = $('send-prod-notes').value.trim();
+        if (!deptId) { $('send-prod-error').textContent = 'Sila pilih jabatan.'; $('send-prod-error').style.display = 'block'; return; }
+        
+        const upd = { 
+            ...currentOrder, 
+            productionDepartment: deptId,
+            productionStatus: 'pending',
+            productionAssignedTo: staffName || null,
+            productionNotes: notes || null,
+            productionUpdatedAt: new Date(),
+            productionUpdatedBy: STAFF_NAME
+        };
+        
+        if (await updateOrderWithLog(upd, currentOrder)) {
+            const deptName = allDepartmentsCache.find(d => d.id === deptId)?.name || '-';
+            await addProductionActivity(currentOrder.invoiceNumber, 'sent', null, 'pending', 
+                `Dihantar ke jabatan ${deptName}${staffName ? ' — assign ke ' + staffName : ''}${notes ? ' — Nota: ' + notes : ''}`);
+            currentOrder = upd;
+            closeSendProductionModal();
+            alert(`✅ Order dihantar ke Production (${deptName})`);
+            // Refresh detail view
+            await refreshProductionPanel();
+        } else alert('❌ Gagal hantar');
+    };
+
+    async function refreshProductionPanel() {
+        if (!currentOrder) return;
+        const prodDept = allDepartmentsCache.find(d => d.id === currentOrder.productionDepartment);
+        $('detail-production-dept').textContent = prodDept ? prodDept.name : '-';
+        $('detail-production-assigned').textContent = currentOrder.productionAssignedTo || '-';
+        $('detail-production-notes').value = currentOrder.productionNotes || '';
+        const badgeEl = $('detail-production-status-badge');
+        if (badgeEl) {
+            badgeEl.outerHTML = getProductionStatusBadge(currentOrder.productionStatus).replace('class="production-status-badge', 'id="detail-production-status-badge" class="production-status-badge');
+        }
+        // Show/hide send button
+        if (currentOrder.productionStatus) {
+            $('btn-send-to-production').style.display = 'none';
+        } else {
+            $('btn-send-to-production').style.display = 'inline-block';
+        }
+        await loadProductionActivityForDetail(currentOrder.invoiceNumber);
+    }
+
+    async function loadProductionActivityForDetail(invoiceNumber) {
+        const activity = await loadProductionActivity(invoiceNumber);
+        const el = $('production-activity-list');
+        if (!activity.length) { el.innerHTML = '<p style="color:#999;font-size:13px;">Belum ada aktiviti.</p>'; return; }
+        el.innerHTML = activity.map(a => {
+            let detail = '';
+            const oldLabel = a.old_status ? ((PRODUCTION_STATUS[a.old_status]||{}).label || a.old_status) : '-';
+            const newLabel = a.new_status ? ((PRODUCTION_STATUS[a.new_status]||{}).label || a.new_status) : '-';
+            if (a.action === 'sent') detail = escapeHtml(a.notes || 'Dihantar ke production');
+            else if (a.action === 'start') detail = `Mula: <strong>${oldLabel}</strong> → <strong>${newLabel}</strong>`;
+            else if (a.action === 'paused') detail = `Pause: <strong>${oldLabel}</strong> → <strong>${newLabel}</strong><br>Nota: <em>${escapeHtml(a.notes||'-')}</em>`;
+            else if (a.action === 'resumed') detail = `Resume: <strong>${oldLabel}</strong> → <strong>${newLabel}</strong>`;
+            else if (a.action === 'done') detail = `Siap: <strong>${newLabel}</strong> ✅`;
+            else detail = escapeHtml(a.notes || a.action || '');
+            return `<div class="production-activity-item"><div class="log-header">${formatTime(a.created_at)} — ${escapeHtml(a.staff_name||'-')}</div><div class="log-detail">${detail}</div></div>`;
+        }).join('');
+    }
 
     async function showOrderDetail(o) {
         currentOrder = o;
@@ -2483,6 +2956,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         loadDesignActivityForDetail(o.invoiceNumber);
         
+        // Production panel
+        await window.loadDepartments();
+        await refreshProductionPanel();
+        
         const logs = await loadAuditLogs(o.invoiceNumber);
         if (logs.length) {
             $('audit-log-section').style.display = 'block';
@@ -2504,7 +2981,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }).join('');
         } else $('audit-log-section').style.display = 'none';
         
-        orderListPage.style.display = 'none'; activeOrdersPage.style.display = 'none'; designPage.style.display = 'none'; orderDetailView.style.display = 'block';
+        orderListPage.style.display = 'none'; activeOrdersPage.style.display = 'none'; 
+        designPage.style.display = 'none'; productionPage.style.display = 'none';
+        orderDetailView.style.display = 'block';
     }
     
     async function loadDesignActivityForDetail(invoiceNumber) {
@@ -2527,6 +3006,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const t = document.querySelector('.tab-btn.active');
         if (t && t.id === 'tab-active') { activeOrdersPage.style.display='block'; displayActiveOrders(); }
         else if (t && t.id === 'tab-design') { designPage.style.display='block'; displayDesignerOrders(); }
+        else if (t && t.id === 'tab-production') { productionPage.style.display='block'; displayProductionOrders(); }
         else { orderListPage.style.display='block'; displayOrders(); }
         currentOrder = null;
     }
@@ -2933,7 +3413,15 @@ document.addEventListener('DOMContentLoaded', function() {
         w.document.write(buildPrintHTML(temp, false)); w.document.close(); setTimeout(()=>w.print(),500);
     }
 
-    function promptDeleteOrder() { if (currentOrder) showPasswordPrompt('delete_order', currentOrder.invoiceNumber); }
+    function promptDeleteOrder() { 
+        if (!currentOrder) return;
+        // Block delete kalau production dah start
+        if (currentOrder.productionStatus) {
+            alert('⚠️ Order ini sudah masuk production. Tidak boleh padam.\n\nGuna Pause kalau ada masalah.');
+            return;
+        }
+        showPasswordPrompt('delete_order', currentOrder.invoiceNumber); 
+    }
     async function performDeleteOrder(inv, reason) {
         if (await deleteOrder(inv, reason)) {
             alert(`Order ${inv} dipadam.`);
@@ -2944,8 +3432,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function exportCSV() {
         const orders = getFilteredOrders();
         if (!orders.length) return alert('Tiada order untuk export.');
-        const headers = ['No. Bil','Pelanggan','Telefon','Tarikh Order','Tarikh Siap','Jurujual','Designer','Status Design','Status','Jumlah','Diskaun','Selepas Diskaun','Deposit','Baki','Item'];
-        const rows = orders.map(o => [o.invoiceNumber||'', o.customerName||'', o.customerPhone||'', formatDate(o.orderDate), formatDate(o.completionDate), o.salesPerson||'', o.assignedDesigner||'', (DESIGN_STATUS[o.designStatus||'pending']||{}).label||'', getStatusText(getOrderStatus(o)), (o.totalAmount||0).toFixed(2), (o.discount||0).toFixed(2), (o.subtotal||0).toFixed(2), (o.deposit||0).toFixed(2), (o.balance||0).toFixed(2), (o.items||[]).map(i=>`${i.description.replace(/\n/g, ' ')} (${i.quantity}x RM${i.price})`).join(' | ')]);
+        const headers = ['No. Bil','Pelanggan','Telefon','Tarikh Order','Tarikh Siap','Jurujual','Designer','Status Design','Status Production','Status','Jumlah','Diskaun','Selepas Diskaun','Deposit','Baki','Item'];
+        const rows = orders.map(o => [o.invoiceNumber||'', o.customerName||'', o.customerPhone||'', formatDate(o.orderDate), formatDate(o.completionDate), o.salesPerson||'', o.assignedDesigner||'', (DESIGN_STATUS[o.designStatus||'pending']||{}).label||'', o.productionStatus ? ((PRODUCTION_STATUS[o.productionStatus]||{}).label||'') : '-', getStatusText(getOrderStatus(o)), (o.totalAmount||0).toFixed(2), (o.discount||0).toFixed(2), (o.subtotal||0).toFixed(2), (o.deposit||0).toFixed(2), (o.balance||0).toFixed(2), (o.items||[]).map(i=>`${i.description.replace(/\n/g, ' ')} (${i.quantity}x RM${i.price})`).join(' | ')]);
         const csv = [headers, ...rows].map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
         const blob = new Blob(['\ufeff' + csv], {type:'text/csv;charset=utf-8'});
         const url = URL.createObjectURL(blob);
@@ -3190,6 +3678,108 @@ document.addEventListener('DOMContentLoaded', function() {
         $('preview-total-amount').textContent = ta.toFixed(2);
     }
 
+    // ============ DEPARTMENTS (FASA 4) ============
+    window.loadDepartments = async function() {
+        try {
+            const { data, error } = await supabaseClient
+                .from('departments')
+                .select('*')
+                .order('sort_order', { ascending: true });
+            if (error) throw error;
+            allDepartmentsCache = data || [];
+            return allDepartmentsCache;
+        } catch(e) { console.error('loadDepartments:', e); return []; }
+    };
+
+    window.displayDepartments = function() {
+        const list = $('department-list');
+        if (!list) return;
+        if (!allDepartmentsCache.length) {
+            list.innerHTML = '<p style="text-align:center;color:#999;padding:20px;">Tiada jabatan. Klik "Tambah Jabatan".</p>';
+            return;
+        }
+        list.innerHTML = allDepartmentsCache.map(d => `
+            <div class="size-cat-item">
+                <div class="cat-info">
+                    <div class="cat-name">${escapeHtml(d.name)} ${d.active ? '' : '<span style="color:#999;font-size:11px;">(Tidak Aktif)</span>'}</div>
+                    <div class="cat-sizes">${escapeHtml(d.description || '-')}</div>
+                    <div class="cat-price">Susunan: ${d.sort_order}</div>
+                </div>
+                <div class="cat-actions">
+                    <button class="btn-edit-cat" onclick="editDepartment('${d.id}')">✏️ Edit</button>
+                    <button style="background:${d.active ? '#f39c12' : '#2ecc71'};color:white;border:none;padding:6px 12px;font-size:12px;border-radius:4px;cursor:pointer;" onclick="toggleDepartment('${d.id}', ${!d.active})">${d.active ? '⏸️' : '▶️'}</button>
+                    <button class="btn-del-cat" onclick="deleteDepartment('${d.id}', '${escapeAttr(d.name)}')">🗑️</button>
+                </div>
+            </div>
+        `).join('');
+    };
+
+    window.openDeptModal = function(editId = null) {
+        $('dept-edit-id').value = editId || '';
+        if (editId) {
+            const d = allDepartmentsCache.find(x => x.id === editId);
+            if (!d) return;
+            $('dept-modal-title').textContent = '✏️ Edit Jabatan';
+            $('dept-name').value = d.name;
+            $('dept-desc').value = d.description || '';
+            $('dept-sort').value = d.sort_order || 0;
+        } else {
+            $('dept-modal-title').textContent = '➕ Tambah Jabatan';
+            $('dept-name').value = '';
+            $('dept-desc').value = '';
+            $('dept-sort').value = allDepartmentsCache.reduce((m,x) => Math.max(m, x.sort_order||0), 0) + 1;
+        }
+        $('dept-modal').style.display = 'flex';
+    };
+
+    window.closeDeptModal = function() { $('dept-modal').style.display = 'none'; };
+
+    window.saveDepartment = async function() {
+        const editId = $('dept-edit-id').value;
+        const name = $('dept-name').value.trim();
+        const desc = $('dept-desc').value.trim();
+        const sort = parseInt($('dept-sort').value) || 0;
+        if (!name) { alert('Sila isi nama jabatan.'); return; }
+        try {
+            if (editId) {
+                const { error } = await supabaseClient.from('departments')
+                    .update({ name, description: desc || null, sort_order: sort })
+                    .eq('id', editId);
+                if (error) throw error;
+            } else {
+                const { error } = await supabaseClient.from('departments')
+                    .insert({ name, description: desc || null, sort_order: sort, active: true });
+                if (error) throw error;
+            }
+            await window.loadDepartments();
+            window.displayDepartments();
+            window.closeDeptModal();
+        } catch(e) { alert('Gagal: ' + e.message); }
+    };
+
+    window.editDepartment = function(id) { window.openDeptModal(id); };
+
+    window.toggleDepartment = async function(id, active) {
+        try {
+            const { error } = await supabaseClient.from('departments')
+                .update({ active }).eq('id', id);
+            if (error) throw error;
+            await window.loadDepartments();
+            window.displayDepartments();
+        } catch(e) { alert('Gagal: ' + e.message); }
+    };
+
+    window.deleteDepartment = async function(id, name) {
+        if (!confirm('Padam jabatan "' + name + '"?')) return;
+        try {
+            const { error } = await supabaseClient.from('departments')
+                .delete().eq('id', id);
+            if (error) throw error;
+            await window.loadDepartments();
+            window.displayDepartments();
+        } catch(e) { alert('Gagal: ' + e.message); }
+    };
+
     let realtimeChannels = [];
     function initRealtime() {
         realtimeChannels.forEach(c => supabaseClient.removeChannel(c));
@@ -3202,6 +3792,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (t === 'tab-orders') displayOrders();
             else if (t === 'tab-active') displayActiveOrders();
             else if (t === 'tab-design') displayDesignerOrders();
+            else if (t === 'tab-production') displayProductionOrders();
             else if (t === 'tab-dashboard') updateDashboard();
             else if (t === 'tab-invoice') updateAvailableInvoiceNumbers();
         }).subscribe();
@@ -3242,7 +3833,13 @@ document.addEventListener('DOMContentLoaded', function() {
             await window.loadDepartments();
             if (document.querySelector('.tab-btn.active')?.id === 'tab-settings') window.displayDepartments();
         }).subscribe();
-        realtimeChannels = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11];
+        const c12 = supabaseClient.channel('prod_act_ch').on('postgres_changes', {event:'*', schema:'public', table:'production_activity'}, () => {
+            if (currentOrder && orderDetailView.style.display === 'block') {
+                loadProductionActivityForDetail(currentOrder.invoiceNumber);
+            }
+            if (document.querySelector('.tab-btn.active')?.id === 'tab-production') displayProductionOrders();
+        }).subscribe();
+        realtimeChannels = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12];
     }
 
     function initYearDropdowns() {
@@ -3276,7 +3873,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!confirm('Log keluar dari sistem?')) return;
         localStorage.removeItem('staffName'); localStorage.removeItem('staffLoggedInAt');
         sessionStorage.removeItem('isBoss'); sessionStorage.removeItem('appAuthed');
-        STAFF_NAME = ''; CURRENT_STAFF = null; isBoss = false; isDesigner = false;
+        STAFF_NAME = ''; CURRENT_STAFF = null; isBoss = false; isDesigner = false; isProduction = false; currentDepartmentId = null;
         $('staff-badge').textContent = '👤 Belum Login';
         applyBossMode();
         showLandingPage();
@@ -3309,6 +3906,9 @@ document.addEventListener('DOMContentLoaded', function() {
     $('add-staff-btn').addEventListener('click', () => openStaffModal());
     $('cancel-staff-modal').addEventListener('click', closeStaffModal);
     $('save-staff-btn').addEventListener('click', saveStaff);
+    $('staff-is-production-input').addEventListener('change', function() {
+        $('staff-department-group').style.display = this.checked ? 'block' : 'none';
+    });
     $('do-print-idcard-btn').addEventListener('click', doPrintIdCard);
     $('close-idcard-btn').addEventListener('click', closeIdCard);
     $('close-bills-modal').addEventListener('click', () => $('bills-modal').style.display = 'none');
@@ -3413,6 +4013,18 @@ document.addEventListener('DOMContentLoaded', function() {
     $('dash-sales').addEventListener('change', updateDashboard);
     $('search-design').addEventListener('input', displayDesignerOrders);
     $('filter-design-only-status').addEventListener('change', displayDesignerOrders);
+    $('search-production').addEventListener('input', displayProductionOrders);
+    $('filter-production-status').addEventListener('change', displayProductionOrders);
+
+    // Send production modal - when dept selected, filter staff dropdown
+    $('send-prod-dept').addEventListener('change', function() {
+        const deptId = this.value;
+        const staffSelect = $('send-prod-staff');
+        if (!deptId) { staffSelect.innerHTML = '<option value="">-- Belum assign --</option>'; return; }
+        const deptStaff = allStaffCardsCache.filter(s => s.active && s.is_production && s.department_id === deptId);
+        staffSelect.innerHTML = '<option value="">-- Belum assign --</option>' + 
+            deptStaff.map(s => `<option value="${escapeAttr(s.staff_name)}">${escapeHtml(s.staff_name)}</option>`).join('');
+    });
 
     window.addEventListener('online', () => offlineBanner.style.display = 'none');
     window.addEventListener('offline', () => offlineBanner.style.display = 'block');
@@ -3429,110 +4041,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // ============ DEPARTMENTS (FASA 4) ============
-    let allDepartmentsCache = [];
-
-    window.loadDepartments = async function() {
-        try {
-            const { data, error } = await supabaseClient
-                .from('departments')
-                .select('*')
-                .order('sort_order', { ascending: true });
-            if (error) throw error;
-            allDepartmentsCache = data || [];
-            return allDepartmentsCache;
-        } catch(e) { console.error('loadDepartments:', e); return []; }
-    };
-
-    window.displayDepartments = function() {
-        const list = $('department-list');
-        if (!list) return;
-        if (!allDepartmentsCache.length) {
-            list.innerHTML = '<p style="text-align:center;color:#999;padding:20px;">Tiada jabatan. Klik "Tambah Jabatan".</p>';
-            return;
-        }
-        list.innerHTML = allDepartmentsCache.map(d => `
-            <div class="size-cat-item">
-                <div class="cat-info">
-                    <div class="cat-name">${escapeHtml(d.name)} ${d.active ? '' : '<span style="color:#999;font-size:11px;">(Tidak Aktif)</span>'}</div>
-                    <div class="cat-sizes">${escapeHtml(d.description || '-')}</div>
-                    <div class="cat-price">Susunan: ${d.sort_order}</div>
-                </div>
-                <div class="cat-actions">
-                    <button class="btn-edit-cat" onclick="editDepartment('${d.id}')">✏️ Edit</button>
-                    <button style="background:${d.active ? '#f39c12' : '#2ecc71'};color:white;border:none;padding:6px 12px;font-size:12px;border-radius:4px;cursor:pointer;" onclick="toggleDepartment('${d.id}', ${!d.active})">${d.active ? '⏸️' : '▶️'}</button>
-                    <button class="btn-del-cat" onclick="deleteDepartment('${d.id}', '${escapeAttr(d.name)}')">🗑️</button>
-                </div>
-            </div>
-        `).join('');
-    };
-
-    window.openDeptModal = function(editId = null) {
-        $('dept-edit-id').value = editId || '';
-        if (editId) {
-            const d = allDepartmentsCache.find(x => x.id === editId);
-            if (!d) return;
-            $('dept-modal-title').textContent = '✏️ Edit Jabatan';
-            $('dept-name').value = d.name;
-            $('dept-desc').value = d.description || '';
-            $('dept-sort').value = d.sort_order || 0;
-        } else {
-            $('dept-modal-title').textContent = '➕ Tambah Jabatan';
-            $('dept-name').value = '';
-            $('dept-desc').value = '';
-            $('dept-sort').value = allDepartmentsCache.reduce((m,x) => Math.max(m, x.sort_order||0), 0) + 1;
-        }
-        $('dept-modal').style.display = 'flex';
-    };
-
-    window.closeDeptModal = function() { $('dept-modal').style.display = 'none'; };
-
-    window.saveDepartment = async function() {
-        const editId = $('dept-edit-id').value;
-        const name = $('dept-name').value.trim();
-        const desc = $('dept-desc').value.trim();
-        const sort = parseInt($('dept-sort').value) || 0;
-        if (!name) { alert('Sila isi nama jabatan.'); return; }
-        try {
-            if (editId) {
-                const { error } = await supabaseClient.from('departments')
-                    .update({ name, description: desc || null, sort_order: sort })
-                    .eq('id', editId);
-                if (error) throw error;
-            } else {
-                const { error } = await supabaseClient.from('departments')
-                    .insert({ name, description: desc || null, sort_order: sort, active: true });
-                if (error) throw error;
-            }
-            await window.loadDepartments();
-            window.displayDepartments();
-            window.closeDeptModal();
-        } catch(e) { alert('Gagal: ' + e.message); }
-    };
-
-    window.editDepartment = function(id) { window.openDeptModal(id); };
-
-    window.toggleDepartment = async function(id, active) {
-        try {
-            const { error } = await supabaseClient.from('departments')
-                .update({ active }).eq('id', id);
-            if (error) throw error;
-            await window.loadDepartments();
-            window.displayDepartments();
-        } catch(e) { alert('Gagal: ' + e.message); }
-    };
-
-    window.deleteDepartment = async function(id, name) {
-        if (!confirm('Padam jabatan "' + name + '"?')) return;
-        try {
-            const { error } = await supabaseClient.from('departments')
-                .delete().eq('id', id);
-            if (error) throw error;
-            await window.loadDepartments();
-            window.displayDepartments();
-        } catch(e) { alert('Gagal: ' + e.message); }
-    };
-
     // ============ INIT ============
     (async function init() {
         offlineBanner.style.display = navigator.onLine ? 'none' : 'block';
@@ -3541,16 +4049,20 @@ document.addEventListener('DOMContentLoaded', function() {
         isBoss = sessionStorage.getItem('isBoss') === 'true';
         applyBossMode();
         await loadAppSettings();
+        await window.loadDepartments();
         await loadStaffCards();
         await loadDesigners();
         if (STAFF_NAME && STAFF_NAME !== 'BOSS') {
             const s = allStaffCardsCache.find(x => x.staff_name === STAFF_NAME);
-            if (s) isDesigner = s.is_designer || false;
+            if (s) {
+                isDesigner = s.is_designer || false;
+                isProduction = s.is_production || false;
+                currentDepartmentId = s.department_id || null;
+            }
         }
         await loadSalesPersons();
         await loadOrders();
         await loadSizeCategories();
-        await window.loadDepartments();
         await populateSalesPersonDropdown();
         updateCustomerDatalist();
         renderInvoiceTable();
@@ -3558,7 +4070,7 @@ document.addEventListener('DOMContentLoaded', function() {
         await updateAvailableInvoiceNumbers();
         await renderTemplateButtons();
         if (STAFF_NAME) {
-            const prefix = isDesigner ? '🎨 ' : (STAFF_NAME === 'BOSS' ? '👑 ' : '👤 ');
+            const prefix = isDesigner ? '🎨 ' : (isProduction ? '🏭 ' : (STAFF_NAME === 'BOSS' ? '👑 ' : '👤 '));
             $('staff-badge').textContent = prefix + STAFF_NAME;
         } else $('staff-badge').textContent = '👤 Belum Login';
         applyBossMode();
@@ -3571,7 +4083,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (isDesigner) {
             setInterval(() => { if (document.querySelector('.tab-btn.active')?.id === 'tab-design') displayDesignerOrders(); }, 60000);
         }
-        console.log('✅ Sistem sedia. Staff:', STAFF_NAME, '| Designer:', isDesigner, '| Boss:', isBoss);
+        if (isProduction) {
+            setInterval(() => { if (document.querySelector('.tab-btn.active')?.id === 'tab-production') displayProductionOrders(); }, 60000);
+        }
+        console.log('✅ Sistem sedia. Staff:', STAFF_NAME, '| Designer:', isDesigner, '| Production:', isProduction, '| Boss:', isBoss);
     })();
 });
 </script>
