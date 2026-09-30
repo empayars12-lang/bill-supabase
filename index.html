@@ -31,16 +31,17 @@ body { font-family: 'Arial', sans-serif; margin: 0; padding: 0; background-color
 .staff-badge { background: #e8f4fc; color: #2980b9; padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: bold; }
 .btn-home { background: #6e48aa; color: white; border: none; padding: 8px 15px; cursor: pointer; border-radius: 4px; font-size: 14px; }
 .tab-nav { display: flex; border-bottom: 1px solid #ddd; margin-bottom: 20px; flex-wrap: wrap; }
-.tab-btn { padding: 10px 15px; background: none; border: none; cursor: pointer; font-size: 15px; font-weight: bold; color: #555; border-bottom: 3px solid transparent; transition: all 0.3s; margin-right: 5px; margin-bottom: -1px; }
+.tab-btn { padding: 10px 15px; background: none; border: none; cursor: pointer; font-size: 15px; font-weight: bold; color: #555; border-bottom: 3px solid transparent; transition: all 0.3s; margin-right: 5px; margin-bottom: -1px; position: relative; }
 .tab-btn.active { color: #aa4871; border-bottom: 3px solid #6e48aa; }
+.tab-btn .badge-notif { position: absolute; top: 4px; right: 2px; background: #e74c3c; color: white; font-size: 10px; padding: 2px 6px; border-radius: 10px; font-weight: bold; }
 .search-filter { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
 .search-input { flex: 1; min-width: 200px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
 .filter-btn { padding: 10px 15px; background-color: #eee; border: none; border-radius: 4px; cursor: pointer; }
 .filter-btn.active { background-color: #6e48aa; color: white; }
 .filter-select { padding: 10px; border: 1px solid #ddd; border-radius: 4px; background: white; cursor: pointer; }
 .order-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-.order-table th { background-color: #f2f2f2; padding: 12px 15px; text-align: left; font-weight: bold; border-bottom: 1px solid #ddd; }
-.order-table td { padding: 12px 15px; border-bottom: 1px solid #eee; }
+.order-table th { background-color: #f2f2f2; padding: 12px 15px; text-align: left; font-weight: bold; border-bottom: 1px solid #ddd; font-size: 13px; }
+.order-table td { padding: 12px 15px; border-bottom: 1px solid #eee; font-size: 13px; }
 .order-table tr:hover { background-color: #f9f9f9; }
 .order-number { font-weight: bold; color: #6e48aa; cursor: pointer; text-decoration: underline; }
 .status-indicator { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 5px; }
@@ -113,8 +114,8 @@ th { background-color: #f2f2f2; }
 #sales-person-table th:first-child, #sales-person-table td:first-child { text-align: left; }
 #sales-person-table .commission-input { width: 60px; padding: 5px; text-align: right; }
 #sales-person-table .bill-count { cursor: pointer; text-decoration: underline; color: #007bff; }
-#password-modal, #name-modal, #template-modal, #size-cat-modal, #size-input-modal, #qr-login-modal, #pin-login-modal, #staff-modal, #qr-display-modal, #idcard-modal, #staff-password-login-modal, #staff-pin-manual-modal, #upload-modal { position: fixed; z-index: 3500; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; padding: 20px; }
-.password-modal-content, .name-modal-content, .template-modal-content, .size-cat-modal-content, .size-input-modal-content, .qr-login-modal-content, .pin-login-modal-content, .staff-modal-content, .qr-display-modal-content, .idcard-modal-content, .staff-password-login-modal-content, .staff-pin-manual-modal-content, .upload-modal-content {
+#password-modal, #name-modal, #template-modal, #size-cat-modal, #size-input-modal, #qr-login-modal, #pin-login-modal, #staff-modal, #qr-display-modal, #idcard-modal, #staff-password-login-modal, #staff-pin-manual-modal, #upload-modal, #pass-designer-modal, #file-notes-modal { position: fixed; z-index: 3500; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; padding: 20px; }
+.password-modal-content, .name-modal-content, .template-modal-content, .size-cat-modal-content, .size-input-modal-content, .qr-login-modal-content, .pin-login-modal-content, .staff-modal-content, .qr-display-modal-content, .idcard-modal-content, .staff-password-login-modal-content, .staff-pin-manual-modal-content, .upload-modal-content, .pass-designer-modal-content, .file-notes-modal-content {
     background: white; padding: 30px; border-radius: 12px; position: relative;
     width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto;
 }
@@ -123,6 +124,8 @@ th { background-color: #f2f2f2; }
 .qr-login-modal-content, .pin-login-modal-content, .staff-password-login-modal-content, .staff-pin-manual-modal-content { max-width: 450px; text-align: center; }
 .idcard-modal-content { max-width: 600px; }
 .upload-modal-content { max-width: 650px; }
+.pass-designer-modal-content { max-width: 450px; }
+.file-notes-modal-content { max-width: 450px; }
 .modal-close-x { color: #aaa; position: absolute; top: 10px; right: 15px; font-size: 28px; font-weight: bold; cursor: pointer; background: none; border: none; }
 #password-input, #delete-reason-input { padding: 10px; width: 100%; margin-bottom: 15px; box-sizing: border-box; }
 #delete-reason-input { height: 60px; resize: vertical; }
@@ -195,6 +198,7 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
 .staff-card-item .staff-actions button { padding: 6px 10px; font-size: 12px; border: none; border-radius: 4px; cursor: pointer; color: white; }
 .staff-active { background: #2ecc71; } .staff-inactive { background: #95a5a6; }
 .btn-edit-staff { background: #3498db; } .btn-qr-staff { background: #9b59b6; } .btn-del-staff { background: #e74c3c; } .btn-toggle-staff { background: #f39c12; }
+.designer-badge { display: inline-block; background: linear-gradient(135deg, #e67e22, #d35400); color: white; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: bold; margin-left: 5px; }
 #qr-reader { width: 100%; max-width: 400px; margin: 20px auto; }
 #qr-reader video { border-radius: 8px; }
 #qr-reader-status { text-align: center; margin-top: 10px; font-weight: bold; color: #6e48aa; font-size: 13px; line-height: 1.5; }
@@ -223,13 +227,50 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
 .upload-progress-container { display: none; margin: 15px 0; }
 .upload-progress-bg { background: #eee; border-radius: 4px; overflow: hidden; height: 20px; }
 .upload-progress-bar { height: 100%; background: #6e48aa; width: 0%; transition: width 0.3s; }
-.file-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f9f9f9; border-radius: 6px; margin-bottom: 8px; gap: 10px; flex-wrap: wrap; }
+.file-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 12px; background: #f9f9f9; border-radius: 6px; margin-bottom: 8px; gap: 10px; flex-wrap: wrap; }
 .file-item-info { flex: 1; min-width: 150px; }
 .file-item-name { font-weight: bold; font-size: 13px; word-break: break-all; }
 .file-item-meta { font-size: 11px; color: #666; margin-top: 3px; }
-.file-item-actions { display: flex; gap: 5px; }
+.file-item-notes { font-size: 12px; color: #6e48aa; margin-top: 5px; padding: 5px 8px; background: #f0f4ff; border-radius: 4px; border-left: 3px solid #6e48aa; }
+.file-item-actions { display: flex; gap: 5px; flex-wrap: wrap; }
+.design-panel { margin-top: 20px; padding: 20px; background: linear-gradient(135deg, #fff9f0 0%, #fff5e1 100%); border-radius: 10px; border-left: 5px solid #e67e22; }
+.design-panel h4 { margin: 0 0 15px; color: #e67e22; display: flex; align-items: center; gap: 8px; }
+.design-row { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
+.design-row label { margin: 0; min-width: 100px; }
+.design-row select { flex: 1; min-width: 150px; }
+.design-status-badge { display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+.design-pending { background: #f1c40f; color: #333; }
+.design-in_progress { background: #3498db; color: white; }
+.design-sent_to_customer { background: #9b59b6; color: white; }
+.design-revision { background: #e67e22; color: white; }
+.design-confirmed { background: #2ecc71; color: white; }
+.design-completed { background: #95a5a6; color: white; }
+.design-status-buttons { display: flex; gap: 6px; flex-wrap: wrap; margin: 15px 0; }
+.design-status-btn { padding: 8px 14px; border: 2px solid #ddd; background: white; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; transition: all 0.2s; }
+.design-status-btn:hover { transform: translateY(-2px); box-shadow: 0 3px 8px rgba(0,0,0,0.1); }
+.design-status-btn.active { border-width: 3px; transform: scale(1.05); box-shadow: 0 3px 10px rgba(0,0,0,0.15); }
+.design-status-btn[data-status="pending"].active { background: #f1c40f; color: #333; border-color: #f1c40f; }
+.design-status-btn[data-status="in_progress"].active { background: #3498db; color: white; border-color: #3498db; }
+.design-status-btn[data-status="sent_to_customer"].active { background: #9b59b6; color: white; border-color: #9b59b6; }
+.design-status-btn[data-status="revision"].active { background: #e67e22; color: white; border-color: #e67e22; }
+.design-status-btn[data-status="confirmed"].active { background: #2ecc71; color: white; border-color: #2ecc71; }
+.design-status-btn[data-status="completed"].active { background: #95a5a6; color: white; border-color: #95a5a6; }
+.design-activity-item { padding: 10px 12px; background: white; border-left: 3px solid #e67e22; border-radius: 4px; margin-bottom: 8px; font-size: 13px; }
+.design-activity-item .log-header { font-weight: bold; color: #333; margin-bottom: 5px; }
+.design-activity-item .log-detail { color: #666; font-size: 12px; line-height: 1.6; }
+.design-summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; margin-bottom: 20px; }
+.design-summary-card { padding: 18px; border-radius: 10px; text-align: center; color: white; box-shadow: 0 3px 8px rgba(0,0,0,0.1); }
+.design-summary-card .amount { font-size: 2rem; font-weight: bold; }
+.design-summary-card .label { font-size: 12px; opacity: 0.9; margin-top: 5px; }
+.design-summary-pending { background: linear-gradient(135deg, #f1c40f, #f39c12); }
+.design-summary-in_progress { background: linear-gradient(135deg, #3498db, #2980b9); }
+.design-summary-sent_to_customer { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
+.design-summary-revision { background: linear-gradient(135deg, #e67e22, #d35400); }
+.design-summary-confirmed { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+.design-summary-completed { background: linear-gradient(135deg, #95a5a6, #7f8c8d); }
+.auto-assign-note { font-size: 12px; color: #666; font-style: italic; margin-top: 3px; }
 @media print {
-    .no-print, .action-buttons, .tab-nav, .home-button-container, #password-modal, .add-sales-person, #bills-modal, #install-app-btn, #upload-modal { display: none !important; }
+    .no-print, .action-buttons, .tab-nav, .home-button-container, #password-modal, .add-sales-person, #bills-modal, #install-app-btn, #upload-modal, #pass-designer-modal, #file-notes-modal { display: none !important; }
     body { background: none; padding: 0; }
     .container { box-shadow: none; max-width: 100%; padding: 0; }
     #invoice-number-dropdown { display: none !important; }
@@ -243,6 +284,8 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
     .company-details { text-align: center; }
     .tab-nav { justify-content: center; }
     .id-card-body { flex-direction: column; align-items: center; text-align: center; }
+    .design-row { flex-direction: column; align-items: stretch; }
+    .design-status-buttons { justify-content: center; }
 }
 </style>
 </head>
@@ -266,8 +309,8 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
     <div class="features">
         <div class="feature-card"><div class="feature-icon">📊</div><div class="feature-title">Invois Profesional</div><div>Buat dan cetak invois dengan mudah</div></div>
         <div class="feature-card"><div class="feature-icon">📝</div><div class="feature-title">Urusan Order</div><div>Pantau status order dengan sistematik</div></div>
+        <div class="feature-card"><div class="feature-icon">🎨</div><div class="feature-title">Design Tracking</div><div>Track status design secara real-time</div></div>
         <div class="feature-card"><div class="feature-icon">📈</div><div class="feature-title">Analisis Jualan</div><div>Ringkasan harian, mingguan, bulanan</div></div>
-        <div class="feature-card"><div class="feature-icon">📱</div><div class="feature-title">3 Cara Login</div><div>QR, PIN manual, atau password boss</div></div>
     </div>
 </div>
 
@@ -285,6 +328,7 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
         <button class="tab-btn" id="tab-invoice">Buat Invois</button>
         <button class="tab-btn" id="tab-orders">Senarai Order</button>
         <button class="tab-btn" id="tab-active">Order Aktif</button>
+        <button class="tab-btn" id="tab-design" style="display:none;">🎨 Design Saya<span id="design-notif-badge" class="badge-notif" style="display:none;">0</span></button>
         <button class="tab-btn" id="tab-dashboard">Papan Pemuka</button>
         <button class="tab-btn" id="tab-sales-person">Jurujual</button>
         <button class="tab-btn" id="tab-templates">Template & Saiz</button>
@@ -337,7 +381,19 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
         </div>
         <div class="form-group"><label>DEPOSIT (RM):</label><input type="number" id="deposit" placeholder="0.00" step="0.01"></div>
         <div class="bank-info"><p><strong>Maybank</strong><br>553104624047<br>EMPAYAR S KREATIF SOLUTION</p></div>
-        <div class="form-group"><label>NAMA JURUJUAL:</label><select id="sales-person"><option value="">Pilih Jurujual</option></select></div>
+        <div class="form-group">
+            <label>NAMA JURUJUAL:</label>
+            <select id="sales-person"><option value="">Pilih Jurujual</option></select>
+            <div class="auto-assign-note" id="sales-person-auto-note" style="display:none;">🔒 Auto: <span id="sales-person-auto-name"></span> (ikut login)</div>
+        </div>
+        <div class="form-group">
+            <label>🎨 DESIGNER:</label>
+            <select id="designer-select"><option value="">-- Pilih Designer --</option></select>
+        </div>
+        <div class="form-group">
+            <label>📝 NOTA UNTUK DESIGNER:</label>
+            <textarea id="design-notes-input" placeholder="Contoh: Warna merah, font bold, letak logo di tengah..." style="height:80px; resize:vertical;"></textarea>
+        </div>
         <div class="action-buttons no-print"><button id="preview-invoice" class="btn">Pratonton Invois</button></div>
     </div>
 
@@ -389,6 +445,16 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
             <select id="filter-month" class="filter-select"><option value="">Semua Bulan</option><option value="1">Jan</option><option value="2">Feb</option><option value="3">Mac</option><option value="4">Apr</option><option value="5">Mei</option><option value="6">Jun</option><option value="7">Jul</option><option value="8">Ogos</option><option value="9">Sep</option><option value="10">Okt</option><option value="11">Nov</option><option value="12">Dis</option></select>
             <select id="filter-year" class="filter-select"><option value="">Semua Tahun</option></select>
             <select id="filter-sales" class="filter-select"><option value="">Semua Jurujual</option></select>
+            <select id="filter-designer" class="filter-select"><option value="">Semua Designer</option></select>
+            <select id="filter-design-status" class="filter-select">
+                <option value="">Semua Status Design</option>
+                <option value="pending">🟡 Pending</option>
+                <option value="in_progress">🔵 In Progress</option>
+                <option value="sent_to_customer">🟣 Hantar Pelanggan</option>
+                <option value="revision">🟠 Revision</option>
+                <option value="confirmed">🟢 Confirmed</option>
+                <option value="completed">⚫ Selesai</option>
+            </select>
         </div>
         <div class="search-filter no-print" style="margin-top:-10px;">
             <button class="filter-btn active" data-filter="all">Semua</button>
@@ -406,10 +472,12 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
             <div class="summary-box"><div class="label">Jumlah Deposit</div><div class="value" id="summary-deposit">RM 0.00</div></div>
             <div class="summary-box"><div class="label">Jumlah Baki</div><div class="value" id="summary-balance">RM 0.00</div></div>
         </div>
+        <div style="overflow-x:auto;">
         <table class="order-table">
-            <thead><tr><th>No. Bil</th><th>Pelanggan</th><th>Telefon</th><th>Tarikh Order</th><th>Tarikh Siap</th><th>Jurujual</th><th>Status</th><th class="no-print">Tindakan</th></tr></thead>
+            <thead><tr><th>No. Bil</th><th>Pelanggan</th><th>Telefon</th><th>Tarikh Order</th><th>Tarikh Siap</th><th>Jurujual</th><th>Designer</th><th>Status Design</th><th>Status</th><th class="no-print">Tindakan</th></tr></thead>
             <tbody id="orders-container"></tbody>
         </table>
+        </div>
     </div>
 
     <div id="active-orders-page" class="page">
@@ -425,10 +493,36 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
             <div class="summary-box" style="border-left-color:#e74c3c;"><div class="label">Lewat</div><div class="value" id="active-summary-late" style="color:#e74c3c;">0</div></div>
             <div class="summary-box" style="border-left-color:#f39c12;"><div class="label">≤ 3 Hari</div><div class="value" id="active-summary-urgent" style="color:#f39c12;">0</div></div>
         </div>
+        <div style="overflow-x:auto;">
         <table class="order-table">
-            <thead><tr><th>No. Bil</th><th>Pelanggan</th><th>Jurujual</th><th>Tarikh Janji</th><th>Status</th><th>Hari Lagi</th><th>Deposit</th><th>Baki</th><th>Item</th><th class="no-print">Tindakan</th></tr></thead>
+            <thead><tr><th>No. Bil</th><th>Pelanggan</th><th>Jurujual</th><th>Designer</th><th>Status Design</th><th>Tarikh Janji</th><th>Status</th><th>Hari Lagi</th><th>Deposit</th><th>Baki</th><th class="no-print">Tindakan</th></tr></thead>
             <tbody id="active-orders-container"></tbody>
         </table>
+        </div>
+    </div>
+
+    <div id="design-page" class="page">
+        <h2 style="margin-top:0;">🎨 Design Saya</h2>
+        <p style="color:#666;margin-top:-10px;">Order yang di-assign kepada <strong id="design-page-designer-name">-</strong></p>
+        <div class="design-summary-cards" id="design-summary-cards"></div>
+        <div class="search-filter no-print">
+            <input type="text" id="search-design" class="search-input" placeholder="Cari no order, nama pelanggan...">
+            <select id="filter-design-only-status" class="filter-select">
+                <option value="">Semua Status</option>
+                <option value="pending">🟡 Pending</option>
+                <option value="in_progress">🔵 In Progress</option>
+                <option value="sent_to_customer">🟣 Hantar Pelanggan</option>
+                <option value="revision">🟠 Revision</option>
+                <option value="confirmed">🟢 Confirmed</option>
+                <option value="completed">⚫ Selesai</option>
+            </select>
+        </div>
+        <div style="overflow-x:auto;">
+        <table class="order-table">
+            <thead><tr><th>No. Bil</th><th>Pelanggan</th><th>Tarikh Janji</th><th>Status Design</th><th>Nota</th><th class="no-print">Tindakan</th></tr></thead>
+            <tbody id="design-orders-container"></tbody>
+        </table>
+        </div>
     </div>
 
     <div class="order-detail-view" id="order-detail-view">
@@ -443,8 +537,41 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
             <div class="detail-total"><span>Deposit:</span><span id="detail-deposit">RM0.00</span></div>
             <div class="detail-total"><span>Baki:</span><span id="detail-balance">RM0.00</span></div>
         </div>
+
+        <div class="design-panel" id="design-panel">
+            <h4>🎨 Info Design</h4>
+            <div class="design-row">
+                <label>Designer:</label>
+                <select id="detail-designer-select" onchange="updateDesignerFromDetail()"></select>
+            </div>
+            <div class="design-row">
+                <label>Status Design:</label>
+                <span id="detail-design-status-badge" class="design-status-badge">-</span>
+            </div>
+            <div class="design-status-buttons" id="design-status-buttons">
+                <button class="design-status-btn" data-status="pending" onclick="changeDesignStatus('pending')">🟡 Pending</button>
+                <button class="design-status-btn" data-status="in_progress" onclick="changeDesignStatus('in_progress')">🔵 In Progress</button>
+                <button class="design-status-btn" data-status="sent_to_customer" onclick="changeDesignStatus('sent_to_customer')">🟣 Hantar Pelanggan</button>
+                <button class="design-status-btn" data-status="revision" onclick="changeDesignStatus('revision')">🟠 Revision</button>
+                <button class="design-status-btn" data-status="confirmed" onclick="changeDesignStatus('confirmed')">🟢 Confirmed</button>
+                <button class="design-status-btn" data-status="completed" onclick="changeDesignStatus('completed')">⚫ Selesai</button>
+            </div>
+            <div class="form-group">
+                <label>📝 Nota untuk Designer:</label>
+                <textarea id="detail-design-notes" placeholder="Arahan khas..." style="height:70px;resize:vertical;"></textarea>
+            </div>
+            <div class="action-buttons" style="justify-content:flex-start;">
+                <button class="btn" style="background:#e67e22;" onclick="saveDesignInfo()">💾 Simpan Info Design</button>
+                <button class="btn" style="background:#9b59b6;" onclick="openPassDesignerModal()">🔄 Pass ke Designer Lain</button>
+            </div>
+            <div id="design-activity-section" style="margin-top:15px;">
+                <h5 style="color:#e67e22;margin-bottom:8px;">📋 Sejarah Design</h5>
+                <div id="design-activity-list"><p style="color:#999;font-size:13px;">Tiada aktiviti.</p></div>
+            </div>
+        </div>
+
         <div class="audit-log-section" id="audit-log-section" style="display:none;">
-            <h4>📋 Sejarah Perubahan</h4>
+            <h4>📋 Sejarah Perubahan Order</h4>
             <div id="audit-log-list"></div>
         </div>
         <div class="detail-actions no-print">
@@ -556,7 +683,7 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
         </div>
         <div class="settings-section">
             <h3>👥 Kad Staf (QR + PIN)</h3>
-            <p style="font-size:13px;color:#666;">Staf yang ditambah di sini akan muncul di dropdown <strong>Jurujual</strong> dalam invoice.</p>
+            <p style="font-size:13px;color:#666;">Staf yang ditambah di sini akan muncul di dropdown <strong>Jurujual</strong>. Tanda "Designer" untuk staf yang juga buat design.</p>
             <div class="action-buttons no-print" style="justify-content:flex-start; margin-bottom:15px;">
                 <button id="add-staff-btn" class="btn" style="background:#6e48aa;">➕ Tambah Staf Baru</button>
             </div>
@@ -659,6 +786,13 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
             </select>
         </div>
         <div class="form-group"><label>PIN (4 digit):</label><input type="text" id="staff-pin-input" placeholder="1234" maxlength="4" inputmode="numeric"></div>
+        <div class="form-group" style="background:#fff8e1;padding:12px;border-radius:6px;border-left:3px solid #e67e22;">
+            <label style="cursor:pointer;display:flex;align-items:center;gap:8px;margin:0;">
+                <input type="checkbox" id="staff-is-designer-input" style="width:auto;margin:0;">
+                <span>🎨 <strong>Staf ini juga Designer</strong></span>
+            </label>
+            <p style="font-size:11px;color:#666;margin:5px 0 0;">Jika ditanda, staf ini boleh di-assign ke order design dan ada tab "Design Saya".</p>
+        </div>
         <div class="action-buttons no-print" style="justify-content:flex-end;">
             <button id="cancel-staff-modal" class="btn btn-secondary">Batal</button>
             <button id="save-staff-btn" class="btn">💾 Simpan</button>
@@ -738,6 +872,11 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
             <p id="selected-file-info" style="margin: 10px 0 0; color: #666; font-size: 13px;">Belum ada fail dipilih</p>
         </div>
         
+        <div class="form-group" id="file-notes-input-group" style="display:none;">
+            <label>📝 Nota untuk Fail ini (optional):</label>
+            <textarea id="file-notes-input" placeholder="Contoh: Guna warna ini untuk design akhir" style="height:60px;resize:vertical;"></textarea>
+        </div>
+        
         <div id="upload-progress" class="upload-progress-container">
             <div class="upload-progress-bg">
                 <div id="upload-progress-bar" class="upload-progress-bar"></div>
@@ -758,6 +897,44 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
         <div id="existing-files-list">
             <p style="color:#999;text-align:center;">Memuatkan...</p>
         </div>
+    </div>
+</div>
+
+<div id="pass-designer-modal">
+    <div class="pass-designer-modal-content">
+        <button class="modal-close-x" onclick="closePassDesignerModal()">×</button>
+        <h3 style="color:#9b59b6;margin-top:0;">🔄 Pass ke Designer Lain</h3>
+        <p style="color:#666;font-size:13px;">Order <strong id="pass-invoice-label">-</strong></p>
+        <div class="form-group">
+            <label>Designer Baru:</label>
+            <select id="pass-new-designer"></select>
+        </div>
+        <div class="form-group">
+            <label>Sebab Pass: <span style="color:#e74c3c;">*WAJIB</span></label>
+            <textarea id="pass-reason" placeholder="Contoh: Sedang sakit, overload kerja, skill tak cukup..." style="height:80px;resize:vertical;"></textarea>
+        </div>
+        <div id="pass-error" style="color:red;font-size:13px;margin-bottom:10px;display:none;"></div>
+        <div class="action-buttons" style="justify-content:flex-end;">
+            <button class="btn btn-secondary" onclick="closePassDesignerModal()">Batal</button>
+            <button class="btn" id="btn-confirm-pass" style="background:#9b59b6;" onclick="executePassDesigner()">🔄 Pass Sekarang</button>
+        </div>
+    </div>
+</div>
+
+<div id="file-notes-modal">
+    <div class="file-notes-modal-content">
+        <button class="modal-close-x" onclick="closeFileNotesModal()">×</button>
+        <h3>📝 Nota Fail</h3>
+        <p style="color:#6e48aa;font-weight:bold;" id="file-notes-name">-</p>
+        <div class="form-group">
+            <label>Nota:</label>
+            <textarea id="file-notes-edit" placeholder="Nota untuk fail ini..." style="height:100px;resize:vertical;"></textarea>
+        </div>
+        <div class="action-buttons" style="justify-content:flex-end;">
+            <button class="btn btn-secondary" onclick="closeFileNotesModal()">Batal</button>
+            <button class="btn" onclick="saveFileNotes()">💾 Simpan Nota</button>
+        </div>
+        <input type="hidden" id="file-notes-id" value="">
     </div>
 </div>
 
@@ -825,6 +1002,14 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
         </div>
         <div class="form-group"><label>DEPOSIT (RM):</label><input type="number" id="edit-deposit" step="0.01"></div>
         <div class="form-group"><label>NAMA JURUJUAL:</label><select id="edit-sales-person"><option value="">Pilih Jurujual</option></select></div>
+        <div class="form-group">
+            <label>🎨 DESIGNER:</label>
+            <select id="edit-designer-select"><option value="">-- Pilih Designer --</option></select>
+        </div>
+        <div class="form-group">
+            <label>📝 Nota untuk Designer:</label>
+            <textarea id="edit-design-notes" style="height:70px;resize:vertical;"></textarea>
+        </div>
         <div class="action-buttons no-print">
             <button id="cancel-edit-order" class="btn btn-secondary">Batal</button>
             <button id="print-edit-order" class="btn btn-warning">🖨️ Cetak Bill</button>
@@ -834,26 +1019,20 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
 </div>
 
 <script>
-// ============ GLOBAL FUNCTION: Open Invoice Dropdown (di luar DOMContentLoaded) ============
 window.openInvoiceDropdown = function(e) {
     if (e) { e.stopPropagation(); e.preventDefault(); }
-    console.log('🔓 openInvoiceDropdown dipanggil');
     const dropdown = document.getElementById('invoice-number-dropdown');
-    if (!dropdown) { console.error('Dropdown element tak jumpa!'); return; }
+    if (!dropdown) return;
     dropdown.innerHTML = '<div style="padding:15px;text-align:center;color:#666;">⏳ Memuatkan nombor bil...</div>';
     dropdown.style.display = 'block';
-    
     if (typeof window.loadInvoiceNumbersForDropdown === 'function') {
         window.loadInvoiceNumbersForDropdown().then(() => {
             if (dropdown.children.length === 0) {
                 dropdown.innerHTML = '<div style="padding:15px;text-align:center;color:#e74c3c;">Tiada no. bil tersedia</div>';
             }
         }).catch(err => {
-            console.error('Dropdown error:', err);
             dropdown.innerHTML = '<div style="padding:15px;text-align:center;color:#e74c3c;">❌ Gagal muat: ' + err.message + '</div>';
         });
-    } else {
-        dropdown.innerHTML = '<div style="padding:15px;text-align:center;color:#e74c3c;">❌ Sistem tak ready. Refresh page.</div>';
     }
 };
 
@@ -867,6 +1046,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let CORRECT_PASSWORD = '7532wan';
     let CURRENT_STAFF = null;
     let isBoss = sessionStorage.getItem('isBoss') === 'true';
+    let isDesigner = false;
 
     const $ = id => document.getElementById(id);
     const landingPage = $('landing-page');
@@ -875,6 +1055,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const invoicePage = $('invoice-page'), previewPage = $('preview-page');
     const orderListPage = $('order-list-page'), activeOrdersPage = $('active-orders-page');
+    const designPage = $('design-page');
     const orderDetailView = $('order-detail-view'), dashboardPage = $('dashboard-page');
     const salesPersonPage = $('sales-person-page'), templatesPage = $('templates-page');
     const deletedBillsPage = $('deleted-bills-page'), settingsPage = $('settings-page');
@@ -888,12 +1069,23 @@ document.addEventListener('DOMContentLoaded', function() {
     let allTemplatesCache = [];
     let allSizeCatsCache = [];
     let allStaffCardsCache = [];
+    let allDesignersCache = [];
     let currentInvoiceItems = [];
     let editingSizeItemIdx = null;
     let editingStaffId = null;
     let html5QrCode = null;
     let currentUploadInvoice = null;
     let selectedFile = null;
+    let currentFileNotesId = null;
+
+    const DESIGN_STATUS = {
+        pending: { label: 'Pending', icon: '🟡', cls: 'design-pending' },
+        in_progress: { label: 'In Progress', icon: '🔵', cls: 'design-in_progress' },
+        sent_to_customer: { label: 'Hantar Pelanggan', icon: '🟣', cls: 'design-sent_to_customer' },
+        revision: { label: 'Revision', icon: '🟠', cls: 'design-revision' },
+        confirmed: { label: 'Confirmed', icon: '🟢', cls: 'design-confirmed' },
+        completed: { label: 'Selesai', icon: '⚫', cls: 'design-completed' }
+    };
 
     function formatDate(d) {
         if (!d || d === '-') return '-';
@@ -910,6 +1102,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     function escapeHtml(s) { return (s||'').toString().replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
     function escapeAttr(s) { return (s||'').toString().replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
+
+    function getDesignStatusBadge(status) {
+        const s = DESIGN_STATUS[status] || DESIGN_STATUS.pending;
+        return `<span class="design-status-badge ${s.cls}">${s.icon} ${s.label}</span>`;
+    }
 
     function getOrderStatus(o) {
         if (o.status === 'completed') return 'completed';
@@ -955,6 +1152,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (btn) btn.style.display = 'none';
             });
         }
+        // Design tab: show only if user is designer OR boss
+        const designTab = $('tab-design');
+        if (designTab) {
+            if (isDesigner || hasBossAccess) designTab.style.display = '';
+            else designTab.style.display = 'none';
+        }
     }
 
     function hasUnsavedFormData() {
@@ -988,37 +1191,47 @@ document.addEventListener('DOMContentLoaded', function() {
             allStaffCardsCache = (data||[]).map(s => ({
                 id: s.id, staff_name: s.staff_name, qr_token: s.qr_token,
                 pin_code: s.pin_code, jawatan: s.jawatan || '', active: s.active,
-                last_login: s.last_login, login_method: s.login_method || 'qr_pin'
+                last_login: s.last_login, login_method: s.login_method || 'qr_pin',
+                is_designer: s.is_designer || false
             }));
             return allStaffCardsCache;
         } catch(e) { console.error(e); return []; }
     }
-    async function addStaffCard(name, jawatan, pin, loginMethod) {
+    async function loadDesigners() {
+        await loadStaffCards();
+        allDesignersCache = allStaffCardsCache.filter(s => s.active && s.is_designer);
+        return allDesignersCache;
+    }
+    async function addStaffCard(name, jawatan, pin, loginMethod, isDesignerFlag) {
         try {
             const token = 'esk_' + name.toLowerCase().replace(/\s/g, '_') + '_' + Math.random().toString(36).substr(2, 8);
             const { error } = await supabaseClient.from('staff_cards').insert({
                 staff_name: name, qr_token: token, pin_code: pin, jawatan: jawatan,
-                active: true, login_method: loginMethod || 'qr_pin'
+                active: true, login_method: loginMethod || 'qr_pin', is_designer: isDesignerFlag || false
             });
             if (error) throw error;
             const { data: sp } = await supabaseClient.from('sales_persons').select('name').eq('name', name).maybeSingle();
             if (!sp) await supabaseClient.from('sales_persons').insert({ name: name, commission: 0 });
             await populateSalesPersonDropdown();
+            await loadDesigners();
             return true;
         } catch(e) { alert('Gagal: ' + e.message); return false; }
     }
-    async function updateStaffCard(id, name, jawatan, pin, loginMethod) {
+    async function updateStaffCard(id, name, jawatan, pin, loginMethod, isDesignerFlag) {
         try {
             const { data: old } = await supabaseClient.from('staff_cards').select('staff_name').eq('id', id).maybeSingle();
             const { error } = await supabaseClient.from('staff_cards').update({
-                staff_name: name, jawatan: jawatan, pin_code: pin, login_method: loginMethod || 'qr_pin'
+                staff_name: name, jawatan: jawatan, pin_code: pin, 
+                login_method: loginMethod || 'qr_pin', is_designer: isDesignerFlag || false
             }).eq('id', id);
             if (error) throw error;
             if (old && old.staff_name !== name) {
                 await supabaseClient.from('sales_persons').update({name: name}).eq('name', old.staff_name);
                 await supabaseClient.from('orders').update({sales_person: name}).eq('sales_person', old.staff_name);
+                await supabaseClient.from('orders').update({assigned_designer: name}).eq('assigned_designer', old.staff_name);
             }
             await populateSalesPersonDropdown();
+            await loadDesigners();
             return true;
         } catch(e) { alert('Gagal: ' + e.message); return false; }
     }
@@ -1026,11 +1239,12 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             await supabaseClient.from('staff_cards').delete().eq('id', id);
             await populateSalesPersonDropdown();
+            await loadDesigners();
             return true;
         } catch(e) { alert('Gagal: ' + e.message); return false; }
     }
     async function toggleStaffActive(id, active) {
-        try { await supabaseClient.from('staff_cards').update({active: active}).eq('id', id); await populateSalesPersonDropdown(); return true; }
+        try { await supabaseClient.from('staff_cards').update({active: active}).eq('id', id); await populateSalesPersonDropdown(); await loadDesigners(); return true; }
         catch(e) { return false; }
     }
     async function loginStaffByQR(qrToken) {
@@ -1061,6 +1275,21 @@ document.addEventListener('DOMContentLoaded', function() {
             return data || [];
         } catch(e) { return []; }
     }
+    async function addDesignActivity(invoiceNumber, action, oldStatus, newStatus, notes) {
+        try {
+            await supabaseClient.from('design_activity').insert({
+                invoice_number: invoiceNumber, designer_name: STAFF_NAME || 'Unknown',
+                action: action, old_status: oldStatus || null,
+                new_status: newStatus || null, notes: notes || null
+            });
+        } catch(e) { console.error('designActivity:', e); }
+    }
+    async function loadDesignActivity(invoiceNumber) {
+        try {
+            const { data } = await supabaseClient.from('design_activity').select('*').eq('invoice_number', invoiceNumber).order('created_at', {ascending: false});
+            return data || [];
+        } catch(e) { return []; }
+    }
 
     async function loadOrders() {
         try {
@@ -1081,7 +1310,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 discount:parseFloat(o.discount)||0, subtotal:parseFloat(o.subtotal)||0,
                 deposit:parseFloat(o.deposit)||0, balance:parseFloat(o.balance)||0,
                 status:o.status, paymentInfo:o.payment_info, createdBy:o.created_by,
-                createdAt:o.created_at, items:itemMap[o.id]||[]
+                createdAt:o.created_at, items:itemMap[o.id]||[],
+                assignedDesigner: o.assigned_designer || null,
+                designStatus: o.design_status || 'pending',
+                designNotes: o.design_notes || '',
+                designUpdatedAt: o.design_updated_at,
+                designUpdatedBy: o.design_updated_by
             }));
             allOrdersCache = result;
             return result;
@@ -1091,14 +1325,24 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const { data: ex } = await supabaseClient.from('orders').select('id').eq('invoice_number', o.invoiceNumber).maybeSingle();
             if (ex) { alert(`No. Bil ${o.invoiceNumber} sudah wujud!`); return false; }
-            const { data: newO, error } = await supabaseClient.from('orders').insert({
+            const insertData = {
                 invoice_number:o.invoiceNumber, customer_name:o.customerName,
                 customer_phone:o.customerPhone, order_date:o.orderDate==='-'?null:o.orderDate,
                 completion_date:o.completionDate==='-'?null:o.completionDate,
                 sales_person:o.salesPerson, total_amount:o.totalAmount, discount:o.discount,
                 subtotal:o.subtotal, deposit:o.deposit, balance:o.balance,
                 status:o.status||'normal', created_by:o.createdBy||STAFF_NAME
-            }).select().single();
+            };
+            // Add design fields if assigned
+            if (o.assignedDesigner) {
+                insertData.assigned_designer = o.assignedDesigner;
+                insertData.design_status = 'pending';
+                insertData.design_updated_at = new Date();
+                insertData.design_updated_by = STAFF_NAME;
+            }
+            if (o.designNotes) insertData.design_notes = o.designNotes;
+
+            const { data: newO, error } = await supabaseClient.from('orders').insert(insertData).select().single();
             if (error) throw error;
             if (o.items && o.items.length) {
                 await supabaseClient.from('order_items').insert(o.items.map(it => ({
@@ -1106,25 +1350,45 @@ document.addEventListener('DOMContentLoaded', function() {
                 })));
             }
             await addAuditLog(o.invoiceNumber, 'create', null, null, null, `Order dicipta. Jumlah: RM${o.totalAmount}, Deposit: RM${o.deposit}`);
+            if (o.assignedDesigner) {
+                await addDesignActivity(o.invoiceNumber, 'assigned', null, 'pending', `Assigned kepada ${o.assignedDesigner}`);
+            }
             return true;
         } catch(e) { console.error('addOrder:', e); alert('Gagal simpan: ' + e.message); return false; }
     }
 
     async function updateOrderWithLog(newOrder, oldOrder) {
         try {
-            const { error } = await supabaseClient.from('orders').update({
+            const updateData = {
                 customer_name:newOrder.customerName, customer_phone:newOrder.customerPhone,
                 order_date:newOrder.orderDate==='-'?null:newOrder.orderDate,
                 completion_date:newOrder.completionDate==='-'?null:newOrder.completionDate,
                 sales_person:newOrder.salesPerson, total_amount:newOrder.totalAmount, discount:newOrder.discount,
                 subtotal:newOrder.subtotal, deposit:newOrder.deposit, balance:newOrder.balance,
                 status:newOrder.status, payment_info:newOrder.paymentInfo||null
-            }).eq('invoice_number', newOrder.invoiceNumber);
+            };
+            // Handle design fields if provided
+            if (newOrder.hasOwnProperty('assignedDesigner')) {
+                updateData.assigned_designer = newOrder.assignedDesigner;
+            }
+            if (newOrder.hasOwnProperty('designStatus')) {
+                updateData.design_status = newOrder.designStatus;
+            }
+            if (newOrder.hasOwnProperty('designNotes')) {
+                updateData.design_notes = newOrder.designNotes;
+            }
+            if (newOrder.hasOwnProperty('designUpdatedAt')) {
+                updateData.design_updated_at = newOrder.designUpdatedAt;
+            }
+            if (newOrder.hasOwnProperty('designUpdatedBy')) {
+                updateData.design_updated_by = newOrder.designUpdatedBy;
+            }
+            const { error } = await supabaseClient.from('orders').update(updateData).eq('invoice_number', newOrder.invoiceNumber);
             if (error) throw error;
             const { data: row } = await supabaseClient.from('orders').select('id').eq('invoice_number', newOrder.invoiceNumber).single();
-            if (row) {
+            if (row && newOrder.items) {
                 await supabaseClient.from('order_items').delete().eq('order_id', row.id);
-                if (newOrder.items && newOrder.items.length) {
+                if (newOrder.items.length) {
                     await supabaseClient.from('order_items').insert(newOrder.items.map(it => ({
                         order_id:row.id, description:it.description, price:it.price, quantity:it.quantity, total:it.total
                     })));
@@ -1139,7 +1403,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (Math.abs((oldOrder.discount||0) - (newOrder.discount||0)) > 0.01) changes.push({f:'Diskaun', o:`RM${(oldOrder.discount||0).toFixed(2)}`, n:`RM${(newOrder.discount||0).toFixed(2)}`});
                 if (Math.abs((oldOrder.deposit||0) - (newOrder.deposit||0)) > 0.01) changes.push({f:'Deposit', o:`RM${(oldOrder.deposit||0).toFixed(2)}`, n:`RM${(newOrder.deposit||0).toFixed(2)}`});
                 if (Math.abs((oldOrder.totalAmount||0) - (newOrder.totalAmount||0)) > 0.01) changes.push({f:'Jumlah Item', o:`RM${(oldOrder.totalAmount||0).toFixed(2)}`, n:`RM${(newOrder.totalAmount||0).toFixed(2)}`});
-                if (Math.abs((oldOrder.balance||0) - (newOrder.balance||0)) > 0.01) changes.push({f:'Baki', o:`RM${(oldOrder.balance||0).toFixed(2)}`, n:`RM${(newOrder.balance||0).toFixed(2)}`});
                 if ((oldOrder.salesPerson||'-') !== (newOrder.salesPerson||'-')) changes.push({f:'Jurujual', o:oldOrder.salesPerson||'-', n:newOrder.salesPerson||'-'});
                 if (oldOrder.status !== newOrder.status) changes.push({f:'Status', o:getStatusText(oldOrder.status), n:getStatusText(newOrder.status)});
                 for (const c of changes) await addAuditLog(newOrder.invoiceNumber, 'update', c.f, c.o, c.n, null);
@@ -1148,9 +1411,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const newItems = newOrder.items || [];
                 function itemLabel(it) {
                     const lines = (it.description || '').split('\n');
-                    const main = lines[0].trim();
-                    const size = lines.length > 1 ? ' [' + lines.slice(1).join(' ') + ']' : '';
-                    return main + size;
+                    return lines[0].trim() + (lines.length > 1 ? ' [' + lines.slice(1).join(' ') + ']' : '');
                 }
                 const oldMap = {}; oldItems.forEach(it => { const k = (it.description||'').trim(); if (!oldMap[k]) oldMap[k]=[]; oldMap[k].push(it); });
                 const newMap = {}; newItems.forEach(it => { const k = (it.description||'').trim(); if (!newMap[k]) newMap[k]=[]; newMap[k].push(it); });
@@ -1289,7 +1550,6 @@ document.addEventListener('DOMContentLoaded', function() {
             populateDropdown(used, locked);
             $('sync-status').textContent = `🟢 Real-time aktif | ${locked.length} lock | ${availableInvoiceNumbers.length} tersedia | ${new Date().toLocaleTimeString('ms-MY')}`;
         } catch(e) {
-            console.error('❌ updateAvailableInvoiceNumbers error:', e);
             $('sync-status').textContent = `🔴 Gagal: ${e.message}`;
         }
     }
@@ -1338,9 +1598,10 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById(id).classList.add('active');
         orderDetailView.style.display = 'none';
         const map = {
-            'tab-invoice':[invoicePage, ()=>{populateSalesPersonDropdown(); updateAvailableInvoiceNumbers(); renderTemplateButtons(); updateCustomerDatalist(); loadSizeCategories(); renderInvoiceTable();}],
+            'tab-invoice':[invoicePage, ()=>{populateSalesPersonDropdown(); populateDesignerDropdown('designer-select'); updateAvailableInvoiceNumbers(); renderTemplateButtons(); updateCustomerDatalist(); loadSizeCategories(); renderInvoiceTable(); applyAutoSalesPerson();}],
             'tab-orders':[orderListPage, ()=>displayOrders()],
             'tab-active':[activeOrdersPage, ()=>displayActiveOrders()],
+            'tab-design':[designPage, ()=>displayDesignerOrders()],
             'tab-dashboard':[dashboardPage, ()=>updateDashboard()],
             'tab-sales-person':[salesPersonPage, ()=>displaySalesPersonData()],
             'tab-templates':[templatesPage, ()=>{displayTemplates(); displaySizeCategories();}],
@@ -1416,15 +1677,15 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     async function startQrScanner() {
         if (typeof Html5Qrcode === 'undefined') {
-            $('qr-reader-status').innerHTML = '❌ Scanner tak loaded.<br><small>Sila refresh page (Ctrl+Shift+R)</small>';
+            $('qr-reader-status').innerHTML = '❌ Scanner tak loaded.<br><small>Sila refresh page</small>';
             return;
         }
         if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
-            $('qr-reader-status').innerHTML = '❌ Kamera perlukan HTTPS.<br><small>Sila akses sistem melalui https://</small>';
+            $('qr-reader-status').innerHTML = '❌ Kamera perlukan HTTPS.';
             return;
         }
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            $('qr-reader-status').innerHTML = '❌ Browser tak support kamera.<br><small>Guna Chrome / Safari terbaru</small>';
+            $('qr-reader-status').innerHTML = '❌ Browser tak support kamera.';
             return;
         }
         try {
@@ -1437,11 +1698,10 @@ document.addEventListener('DOMContentLoaded', function() {
             );
             $('qr-reader-status').textContent = '📷 Arahkan kamera ke QR code...';
         } catch(e) {
-            console.error('QR Error:', e);
             let msg = '❌ Kamera gagal.';
-            if (e.name === 'NotAllowedError') msg = '❌ Kebenaran kamera ditolak.<br><small>Benarkan akses kamera di Settings browser.</small>';
+            if (e.name === 'NotAllowedError') msg = '❌ Kebenaran kamera ditolak.';
             else if (e.name === 'NotFoundError') msg = '❌ Tiada kamera dijumpai.';
-            else if (e.name === 'NotReadableError') msg = '❌ Kamera sedang digunakan oleh app lain.';
+            else if (e.name === 'NotReadableError') msg = '❌ Kamera sedang digunakan.';
             else if (e.message) msg = '❌ Kamera gagal: ' + e.message;
             $('qr-reader-status').innerHTML = msg;
         }
@@ -1463,21 +1723,25 @@ document.addEventListener('DOMContentLoaded', function() {
         closeQrLogin();
         const loginMethod = staff.login_method || 'qr_pin';
         if (loginMethod === 'qr_only') {
-            STAFF_NAME = staff.staff_name;
-            isBoss = false;
-            sessionStorage.setItem('isBoss', 'false');
-            sessionStorage.removeItem('appAuthed');
-            localStorage.setItem('staffName', STAFF_NAME);
-            localStorage.setItem('staffLoggedInAt', Date.now());
-            $('staff-badge').textContent = '👤 ' + STAFF_NAME;
-            await updateLastLogin(staff.id);
-            CURRENT_STAFF = null;
-            applyBossMode();
-            alert('✅ Selamat datang, ' + staff.staff_name + '!');
-            showContainer('tab-invoice');
+            await performLogin(staff);
         } else {
             openPinLogin(staff);
         }
+    }
+    async function performLogin(staff) {
+        STAFF_NAME = staff.staff_name;
+        isBoss = false;
+        isDesigner = staff.is_designer || false;
+        sessionStorage.setItem('isBoss', 'false');
+        sessionStorage.removeItem('appAuthed');
+        localStorage.setItem('staffName', STAFF_NAME);
+        localStorage.setItem('staffLoggedInAt', Date.now());
+        $('staff-badge').textContent = (isDesigner ? '🎨 ' : '👤 ') + STAFF_NAME;
+        await updateLastLogin(staff.id);
+        CURRENT_STAFF = null;
+        applyBossMode();
+        alert('✅ Selamat datang, ' + staff.staff_name + '!' + (isDesigner ? '\n🎨 Anda Designer. Tab "Design Saya" tersedia.' : ''));
+        showContainer('tab-invoice');
     }
     function openPinLogin(staff) {
         CURRENT_STAFF = staff;
@@ -1503,17 +1767,8 @@ document.addEventListener('DOMContentLoaded', function() {
             $('pin-1').focus();
             return;
         }
-        STAFF_NAME = verified.staff_name;
-        isBoss = false;
-        sessionStorage.setItem('isBoss', 'false');
-        sessionStorage.removeItem('appAuthed');
-        localStorage.setItem('staffName', STAFF_NAME);
-        localStorage.setItem('staffLoggedInAt', Date.now());
-        $('staff-badge').textContent = '👤 ' + STAFF_NAME;
-        await updateLastLogin(verified.id);
         closePinLogin();
-        applyBossMode();
-        showContainer('tab-invoice');
+        await performLogin(verified);
     }
     ['pin-1','pin-2','pin-3','pin-4'].forEach((id, idx) => {
         const el = $(id);
@@ -1536,7 +1791,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         const select = $('manual-login-select');
         select.innerHTML = '<option value="">-- Pilih Nama --</option>' + 
-            activeStaff.map(s => `<option value="${s.id}">${escapeHtml(s.staff_name)}${s.jawatan ? ' ('+escapeHtml(s.jawatan)+')' : ''}</option>`).join('');
+            activeStaff.map(s => `<option value="${s.id}">${escapeHtml(s.staff_name)}${s.jawatan ? ' ('+escapeHtml(s.jawatan)+')' : ''}${s.is_designer ? ' 🎨' : ''}</option>`).join('');
         $('manual-login-pin').value = '';
         $('manual-pin-error').style.display = 'none';
         $('staff-pin-manual-modal').style.display = 'flex';
@@ -1560,18 +1815,8 @@ document.addEventListener('DOMContentLoaded', function() {
             $('manual-login-pin').focus();
             return;
         }
-        STAFF_NAME = verified.staff_name;
-        isBoss = false;
-        sessionStorage.setItem('isBoss', 'false');
-        sessionStorage.removeItem('appAuthed');
-        localStorage.setItem('staffName', STAFF_NAME);
-        localStorage.setItem('staffLoggedInAt', Date.now());
-        $('staff-badge').textContent = '👤 ' + STAFF_NAME;
-        await updateLastLogin(verified.id);
         closeManualPinLogin();
-        applyBossMode();
-        alert('✅ Selamat datang, ' + STAFF_NAME + '!');
-        showContainer('tab-invoice');
+        await performLogin(verified);
     }
 
     function openPasswordLogin() {
@@ -1591,11 +1836,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         STAFF_NAME = 'BOSS';
         isBoss = true;
+        isDesigner = false;
         localStorage.setItem('staffName', STAFF_NAME);
         localStorage.setItem('staffLoggedInAt', Date.now());
         sessionStorage.setItem('appAuthed', 'true');
         sessionStorage.setItem('isBoss', 'true');
-        $('staff-badge').textContent = '👤 BOSS';
+        $('staff-badge').textContent = '👑 BOSS';
         applyBossMode();
         closePasswordLogin();
         alert('✅ Selamat datang, BOSS!');
@@ -1625,10 +1871,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const methodBadge = s.login_method === 'qr_only' 
                 ? '<span class="login-method-badge login-method-qr_only">📷 QR</span>' 
                 : '<span class="login-method-badge login-method-qr_pin">📷🔢 QR+PIN</span>';
+            const designerBadge = s.is_designer ? '<span class="designer-badge">🎨 DESIGNER</span>' : '';
             return `
             <div class="staff-card-item">
                 <div class="staff-info">
-                    <div class="staff-name">${escapeHtml(s.staff_name)} ${methodBadge} ${s.active ? '' : '<span style="color:#999;font-size:11px;">(Tidak Aktif)</span>'}</div>
+                    <div class="staff-name">${escapeHtml(s.staff_name)} ${methodBadge} ${designerBadge} ${s.active ? '' : '<span style="color:#999;font-size:11px;">(Tidak Aktif)</span>'}</div>
                     <div class="staff-meta">${escapeHtml(s.jawatan||'-')} • PIN: <span style="font-family:monospace;">${'•'.repeat(s.pin_code.length)}</span> • Login: ${s.last_login ? formatTime(s.last_login) : 'Belum pernah'}</div>
                 </div>
                 <div class="staff-actions">
@@ -1650,10 +1897,12 @@ document.addEventListener('DOMContentLoaded', function() {
             $('staff-jawatan-input').value = s.jawatan || '';
             $('staff-pin-input').value = s.pin_code;
             $('staff-login-method').value = s.login_method || 'qr_pin';
+            $('staff-is-designer-input').checked = s.is_designer || false;
         } else {
             $('staff-modal-title').textContent = '➕ Tambah Staf';
             $('staff-name-input').value = ''; $('staff-jawatan-input').value = ''; $('staff-pin-input').value = '';
             $('staff-login-method').value = 'qr_pin';
+            $('staff-is-designer-input').checked = false;
         }
         $('staff-modal').style.display = 'flex';
     }
@@ -1663,11 +1912,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const jawatan = $('staff-jawatan-input').value.trim();
         const pin = $('staff-pin-input').value.trim();
         const loginMethod = $('staff-login-method').value;
+        const isDesignerFlag = $('staff-is-designer-input').checked;
         if (!name) { alert('Sila isi nama.'); return; }
         if (!/^\d{4}$/.test(pin)) { alert('PIN mesti 4 digit nombor.'); return; }
         let ok;
-        if (editingStaffId) ok = await updateStaffCard(editingStaffId, name, jawatan, pin, loginMethod);
-        else ok = await addStaffCard(name, jawatan, pin, loginMethod);
+        if (editingStaffId) ok = await updateStaffCard(editingStaffId, name, jawatan, pin, loginMethod, isDesignerFlag);
+        else ok = await addStaffCard(name, jawatan, pin, loginMethod, isDesignerFlag);
         if (ok) {
             await loadStaffCards();
             displayStaffCards();
@@ -2000,11 +2250,43 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    async function populateDesignerDropdown(selectId, selectedValue = '') {
+        await loadDesigners();
+        const sel = $(selectId);
+        if (!sel) return;
+        const currentVal = selectedValue || sel.value;
+        sel.innerHTML = '<option value="">-- Pilih Designer --</option>' + 
+            allDesignersCache.map(d => `<option value="${escapeAttr(d.staff_name)}">${escapeHtml(d.staff_name)}</option>`).join('');
+        if (currentVal) sel.value = currentVal;
+    }
+
+    function applyAutoSalesPerson() {
+        const sel = $('sales-person');
+        const note = $('sales-person-auto-note');
+        if (!sel || !note) return;
+        // If staff login (not BOSS) → auto-assign
+        if (STAFF_NAME && STAFF_NAME !== 'BOSS') {
+            // Check if STAFF_NAME is in staff list
+            const isStaff = allStaffCardsCache.some(s => s.staff_name === STAFF_NAME);
+            if (isStaff) {
+                sel.value = STAFF_NAME;
+                sel.style.display = 'none';
+                note.style.display = 'block';
+                $('sales-person-auto-name').textContent = STAFF_NAME;
+                return;
+            }
+        }
+        // BOSS → show dropdown
+        sel.style.display = 'block';
+        note.style.display = 'none';
+    }
+
     function getFilteredOrders() {
         let orders = [...allOrdersCache];
         const sf = document.querySelector('#order-list-page .filter-btn.active')?.dataset.filter || 'all';
         const period = $('filter-period').value, month = $('filter-month').value, year = $('filter-year').value;
         const sales = $('filter-sales').value, search = $('search-orders').value.toLowerCase();
+        const designer = $('filter-designer').value, designStatus = $('filter-design-status').value;
         if (sf === 'completed') orders = orders.filter(o => getOrderStatus(o) === 'completed');
         else if (sf === 'pending') orders = orders.filter(o => getOrderStatus(o) !== 'completed');
         if (period !== 'all') {
@@ -2021,6 +2303,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (month) orders = orders.filter(o => o.orderDate && new Date(o.orderDate).getMonth() === parseInt(month)-1);
         if (year) orders = orders.filter(o => o.orderDate && new Date(o.orderDate).getFullYear() === parseInt(year));
         if (sales) orders = orders.filter(o => o.salesPerson === sales);
+        if (designer) orders = orders.filter(o => o.assignedDesigner === designer);
+        if (designStatus) orders = orders.filter(o => (o.designStatus || 'pending') === designStatus);
         if (search) orders = orders.filter(o => (o.invoiceNumber||'').toLowerCase().includes(search) || (o.customerName||'').toLowerCase().includes(search) || (o.customerPhone||'').toLowerCase().includes(search) || (o.salesPerson||'').toLowerCase().includes(search));
         orders.sort((a,b) => new Date(b.orderDate||0) - new Date(a.orderDate||0));
         return orders;
@@ -2029,19 +2313,22 @@ document.addEventListener('DOMContentLoaded', function() {
         await loadOrders();
         const orders = getFilteredOrders();
         const tb = $('orders-container'); tb.innerHTML = '';
-        if (!orders.length) tb.innerHTML = '<tr><td colspan="8" style="text-align:center;">Tiada order</td></tr>';
+        if (!orders.length) tb.innerHTML = '<tr><td colspan="10" style="text-align:center;">Tiada order</td></tr>';
         orders.forEach(o => {
             const st = getOrderStatus(o);
             const tr = document.createElement('tr');
+            const designerText = o.assignedDesigner ? escapeHtml(o.assignedDesigner) : '<span style="color:#999;">-</span>';
+            const designStatusHtml = getDesignStatusBadge(o.designStatus || 'pending');
             tr.innerHTML = `<td><span class="order-number" data-invoice="${o.invoiceNumber}">${o.invoiceNumber||'-'}</span></td>
                 <td>${escapeHtml(o.customerName)||'-'}</td><td>${escapeHtml(o.customerPhone)||'-'}</td>
                 <td>${formatDate(o.orderDate)}</td><td>${formatDate(o.completionDate)}</td>
                 <td>${escapeHtml(o.salesPerson)||'-'}</td>
+                <td>${designerText}</td>
+                <td>${designStatusHtml}</td>
                 <td class="status-cell"><span class="status-indicator status-${st}"></span>${getStatusText(st)}</td>
                 <td class="no-print"><div class="order-actions">
                     <button class="edit-btn" data-invoice="${o.invoiceNumber}">Edit</button>
                     ${st !== 'completed' ? `<button class="complete-btn" data-invoice="${o.invoiceNumber}">Selesai</button>` : ''}
-                    ${st !== 'pending' ? `<button class="pending-btn" data-invoice="${o.invoiceNumber}">Pending</button>` : ''}
                 </div></td>`;
             tb.appendChild(tr);
         });
@@ -2055,10 +2342,8 @@ document.addEventListener('DOMContentLoaded', function() {
         tb.querySelectorAll('.order-number').forEach(el => el.addEventListener('click', e => { const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice); if (o) showOrderDetail(o); }));
         tb.querySelectorAll('.edit-btn').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice); if (o) showEditOrderModal(o); }));
         tb.querySelectorAll('.complete-btn').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice); if (o) showPaymentModal(o); }));
-        tb.querySelectorAll('.pending-btn').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice); if (o) markPending(o); }));
         applyBossMode();
     }
-    async function markPending(o) { await updateOrderWithLog({...o, status:'pending'}, o); displayOrders(); }
 
     async function displayActiveOrders() {
         await loadOrders();
@@ -2068,20 +2353,20 @@ document.addEventListener('DOMContentLoaded', function() {
         if (srch) orders = orders.filter(o => (o.invoiceNumber||'').toLowerCase().includes(srch) || (o.customerName||'').toLowerCase().includes(srch) || (o.customerPhone||'').toLowerCase().includes(srch));
         orders.sort((a,b) => { if (!a.completionDate && !b.completionDate) return 0; if (!a.completionDate) return 1; if (!b.completionDate) return -1; return new Date(a.completionDate) - new Date(b.completionDate); });
         const tb = $('active-orders-container'); tb.innerHTML = '';
-        if (!orders.length) tb.innerHTML = '<tr><td colspan="10" style="text-align:center;">Tiada order aktif 🎉</td></tr>';
+        if (!orders.length) tb.innerHTML = '<tr><td colspan="11" style="text-align:center;">Tiada order aktif 🎉</td></tr>';
         let late = 0, urgent = 0;
         orders.forEach(o => {
             const st = getOrderStatus(o); const dr = getDaysRemaining(o.completionDate);
             if (dr.cls === 'late') late++; else if (dr.cls === 'today' || dr.cls === 'soon') urgent++;
-            const its = (o.items||[]).map(i=>`${escapeHtml(i.description.split('\n')[0])} (${i.quantity}x)`).join(', ') || '-';
             const tr = document.createElement('tr');
             tr.innerHTML = `<td><span class="order-number" data-invoice="${o.invoiceNumber}">${o.invoiceNumber||'-'}</span></td>
                 <td>${escapeHtml(o.customerName)||'-'}</td><td>${escapeHtml(o.salesPerson)||'-'}</td>
+                <td>${o.assignedDesigner ? escapeHtml(o.assignedDesigner) : '<span style="color:#999;">-</span>'}</td>
+                <td>${getDesignStatusBadge(o.designStatus || 'pending')}</td>
                 <td>${formatDate(o.completionDate)}</td>
                 <td class="status-cell"><span class="status-indicator status-${st}"></span>${getStatusText(st)}</td>
                 <td><span class="day-badge ${dr.cls}">${dr.text}</span></td>
                 <td>${formatRM(o.deposit)}</td><td>${formatRM(o.balance)}</td>
-                <td style="max-width:200px;font-size:12px;">${its}</td>
                 <td class="no-print"><div class="order-actions">
                     <button class="print-btn" data-invoice="${o.invoiceNumber}">🖨️</button>
                     <button class="edit-btn" data-invoice="${o.invoiceNumber}">Edit</button>
@@ -2107,6 +2392,60 @@ document.addEventListener('DOMContentLoaded', function() {
         applyBossMode();
     }
 
+    async function displayDesignerOrders() {
+        if (!STAFF_NAME) return;
+        await loadOrders();
+        $('design-page-designer-name').textContent = STAFF_NAME;
+        const designerName = STAFF_NAME;
+        const allMyOrders = allOrdersCache.filter(o => o.assignedDesigner === designerName);
+        
+        // Summary cards
+        const statusCounts = { pending:0, in_progress:0, sent_to_customer:0, revision:0, confirmed:0, completed:0 };
+        allMyOrders.forEach(o => { const s = o.designStatus || 'pending'; if (statusCounts[s] !== undefined) statusCounts[s]++; });
+        $('design-summary-cards').innerHTML = Object.entries(DESIGN_STATUS).map(([key, val]) => 
+            `<div class="design-summary-card design-summary-${key}">
+                <div class="amount">${statusCounts[key]}</div>
+                <div class="label">${val.icon} ${val.label}</div>
+            </div>`
+        ).join('');
+        
+        // Update notif badge (pending + revision)
+        const notifCount = statusCounts.pending + statusCounts.revision;
+        const badge = $('design-notif-badge');
+        if (badge) {
+            if (notifCount > 0) { badge.textContent = notifCount; badge.style.display = 'block'; }
+            else badge.style.display = 'none';
+        }
+        
+        // Filter
+        const search = $('search-design').value.toLowerCase();
+        const statusFilter = $('filter-design-only-status').value;
+        let orders = allMyOrders;
+        if (statusFilter) orders = orders.filter(o => (o.designStatus || 'pending') === statusFilter);
+        if (search) orders = orders.filter(o => (o.invoiceNumber||'').toLowerCase().includes(search) || (o.customerName||'').toLowerCase().includes(search));
+        orders.sort((a,b) => { if (!a.completionDate && !b.completionDate) return 0; if (!a.completionDate) return 1; if (!b.completionDate) return -1; return new Date(a.completionDate) - new Date(b.completionDate); });
+        
+        const tb = $('design-orders-container'); tb.innerHTML = '';
+        if (!orders.length) tb.innerHTML = '<tr><td colspan="6" style="text-align:center;">Tiada order assigned. 🎉</td></tr>';
+        orders.forEach(o => {
+            const tr = document.createElement('tr');
+            const notesPreview = (o.designNotes||'').substring(0, 50) + ((o.designNotes||'').length > 50 ? '...' : '');
+            tr.innerHTML = `<td><span class="order-number" data-invoice="${o.invoiceNumber}">${o.invoiceNumber||'-'}</span></td>
+                <td>${escapeHtml(o.customerName)||'-'}</td>
+                <td>${formatDate(o.completionDate)}</td>
+                <td>${getDesignStatusBadge(o.designStatus || 'pending')}</td>
+                <td style="font-size:11px;color:#666;max-width:200px;">${escapeHtml(notesPreview)||'-'}</td>
+                <td class="no-print"><button class="edit-btn" data-invoice="${o.invoiceNumber}">Buka</button></td>`;
+            tb.appendChild(tr);
+        });
+        tb.querySelectorAll('.order-number, .edit-btn').forEach(el => el.addEventListener('click', e => {
+            e.stopPropagation();
+            const inv = e.target.dataset.invoice;
+            const o = orders.find(x => x.invoiceNumber === inv); if (o) showOrderDetail(o);
+        }));
+    }
+    window.displayDesignerOrders = displayDesignerOrders;
+
     async function showOrderDetail(o) {
         currentOrder = o;
         $('detail-invoice-number').textContent = o.invoiceNumber;
@@ -2130,6 +2469,20 @@ document.addEventListener('DOMContentLoaded', function() {
         $('btn-complete-order').style.display = st === 'completed' ? 'none' : 'block';
         $('btn-pending-order').style.display = st === 'pending' ? 'none' : 'block';
         $('btn-print-final').style.display = st === 'completed' ? 'block' : 'none';
+        
+        // Design panel
+        await populateDesignerDropdown('detail-designer-select', o.assignedDesigner || '');
+        $('detail-design-status-badge').outerHTML = getDesignStatusBadge(o.designStatus || 'pending').replace('class="design-status-badge', 'id="detail-design-status-badge" class="design-status-badge');
+        $('detail-design-notes').value = o.designNotes || '';
+        // Highlight active status button
+        document.querySelectorAll('.design-status-btn').forEach(b => {
+            if (b.dataset.status === (o.designStatus || 'pending')) b.classList.add('active');
+            else b.classList.remove('active');
+        });
+        // Load activity
+        loadDesignActivityForDetail(o.invoiceNumber);
+        
+        // Order audit logs
         const logs = await loadAuditLogs(o.invoiceNumber);
         if (logs.length) {
             $('audit-log-section').style.display = 'block';
@@ -2143,31 +2496,37 @@ document.addEventListener('DOMContentLoaded', function() {
                 else if (l.action === 'item_remove') { icon = '➖'; logClass = 'log-item_remove'; }
                 else if (l.action === 'item_update') { icon = '🔧'; logClass = 'log-item_update'; }
                 let detail = '';
-                if (l.old_value && l.new_value) {
-                    detail = `<strong>${escapeHtml(l.field_changed)}:</strong><br>` +
-                             `<span style="color:#e74c3c;">❌ ${escapeHtml(l.old_value)}</span><br>` +
-                             `<span style="color:#27ae60;">✅ ${escapeHtml(l.new_value)}</span>`;
-                } else if (l.new_value) {
-                    detail = `<strong>${escapeHtml(l.field_changed)}:</strong> <span style="color:#27ae60;">${escapeHtml(l.new_value)}</span>`;
-                } else if (l.old_value) {
-                    detail = `<strong>${escapeHtml(l.field_changed)}:</strong> <span style="color:#e74c3c;">${escapeHtml(l.old_value)}</span>`;
-                } else if (l.notes) {
-                    detail = escapeHtml(l.notes);
-                }
-                return `
-                    <div class="audit-log-item ${logClass}">
-                        <div class="log-header">${icon} ${formatTime(l.changed_at)} - ${escapeHtml(l.staff_name)}</div>
-                        <div class="log-detail">${detail}</div>
-                    </div>
-                `;
+                if (l.old_value && l.new_value) detail = `<strong>${escapeHtml(l.field_changed)}:</strong><br><span style="color:#e74c3c;">❌ ${escapeHtml(l.old_value)}</span><br><span style="color:#27ae60;">✅ ${escapeHtml(l.new_value)}</span>`;
+                else if (l.new_value) detail = `<strong>${escapeHtml(l.field_changed)}:</strong> <span style="color:#27ae60;">${escapeHtml(l.new_value)}</span>`;
+                else if (l.old_value) detail = `<strong>${escapeHtml(l.field_changed)}:</strong> <span style="color:#e74c3c;">${escapeHtml(l.old_value)}</span>`;
+                else if (l.notes) detail = escapeHtml(l.notes);
+                return `<div class="audit-log-item ${logClass}"><div class="log-header">${icon} ${formatTime(l.changed_at)} - ${escapeHtml(l.staff_name)}</div><div class="log-detail">${detail}</div></div>`;
             }).join('');
         } else $('audit-log-section').style.display = 'none';
-        orderListPage.style.display = 'none'; activeOrdersPage.style.display = 'none'; orderDetailView.style.display = 'block';
+        
+        orderListPage.style.display = 'none'; activeOrdersPage.style.display = 'none'; designPage.style.display = 'none'; orderDetailView.style.display = 'block';
     }
+    
+    async function loadDesignActivityForDetail(invoiceNumber) {
+        const activity = await loadDesignActivity(invoiceNumber);
+        const el = $('design-activity-list');
+        if (!activity.length) { el.innerHTML = '<p style="color:#999;font-size:13px;">Tiada aktiviti design.</p>'; return; }
+        el.innerHTML = activity.map(a => {
+            let detail = '';
+            if (a.action === 'assigned') detail = `Assigned kepada <strong>${escapeHtml(a.new_status || a.designer_name)}</strong>`;
+            else if (a.action === 'status_change') detail = `Status: <strong>${escapeHtml((DESIGN_STATUS[a.old_status]||{}).label || a.old_status || '-')}</strong> → <strong>${escapeHtml((DESIGN_STATUS[a.new_status]||{}).label || a.new_status || '-')}</strong>`;
+            else if (a.action === 'reassigned') detail = `<strong>${escapeHtml(a.old_status||'-')}</strong> → <strong>${escapeHtml(a.new_status||'-')}</strong><br>Sebab: <em>${escapeHtml(a.notes||'-')}</em>`;
+            else if (a.action === 'notes_update') detail = `Nota dikemaskini`;
+            else detail = escapeHtml(a.notes || a.action || '');
+            return `<div class="design-activity-item"><div class="log-header">${formatTime(a.created_at)} - ${escapeHtml(a.designer_name||'-')}</div><div class="log-detail">${detail}</div></div>`;
+        }).join('');
+    }
+
     function backToList() {
         orderDetailView.style.display = 'none';
         const t = document.querySelector('.tab-btn.active');
         if (t && t.id === 'tab-active') { activeOrdersPage.style.display='block'; displayActiveOrders(); }
+        else if (t && t.id === 'tab-design') { designPage.style.display='block'; displayDesignerOrders(); }
         else { orderListPage.style.display='block'; displayOrders(); }
         currentOrder = null;
     }
@@ -2208,6 +2567,247 @@ document.addEventListener('DOMContentLoaded', function() {
     function printOrder() { if (!currentOrder) return; const w = window.open('','_blank'); if (!w) return alert('Pop-up diblok'); w.document.write(buildPrintHTML(currentOrder,false)); w.document.close(); setTimeout(()=>w.print(),500); }
     function printFinal() { if (!currentOrder) return; const w = window.open('','_blank'); if (!w) return alert('Pop-up diblok'); w.document.write(buildPrintHTML(currentOrder,true)); w.document.close(); setTimeout(()=>w.print(),500); }
 
+    // ============ DESIGN FUNCTIONS ============
+    window.updateDesignerFromDetail = async function() {
+        if (!currentOrder) return;
+        const newDesigner = $('detail-designer-select').value;
+        const oldDesigner = currentOrder.assignedDesigner || '';
+        if (newDesigner === oldDesigner) return;
+        const upd = { ...currentOrder, assignedDesigner: newDesigner || null, designUpdatedAt: new Date(), designUpdatedBy: STAFF_NAME };
+        if (await updateOrderWithLog(upd, currentOrder)) {
+            await addDesignActivity(currentOrder.invoiceNumber, 'assigned', oldDesigner || '-', newDesigner || '-', `Designer ditukar dari ${oldDesigner || '-'} ke ${newDesigner || '-'}`);
+            currentOrder = upd;
+            await loadDesignActivityForDetail(currentOrder.invoiceNumber);
+            alert('✅ Designer dikemaskini');
+        } else alert('❌ Gagal');
+    };
+
+    window.changeDesignStatus = async function(newStatus) {
+        if (!currentOrder) return;
+        const oldStatus = currentOrder.designStatus || 'pending';
+        if (oldStatus === newStatus) return;
+        const upd = { ...currentOrder, designStatus: newStatus, designUpdatedAt: new Date(), designUpdatedBy: STAFF_NAME };
+        if (await updateOrderWithLog(upd, currentOrder)) {
+            await addDesignActivity(currentOrder.invoiceNumber, 'status_change', oldStatus, newStatus, null);
+            currentOrder = upd;
+            document.querySelectorAll('.design-status-btn').forEach(b => {
+                if (b.dataset.status === newStatus) b.classList.add('active');
+                else b.classList.remove('active');
+            });
+            const badgeEl = $('detail-design-status-badge');
+            if (badgeEl) badgeEl.outerHTML = getDesignStatusBadge(newStatus).replace('class="design-status-badge', 'id="detail-design-status-badge" class="design-status-badge');
+            await loadDesignActivityForDetail(currentOrder.invoiceNumber);
+            alert(`✅ Status: ${(DESIGN_STATUS[newStatus]||{}).label}`);
+        } else alert('❌ Gagal update status');
+    };
+
+    window.saveDesignInfo = async function() {
+        if (!currentOrder) return;
+        const notes = $('detail-design-notes').value.trim();
+        const upd = { ...currentOrder, designNotes: notes, designUpdatedAt: new Date(), designUpdatedBy: STAFF_NAME };
+        if (await updateOrderWithLog(upd, currentOrder)) {
+            await addDesignActivity(currentOrder.invoiceNumber, 'notes_update', null, null, 'Nota design dikemaskini');
+            currentOrder = upd;
+            await loadDesignActivityForDetail(currentOrder.invoiceNumber);
+            alert('✅ Nota design disimpan');
+        } else alert('❌ Gagal');
+    };
+
+    window.openPassDesignerModal = async function() {
+        if (!currentOrder) return;
+        await populateDesignerDropdown('pass-new-designer');
+        // Remove current designer from list
+        const sel = $('pass-new-designer');
+        Array.from(sel.options).forEach(opt => {
+            if (opt.value === currentOrder.assignedDesigner) opt.remove();
+        });
+        $('pass-invoice-label').textContent = currentOrder.invoiceNumber;
+        $('pass-reason').value = '';
+        $('pass-error').style.display = 'none';
+        $('pass-designer-modal').style.display = 'flex';
+    };
+    window.closePassDesignerModal = function() { $('pass-designer-modal').style.display = 'none'; };
+    window.executePassDesigner = async function() {
+        const newDesigner = $('pass-new-designer').value;
+        const reason = $('pass-reason').value.trim();
+        if (!newDesigner) { $('pass-error').textContent = 'Sila pilih designer baru.'; $('pass-error').style.display = 'block'; return; }
+        if (!reason) { $('pass-error').textContent = 'Sila nyatakan sebab pass.'; $('pass-error').style.display = 'block'; return; }
+        const oldDesigner = currentOrder.assignedDesigner || '-';
+        const oldStatus = currentOrder.designStatus || 'pending';
+        const upd = { ...currentOrder, assignedDesigner: newDesigner, designStatus: 'pending', designUpdatedAt: new Date(), designUpdatedBy: STAFF_NAME };
+        if (await updateOrderWithLog(upd, currentOrder)) {
+            await addDesignActivity(currentOrder.invoiceNumber, 'reassigned', oldDesigner, newDesigner, reason);
+            currentOrder = upd;
+            closePassDesignerModal();
+            alert(`✅ Order di-pass ke ${newDesigner}\nStatus reset ke Pending.`);
+            backToList();
+        } else alert('❌ Gagal pass');
+    };
+
+    // ============ FILE UPLOAD FUNCTIONS ============
+    function openUploadModal(invoiceNumber) {
+        currentUploadInvoice = invoiceNumber;
+        selectedFile = null;
+        $('upload-modal-invoice').textContent = invoiceNumber;
+        $('selected-file-info').textContent = 'Belum ada fail dipilih';
+        $('file-input').value = '';
+        $('file-notes-input').value = '';
+        $('file-notes-input-group').style.display = 'none';
+        $('upload-progress').style.display = 'none';
+        $('upload-error').style.display = 'none';
+        $('upload-modal').style.display = 'flex';
+        loadExistingFiles(invoiceNumber);
+    }
+    window.openUploadModal = openUploadModal;
+    window.closeUploadModal = function() {
+        $('upload-modal').style.display = 'none';
+        currentUploadInvoice = null;
+        selectedFile = null;
+    };
+
+    async function doUploadFile() {
+        if (!selectedFile) {
+            $('upload-error').textContent = '❌ Sila pilih fail dahulu.';
+            $('upload-error').style.display = 'block';
+            return;
+        }
+        if (!currentUploadInvoice) return;
+        
+        const progressEl = $('upload-progress');
+        const progressBar = $('upload-progress-bar');
+        const progressText = $('upload-progress-text');
+        const notes = $('file-notes-input').value.trim();
+        
+        $('upload-error').style.display = 'none';
+        progressEl.style.display = 'block';
+        progressBar.style.width = '0%';
+        progressText.textContent = '0%';
+        
+        const timestamp = Date.now();
+        const safeName = selectedFile.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+        const filePath = `${currentUploadInvoice}/${timestamp}_${safeName}`;
+        
+        try {
+            progressBar.style.width = '30%';
+            progressText.textContent = '30%';
+            
+            const { error: uploadError } = await supabaseClient.storage
+                .from('designs')
+                .upload(filePath, selectedFile, { cacheControl: '3600', upsert: false });
+            
+            if (uploadError) throw uploadError;
+            
+            progressBar.style.width = '70%';
+            progressText.textContent = '70%';
+            
+            const { error: dbError } = await supabaseClient.from('order_files').insert({
+                invoice_number: currentUploadInvoice,
+                file_path: filePath,
+                file_name: selectedFile.name,
+                file_size: selectedFile.size,
+                file_type: selectedFile.type,
+                uploaded_by: STAFF_NAME || 'Unknown',
+                notes: notes || null
+            });
+            
+            if (dbError) throw dbError;
+            
+            progressBar.style.width = '100%';
+            progressText.textContent = '100%';
+            
+            alert('✅ Fail berjaya dimuat naik!');
+            
+            selectedFile = null;
+            $('file-input').value = '';
+            $('selected-file-info').textContent = 'Belum ada fail dipilih';
+            $('file-notes-input').value = '';
+            $('file-notes-input-group').style.display = 'none';
+            progressEl.style.display = 'none';
+            
+            loadExistingFiles(currentUploadInvoice);
+            
+        } catch (err) {
+            console.error('Upload error:', err);
+            $('upload-error').textContent = '❌ Gagal upload: ' + err.message;
+            $('upload-error').style.display = 'block';
+            progressEl.style.display = 'none';
+        }
+    }
+    window.doUploadFile = doUploadFile;
+
+    async function loadExistingFiles(invoiceNumber) {
+        const listEl = $('existing-files-list');
+        if (!listEl) return;
+        listEl.innerHTML = '<p style="color:#999;text-align:center;">Memuatkan...</p>';
+        try {
+            const { data, error } = await supabaseClient.from('order_files').select('*').eq('invoice_number', invoiceNumber).order('uploaded_at', { ascending: false });
+            if (error) throw error;
+            if (!data || data.length === 0) {
+                listEl.innerHTML = '<p style="color:#999;text-align:center;">Tiada fail lagi untuk order ini.</p>';
+                return;
+            }
+            listEl.innerHTML = data.map(f => {
+                const sizeMB = (f.file_size / 1024 / 1024).toFixed(2);
+                const date = new Date(f.uploaded_at).toLocaleString('ms-MY');
+                const icon = f.file_type && f.file_type.startsWith('image/') ? '🖼️' : f.file_type === 'application/pdf' ? '📕' : '📄';
+                const notesHtml = f.notes ? `<div class="file-item-notes">📝 ${escapeHtml(f.notes)}</div>` : '';
+                return `<div class="file-item">
+                    <div class="file-item-info">
+                        <div class="file-item-name">${icon} ${escapeHtml(f.file_name)}</div>
+                        <div class="file-item-meta">${sizeMB} MB • ${escapeHtml(f.uploaded_by||'-')} • ${date}</div>
+                        ${notesHtml}
+                    </div>
+                    <div class="file-item-actions">
+                        <button class="btn btn-info" onclick="downloadFile('${escapeAttr(f.file_path)}')" style="padding:5px 10px;font-size:12px;">⬇️ Muat Turun</button>
+                        <button class="btn btn-warning" onclick="openFileNotes('${f.id}', '${escapeAttr(f.file_name)}', '${escapeAttr(f.notes||'')}')" style="padding:5px 10px;font-size:12px;">📝</button>
+                        <button class="btn btn-danger" onclick="deleteFile('${f.id}', '${escapeAttr(f.file_path)}')" style="padding:5px 10px;font-size:12px;">🗑️</button>
+                    </div>
+                </div>`;
+            }).join('');
+        } catch (err) {
+            listEl.innerHTML = '<p style="color:red;text-align:center;">❌ Gagal muat senarai fail: ' + err.message + '</p>';
+        }
+    }
+
+    window.downloadFile = async function(filePath) {
+        try {
+            const { data, error } = await supabaseClient.storage.from('designs').createSignedUrl(filePath, 3600);
+            if (error) throw error;
+            window.open(data.signedUrl, '_blank');
+        } catch (err) { alert('❌ Gagal download: ' + err.message); }
+    };
+    window.deleteFile = async function(fileId, filePath) {
+        if (!confirm('Padam fail ini?')) return;
+        try {
+            const { error: storageError } = await supabaseClient.storage.from('designs').remove([filePath]);
+            if (storageError) throw storageError;
+            const { error: dbError } = await supabaseClient.from('order_files').delete().eq('id', fileId);
+            if (dbError) throw dbError;
+            alert('✅ Fail dipadam.');
+            if (currentUploadInvoice) loadExistingFiles(currentUploadInvoice);
+        } catch (err) { alert('❌ Gagal padam: ' + err.message); }
+    };
+    window.openFileNotes = function(fileId, fileName, notes) {
+        currentFileNotesId = fileId;
+        $('file-notes-id').value = fileId;
+        $('file-notes-name').textContent = fileName;
+        $('file-notes-edit').value = notes;
+        $('file-notes-modal').style.display = 'flex';
+    };
+    window.closeFileNotesModal = function() { $('file-notes-modal').style.display = 'none'; currentFileNotesId = null; };
+    window.saveFileNotes = async function() {
+        if (!currentFileNotesId) return;
+        const notes = $('file-notes-edit').value.trim();
+        try {
+            const { error } = await supabaseClient.from('order_files').update({ notes: notes || null }).eq('id', currentFileNotesId);
+            if (error) throw error;
+            alert('✅ Nota fail disimpan');
+            closeFileNotesModal();
+            if (currentUploadInvoice) loadExistingFiles(currentUploadInvoice);
+        } catch (err) { alert('❌ Gagal: ' + err.message); }
+    };
+
+    // ============ PREVIEW/SALES PERSON ============
     function showPaymentModal(o) {
         currentOrder = o;
         $('payment-date').value = new Date().toISOString().split('T')[0];
@@ -2227,7 +2827,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else alert('Gagal simpan.');
     }
 
-    function showEditOrderModal(o) {
+    async function showEditOrderModal(o) {
         currentOrder = o;
         $('edit-invoice-number').value = o.invoiceNumber;
         $('edit-customer-name').value = o.customerName || '';
@@ -2236,8 +2836,10 @@ document.addEventListener('DOMContentLoaded', function() {
         $('edit-completion-date').value = o.completionDate || '';
         $('edit-discount-value').value = o.discount || 0;
         $('edit-deposit').value = o.deposit || 0;
-        populateEditSalesDropdown();
+        await populateEditSalesDropdown();
         $('edit-sales-person').value = o.salesPerson || '';
+        await populateDesignerDropdown('edit-designer-select', o.assignedDesigner || '');
+        $('edit-design-notes').value = o.designNotes || '';
         const tb = $('edit-items-tbody'); tb.innerHTML = '';
         (o.items||[]).forEach((it,i) => addEditRow(it, i+1));
         updateEditTotals();
@@ -2285,6 +2887,10 @@ document.addEventListener('DOMContentLoaded', function() {
             salesPerson:$('edit-sales-person').value||'-',
             discount:parseFloat($('edit-discount-value').value)||0,
             deposit:parseFloat($('edit-deposit').value)||0,
+            assignedDesigner: $('edit-designer-select').value || null,
+            designNotes: $('edit-design-notes').value || '',
+            designUpdatedAt: new Date(),
+            designUpdatedBy: STAFF_NAME,
             items:[]
         };
         let ta = 0;
@@ -2299,6 +2905,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         upd.totalAmount = ta; upd.subtotal = ta - upd.discount; upd.balance = upd.subtotal - upd.deposit;
         if (await updateOrderWithLog(upd, oldOrder)) {
+            if (oldOrder.assignedDesigner !== upd.assignedDesigner) {
+                await addDesignActivity(upd.invoiceNumber, 'assigned', oldOrder.assignedDesigner||'-', upd.assignedDesigner||'-', 'Designer ditukar dari edit bill');
+            }
             alert(`Order ${upd.invoiceNumber} dikemaskini.`);
             hideEditOrderModal(); displayOrders(); displayActiveOrders(); updateDashboard();
         } else alert('Gagal kemaskini.');
@@ -2339,8 +2948,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function exportCSV() {
         const orders = getFilteredOrders();
         if (!orders.length) return alert('Tiada order untuk export.');
-        const headers = ['No. Bil','Pelanggan','Telefon','Tarikh Order','Tarikh Siap','Jurujual','Status','Jumlah','Diskaun','Selepas Diskaun','Deposit','Baki','Item'];
-        const rows = orders.map(o => [o.invoiceNumber||'', o.customerName||'', o.customerPhone||'', formatDate(o.orderDate), formatDate(o.completionDate), o.salesPerson||'', getStatusText(getOrderStatus(o)), (o.totalAmount||0).toFixed(2), (o.discount||0).toFixed(2), (o.subtotal||0).toFixed(2), (o.deposit||0).toFixed(2), (o.balance||0).toFixed(2), (o.items||[]).map(i=>`${i.description.replace(/\n/g, ' ')} (${i.quantity}x RM${i.price})`).join(' | ')]);
+        const headers = ['No. Bil','Pelanggan','Telefon','Tarikh Order','Tarikh Siap','Jurujual','Designer','Status Design','Status','Jumlah','Diskaun','Selepas Diskaun','Deposit','Baki','Item'];
+        const rows = orders.map(o => [o.invoiceNumber||'', o.customerName||'', o.customerPhone||'', formatDate(o.orderDate), formatDate(o.completionDate), o.salesPerson||'', o.assignedDesigner||'', (DESIGN_STATUS[o.designStatus||'pending']||{}).label||'', getStatusText(getOrderStatus(o)), (o.totalAmount||0).toFixed(2), (o.discount||0).toFixed(2), (o.subtotal||0).toFixed(2), (o.deposit||0).toFixed(2), (o.balance||0).toFixed(2), (o.items||[]).map(i=>`${i.description.replace(/\n/g, ' ')} (${i.quantity}x RM${i.price})`).join(' | ')]);
         const csv = [headers, ...rows].map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
         const blob = new Blob(['\ufeff' + csv], {type:'text/csv;charset=utf-8'});
         const url = URL.createObjectURL(blob);
@@ -2354,15 +2963,17 @@ document.addEventListener('DOMContentLoaded', function() {
         const staffList = allStaffCardsCache.filter(s => s.active);
         const names = staffList.map(s => s.staff_name);
         const cur = $('sales-person').value;
-        $('sales-person').innerHTML = '<option value="">Pilih Jurujual</option>' + 
-            names.map(n => `<option value="${escapeAttr(n)}">${escapeHtml(n)}</option>`).join('');
+        $('sales-person').innerHTML = '<option value="">Pilih Jurujual</option>' + names.map(n => `<option value="${escapeAttr(n)}">${escapeHtml(n)}</option>`).join('');
         if (cur && names.includes(cur)) $('sales-person').value = cur;
-        const opts = '<option value="">Semua Jurujual</option>' + 
-            names.map(n => `<option value="${escapeAttr(n)}">${escapeHtml(n)}</option>`).join('');
+        const opts = '<option value="">Semua Jurujual</option>' + names.map(n => `<option value="${escapeAttr(n)}">${escapeHtml(n)}</option>`).join('');
         $('filter-sales').innerHTML = opts; 
         $('filter-active-sales').innerHTML = opts;
-        $('dash-sales').innerHTML = '<option value="">Semua</option>' + 
-            names.map(n => `<option value="${escapeAttr(n)}">${escapeHtml(n)}</option>`).join('');
+        $('dash-sales').innerHTML = '<option value="">Semua</option>' + names.map(n => `<option value="${escapeAttr(n)}">${escapeHtml(n)}</option>`).join('');
+        // Designer filter
+        await loadDesigners();
+        const designerNames = allDesignersCache.map(d => d.staff_name);
+        $('filter-designer').innerHTML = '<option value="">Semua Designer</option>' + designerNames.map(n => `<option value="${escapeAttr(n)}">${escapeHtml(n)}</option>`).join('');
+        applyAutoSalesPerson();
     }
     async function handleAddSalesPerson() {
         alert('💡 Untuk tambah jurujual, sila pergi ke tab "⚙️ Tetapan" → section "Kad Staf" → klik "Tambah Staf Baru".');
@@ -2385,7 +2996,7 @@ document.addEventListener('DOMContentLoaded', function() {
         persons.forEach(p => data[p.name] = {sales:0, deposit:0, count:0, pct:p.commission||0});
         orders.forEach(o => { if (o.salesPerson && data[o.salesPerson]) { data[o.salesPerson].sales += o.subtotal||0; data[o.salesPerson].deposit += o.deposit||0; data[o.salesPerson].count++; }});
         const tb = $('sales-person-list'); tb.innerHTML = '';
-        if (!persons.length) { tb.innerHTML = '<tr><td colspan="6" style="text-align:center;">Tiada staf. Tambah di ⚙️ Tetapan → Kad Staf.</td></tr>'; return; }
+        if (!persons.length) { tb.innerHTML = '<tr><td colspan="6" style="text-align:center;">Tiada staf.</td></tr>'; return; }
         persons.forEach(p => {
             const d = data[p.name]; const c = (d.sales * d.pct)/100;
             const tr = document.createElement('tr');
@@ -2503,7 +3114,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     async function submitAndPrint() {
-        if (!$('sales-person').value) return alert('Sila pilih jurujual.');
+        let salesPerson = $('sales-person').value;
+        // If auto-assign (staff login), use STAFF_NAME
+        if (!salesPerson && STAFF_NAME && STAFF_NAME !== 'BOSS') {
+            const isStaff = allStaffCardsCache.some(s => s.staff_name === STAFF_NAME);
+            if (isStaff) salesPerson = STAFF_NAME;
+        }
+        if (!salesPerson) return alert('Sila pilih jurujual.');
         const inv = $('invoice-number').value;
         if (!inv) return alert('Sila pilih no. bil.');
         if (allOrdersCache.find(o => o.invoiceNumber === inv)) return alert('No. bil sudah wujud!');
@@ -2513,13 +3130,15 @@ document.addEventListener('DOMContentLoaded', function() {
             invoiceNumber: inv, customerName: $('customer-name').value || '-',
             customerPhone: $('customer-phone').value || '-',
             orderDate: $('order-date').value || '-', completionDate: $('completion-date').value || '-',
-            salesPerson: $('sales-person').value || '-',
+            salesPerson: salesPerson,
             totalAmount: parseFloat($('preview-total').textContent) || 0,
             discount: parseFloat($('preview-discount').textContent) || 0,
             subtotal: parseFloat($('preview-subtotal').textContent) || 0,
             deposit: parseFloat($('deposit').value) || 0,
             balance: parseFloat($('preview-balance').textContent) || 0,
             status: 'normal', createdBy: STAFF_NAME,
+            assignedDesigner: $('designer-select').value || null,
+            designNotes: $('design-notes-input').value || '',
             items: currentInvoiceItems.map(it => ({ description: it.description, price: it.price, quantity: it.quantity, total: it.total }))
         };
         if (!await addOrder(data)) { alert('❌ Gagal simpan.'); return; }
@@ -2533,7 +3152,10 @@ document.addEventListener('DOMContentLoaded', function() {
     function resetForm() {
         $('customer-name').value = ''; $('customer-phone').value = '';
         $('order-date').value = new Date().toISOString().split('T')[0];
-        $('completion-date').value = ''; $('sales-person').value = '';
+        $('completion-date').value = ''; 
+        if (!STAFF_NAME || STAFF_NAME === 'BOSS') $('sales-person').value = '';
+        $('designer-select').value = '';
+        $('design-notes-input').value = '';
         $('deposit').value = ''; $('discount-value').value = ''; $('discount-type').value = 'fixed';
         currentInvoiceItems = [];
         $('invoice-number').value = ''; currentlyLockedNumber = null;
@@ -2547,7 +3169,9 @@ document.addEventListener('DOMContentLoaded', function() {
         $('preview-completion-date').textContent = formatDate($('completion-date').value);
         $('preview-customer-name').textContent = $('customer-name').value || '-';
         $('preview-customer-phone').textContent = $('customer-phone').value || '-';
-        $('preview-sales-person').textContent = $('sales-person').value || '-';
+        let sp = $('sales-person').value;
+        if (!sp && STAFF_NAME && STAFF_NAME !== 'BOSS') sp = STAFF_NAME;
+        $('preview-sales-person').textContent = sp || '-';
         const pi = $('preview-items'); pi.innerHTML = '';
         let ta = 0, tq = 0;
         currentInvoiceItems.forEach((item, i) => {
@@ -2572,178 +3196,6 @@ document.addEventListener('DOMContentLoaded', function() {
         $('preview-total-amount').textContent = ta.toFixed(2);
     }
 
-    // ============ FUNGSI UPLOAD FAIL (BARU) ============
-    function openUploadModal(invoiceNumber) {
-        currentUploadInvoice = invoiceNumber;
-        selectedFile = null;
-        $('upload-modal-invoice').textContent = invoiceNumber;
-        $('selected-file-info').textContent = 'Belum ada fail dipilih';
-        $('file-input').value = '';
-        $('upload-progress').style.display = 'none';
-        $('upload-error').style.display = 'none';
-        $('upload-modal').style.display = 'flex';
-        loadExistingFiles(invoiceNumber);
-    }
-    window.openUploadModal = openUploadModal;
-    window.closeUploadModal = function() {
-        $('upload-modal').style.display = 'none';
-        currentUploadInvoice = null;
-        selectedFile = null;
-    };
-
-    async function doUploadFile() {
-        if (!selectedFile) {
-            $('upload-error').textContent = '❌ Sila pilih fail dahulu.';
-            $('upload-error').style.display = 'block';
-            return;
-        }
-        if (!currentUploadInvoice) return;
-        
-        const progressEl = $('upload-progress');
-        const progressBar = $('upload-progress-bar');
-        const progressText = $('upload-progress-text');
-        
-        $('upload-error').style.display = 'none';
-        progressEl.style.display = 'block';
-        progressBar.style.width = '0%';
-        progressText.textContent = '0%';
-        
-        const timestamp = Date.now();
-        const safeName = selectedFile.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-        const filePath = `${currentUploadInvoice}/${timestamp}_${safeName}`;
-        
-        try {
-            progressBar.style.width = '30%';
-            progressText.textContent = '30%';
-            
-            const { error: uploadError } = await supabaseClient.storage
-                .from('designs')
-                .upload(filePath, selectedFile, { cacheControl: '3600', upsert: false });
-            
-            if (uploadError) throw uploadError;
-            
-            progressBar.style.width = '70%';
-            progressText.textContent = '70%';
-            
-            const { error: dbError } = await supabaseClient.from('order_files').insert({
-                invoice_number: currentUploadInvoice,
-                file_path: filePath,
-                file_name: selectedFile.name,
-                file_size: selectedFile.size,
-                file_type: selectedFile.type,
-                uploaded_by: STAFF_NAME || 'Unknown'
-            });
-            
-            if (dbError) throw dbError;
-            
-            progressBar.style.width = '100%';
-            progressText.textContent = '100%';
-            
-            alert('✅ Fail berjaya dimuat naik!');
-            
-            selectedFile = null;
-            $('file-input').value = '';
-            $('selected-file-info').textContent = 'Belum ada fail dipilih';
-            progressEl.style.display = 'none';
-            
-            loadExistingFiles(currentUploadInvoice);
-            
-        } catch (err) {
-            console.error('Upload error:', err);
-            $('upload-error').textContent = '❌ Gagal upload: ' + err.message;
-            $('upload-error').style.display = 'block';
-            progressEl.style.display = 'none';
-        }
-    }
-    window.doUploadFile = doUploadFile;
-
-    async function loadExistingFiles(invoiceNumber) {
-        const listEl = $('existing-files-list');
-        if (!listEl) return;
-        
-        listEl.innerHTML = '<p style="color:#999;text-align:center;">Memuatkan...</p>';
-        
-        try {
-            const { data, error } = await supabaseClient
-                .from('order_files')
-                .select('*')
-                .eq('invoice_number', invoiceNumber)
-                .order('uploaded_at', { ascending: false });
-            
-            if (error) throw error;
-            
-            if (!data || data.length === 0) {
-                listEl.innerHTML = '<p style="color:#999;text-align:center;">Tiada fail lagi untuk order ini.</p>';
-                return;
-            }
-            
-            listEl.innerHTML = data.map(f => {
-                const sizeMB = (f.file_size / 1024 / 1024).toFixed(2);
-                const date = new Date(f.uploaded_at).toLocaleString('ms-MY');
-                const icon = f.file_type && f.file_type.startsWith('image/') ? '🖼️' : 
-                             f.file_type === 'application/pdf' ? '📕' : '📄';
-                return `
-                    <div class="file-item">
-                        <div class="file-item-info">
-                            <div class="file-item-name">${icon} ${escapeHtml(f.file_name)}</div>
-                            <div class="file-item-meta">${sizeMB} MB • ${escapeHtml(f.uploaded_by||'-')} • ${date}</div>
-                        </div>
-                        <div class="file-item-actions">
-                            <button class="btn btn-info" onclick="downloadFile('${escapeAttr(f.file_path)}')" style="padding: 5px 10px; font-size: 12px;">⬇️ Muat Turun</button>
-                            <button class="btn btn-danger" onclick="deleteFile('${f.id}', '${escapeAttr(f.file_path)}')" style="padding: 5px 10px; font-size: 12px;">🗑️</button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-            
-        } catch (err) {
-            console.error('Load files error:', err);
-            listEl.innerHTML = '<p style="color:red;text-align:center;">❌ Gagal muat senarai fail: ' + err.message + '</p>';
-        }
-    }
-
-    async function downloadFile(filePath) {
-        try {
-            const { data, error } = await supabaseClient.storage
-                .from('designs')
-                .createSignedUrl(filePath, 3600);
-            
-            if (error) throw error;
-            window.open(data.signedUrl, '_blank');
-            
-        } catch (err) {
-            alert('❌ Gagal download: ' + err.message);
-        }
-    }
-    window.downloadFile = downloadFile;
-
-    async function deleteFile(fileId, filePath) {
-        if (!confirm('Padam fail ini?\n\nTindakan ini tidak boleh dikembalikan.')) return;
-        
-        try {
-            const { error: storageError } = await supabaseClient.storage
-                .from('designs')
-                .remove([filePath]);
-            
-            if (storageError) throw storageError;
-            
-            const { error: dbError } = await supabaseClient
-                .from('order_files')
-                .delete()
-                .eq('id', fileId);
-            
-            if (dbError) throw dbError;
-            
-            alert('✅ Fail dipadam.');
-            if (currentUploadInvoice) loadExistingFiles(currentUploadInvoice);
-            
-        } catch (err) {
-            alert('❌ Gagal padam: ' + err.message);
-        }
-    }
-    window.deleteFile = deleteFile;
-    // ============ TAMAT FUNGSI UPLOAD FAIL ============
-
     let realtimeChannels = [];
     function initRealtime() {
         realtimeChannels.forEach(c => supabaseClient.removeChannel(c));
@@ -2755,6 +3207,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const t = document.querySelector('.tab-btn.active')?.id;
             if (t === 'tab-orders') displayOrders();
             else if (t === 'tab-active') displayActiveOrders();
+            else if (t === 'tab-design') displayDesignerOrders();
             else if (t === 'tab-dashboard') updateDashboard();
             else if (t === 'tab-invoice') updateAvailableInvoiceNumbers();
         }).subscribe();
@@ -2786,7 +3239,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 loadExistingFiles(currentUploadInvoice);
             }
         }).subscribe();
-        realtimeChannels = [c1, c2, c3, c4, c5, c6, c7, c8, c9];
+        const c10 = supabaseClient.channel('design_act_ch').on('postgres_changes', {event:'*', schema:'public', table:'design_activity'}, () => {
+            if (currentOrder && orderDetailView.style.display === 'block') {
+                loadDesignActivityForDetail(currentOrder.invoiceNumber);
+            }
+        }).subscribe();
+        realtimeChannels = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10];
     }
 
     function initYearDropdowns() {
@@ -2798,64 +3256,38 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ============ EVENT LISTENERS ============
-    $('login-staff-btn').addEventListener('click', () => {
-        if (STAFF_NAME) {
-            if (!confirm('Anda sudah login sebagai ' + STAFF_NAME + '. Tukar staf?')) return;
-        }
-        openQrLogin();
-    });
-    $('login-pin-manual-btn').addEventListener('click', () => {
-        if (STAFF_NAME) {
-            if (!confirm('Anda sudah login sebagai ' + STAFF_NAME + '. Tukar staf?')) return;
-        }
-        openManualPinLogin();
-    });
+    $('login-staff-btn').addEventListener('click', () => { if (STAFF_NAME && !confirm('Tukar staf?')) return; openQrLogin(); });
+    $('login-pin-manual-btn').addEventListener('click', () => { if (STAFF_NAME && !confirm('Tukar staf?')) return; openManualPinLogin(); });
     $('login-password-btn').addEventListener('click', openPasswordLogin);
     $('cancel-password-login').addEventListener('click', closePasswordLogin);
     $('submit-password-login').addEventListener('click', submitPasswordLogin);
     $('staff-login-password').addEventListener('keypress', e => { if (e.key === 'Enter') submitPasswordLogin(); });
-    $('switch-to-manual-pin-btn').addEventListener('click', () => {
-        closeQrLogin();
-        setTimeout(() => openManualPinLogin(), 300);
-    });
+    $('switch-to-manual-pin-btn').addEventListener('click', () => { closeQrLogin(); setTimeout(() => openManualPinLogin(), 300); });
     $('cancel-manual-pin').addEventListener('click', closeManualPinLogin);
     $('submit-manual-pin').addEventListener('click', submitManualPinLogin);
     $('manual-login-pin').addEventListener('keypress', e => { if (e.key === 'Enter') submitManualPinLogin(); });
     $('new-invoice-btn').addEventListener('click', () => {
-        if (!STAFF_NAME) {
-            if (confirm('Sila login staf dahulu. Login PIN manual sekarang?')) openManualPinLogin();
-            return;
-        }
+        if (!STAFF_NAME) { if (confirm('Sila login staf dahulu. Login PIN manual sekarang?')) openManualPinLogin(); return; }
         showContainer('tab-invoice');
     });
     $('manage-orders-btn').addEventListener('click', () => showContainer('tab-orders'));
     $('dashboard-btn').addEventListener('click', () => showPasswordPrompt('access_tab','tab-dashboard'));
     $('settings-btn').addEventListener('click', () => showPasswordPrompt('access_tab','tab-settings'));
     $('home-btn').addEventListener('click', showLandingPage);
-    $('change-name-btn').addEventListener('click', () => {
-        if (STAFF_NAME) {
-            if (!confirm('Tukar staf? Anda akan log keluar dari ' + STAFF_NAME + '.')) return;
-        }
-        openManualPinLogin();
-    });
+    $('change-name-btn').addEventListener('click', () => { if (STAFF_NAME && !confirm('Tukar staf?')) return; openManualPinLogin(); });
     $('logout-btn').addEventListener('click', () => {
         if (!confirm('Log keluar dari sistem?')) return;
-        localStorage.removeItem('staffName'); 
-        localStorage.removeItem('staffLoggedInAt');
-        sessionStorage.removeItem('isBoss');
-        sessionStorage.removeItem('appAuthed');
-        STAFF_NAME = ''; CURRENT_STAFF = null; isBoss = false;
+        localStorage.removeItem('staffName'); localStorage.removeItem('staffLoggedInAt');
+        sessionStorage.removeItem('isBoss'); sessionStorage.removeItem('appAuthed');
+        STAFF_NAME = ''; CURRENT_STAFF = null; isBoss = false; isDesigner = false;
         $('staff-badge').textContent = '👤 Belum Login';
         applyBossMode();
         showLandingPage();
         alert('✅ Anda telah log keluar.');
     });
     $('goto-settings-btn').addEventListener('click', () => {
-        if (sessionStorage.getItem('appAuthed') !== 'true' && !isBoss) {
-            showPasswordPrompt('access_tab', 'tab-settings');
-        } else {
-            switchTab('tab-settings');
-        }
+        if (sessionStorage.getItem('appAuthed') !== 'true' && !isBoss) showPasswordPrompt('access_tab', 'tab-settings');
+        else switchTab('tab-settings');
     });
     document.querySelectorAll('.tab-btn').forEach(t => t.addEventListener('click', () => switchTab(t.id)));
 
@@ -2863,7 +3295,6 @@ document.addEventListener('DOMContentLoaded', function() {
     $('cancel-password').addEventListener('click', hidePasswordPrompt);
     $('password-input').addEventListener('keypress', e => { if (e.key === 'Enter') checkPassword(); });
     $('delete-reason-input').addEventListener('keypress', e => { if (e.key === 'Enter') checkPassword(); });
-
     $('danger-cancel-btn').addEventListener('click', hideDangerModal);
     $('danger-confirm-btn').addEventListener('click', executeClearAllOrders);
     $('danger-confirm-input').addEventListener('input', e => {
@@ -2871,7 +3302,6 @@ document.addEventListener('DOMContentLoaded', function() {
         $('danger-confirm-btn').disabled = !ok;
         if (ok) $('danger-error').style.display = 'none';
     });
-
     $('cancel-pin-login').addEventListener('click', closePinLogin);
     $('submit-pin-login').addEventListener('click', submitPinLogin);
 
@@ -2881,7 +3311,6 @@ document.addEventListener('DOMContentLoaded', function() {
     $('save-staff-btn').addEventListener('click', saveStaff);
     $('do-print-idcard-btn').addEventListener('click', doPrintIdCard);
     $('close-idcard-btn').addEventListener('click', closeIdCard);
-
     $('close-bills-modal').addEventListener('click', () => $('bills-modal').style.display = 'none');
     $('cancel-payment').addEventListener('click', hidePaymentModal);
     $('confirm-payment').addEventListener('click', confirmPayment);
@@ -2897,49 +3326,28 @@ document.addEventListener('DOMContentLoaded', function() {
     $('btn-complete-order').addEventListener('click', () => currentOrder && showPaymentModal(currentOrder));
     $('btn-pending-order').addEventListener('click', async () => { if (currentOrder) { await updateOrderWithLog({...currentOrder, status:'pending'}, currentOrder); backToList(); }});
     $('btn-print-final').addEventListener('click', printFinal);
+    $('btn-upload-file').addEventListener('click', () => { if (currentOrder) openUploadModal(currentOrder.invoiceNumber); });
 
-    // Butang Muat Naik Fail
-    $('btn-upload-file').addEventListener('click', () => {
-        if (currentOrder) openUploadModal(currentOrder.invoiceNumber);
-    });
-
-    // File input change listener
     $('file-input').addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (!file) return;
-        
-        const allowedTypes = [
-            'image/jpeg', 'image/png', 'image/webp',
-            'application/pdf',
-            'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-        ];
-        
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
         if (!allowedTypes.includes(file.type)) {
-            $('upload-error').textContent = '❌ Jenis fail tidak dibenarkan. Guna JPG, PNG, WEBP, PDF, atau DOCX sahaja.';
-            $('upload-error').style.display = 'block';
-            selectedFile = null;
-            return;
+            $('upload-error').textContent = '❌ Jenis fail tidak dibenarkan.';
+            $('upload-error').style.display = 'block'; selectedFile = null; return;
         }
-        
         if (file.size > 20 * 1024 * 1024) {
             $('upload-error').textContent = '❌ Fail terlalu besar. Maksimum 20 MB.';
-            $('upload-error').style.display = 'block';
-            selectedFile = null;
-            return;
+            $('upload-error').style.display = 'block'; selectedFile = null; return;
         }
-        
         selectedFile = file;
         const sizeMB = (file.size / 1024 / 1024).toFixed(2);
         $('selected-file-info').innerHTML = `✅ <strong>${file.name}</strong> (${sizeMB} MB)`;
+        $('file-notes-input-group').style.display = 'block';
         $('upload-error').style.display = 'none';
     });
 
-    // Guard check untuk elak crash kalau butang tak wujud
-    const addSalesBtn = $('add-sales-person-btn');
-    if (addSalesBtn) addSalesBtn.addEventListener('click', handleAddSalesPerson);
-
     $('add-template-btn').addEventListener('click', handleAddTemplate);
-
     $('open-size-input-btn').addEventListener('click', () => openSizeInputModal());
     $('cancel-size-input').addEventListener('click', closeSizeInputModal);
     $('submit-size-input').addEventListener('click', submitSizeInput);
@@ -2953,19 +3361,10 @@ document.addEventListener('DOMContentLoaded', function() {
         renderInvoiceTable();
     });
 
-    // ============ INVOICE NUMBER DROPDOWN EVENTS (BACKUP) ============
     $('invoice-number').addEventListener('click', window.openInvoiceDropdown);
     $('invoice-number').addEventListener('focus', window.openInvoiceDropdown);
-
     $('invoice-number-dropdown').addEventListener('click', async e => {
         const opt = e.target.closest('.invoice-number-option'); if (!opt) return;
-        if (opt.classList.contains('used')) return alert('No. bil sudah digunakan.');
-        if (opt.classList.contains('locked')) {
-            const lk = lockedNumbersMap[opt.dataset.value];
-            if (lk && lk.session_id === SESSION_ID) { $('invoice-number').value = opt.dataset.value; $('invoice-number-dropdown').style.display = 'none'; }
-            else alert(`❌ Sedang digunakan oleh ${lk?lk.locked_by:'staf lain'}.`);
-            return;
-        }
         if (await lockInvoiceNumber(opt.dataset.value)) { $('invoice-number').value = opt.dataset.value; $('invoice-number-dropdown').style.display = 'none'; }
     });
     document.addEventListener('click', e => { if (!e.target.closest('.invoice-number-container')) $('invoice-number-dropdown').style.display = 'none'; });
@@ -2988,9 +3387,13 @@ document.addEventListener('DOMContentLoaded', function() {
     $('filter-month').addEventListener('change', displayOrders);
     $('filter-year').addEventListener('change', displayOrders);
     $('filter-sales').addEventListener('change', displayOrders);
+    $('filter-designer').addEventListener('change', displayOrders);
+    $('filter-design-status').addEventListener('change', displayOrders);
     document.querySelectorAll('#order-list-page .filter-btn').forEach(b => b.addEventListener('click', () => {
         if (b.id === 'reset-filter-btn') {
-            $('filter-period').value='all'; $('filter-month').value=''; $('filter-year').value=''; $('filter-sales').value=''; $('search-orders').value='';
+            $('filter-period').value='all'; $('filter-month').value=''; $('filter-year').value=''; 
+            $('filter-sales').value=''; $('filter-designer').value=''; $('filter-design-status').value='';
+            $('search-orders').value='';
             document.querySelectorAll('#order-list-page .filter-btn').forEach(x => x.classList.remove('active'));
             document.querySelector('#order-list-page .filter-btn[data-filter="all"]').classList.add('active');
         } else {
@@ -3008,6 +3411,8 @@ document.addEventListener('DOMContentLoaded', function() {
     $('dash-month').addEventListener('change', updateDashboard);
     $('dash-year').addEventListener('change', updateDashboard);
     $('dash-sales').addEventListener('change', updateDashboard);
+    $('search-design').addEventListener('input', displayDesignerOrders);
+    $('filter-design-only-status').addEventListener('change', displayDesignerOrders);
 
     window.addEventListener('online', () => offlineBanner.style.display = 'none');
     window.addEventListener('offline', () => offlineBanner.style.display = 'block');
@@ -3033,6 +3438,12 @@ document.addEventListener('DOMContentLoaded', function() {
         applyBossMode();
         await loadAppSettings();
         await loadStaffCards();
+        await loadDesigners();
+        // Check if current staff is designer
+        if (STAFF_NAME && STAFF_NAME !== 'BOSS') {
+            const s = allStaffCardsCache.find(x => x.staff_name === STAFF_NAME);
+            if (s) isDesigner = s.is_designer || false;
+        }
         await loadSalesPersons();
         await loadOrders();
         await loadSizeCategories();
@@ -3042,15 +3453,22 @@ document.addEventListener('DOMContentLoaded', function() {
         initRealtime();
         await updateAvailableInvoiceNumbers();
         await renderTemplateButtons();
-        if (STAFF_NAME) $('staff-badge').textContent = '👤 ' + STAFF_NAME;
-        else $('staff-badge').textContent = '👤 Belum Login';
+        if (STAFF_NAME) {
+            const prefix = isDesigner ? '🎨 ' : (STAFF_NAME === 'BOSS' ? '👑 ' : '👤 ');
+            $('staff-badge').textContent = prefix + STAFF_NAME;
+        } else $('staff-badge').textContent = '👤 Belum Login';
+        applyBossMode();
         setInterval(async () => { try { await supabaseClient.rpc('cleanup_old_locks'); } catch(e){} }, 5*60*1000);
         setInterval(async () => {
             if (container.style.display === 'block' && document.querySelector('.tab-btn.active')?.id === 'tab-invoice') {
                 await updateAvailableInvoiceNumbers();
             }
         }, 60000);
-        console.log('✅ Sistem sedia dengan fungsi upload. Staff:', STAFF_NAME, '| Boss:', isBoss);
+        // Update notif for designer
+        if (isDesigner) {
+            setInterval(() => { if (document.querySelector('.tab-btn.active')?.id === 'tab-design') displayDesignerOrders(); }, 60000);
+        }
+        console.log('✅ Sistem sedia. Staff:', STAFF_NAME, '| Designer:', isDesigner, '| Boss:', isBoss);
     })();
 });
 </script>
