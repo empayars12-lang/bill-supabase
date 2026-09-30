@@ -1294,7 +1294,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById(id).classList.add('active');
         orderDetailView.style.display = 'none';
         const map = {
-            'tab-invoice':[invoicePage, ()=>{populateSalesPersonDropdown(); updateAvailableInvoiceNumbers(); renderTemplateButtons(); updateCustomerDatalist(); loadSizeCategories();}],
+            'tab-invoice':[invoicePage, ()=>{populateSalesPersonDropdown(); updateAvailableInvoiceNumbers(); renderTemplateButtons(); updateCustomerDatalist(); loadSizeCategories(); renderInvoiceTable();}],
             'tab-orders':[orderListPage, ()=>displayOrders()],
             'tab-active':[activeOrdersPage, ()=>displayActiveOrders()],
             'tab-dashboard':[dashboardPage, ()=>updateDashboard()],
@@ -2677,7 +2677,10 @@ document.addEventListener('DOMContentLoaded', function() {
     $('btn-pending-order').addEventListener('click', async () => { if (currentOrder) { await updateOrderWithLog({...currentOrder, status:'pending'}, currentOrder); backToList(); }});
     $('btn-print-final').addEventListener('click', printFinal);
 
-    $('add-sales-person-btn').addEventListener('click', handleAddSalesPerson);
+    // ⚠️ FIX: Guard check untuk elak crash kalau butang tak wujud
+    const addSalesBtn = $('add-sales-person-btn');
+    if (addSalesBtn) addSalesBtn.addEventListener('click', handleAddSalesPerson);
+
     $('add-template-btn').addEventListener('click', handleAddTemplate);
 
     $('open-size-input-btn').addEventListener('click', () => openSizeInputModal());
