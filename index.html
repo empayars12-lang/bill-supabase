@@ -138,8 +138,8 @@ th { background-color: #f2f2f2; }
 #edit-order-modal { position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; }
 .edit-order-modal-content { background-color: #fefefe; margin: auto; padding: 20px 30px; border-radius: 8px; position: relative; width: 90%; max-width: 800px; max-height: 90vh; overflow-y: auto; }
 .table-summary-row td { background-color: #f9f9f9; font-weight: bold; text-align: right; border-top: 2px solid #ddd; }
-.invoice-number-container { position: relative; }
-#invoice-number-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #ddd; border-radius: 4px; max-height: 200px; overflow-y: auto; z-index: 100; display: none; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+.invoice-number-container { position: relative; z-index: 50; }
+#invoice-number-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 2px solid #6e48aa; border-radius: 4px; max-height: 300px; overflow-y: auto; z-index: 9999; display: none; box-shadow: 0 4px 15px rgba(0,0,0,0.2); margin-top: 3px; }
 .invoice-number-option { padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #eee; }
 .invoice-number-option.used { color: #e74c3c; text-decoration: line-through; background-color: #ffeaea; }
 .invoice-number-option.locked { color: #f39c12; background-color: #fff8e1; font-weight: bold; }
@@ -1033,7 +1033,6 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch(e) { console.error('addOrder:', e); alert('Gagal simpan: ' + e.message); return false; }
     }
 
-    // ============ UPDATE ORDER + DETAILED AUDIT LOG ============
     async function updateOrderWithLog(newOrder, oldOrder) {
         try {
             const { error } = await supabaseClient.from('orders').update({
@@ -1055,7 +1054,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
             if (oldOrder) {
-                // ===== 1. LOG FIELD UTAMA =====
                 const changes = [];
                 if (oldOrder.customerName !== newOrder.customerName) 
                     changes.push({f:'Nama Pelanggan', o:oldOrder.customerName, n:newOrder.customerName});
@@ -1082,7 +1080,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     await addAuditLog(newOrder.invoiceNumber, 'update', c.f, c.o, c.n, null);
                 }
                 
-                // ===== 2. LOG PERUBAHAN ITEM =====
                 const oldItems = oldOrder.items || [];
                 const newItems = newOrder.items || [];
                 
@@ -1106,7 +1103,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     newMap[key].push(it);
                 });
                 
-                // Item DITAMBAH
                 for (const [desc, items] of Object.entries(newMap)) {
                     if (!oldMap[desc]) {
                         for (const it of items) {
@@ -1133,7 +1129,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
                 
-                // Item DIBUANG
                 for (const [desc, items] of Object.entries(oldMap)) {
                     if (!newMap[desc]) {
                         for (const it of items) {
@@ -1251,20 +1246,45 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function generateInvoiceNumbers() { const a=[]; for (let i=1;i<=9999;i++) a.push('25D'+i.toString().padStart(4,'0')); return a; }
+
+    // ============ UPGRADED: updateAvailableInvoiceNumbers dengan error handling ============
     async function updateAvailableInvoiceNumbers() {
-        const orders = await loadOrders();
-        const used = orders.map(o => o.invoiceNumber);
-        lockedNumbersMap = await fetchActiveLocks();
-        const locked = Object.keys(lockedNumbersMap);
-        availableInvoiceNumbers = generateInvoiceNumbers().filter(n => !used.includes(n) && !locked.includes(n));
-        populateDropdown(used, locked);
-        $('sync-status').textContent = `🟢 Real-time aktif | ${locked.length} lock | ${new Date().toLocaleTimeString('ms-MY')}`;
+        try {
+            console.log('🔄 Loading invoice numbers...');
+            const orders = await loadOrders();
+            const used = orders.map(o => o.invoiceNumber);
+            lockedNumbersMap = await fetchActiveLocks();
+            const locked = Object.keys(lockedNumbersMap);
+            availableInvoiceNumbers = generateInvoiceNumbers().filter(n => !used.includes(n) && !locked.includes(n));
+            console.log('📋 Available:', availableInvoiceNumbers.length, '| Used:', used.length, '| Locked:', locked.length);
+            populateDropdown(used, locked);
+            $('sync-status').textContent = `🟢 Real-time aktif | ${locked.length} lock | ${availableInvoiceNumbers.length} tersedia | ${new Date().toLocaleTimeString('ms-MY')}`;
+        } catch(e) {
+            console.error('❌ updateAvailableInvoiceNumbers error:', e);
+            $('sync-status').textContent = `🔴 Gagal: ${e.message}`;
+        }
     }
     function populateDropdown(used, locked) {
         const d = $('invoice-number-dropdown'); d.innerHTML = '';
         availableInvoiceNumbers.forEach(n => { const o = document.createElement('div'); o.className='invoice-number-option available'; o.textContent=n; o.dataset.value=n; d.appendChild(o); });
         locked.forEach(n => { const lk = lockedNumbersMap[n]; const o = document.createElement('div'); o.className='invoice-number-option locked'; o.textContent=n+' 🔒 ('+(lk.session_id===SESSION_ID?'Anda':lk.locked_by)+')'; o.dataset.value=n; d.appendChild(o); });
         used.forEach(n => { if (!locked.includes(n)) { const o = document.createElement('div'); o.className='invoice-number-option used'; o.textContent=n+' (Sudah Digunakan)'; o.dataset.value=n; d.appendChild(o); }});
+    }
+
+    // ============ NEW: openInvoiceDropdown function ============
+    function openInvoiceDropdown(e) {
+        if (e) e.stopPropagation();
+        const dropdown = $('invoice-number-dropdown');
+        dropdown.innerHTML = '<div style="padding:15px;text-align:center;color:#666;">⏳ Memuatkan nombor bil...</div>';
+        dropdown.style.display = 'block';
+        updateAvailableInvoiceNumbers().then(() => {
+            if (dropdown.children.length === 0) {
+                dropdown.innerHTML = '<div style="padding:15px;text-align:center;color:#e74c3c;">Tiada no. bil tersedia</div>';
+            }
+        }).catch(err => {
+            console.error('Dropdown error:', err);
+            dropdown.innerHTML = '<div style="padding:15px;text-align:center;color:#e74c3c;">❌ Gagal muat: ' + err.message + '</div>';
+        });
     }
 
     function showLandingPage() { landingPage.style.display='flex'; container.style.display='none'; }
@@ -2681,7 +2701,11 @@ document.addEventListener('DOMContentLoaded', function() {
         renderInvoiceTable();
     });
 
-    $('invoice-number').addEventListener('click', async () => { await updateAvailableInvoiceNumbers(); $('invoice-number-dropdown').style.display = 'block'; });
+    // ============ NEW: Invoice number dropdown listeners ============
+    $('invoice-number').addEventListener('click', openInvoiceDropdown);
+    $('invoice-number').addEventListener('focus', openInvoiceDropdown);
+    $('invoice-number').addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') openInvoiceDropdown(e); });
+
     $('invoice-number-dropdown').addEventListener('click', async e => {
         const opt = e.target.closest('.invoice-number-option'); if (!opt) return;
         if (opt.classList.contains('used')) return alert('No. bil sudah digunakan.');
