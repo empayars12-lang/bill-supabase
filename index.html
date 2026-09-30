@@ -139,7 +139,8 @@ th { background-color: #f2f2f2; }
 .edit-order-modal-content { background-color: #fefefe; margin: auto; padding: 20px 30px; border-radius: 8px; position: relative; width: 90%; max-width: 800px; max-height: 90vh; overflow-y: auto; }
 .table-summary-row td { background-color: #f9f9f9; font-weight: bold; text-align: right; border-top: 2px solid #ddd; }
 .invoice-number-container { position: relative; z-index: 50; }
-#invoice-number-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 2px solid #6e48aa; border-radius: 4px; max-height: 300px; overflow-y: auto; z-index: 9999; display: none; box-shadow: 0 4px 15px rgba(0,0,0,0.2); margin-top: 3px; }
+#invoice-number { cursor: pointer; background: white; }
+#invoice-number-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 2px solid #6e48aa; border-radius: 4px; max-height: 300px; overflow-y: auto; z-index: 99999; display: none; box-shadow: 0 4px 15px rgba(0,0,0,0.2); margin-top: 3px; }
 .invoice-number-option { padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #eee; }
 .invoice-number-option.used { color: #e74c3c; text-decoration: line-through; background-color: #ffeaea; }
 .invoice-number-option.locked { color: #f39c12; background-color: #fff8e1; font-weight: bold; }
@@ -292,7 +293,11 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
         </div>
         <div class="form-group invoice-number-container">
             <label>NO.BIL</label>
-            <input type="text" id="invoice-number" placeholder="Klik untuk pilih nombor bil" readonly>
+            <input type="text" id="invoice-number" placeholder="Klik untuk pilih nombor bil" readonly 
+                   onclick="window.openInvoiceDropdown(event)" 
+                   onfocus="window.openInvoiceDropdown(event)" 
+                   ontouchstart="window.openInvoiceDropdown(event)"
+                   style="cursor:pointer;">
             <div id="invoice-number-dropdown"></div>
             <div class="sync-status" id="sync-status"></div>
         </div>
@@ -782,6 +787,30 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
 </div>
 
 <script>
+// ============ GLOBAL FUNCTION: Open Invoice Dropdown (di luar DOMContentLoaded) ============
+window.openInvoiceDropdown = function(e) {
+    if (e) { e.stopPropagation(); e.preventDefault(); }
+    console.log('🔓 openInvoiceDropdown dipanggil');
+    const dropdown = document.getElementById('invoice-number-dropdown');
+    if (!dropdown) { console.error('Dropdown element tak jumpa!'); return; }
+    dropdown.innerHTML = '<div style="padding:15px;text-align:center;color:#666;">⏳ Memuatkan nombor bil...</div>';
+    dropdown.style.display = 'block';
+    
+    // Panggil fungsi global untuk load numbers
+    if (typeof window.loadInvoiceNumbersForDropdown === 'function') {
+        window.loadInvoiceNumbersForDropdown().then(() => {
+            if (dropdown.children.length === 0) {
+                dropdown.innerHTML = '<div style="padding:15px;text-align:center;color:#e74c3c;">Tiada no. bil tersedia</div>';
+            }
+        }).catch(err => {
+            console.error('Dropdown error:', err);
+            dropdown.innerHTML = '<div style="padding:15px;text-align:center;color:#e74c3c;">❌ Gagal muat: ' + err.message + '</div>';
+        });
+    } else {
+        dropdown.innerHTML = '<div style="padding:15px;text-align:center;color:#e74c3c;">❌ Sistem tak ready. Refresh page.</div>';
+    }
+};
+
 document.addEventListener('DOMContentLoaded', function() {
     const SUPABASE_URL = 'https://lgnbravmaqgdcgldkose.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_C4Vg3j2N-4u6Ro26RsoF7A_Nqh1oKSi';
@@ -1055,87 +1084,42 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             if (oldOrder) {
                 const changes = [];
-                if (oldOrder.customerName !== newOrder.customerName) 
-                    changes.push({f:'Nama Pelanggan', o:oldOrder.customerName, n:newOrder.customerName});
-                if (oldOrder.customerPhone !== newOrder.customerPhone) 
-                    changes.push({f:'Telefon', o:oldOrder.customerPhone, n:newOrder.customerPhone});
-                if (oldOrder.orderDate !== newOrder.orderDate)
-                    changes.push({f:'Tarikh Order', o:formatDate(oldOrder.orderDate), n:formatDate(newOrder.orderDate)});
-                if (oldOrder.completionDate !== newOrder.completionDate) 
-                    changes.push({f:'Tarikh Siap', o:formatDate(oldOrder.completionDate), n:formatDate(newOrder.completionDate)});
-                if (Math.abs((oldOrder.discount||0) - (newOrder.discount||0)) > 0.01) 
-                    changes.push({f:'Diskaun', o:`RM${(oldOrder.discount||0).toFixed(2)}`, n:`RM${(newOrder.discount||0).toFixed(2)}`});
-                if (Math.abs((oldOrder.deposit||0) - (newOrder.deposit||0)) > 0.01) 
-                    changes.push({f:'Deposit', o:`RM${(oldOrder.deposit||0).toFixed(2)}`, n:`RM${(newOrder.deposit||0).toFixed(2)}`});
-                if (Math.abs((oldOrder.totalAmount||0) - (newOrder.totalAmount||0)) > 0.01) 
-                    changes.push({f:'Jumlah Item', o:`RM${(oldOrder.totalAmount||0).toFixed(2)}`, n:`RM${(newOrder.totalAmount||0).toFixed(2)}`});
-                if (Math.abs((oldOrder.balance||0) - (newOrder.balance||0)) > 0.01) 
-                    changes.push({f:'Baki', o:`RM${(oldOrder.balance||0).toFixed(2)}`, n:`RM${(newOrder.balance||0).toFixed(2)}`});
-                if ((oldOrder.salesPerson||'-') !== (newOrder.salesPerson||'-')) 
-                    changes.push({f:'Jurujual', o:oldOrder.salesPerson||'-', n:newOrder.salesPerson||'-'});
-                if (oldOrder.status !== newOrder.status) 
-                    changes.push({f:'Status', o:getStatusText(oldOrder.status), n:getStatusText(newOrder.status)});
-                
-                for (const c of changes) {
-                    await addAuditLog(newOrder.invoiceNumber, 'update', c.f, c.o, c.n, null);
-                }
+                if (oldOrder.customerName !== newOrder.customerName) changes.push({f:'Nama Pelanggan', o:oldOrder.customerName, n:newOrder.customerName});
+                if (oldOrder.customerPhone !== newOrder.customerPhone) changes.push({f:'Telefon', o:oldOrder.customerPhone, n:newOrder.customerPhone});
+                if (oldOrder.orderDate !== newOrder.orderDate) changes.push({f:'Tarikh Order', o:formatDate(oldOrder.orderDate), n:formatDate(newOrder.orderDate)});
+                if (oldOrder.completionDate !== newOrder.completionDate) changes.push({f:'Tarikh Siap', o:formatDate(oldOrder.completionDate), n:formatDate(newOrder.completionDate)});
+                if (Math.abs((oldOrder.discount||0) - (newOrder.discount||0)) > 0.01) changes.push({f:'Diskaun', o:`RM${(oldOrder.discount||0).toFixed(2)}`, n:`RM${(newOrder.discount||0).toFixed(2)}`});
+                if (Math.abs((oldOrder.deposit||0) - (newOrder.deposit||0)) > 0.01) changes.push({f:'Deposit', o:`RM${(oldOrder.deposit||0).toFixed(2)}`, n:`RM${(newOrder.deposit||0).toFixed(2)}`});
+                if (Math.abs((oldOrder.totalAmount||0) - (newOrder.totalAmount||0)) > 0.01) changes.push({f:'Jumlah Item', o:`RM${(oldOrder.totalAmount||0).toFixed(2)}`, n:`RM${(newOrder.totalAmount||0).toFixed(2)}`});
+                if (Math.abs((oldOrder.balance||0) - (newOrder.balance||0)) > 0.01) changes.push({f:'Baki', o:`RM${(oldOrder.balance||0).toFixed(2)}`, n:`RM${(newOrder.balance||0).toFixed(2)}`});
+                if ((oldOrder.salesPerson||'-') !== (newOrder.salesPerson||'-')) changes.push({f:'Jurujual', o:oldOrder.salesPerson||'-', n:newOrder.salesPerson||'-'});
+                if (oldOrder.status !== newOrder.status) changes.push({f:'Status', o:getStatusText(oldOrder.status), n:getStatusText(newOrder.status)});
+                for (const c of changes) await addAuditLog(newOrder.invoiceNumber, 'update', c.f, c.o, c.n, null);
                 
                 const oldItems = oldOrder.items || [];
                 const newItems = newOrder.items || [];
-                
                 function itemLabel(it) {
                     const lines = (it.description || '').split('\n');
                     const main = lines[0].trim();
                     const size = lines.length > 1 ? ' [' + lines.slice(1).join(' ') + ']' : '';
                     return main + size;
                 }
-                
-                const oldMap = {};
-                oldItems.forEach(it => {
-                    const key = (it.description || '').trim();
-                    if (!oldMap[key]) oldMap[key] = [];
-                    oldMap[key].push(it);
-                });
-                const newMap = {};
-                newItems.forEach(it => {
-                    const key = (it.description || '').trim();
-                    if (!newMap[key]) newMap[key] = [];
-                    newMap[key].push(it);
-                });
-                
+                const oldMap = {}; oldItems.forEach(it => { const k = (it.description||'').trim(); if (!oldMap[k]) oldMap[k]=[]; oldMap[k].push(it); });
+                const newMap = {}; newItems.forEach(it => { const k = (it.description||'').trim(); if (!newMap[k]) newMap[k]=[]; newMap[k].push(it); });
                 for (const [desc, items] of Object.entries(newMap)) {
                     if (!oldMap[desc]) {
-                        for (const it of items) {
-                            await addAuditLog(newOrder.invoiceNumber, 'item_add', 'Item Ditambah', 
-                                null, 
-                                `${itemLabel(it)} (${it.quantity}x RM${(it.price||0).toFixed(2)}) = RM${(it.total||0).toFixed(2)}`);
-                        }
+                        for (const it of items) await addAuditLog(newOrder.invoiceNumber, 'item_add', 'Item Ditambah', null, `${itemLabel(it)} (${it.quantity}x RM${(it.price||0).toFixed(2)}) = RM${(it.total||0).toFixed(2)}`);
                     } else {
-                        const oldItems2 = oldMap[desc];
-                        const newIt = items[0]; const oldIt = oldItems2[0];
-                        const oldQty = oldItems2.reduce((s,i) => s + (i.quantity||0), 0);
-                        const newQty = items.reduce((s,i) => s + (i.quantity||0), 0);
-                        
-                        if (oldQty !== newQty) {
-                            await addAuditLog(newOrder.invoiceNumber, 'item_update', 'Kuantiti Item', 
-                                `${itemLabel(oldIt)}: ${oldQty}x`, 
-                                `${itemLabel(newIt)}: ${newQty}x`);
-                        }
-                        if (Math.abs((oldIt.price||0) - (newIt.price||0)) > 0.01) {
-                            await addAuditLog(newOrder.invoiceNumber, 'item_update', 'Harga Item', 
-                                `${itemLabel(oldIt)}: RM${(oldIt.price||0).toFixed(2)}`, 
-                                `${itemLabel(newIt)}: RM${(newIt.price||0).toFixed(2)}`);
-                        }
+                        const oldIt = oldMap[desc][0], newIt = items[0];
+                        const oldQty = oldMap[desc].reduce((s,i)=>s+(i.quantity||0),0);
+                        const newQty = items.reduce((s,i)=>s+(i.quantity||0),0);
+                        if (oldQty !== newQty) await addAuditLog(newOrder.invoiceNumber, 'item_update', 'Kuantiti Item', `${itemLabel(oldIt)}: ${oldQty}x`, `${itemLabel(newIt)}: ${newQty}x`);
+                        if (Math.abs((oldIt.price||0) - (newIt.price||0)) > 0.01) await addAuditLog(newOrder.invoiceNumber, 'item_update', 'Harga Item', `${itemLabel(oldIt)}: RM${(oldIt.price||0).toFixed(2)}`, `${itemLabel(newIt)}: RM${(newIt.price||0).toFixed(2)}`);
                     }
                 }
-                
                 for (const [desc, items] of Object.entries(oldMap)) {
                     if (!newMap[desc]) {
-                        for (const it of items) {
-                            await addAuditLog(newOrder.invoiceNumber, 'item_remove', 'Item Dibuang', 
-                                `${itemLabel(it)} (${it.quantity}x RM${(it.price||0).toFixed(2)}) = RM${(it.total||0).toFixed(2)}`, 
-                                null);
-                        }
+                        for (const it of items) await addAuditLog(newOrder.invoiceNumber, 'item_remove', 'Item Dibuang', `${itemLabel(it)} (${it.quantity}x RM${(it.price||0).toFixed(2)}) = RM${(it.total||0).toFixed(2)}`, null);
                     }
                 }
             }
@@ -1247,7 +1231,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function generateInvoiceNumbers() { const a=[]; for (let i=1;i<=9999;i++) a.push('25D'+i.toString().padStart(4,'0')); return a; }
 
-    // ============ UPGRADED: updateAvailableInvoiceNumbers dengan error handling ============
     async function updateAvailableInvoiceNumbers() {
         try {
             console.log('🔄 Loading invoice numbers...');
@@ -1266,26 +1249,37 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     function populateDropdown(used, locked) {
         const d = $('invoice-number-dropdown'); d.innerHTML = '';
-        availableInvoiceNumbers.forEach(n => { const o = document.createElement('div'); o.className='invoice-number-option available'; o.textContent=n; o.dataset.value=n; d.appendChild(o); });
-        locked.forEach(n => { const lk = lockedNumbersMap[n]; const o = document.createElement('div'); o.className='invoice-number-option locked'; o.textContent=n+' 🔒 ('+(lk.session_id===SESSION_ID?'Anda':lk.locked_by)+')'; o.dataset.value=n; d.appendChild(o); });
-        used.forEach(n => { if (!locked.includes(n)) { const o = document.createElement('div'); o.className='invoice-number-option used'; o.textContent=n+' (Sudah Digunakan)'; o.dataset.value=n; d.appendChild(o); }});
+        if (availableInvoiceNumbers.length === 0) {
+            d.innerHTML = '<div style="padding:15px;text-align:center;color:#e74c3c;">Tiada no. bil tersedia. Semua telah digunakan.</div>';
+            return;
+        }
+        availableInvoiceNumbers.slice(0, 200).forEach(n => { 
+            const o = document.createElement('div'); o.className='invoice-number-option available'; 
+            o.textContent=n; o.dataset.value=n; 
+            o.onclick = function() { window.selectInvoiceNumber(n); };
+            d.appendChild(o); 
+        });
+        if (availableInvoiceNumbers.length > 200) {
+            const info = document.createElement('div');
+            info.style.cssText = 'padding:10px;text-align:center;color:#666;font-size:12px;background:#f9f9f9;';
+            info.textContent = `... dan ${availableInvoiceNumbers.length - 200} lagi`;
+            d.appendChild(info);
+        }
     }
 
-    // ============ NEW: openInvoiceDropdown function ============
-    function openInvoiceDropdown(e) {
-        if (e) e.stopPropagation();
-        const dropdown = $('invoice-number-dropdown');
-        dropdown.innerHTML = '<div style="padding:15px;text-align:center;color:#666;">⏳ Memuatkan nombor bil...</div>';
-        dropdown.style.display = 'block';
-        updateAvailableInvoiceNumbers().then(() => {
-            if (dropdown.children.length === 0) {
-                dropdown.innerHTML = '<div style="padding:15px;text-align:center;color:#e74c3c;">Tiada no. bil tersedia</div>';
-            }
-        }).catch(err => {
-            console.error('Dropdown error:', err);
-            dropdown.innerHTML = '<div style="padding:15px;text-align:center;color:#e74c3c;">❌ Gagal muat: ' + err.message + '</div>';
-        });
-    }
+    // ============ GLOBAL: Load numbers untuk dropdown ============
+    window.loadInvoiceNumbersForDropdown = async function() {
+        await updateAvailableInvoiceNumbers();
+    };
+
+    // ============ GLOBAL: Select invoice number ============
+    window.selectInvoiceNumber = async function(num) {
+        const locked = await lockInvoiceNumber(num);
+        if (locked) {
+            $('invoice-number').value = num;
+            $('invoice-number-dropdown').style.display = 'none';
+        }
+    };
 
     function showLandingPage() { landingPage.style.display='flex'; container.style.display='none'; }
     function showContainer(tab) { landingPage.style.display='none'; container.style.display='block'; document.getElementById(tab).click(); }
@@ -2104,7 +2098,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 else if (l.action === 'item_add') { icon = '➕'; logClass = 'log-item_add'; }
                 else if (l.action === 'item_remove') { icon = '➖'; logClass = 'log-item_remove'; }
                 else if (l.action === 'item_update') { icon = '🔧'; logClass = 'log-item_update'; }
-                
                 let detail = '';
                 if (l.old_value && l.new_value) {
                     detail = `<strong>${escapeHtml(l.field_changed)}:</strong><br>` +
@@ -2117,7 +2110,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else if (l.notes) {
                     detail = escapeHtml(l.notes);
                 }
-                
                 return `
                     <div class="audit-log-item ${logClass}">
                         <div class="log-header">${icon} ${formatTime(l.changed_at)} - ${escapeHtml(l.staff_name)}</div>
@@ -2701,10 +2693,9 @@ document.addEventListener('DOMContentLoaded', function() {
         renderInvoiceTable();
     });
 
-    // ============ NEW: Invoice number dropdown listeners ============
-    $('invoice-number').addEventListener('click', openInvoiceDropdown);
-    $('invoice-number').addEventListener('focus', openInvoiceDropdown);
-    $('invoice-number').addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') openInvoiceDropdown(e); });
+    // ============ INVOICE NUMBER DROPDOWN EVENTS (BACKUP) ============
+    $('invoice-number').addEventListener('click', window.openInvoiceDropdown);
+    $('invoice-number').addEventListener('focus', window.openInvoiceDropdown);
 
     $('invoice-number-dropdown').addEventListener('click', async e => {
         const opt = e.target.closest('.invoice-number-option'); if (!opt) return;
