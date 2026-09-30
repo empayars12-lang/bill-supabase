@@ -113,8 +113,8 @@ th { background-color: #f2f2f2; }
 #sales-person-table th:first-child, #sales-person-table td:first-child { text-align: left; }
 #sales-person-table .commission-input { width: 60px; padding: 5px; text-align: right; }
 #sales-person-table .bill-count { cursor: pointer; text-decoration: underline; color: #007bff; }
-#password-modal, #name-modal, #template-modal, #size-cat-modal, #size-input-modal, #qr-login-modal, #pin-login-modal, #staff-modal, #qr-display-modal, #idcard-modal, #staff-password-login-modal, #staff-pin-manual-modal { position: fixed; z-index: 3500; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; padding: 20px; }
-.password-modal-content, .name-modal-content, .template-modal-content, .size-cat-modal-content, .size-input-modal-content, .qr-login-modal-content, .pin-login-modal-content, .staff-modal-content, .qr-display-modal-content, .idcard-modal-content, .staff-password-login-modal-content, .staff-pin-manual-modal-content {
+#password-modal, #name-modal, #template-modal, #size-cat-modal, #size-input-modal, #qr-login-modal, #pin-login-modal, #staff-modal, #qr-display-modal, #idcard-modal, #staff-password-login-modal, #staff-pin-manual-modal, #upload-modal { position: fixed; z-index: 3500; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; padding: 20px; }
+.password-modal-content, .name-modal-content, .template-modal-content, .size-cat-modal-content, .size-input-modal-content, .qr-login-modal-content, .pin-login-modal-content, .staff-modal-content, .qr-display-modal-content, .idcard-modal-content, .staff-password-login-modal-content, .staff-pin-manual-modal-content, .upload-modal-content {
     background: white; padding: 30px; border-radius: 12px; position: relative;
     width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto;
 }
@@ -122,6 +122,7 @@ th { background-color: #f2f2f2; }
 .size-input-modal-content { max-width: 600px; }
 .qr-login-modal-content, .pin-login-modal-content, .staff-password-login-modal-content, .staff-pin-manual-modal-content { max-width: 450px; text-align: center; }
 .idcard-modal-content { max-width: 600px; }
+.upload-modal-content { max-width: 650px; }
 .modal-close-x { color: #aaa; position: absolute; top: 10px; right: 15px; font-size: 28px; font-weight: bold; cursor: pointer; background: none; border: none; }
 #password-input, #delete-reason-input { padding: 10px; width: 100%; margin-bottom: 15px; box-sizing: border-box; }
 #delete-reason-input { height: 60px; resize: vertical; }
@@ -218,8 +219,17 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
 .login-method-qr_only { background: #f39c12; color: white; }
 #manual-login-select { padding: 12px; font-size: 16px; width: 100%; margin: 10px 0; }
 #manual-login-pin { padding: 12px; font-size: 16px; text-align: center; letter-spacing: 5px; width: 100%; margin: 10px 0; border: 2px solid #ddd; border-radius: 8px; }
+.upload-area { border: 2px dashed #6e48aa; border-radius: 8px; padding: 20px; text-align: center; background: #f9f9f9; margin-bottom: 15px; }
+.upload-progress-container { display: none; margin: 15px 0; }
+.upload-progress-bg { background: #eee; border-radius: 4px; overflow: hidden; height: 20px; }
+.upload-progress-bar { height: 100%; background: #6e48aa; width: 0%; transition: width 0.3s; }
+.file-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f9f9f9; border-radius: 6px; margin-bottom: 8px; gap: 10px; flex-wrap: wrap; }
+.file-item-info { flex: 1; min-width: 150px; }
+.file-item-name { font-weight: bold; font-size: 13px; word-break: break-all; }
+.file-item-meta { font-size: 11px; color: #666; margin-top: 3px; }
+.file-item-actions { display: flex; gap: 5px; }
 @media print {
-    .no-print, .action-buttons, .tab-nav, .home-button-container, #password-modal, .add-sales-person, #bills-modal, #install-app-btn { display: none !important; }
+    .no-print, .action-buttons, .tab-nav, .home-button-container, #password-modal, .add-sales-person, #bills-modal, #install-app-btn, #upload-modal { display: none !important; }
     body { background: none; padding: 0; }
     .container { box-shadow: none; max-width: 100%; padding: 0; }
     #invoice-number-dropdown { display: none !important; }
@@ -445,6 +455,7 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
             <button class="btn" id="btn-complete-order" style="background:#2ecc71;">Selesai</button>
             <button class="btn" id="btn-pending-order" style="background:#f39c12;">Pending</button>
             <button class="btn" id="btn-print-final" style="background:#3498db;">Cetak Bil Akhir</button>
+            <button class="btn" id="btn-upload-file" style="background:#6e48aa;">📎 Muat Naik Fail</button>
         </div>
     </div>
 
@@ -714,6 +725,42 @@ body.boss-mode #active-orders-page .summary-row { display: flex !important; }
     </div>
 </div>
 
+<div id="upload-modal">
+    <div class="upload-modal-content">
+        <button class="modal-close-x" onclick="closeUploadModal()">×</button>
+        <h3 style="margin-top: 0;">📎 Muat Naik Fail untuk Order</h3>
+        <p style="color: #6e48aa; font-weight: bold; margin-top: 0;" id="upload-modal-invoice">-</p>
+        <p style="color:#666;font-size:13px;">Jenis dibenarkan: JPG, PNG, WEBP, PDF, DOCX • Maksimum 20 MB</p>
+        
+        <div class="upload-area">
+            <input type="file" id="file-input" accept=".jpg,.jpeg,.png,.webp,.pdf,.docx" style="display: none;">
+            <button class="btn" onclick="document.getElementById('file-input').click()" style="background: #6e48aa;">📁 Pilih Fail</button>
+            <p id="selected-file-info" style="margin: 10px 0 0; color: #666; font-size: 13px;">Belum ada fail dipilih</p>
+        </div>
+        
+        <div id="upload-progress" class="upload-progress-container">
+            <div class="upload-progress-bg">
+                <div id="upload-progress-bar" class="upload-progress-bar"></div>
+            </div>
+            <p style="text-align: center; margin-top: 5px; font-size: 12px; color: #6e48aa;" id="upload-progress-text">0%</p>
+        </div>
+        
+        <div id="upload-error" style="color: red; font-size: 13px; margin: 10px 0; display: none; padding: 10px; background: #fff5f5; border-radius: 4px;"></div>
+        
+        <div class="action-buttons">
+            <button class="btn btn-secondary" onclick="closeUploadModal()">Tutup</button>
+            <button class="btn" id="btn-do-upload" onclick="doUploadFile()" style="background: #6e48aa;">📤 Muat Naik</button>
+        </div>
+        
+        <hr style="margin: 20px 0; border: none; border-top: 1px solid #eee;">
+        
+        <h4 style="color: #6e48aa;">📂 Fail Sedia Ada:</h4>
+        <div id="existing-files-list">
+            <p style="color:#999;text-align:center;">Memuatkan...</p>
+        </div>
+    </div>
+</div>
+
 <div id="danger-modal">
     <div class="danger-modal-content">
         <h3>⚠️ AMARAN — TINDAKAN BERBAHAYA</h3>
@@ -796,7 +843,6 @@ window.openInvoiceDropdown = function(e) {
     dropdown.innerHTML = '<div style="padding:15px;text-align:center;color:#666;">⏳ Memuatkan nombor bil...</div>';
     dropdown.style.display = 'block';
     
-    // Panggil fungsi global untuk load numbers
     if (typeof window.loadInvoiceNumbersForDropdown === 'function') {
         window.loadInvoiceNumbersForDropdown().then(() => {
             if (dropdown.children.length === 0) {
@@ -846,6 +892,8 @@ document.addEventListener('DOMContentLoaded', function() {
     let editingSizeItemIdx = null;
     let editingStaffId = null;
     let html5QrCode = null;
+    let currentUploadInvoice = null;
+    let selectedFile = null;
 
     function formatDate(d) {
         if (!d || d === '-') return '-';
@@ -1233,13 +1281,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function updateAvailableInvoiceNumbers() {
         try {
-            console.log('🔄 Loading invoice numbers...');
             const orders = await loadOrders();
             const used = orders.map(o => o.invoiceNumber);
             lockedNumbersMap = await fetchActiveLocks();
             const locked = Object.keys(lockedNumbersMap);
             availableInvoiceNumbers = generateInvoiceNumbers().filter(n => !used.includes(n) && !locked.includes(n));
-            console.log('📋 Available:', availableInvoiceNumbers.length, '| Used:', used.length, '| Locked:', locked.length);
             populateDropdown(used, locked);
             $('sync-status').textContent = `🟢 Real-time aktif | ${locked.length} lock | ${availableInvoiceNumbers.length} tersedia | ${new Date().toLocaleTimeString('ms-MY')}`;
         } catch(e) {
@@ -1267,12 +1313,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // ============ GLOBAL: Load numbers untuk dropdown ============
     window.loadInvoiceNumbersForDropdown = async function() {
         await updateAvailableInvoiceNumbers();
     };
 
-    // ============ GLOBAL: Select invoice number ============
     window.selectInvoiceNumber = async function(num) {
         const locked = await lockInvoiceNumber(num);
         if (locked) {
@@ -2528,6 +2572,178 @@ document.addEventListener('DOMContentLoaded', function() {
         $('preview-total-amount').textContent = ta.toFixed(2);
     }
 
+    // ============ FUNGSI UPLOAD FAIL (BARU) ============
+    function openUploadModal(invoiceNumber) {
+        currentUploadInvoice = invoiceNumber;
+        selectedFile = null;
+        $('upload-modal-invoice').textContent = invoiceNumber;
+        $('selected-file-info').textContent = 'Belum ada fail dipilih';
+        $('file-input').value = '';
+        $('upload-progress').style.display = 'none';
+        $('upload-error').style.display = 'none';
+        $('upload-modal').style.display = 'flex';
+        loadExistingFiles(invoiceNumber);
+    }
+    window.openUploadModal = openUploadModal;
+    window.closeUploadModal = function() {
+        $('upload-modal').style.display = 'none';
+        currentUploadInvoice = null;
+        selectedFile = null;
+    };
+
+    async function doUploadFile() {
+        if (!selectedFile) {
+            $('upload-error').textContent = '❌ Sila pilih fail dahulu.';
+            $('upload-error').style.display = 'block';
+            return;
+        }
+        if (!currentUploadInvoice) return;
+        
+        const progressEl = $('upload-progress');
+        const progressBar = $('upload-progress-bar');
+        const progressText = $('upload-progress-text');
+        
+        $('upload-error').style.display = 'none';
+        progressEl.style.display = 'block';
+        progressBar.style.width = '0%';
+        progressText.textContent = '0%';
+        
+        const timestamp = Date.now();
+        const safeName = selectedFile.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+        const filePath = `${currentUploadInvoice}/${timestamp}_${safeName}`;
+        
+        try {
+            progressBar.style.width = '30%';
+            progressText.textContent = '30%';
+            
+            const { error: uploadError } = await supabaseClient.storage
+                .from('designs')
+                .upload(filePath, selectedFile, { cacheControl: '3600', upsert: false });
+            
+            if (uploadError) throw uploadError;
+            
+            progressBar.style.width = '70%';
+            progressText.textContent = '70%';
+            
+            const { error: dbError } = await supabaseClient.from('order_files').insert({
+                invoice_number: currentUploadInvoice,
+                file_path: filePath,
+                file_name: selectedFile.name,
+                file_size: selectedFile.size,
+                file_type: selectedFile.type,
+                uploaded_by: STAFF_NAME || 'Unknown'
+            });
+            
+            if (dbError) throw dbError;
+            
+            progressBar.style.width = '100%';
+            progressText.textContent = '100%';
+            
+            alert('✅ Fail berjaya dimuat naik!');
+            
+            selectedFile = null;
+            $('file-input').value = '';
+            $('selected-file-info').textContent = 'Belum ada fail dipilih';
+            progressEl.style.display = 'none';
+            
+            loadExistingFiles(currentUploadInvoice);
+            
+        } catch (err) {
+            console.error('Upload error:', err);
+            $('upload-error').textContent = '❌ Gagal upload: ' + err.message;
+            $('upload-error').style.display = 'block';
+            progressEl.style.display = 'none';
+        }
+    }
+    window.doUploadFile = doUploadFile;
+
+    async function loadExistingFiles(invoiceNumber) {
+        const listEl = $('existing-files-list');
+        if (!listEl) return;
+        
+        listEl.innerHTML = '<p style="color:#999;text-align:center;">Memuatkan...</p>';
+        
+        try {
+            const { data, error } = await supabaseClient
+                .from('order_files')
+                .select('*')
+                .eq('invoice_number', invoiceNumber)
+                .order('uploaded_at', { ascending: false });
+            
+            if (error) throw error;
+            
+            if (!data || data.length === 0) {
+                listEl.innerHTML = '<p style="color:#999;text-align:center;">Tiada fail lagi untuk order ini.</p>';
+                return;
+            }
+            
+            listEl.innerHTML = data.map(f => {
+                const sizeMB = (f.file_size / 1024 / 1024).toFixed(2);
+                const date = new Date(f.uploaded_at).toLocaleString('ms-MY');
+                const icon = f.file_type && f.file_type.startsWith('image/') ? '🖼️' : 
+                             f.file_type === 'application/pdf' ? '📕' : '📄';
+                return `
+                    <div class="file-item">
+                        <div class="file-item-info">
+                            <div class="file-item-name">${icon} ${escapeHtml(f.file_name)}</div>
+                            <div class="file-item-meta">${sizeMB} MB • ${escapeHtml(f.uploaded_by||'-')} • ${date}</div>
+                        </div>
+                        <div class="file-item-actions">
+                            <button class="btn btn-info" onclick="downloadFile('${escapeAttr(f.file_path)}')" style="padding: 5px 10px; font-size: 12px;">⬇️ Muat Turun</button>
+                            <button class="btn btn-danger" onclick="deleteFile('${f.id}', '${escapeAttr(f.file_path)}')" style="padding: 5px 10px; font-size: 12px;">🗑️</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+        } catch (err) {
+            console.error('Load files error:', err);
+            listEl.innerHTML = '<p style="color:red;text-align:center;">❌ Gagal muat senarai fail: ' + err.message + '</p>';
+        }
+    }
+
+    async function downloadFile(filePath) {
+        try {
+            const { data, error } = await supabaseClient.storage
+                .from('designs')
+                .createSignedUrl(filePath, 3600);
+            
+            if (error) throw error;
+            window.open(data.signedUrl, '_blank');
+            
+        } catch (err) {
+            alert('❌ Gagal download: ' + err.message);
+        }
+    }
+    window.downloadFile = downloadFile;
+
+    async function deleteFile(fileId, filePath) {
+        if (!confirm('Padam fail ini?\n\nTindakan ini tidak boleh dikembalikan.')) return;
+        
+        try {
+            const { error: storageError } = await supabaseClient.storage
+                .from('designs')
+                .remove([filePath]);
+            
+            if (storageError) throw storageError;
+            
+            const { error: dbError } = await supabaseClient
+                .from('order_files')
+                .delete()
+                .eq('id', fileId);
+            
+            if (dbError) throw dbError;
+            
+            alert('✅ Fail dipadam.');
+            if (currentUploadInvoice) loadExistingFiles(currentUploadInvoice);
+            
+        } catch (err) {
+            alert('❌ Gagal padam: ' + err.message);
+        }
+    }
+    window.deleteFile = deleteFile;
+    // ============ TAMAT FUNGSI UPLOAD FAIL ============
+
     let realtimeChannels = [];
     function initRealtime() {
         realtimeChannels.forEach(c => supabaseClient.removeChannel(c));
@@ -2565,7 +2781,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const c8 = supabaseClient.channel('settings_ch').on('postgres_changes', {event:'*', schema:'public', table:'app_settings'}, async () => {
             await loadAppSettings();
         }).subscribe();
-        realtimeChannels = [c1, c2, c3, c4, c5, c6, c7, c8];
+        const c9 = supabaseClient.channel('files_ch').on('postgres_changes', {event:'*', schema:'public', table:'order_files'}, () => {
+            if (currentUploadInvoice && $('upload-modal').style.display === 'flex') {
+                loadExistingFiles(currentUploadInvoice);
+            }
+        }).subscribe();
+        realtimeChannels = [c1, c2, c3, c4, c5, c6, c7, c8, c9];
     }
 
     function initYearDropdowns() {
@@ -2677,7 +2898,43 @@ document.addEventListener('DOMContentLoaded', function() {
     $('btn-pending-order').addEventListener('click', async () => { if (currentOrder) { await updateOrderWithLog({...currentOrder, status:'pending'}, currentOrder); backToList(); }});
     $('btn-print-final').addEventListener('click', printFinal);
 
-    // ⚠️ FIX: Guard check untuk elak crash kalau butang tak wujud
+    // Butang Muat Naik Fail
+    $('btn-upload-file').addEventListener('click', () => {
+        if (currentOrder) openUploadModal(currentOrder.invoiceNumber);
+    });
+
+    // File input change listener
+    $('file-input').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        const allowedTypes = [
+            'image/jpeg', 'image/png', 'image/webp',
+            'application/pdf',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        ];
+        
+        if (!allowedTypes.includes(file.type)) {
+            $('upload-error').textContent = '❌ Jenis fail tidak dibenarkan. Guna JPG, PNG, WEBP, PDF, atau DOCX sahaja.';
+            $('upload-error').style.display = 'block';
+            selectedFile = null;
+            return;
+        }
+        
+        if (file.size > 20 * 1024 * 1024) {
+            $('upload-error').textContent = '❌ Fail terlalu besar. Maksimum 20 MB.';
+            $('upload-error').style.display = 'block';
+            selectedFile = null;
+            return;
+        }
+        
+        selectedFile = file;
+        const sizeMB = (file.size / 1024 / 1024).toFixed(2);
+        $('selected-file-info').innerHTML = `✅ <strong>${file.name}</strong> (${sizeMB} MB)`;
+        $('upload-error').style.display = 'none';
+    });
+
+    // Guard check untuk elak crash kalau butang tak wujud
     const addSalesBtn = $('add-sales-person-btn');
     if (addSalesBtn) addSalesBtn.addEventListener('click', handleAddSalesPerson);
 
@@ -2793,7 +3050,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 await updateAvailableInvoiceNumbers();
             }
         }, 60000);
-        console.log('✅ Sistem sedia. Staff:', STAFF_NAME, '| Boss:', isBoss);
+        console.log('✅ Sistem sedia dengan fungsi upload. Staff:', STAFF_NAME, '| Boss:', isBoss);
     })();
 });
 </script>
