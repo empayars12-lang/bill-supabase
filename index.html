@@ -1175,7 +1175,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (btn) btn.style.display = 'none';
             });
         }
-        // Design tab: show only if user is designer OR boss
         const designTab = $('tab-design');
         if (designTab) {
             if (isDesigner || hasBossAccess) designTab.style.display = '';
@@ -1389,21 +1388,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 subtotal:newOrder.subtotal, deposit:newOrder.deposit, balance:newOrder.balance,
                 status:newOrder.status, payment_info:newOrder.paymentInfo||null
             };
-            if (newOrder.hasOwnProperty('assignedDesigner')) {
-                updateData.assigned_designer = newOrder.assignedDesigner;
-            }
-            if (newOrder.hasOwnProperty('designStatus')) {
-                updateData.design_status = newOrder.designStatus;
-            }
-            if (newOrder.hasOwnProperty('designNotes')) {
-                updateData.design_notes = newOrder.designNotes;
-            }
-            if (newOrder.hasOwnProperty('designUpdatedAt')) {
-                updateData.design_updated_at = newOrder.designUpdatedAt;
-            }
-            if (newOrder.hasOwnProperty('designUpdatedBy')) {
-                updateData.design_updated_by = newOrder.designUpdatedBy;
-            }
+            if (newOrder.hasOwnProperty('assignedDesigner')) updateData.assigned_designer = newOrder.assignedDesigner;
+            if (newOrder.hasOwnProperty('designStatus')) updateData.design_status = newOrder.designStatus;
+            if (newOrder.hasOwnProperty('designNotes')) updateData.design_notes = newOrder.designNotes;
+            if (newOrder.hasOwnProperty('designUpdatedAt')) updateData.design_updated_at = newOrder.designUpdatedAt;
+            if (newOrder.hasOwnProperty('designUpdatedBy')) updateData.design_updated_by = newOrder.designUpdatedBy;
             const { error } = await supabaseClient.from('orders').update(updateData).eq('invoice_number', newOrder.invoiceNumber);
             if (error) throw error;
             const { data: row } = await supabaseClient.from('orders').select('id').eq('invoice_number', newOrder.invoiceNumber).single();
@@ -3315,8 +3304,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     $('change-password-btn').addEventListener('click', changePassword);
     $('add-dept-btn').addEventListener('click', () => window.openDeptModal());
-    $('cancel-dept').addEventListener('click', window.closeDeptModal);
-    $('save-dept').addEventListener('click', window.saveDepartment);
+    $('cancel-dept').addEventListener('click', () => window.closeDeptModal());
+    $('save-dept').addEventListener('click', () => window.saveDepartment());
     $('add-staff-btn').addEventListener('click', () => openStaffModal());
     $('cancel-staff-modal').addEventListener('click', closeStaffModal);
     $('save-staff-btn').addEventListener('click', saveStaff);
