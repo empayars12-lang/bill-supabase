@@ -8,6 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Empayar S Kreatif - Sistem Invois & Order</title>
 <meta name="theme-color" content="#6e48aa"/>
+<link rel="icon" href="https://arleta.site/interactivelink/68/Untitled-1.png">
 <link rel="apple-touch-icon" href="https://arleta.site/interactivelink/68/Untitled-1.png">
 <style>
 html { overscroll-behavior-y: contain; overscroll-behavior-x: none; }
@@ -82,7 +83,13 @@ th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
 th { background-color: #f2f2f2; }
 .quantity-control { display: flex; align-items: center; }
 .quantity-btn { background: #3498db; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 3px; margin: 0 5px; }
-.quantity-input { width: 50px; text-align: center; font-size: 16px; font-weight: bold; } @media (max-width: 768px) {     .quantity-input { width: 70px; height: 44px; font-size: 18px; padding: 8px 4px; border: 2px solid #3498db; }     .quantity-btn { padding: 10px 14px; font-size: 18px; min-width: 44px; min-height: 44px; }     .edit-qty { width: 70px; height: 44px; font-size: 18px; padding: 8px 4px; border: 2px solid #3498db; }     .edit-minus, .edit-plus { padding: 10px 14px; font-size: 18px; min-width: 44px; min-height: 44px; } }
+.quantity-input { width: 50px; text-align: center; font-size: 16px; font-weight: bold; }
+@media (max-width: 768px) {
+    .quantity-input { width: 70px; height: 44px; font-size: 18px; padding: 8px 4px; border: 2px solid #3498db; }
+    .quantity-btn { padding: 10px 14px; font-size: 18px; min-width: 44px; min-height: 44px; }
+    .edit-qty { width: 70px; height: 44px; font-size: 18px; padding: 8px 4px; border: 2px solid #3498db; }
+    .edit-minus, .edit-plus { padding: 10px 14px; font-size: 18px; min-width: 44px; min-height: 44px; }
+}
 .btn { background: #2ecc71; color: white; border: none; padding: 10px 15px; cursor: pointer; border-radius: 4px; font-size: 16px; }
 .btn:hover { background: #27ae60; }
 .btn-secondary { background: #95a5a6; } .btn-secondary:hover { background: #7f8c8d; }
@@ -283,6 +290,14 @@ body:not(.boss-mode) .boss-only { display: none !important; }
 .prod-paused { background: #e67e22; color: white; }
 .prod-done { background: #2ecc71; color: white; }
 .auto-assign-note { font-size: 12px; color: #666; font-style: italic; margin-top: 3px; }
+/* === DELIVERY / PICKUP SECTION === */
+.delivery-panel { margin-top: 20px; padding: 20px; background: linear-gradient(135deg, #f0fff4 0%, #e8f5e9 100%); border-radius: 10px; border-left: 5px solid #27ae60; }
+.delivery-panel h4 { margin: 0 0 15px; color: #27ae60; display: flex; align-items: center; gap: 8px; }
+.delivery-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; }
+.delivery-badge.pickup { background: #3498db; color: white; }
+.delivery-badge.pos { background: #9b59b6; color: white; }
+.delivery-badge.none { background: #ddd; color: #777; }
+.delivery-badge.delivered { background: #2ecc71; color: white; }
 @media print {
     .no-print, .action-buttons, .tab-nav, .home-button-container, #password-modal, .add-sales-person, #bills-modal, #install-app-btn, #upload-modal, #pass-designer-modal, #file-notes-modal, #send-production-modal, #pause-production-modal { display: none !important; }
     body { background: none; padding: 0; }
@@ -325,6 +340,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         <div class="feature-card"><div class="feature-icon">📝</div><div class="feature-title">Urusan Order</div><div>Pantau status order dengan sistematik</div></div>
         <div class="feature-card"><div class="feature-icon">🎨</div><div class="feature-title">Design Tracking</div><div>Track status design secara real-time</div></div>
         <div class="feature-card"><div class="feature-icon">🏭</div><div class="feature-title">Production Tracking</div><div>Track kerja production ikut jabatan</div></div>
+        <div class="feature-card"><div class="feature-icon">🚚</div><div class="feature-title">Pickup / Pos</div><div>Track penghantaran & penyerahan</div></div>
     </div>
 </div>
 
@@ -409,6 +425,22 @@ body:not(.boss-mode) .boss-only { display: none !important; }
             <label>📝 NOTA UNTUK DESIGNER:</label>
             <textarea id="design-notes-input" placeholder="Contoh: Warna merah, font bold, letak logo di tengah..." style="height:80px; resize:vertical;"></textarea>
         </div>
+        <div class="form-group" style="background:#f0f9ff;padding:12px;border-radius:6px;border-left:3px solid #27ae60;">
+            <label>🚚 KAEDAH PENGHANTARAN (optional):</label>
+            <select id="delivery-method">
+                <option value="">⚪ Belum Set</option>
+                <option value="pickup">🏪 Pickup di Kedai</option>
+                <option value="pos">📦 Pos / Kurier</option>
+            </select>
+        </div>
+        <div class="form-group" id="delivery-address-group" style="display:none;">
+            <label>📍 Alamat Penghantaran:</label>
+            <textarea id="delivery-address" placeholder="Alamat penuh untuk pos..." style="height:70px;resize:vertical;"></textarea>
+        </div>
+        <div class="form-group" id="delivery-date-group" style="display:none;">
+            <label>📅 Tarikh Kutipan / Pos:</label>
+            <input type="date" id="delivery-date">
+        </div>
         <div class="action-buttons no-print"><button id="preview-invoice" class="btn">Pratonton Invois</button></div>
     </div>
 
@@ -470,6 +502,14 @@ body:not(.boss-mode) .boss-only { display: none !important; }
                 <option value="confirmed">🟢 Confirmed</option>
                 <option value="completed">⚫ Selesai</option>
             </select>
+            <select id="filter-delivery" class="filter-select">
+                <option value="">Semua Kaedah</option>
+                <option value="pickup">🏪 Pickup</option>
+                <option value="pos">📦 Pos</option>
+                <option value="unset">⚪ Belum Set</option>
+                <option value="delivered">✅ Diserahkan</option>
+                <option value="not_delivered">⏳ Belum Diserahkan</option>
+            </select>
         </div>
         <div class="search-filter no-print" style="margin-top:-10px;">
             <button class="filter-btn active" data-filter="all">Semua</button>
@@ -489,7 +529,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         </div>
         <div style="overflow-x:auto;">
         <table class="order-table">
-            <thead><tr><th>No. Bil</th><th>Pelanggan</th><th>Telefon</th><th>Tarikh Order</th><th>Tarikh Siap</th><th>Jurujual</th><th>Designer</th><th>Status Design</th><th>Status Production</th><th>Status</th><th class="no-print">Tindakan</th></tr></thead>
+            <thead><tr><th>No. Bil</th><th>Pelanggan</th><th>Telefon</th><th>Tarikh Order</th><th>Tarikh Siap</th><th>Jurujual</th><th>Designer</th><th>Status Design</th><th>Status Production</th><th>Kaedah</th><th>Serah</th><th>Status</th><th class="no-print">Tindakan</th></tr></thead>
             <tbody id="orders-container"></tbody>
         </table>
         </div>
@@ -586,6 +626,29 @@ body:not(.boss-mode) .boss-only { display: none !important; }
             <div class="detail-total"><span>Baki:</span><span id="detail-balance">RM0.00</span></div>
         </div>
 
+        <div class="delivery-panel" id="delivery-panel">
+            <h4>🚚 Info Penghantaran</h4>
+            <div class="design-row">
+                <label>Kaedah:</label>
+                <span id="detail-delivery-badge" class="delivery-badge none">⚪ Belum Set</span>
+            </div>
+            <div class="design-row" id="detail-address-row" style="display:none;">
+                <label>Alamat:</label>
+                <span id="detail-delivery-address" style="font-size:13px;color:#333;white-space:pre-wrap;">-</span>
+            </div>
+            <div class="design-row">
+                <label>Tarikh Kutipan / Pos:</label>
+                <span id="detail-delivery-date" style="font-weight:bold;">-</span>
+            </div>
+            <div class="design-row" id="detail-delivered-row" style="display:none;">
+                <label>Diserahkan:</label>
+                <span id="detail-delivered-info" style="font-weight:bold;color:#27ae60;">-</span>
+            </div>
+            <div class="action-buttons" style="justify-content:flex-start; margin-top:10px;">
+                <button class="btn" id="btn-edit-delivery" style="background:#27ae60;" onclick="editDeliveryFromDetail()">✏️ Edit Kaedah</button>
+            </div>
+        </div>
+
         <div class="design-panel" id="design-panel">
             <h4>🎨 Info Design</h4>
             <div class="design-row">
@@ -657,6 +720,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
             <button class="btn" id="btn-complete-order" style="background:#2ecc71;">Selesai</button>
             <button class="btn" id="btn-pending-order" style="background:#f39c12;">Pending</button>
             <button class="btn" id="btn-print-final" style="background:#3498db;">Cetak Bil Akhir</button>
+            <button class="btn" id="btn-mark-delivered" style="background:#27ae60;">✅ Tandakan Diserahkan</button>
             <button class="btn" id="btn-upload-file" style="background:#6e48aa;">📎 Muat Naik Fail</button>
         </div>
     </div>
@@ -1152,6 +1216,22 @@ body:not(.boss-mode) .boss-only { display: none !important; }
             </div>
         </div>
         <div class="form-group"><label>DEPOSIT (RM):</label><input type="number" id="edit-deposit" step="0.01"></div>
+        <div class="form-group" style="background:#f0f9ff;padding:12px;border-radius:6px;border-left:3px solid #27ae60;">
+            <label>🚚 KAEDAH PENGHANTARAN:</label>
+            <select id="edit-delivery-method">
+                <option value="">⚪ Belum Set</option>
+                <option value="pickup">🏪 Pickup di Kedai</option>
+                <option value="pos">📦 Pos / Kurier</option>
+            </select>
+        </div>
+        <div class="form-group" id="edit-address-group" style="display:none;">
+            <label>📍 Alamat Penghantaran:</label>
+            <textarea id="edit-delivery-address" placeholder="Alamat penuh untuk pos..." style="height:70px;resize:vertical;"></textarea>
+        </div>
+        <div class="form-group">
+            <label>📅 Tarikh Kutipan / Pos:</label>
+            <input type="date" id="edit-delivery-date">
+        </div>
         <div class="form-group"><label>NAMA JURUJUAL:</label><select id="edit-sales-person"><option value="">Pilih Jurujual</option></select></div>
         <div class="form-group">
             <label>🎨 DESIGNER:</label>
@@ -1273,15 +1353,34 @@ document.addEventListener('DOMContentLoaded', function() {
         const s = PRODUCTION_STATUS[status] || PRODUCTION_STATUS.pending;
         return `<span class="production-status-badge ${s.cls}">${s.icon} ${s.label}</span>`;
     }
-    // Cell untuk kolum Status Production — tunjuk jabatan + badge
     function getProductionCellHtml(o) {
-        if (!o.productionStatus) return '<span style="color:#999;">-</span>';
+        if (!o.productionStatus) return '<span class="production-status-badge" style="background:#f0f0f0;color:#999;font-size:10px;">⚪ Belum Hantar</span>';
         const deptName = o.productionDepartment ? (allDepartmentsCache.find(d => d.id === o.productionDepartment)?.name || '?') : '-';
         const s = PRODUCTION_STATUS[o.productionStatus] || PRODUCTION_STATUS.pending;
         return `<div class="production-status-badge-wrap">
             <span class="dept-label">${escapeHtml(deptName)}</span>
             <span class="production-status-badge ${s.cls}">${s.icon} ${s.label}</span>
         </div>`;
+    }
+    function getDeliveryMethodBadge(o) {
+        if (!o.deliveryMethod) return '<span style="color:#999;font-size:11px;">⚪ Belum set</span>';
+        const dateStr = o.deliveryDate ? formatDate(o.deliveryDate) : '';
+        if (o.deliveryMethod === 'pickup') {
+            return `<span style="display:inline-block;padding:3px 8px;background:#3498db;color:white;border-radius:12px;font-size:11px;font-weight:bold;text-align:center;">🏪 Pickup${dateStr ? '<br><small style="font-size:9px;">'+dateStr+'</small>' : ''}</span>`;
+        }
+        if (o.deliveryMethod === 'pos') {
+            return `<span style="display:inline-block;padding:3px 8px;background:#9b59b6;color:white;border-radius:12px;font-size:11px;font-weight:bold;text-align:center;">📦 Pos${dateStr ? '<br><small style="font-size:9px;">'+dateStr+'</small>' : ''}</span>`;
+        }
+        return '<span style="color:#999;">-</span>';
+    }
+    function getDeliveredBadge(o) {
+        if (o.deliveredAt) {
+            return `<span style="display:inline-block;padding:3px 8px;background:#2ecc71;color:white;border-radius:12px;font-size:11px;font-weight:bold;">✅ Selesai</span>`;
+        }
+        if (o.productionStatus === 'done') {
+            return `<span style="display:inline-block;padding:3px 8px;background:#f39c12;color:white;border-radius:12px;font-size:11px;font-weight:bold;">⏳ Sedia</span>`;
+        }
+        return '<span style="color:#999;font-size:11px;">-</span>';
     }
 
     function getOrderStatus(o) {
@@ -1524,7 +1623,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 productionNotes: o.production_notes || '',
                 productionAssignedTo: o.production_assigned_to || null,
                 productionUpdatedAt: o.production_updated_at,
-                productionUpdatedBy: o.production_updated_by
+                productionUpdatedBy: o.production_updated_by,
+                deliveryMethod: o.delivery_method || null,
+                deliveryAddress: o.delivery_address || '',
+                deliveryDate: o.delivery_date || null,
+                deliveredAt: o.delivered_at || null,
+                deliveredBy: o.delivered_by || null
             }));
             allOrdersCache = result;
             return result;
@@ -1549,6 +1653,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 insertData.design_updated_by = STAFF_NAME;
             }
             if (o.designNotes) insertData.design_notes = o.designNotes;
+            if (o.deliveryMethod) insertData.delivery_method = o.deliveryMethod;
+            if (o.deliveryAddress) insertData.delivery_address = o.deliveryAddress;
+            if (o.deliveryDate) insertData.delivery_date = o.deliveryDate;
 
             const { data: newO, error } = await supabaseClient.from('orders').insert(insertData).select().single();
             if (error) throw error;
@@ -1586,6 +1693,11 @@ document.addEventListener('DOMContentLoaded', function() {
             if (newOrder.hasOwnProperty('productionAssignedTo')) updateData.production_assigned_to = newOrder.productionAssignedTo;
             if (newOrder.hasOwnProperty('productionUpdatedAt')) updateData.production_updated_at = newOrder.productionUpdatedAt;
             if (newOrder.hasOwnProperty('productionUpdatedBy')) updateData.production_updated_by = newOrder.productionUpdatedBy;
+            if (newOrder.hasOwnProperty('deliveryMethod')) updateData.delivery_method = newOrder.deliveryMethod;
+            if (newOrder.hasOwnProperty('deliveryAddress')) updateData.delivery_address = newOrder.deliveryAddress;
+            if (newOrder.hasOwnProperty('deliveryDate')) updateData.delivery_date = newOrder.deliveryDate;
+            if (newOrder.hasOwnProperty('deliveredAt')) updateData.delivered_at = newOrder.deliveredAt;
+            if (newOrder.hasOwnProperty('deliveredBy')) updateData.delivered_by = newOrder.deliveredBy;
 
             const { error } = await supabaseClient.from('orders').update(updateData).eq('invoice_number', newOrder.invoiceNumber);
             if (error) throw error;
@@ -1609,6 +1721,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (Math.abs((oldOrder.totalAmount||0) - (newOrder.totalAmount||0)) > 0.01) changes.push({f:'Jumlah Item', o:`RM${(oldOrder.totalAmount||0).toFixed(2)}`, n:`RM${(newOrder.totalAmount||0).toFixed(2)}`});
                 if ((oldOrder.salesPerson||'-') !== (newOrder.salesPerson||'-')) changes.push({f:'Jurujual', o:oldOrder.salesPerson||'-', n:newOrder.salesPerson||'-'});
                 if (oldOrder.status !== newOrder.status) changes.push({f:'Status', o:getStatusText(oldOrder.status), n:getStatusText(newOrder.status)});
+                if ((oldOrder.deliveryMethod||'-') !== (newOrder.deliveryMethod||'-')) changes.push({f:'Kaedah Penghantaran', o:oldOrder.deliveryMethod||'Belum Set', n:newOrder.deliveryMethod||'Belum Set'});
                 for (const c of changes) await addAuditLog(newOrder.invoiceNumber, 'update', c.f, c.o, c.n, null);
                 
                 const oldItems = oldOrder.items || [];
@@ -2516,6 +2629,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const period = $('filter-period').value, month = $('filter-month').value, year = $('filter-year').value;
         const sales = $('filter-sales').value, search = $('search-orders').value.toLowerCase();
         const designer = $('filter-designer').value, designStatus = $('filter-design-status').value;
+        const deliveryFilter = $('filter-delivery').value;
         if (sf === 'completed') orders = orders.filter(o => getOrderStatus(o) === 'completed');
         else if (sf === 'pending') orders = orders.filter(o => getOrderStatus(o) !== 'completed');
         if (period !== 'all') {
@@ -2534,6 +2648,12 @@ document.addEventListener('DOMContentLoaded', function() {
         if (sales) orders = orders.filter(o => o.salesPerson === sales);
         if (designer) orders = orders.filter(o => o.assignedDesigner === designer);
         if (designStatus) orders = orders.filter(o => (o.designStatus || 'pending') === designStatus);
+        if (deliveryFilter) {
+            if (deliveryFilter === 'unset') orders = orders.filter(o => !o.deliveryMethod);
+            else if (deliveryFilter === 'delivered') orders = orders.filter(o => o.deliveredAt);
+            else if (deliveryFilter === 'not_delivered') orders = orders.filter(o => !o.deliveredAt);
+            else orders = orders.filter(o => o.deliveryMethod === deliveryFilter);
+        }
         if (search) orders = orders.filter(o => (o.invoiceNumber||'').toLowerCase().includes(search) || (o.customerName||'').toLowerCase().includes(search) || (o.customerPhone||'').toLowerCase().includes(search) || (o.salesPerson||'').toLowerCase().includes(search));
         orders.sort((a,b) => new Date(b.orderDate||0) - new Date(a.orderDate||0));
         return orders;
@@ -2542,7 +2662,7 @@ document.addEventListener('DOMContentLoaded', function() {
         await loadOrders();
         const orders = getFilteredOrders();
         const tb = $('orders-container'); tb.innerHTML = '';
-        if (!orders.length) tb.innerHTML = '<tr><td colspan="11" style="text-align:center;">Tiada order</td></tr>';
+        if (!orders.length) tb.innerHTML = '<tr><td colspan="13" style="text-align:center;">Tiada order</td></tr>';
         orders.forEach(o => {
             const st = getOrderStatus(o);
             const tr = document.createElement('tr');
@@ -2556,6 +2676,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td>${designerText}</td>
                 <td>${designStatusHtml}</td>
                 <td>${productionCellHtml}</td>
+                <td>${getDeliveryMethodBadge(o)}</td>
+                <td>${getDeliveredBadge(o)}</td>
                 <td class="status-cell"><span class="status-indicator status-${st}"></span>${getStatusText(st)}</td>
                 <td class="no-print"><div class="order-actions">
                     <button class="edit-btn" data-invoice="${o.invoiceNumber}">Edit</button>
@@ -2579,7 +2701,7 @@ document.addEventListener('DOMContentLoaded', function() {
     async function displayActiveOrders() {
         await loadOrders();
         const s = $('filter-active-sales').value, srch = $('search-active').value.toLowerCase();
-        let orders = allOrdersCache.filter(o => getOrderStatus(o) !== 'completed');
+        let orders = allOrdersCache.filter(o => getOrderStatus(o) !== 'completed' && !o.deliveredAt);
         if (s) orders = orders.filter(o => o.salesPerson === s);
         if (srch) orders = orders.filter(o => (o.invoiceNumber||'').toLowerCase().includes(srch) || (o.customerName||'').toLowerCase().includes(srch) || (o.customerPhone||'').toLowerCase().includes(srch));
         orders.sort((a,b) => { if (!a.completionDate && !b.completionDate) return 0; if (!a.completionDate) return 1; if (!b.completionDate) return -1; return new Date(a.completionDate) - new Date(b.completionDate); });
@@ -2960,6 +3082,23 @@ document.addEventListener('DOMContentLoaded', function() {
         $('btn-complete-order').style.display = st === 'completed' ? 'none' : 'block';
         $('btn-pending-order').style.display = st === 'pending' ? 'none' : 'block';
         $('btn-print-final').style.display = st === 'completed' ? 'block' : 'none';
+        const canDeliver = o.productionStatus === 'done' && !o.deliveredAt;
+        $('btn-mark-delivered').style.display = canDeliver ? 'block' : 'none';
+        
+        // Delivery info panel
+        const dBadge = $('detail-delivery-badge');
+        if (o.deliveryMethod === 'pickup') { dBadge.className = 'delivery-badge pickup'; dBadge.textContent = '🏪 Pickup di Kedai'; }
+        else if (o.deliveryMethod === 'pos') { dBadge.className = 'delivery-badge pos'; dBadge.textContent = '📦 Pos / Kurier'; }
+        else { dBadge.className = 'delivery-badge none'; dBadge.textContent = '⚪ Belum Set'; }
+        $('detail-address-row').style.display = o.deliveryMethod === 'pos' ? 'flex' : 'none';
+        $('detail-delivery-address').textContent = o.deliveryAddress || '-';
+        $('detail-delivery-date').textContent = o.deliveryDate ? formatDate(o.deliveryDate) : '-';
+        if (o.deliveredAt) {
+            $('detail-delivered-row').style.display = 'flex';
+            $('detail-delivered-info').textContent = `${formatTime(o.deliveredAt)} oleh ${o.deliveredBy || '-'}`;
+        } else {
+            $('detail-delivered-row').style.display = 'none';
+        }
         
         await populateDesignerDropdown('detail-designer-select', o.assignedDesigner || '');
         $('detail-design-status-badge').outerHTML = getDesignStatusBadge(o.designStatus || 'pending').replace('class="design-status-badge', 'id="detail-design-status-badge" class="design-status-badge');
@@ -2999,6 +3138,11 @@ document.addEventListener('DOMContentLoaded', function() {
         orderDetailView.style.display = 'block';
     }
     
+    window.editDeliveryFromDetail = function() {
+        if (!currentOrder) return;
+        showEditOrderModal(currentOrder);
+    };
+    
     async function loadDesignActivityForDetail(invoiceNumber) {
         const activity = await loadDesignActivity(invoiceNumber);
         const el = $('design-activity-list');
@@ -3029,6 +3173,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const stamp = isFinal ? '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-45deg);font-size:60px;color:rgba(0,0,0,0.2);font-weight:bold;border:5px solid rgba(0,0,0,0.2);padding:20px;z-index:1000;">SELESAI</div>' : '';
         let pay = '';
         if (o.paymentInfo) pay = `<div class="bank-info"><p><strong>MAKLUMAT PEMBAYARAN</strong></p><p>Tarikh: ${formatDate(o.paymentInfo.date)}</p><p>Kaedah: ${o.paymentInfo.method}</p><p>Jumlah: RM${o.paymentInfo.amount}</p></div>`;
+        let deliveryInfo = '';
+        if (o.deliveryMethod) {
+            const methodLabel = o.deliveryMethod === 'pickup' ? 'Pickup di Kedai' : 'Pos / Kurier';
+            deliveryInfo = `<div class="bank-info" style="background:#f0fff4;border-left:4px solid #27ae60;"><p><strong>KAEDAH PENGHANTARAN: ${methodLabel}</strong></p>${o.deliveryAddress ? `<p>Alamat: ${o.deliveryAddress}</p>` : ''}${o.deliveryDate ? `<p>Tarikh: ${formatDate(o.deliveryDate)}</p>` : ''}</div>`;
+        }
         function renderItemDesc(desc) {
             const lines = (desc||'').split('\n');
             if (lines.length === 1) return lines[0];
@@ -3052,6 +3201,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <tfoot><tr class="table-summary-row"><td colspan="3">JUMLAH</td><td style="text-align:center;">${(o.items||[]).reduce((s,i)=>s+(i.quantity||0),0)}</td><td style="text-align:right;">${(o.totalAmount||0).toFixed(2)}</td></tr></tfoot></table>
         <div class="invoice-totals"><p>JUMLAH RM${(o.totalAmount||0).toFixed(2)}</p><p>DISKAUN RM${(o.discount||0).toFixed(2)}</p><p>JUMLAH SELEPAS DISKAUN RM${(o.subtotal||0).toFixed(2)}</p><p>DEPOSIT RM${(o.deposit||0).toFixed(2)}</p><p>BAKI RM${(o.balance||0).toFixed(2)}</p></div>
         ${pay}
+        ${deliveryInfo}
         <div class="bank-info"><p><strong>BAYARAN</strong></p><p><strong>Maybank</strong><br>553104624047<br>EMPAYAR S KREATIF SOLUTION</p></div>
         <p><strong>NAMA JURUJUAL:</strong> ${o.salesPerson||'-'}</p>
         <div class="terms"><p><strong>TERMA & SYARAT TEMPAHAN</strong></p><p>*DEPOSIT SEKURANG-KURANGNYA 50%</p><p>Tempahan TIDAK BOLEH DIBATALKAN, deposit TIDAK akan dikembalikan</p><p>Pertukaran saiz dikenarkan SEBELUM order dengan supplier</p><p>Caj design TIDAK AKAN DIKEMBALIKAN</p><p>Preview design SEBELUM proceed cetakan</p></div>
@@ -3325,6 +3475,10 @@ document.addEventListener('DOMContentLoaded', function() {
         $('edit-completion-date').value = o.completionDate || '';
         $('edit-discount-value').value = o.discount || 0;
         $('edit-deposit').value = o.deposit || 0;
+        $('edit-delivery-method').value = o.deliveryMethod || '';
+        $('edit-delivery-address').value = o.deliveryAddress || '';
+        $('edit-delivery-date').value = o.deliveryDate || '';
+        $('edit-address-group').style.display = o.deliveryMethod === 'pos' ? 'block' : 'none';
         await populateEditSalesDropdown();
         $('edit-sales-person').value = o.salesPerson || '';
         await populateDesignerDropdown('edit-designer-select', o.assignedDesigner || '');
@@ -3378,6 +3532,9 @@ document.addEventListener('DOMContentLoaded', function() {
             deposit:parseFloat($('edit-deposit').value)||0,
             assignedDesigner: $('edit-designer-select').value || null,
             designNotes: $('edit-design-notes').value || '',
+            deliveryMethod: $('edit-delivery-method').value || null,
+            deliveryAddress: $('edit-delivery-address').value || '',
+            deliveryDate: $('edit-delivery-date').value || null,
             designUpdatedAt: new Date(),
             designUpdatedBy: STAFF_NAME,
             items:[]
@@ -3409,7 +3566,11 @@ document.addEventListener('DOMContentLoaded', function() {
             orderDate:$('edit-order-date').value, completionDate:$('edit-completion-date').value,
             salesPerson:$('edit-sales-person').value||'-',
             discount:parseFloat($('edit-discount-value').value)||0,
-            deposit:parseFloat($('edit-deposit').value)||0, items:[]
+            deposit:parseFloat($('edit-deposit').value)||0,
+            deliveryMethod:$('edit-delivery-method').value||null,
+            deliveryAddress:$('edit-delivery-address').value||'',
+            deliveryDate:$('edit-delivery-date').value||null,
+            items:[]
         };
         let ta = 0;
         $('edit-items-tbody').querySelectorAll('tr').forEach(r => {
@@ -3444,8 +3605,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function exportCSV() {
         const orders = getFilteredOrders();
         if (!orders.length) return alert('Tiada order untuk export.');
-        const headers = ['No. Bil','Pelanggan','Telefon','Tarikh Order','Tarikh Siap','Jurujual','Designer','Status Design','Status Production','Status','Jumlah','Diskaun','Selepas Diskaun','Deposit','Baki','Item'];
-        const rows = orders.map(o => [o.invoiceNumber||'', o.customerName||'', o.customerPhone||'', formatDate(o.orderDate), formatDate(o.completionDate), o.salesPerson||'', o.assignedDesigner||'', (DESIGN_STATUS[o.designStatus||'pending']||{}).label||'', o.productionStatus ? ((PRODUCTION_STATUS[o.productionStatus]||{}).label||'') : '-', getStatusText(getOrderStatus(o)), (o.totalAmount||0).toFixed(2), (o.discount||0).toFixed(2), (o.subtotal||0).toFixed(2), (o.deposit||0).toFixed(2), (o.balance||0).toFixed(2), (o.items||[]).map(i=>`${i.description.replace(/\n/g, ' ')} (${i.quantity}x RM${i.price})`).join(' | ')]);
+        const headers = ['No. Bil','Pelanggan','Telefon','Tarikh Order','Tarikh Siap','Jurujual','Designer','Status Design','Status Production','Kaedah','Tarikh Kutipan/Pos','Alamat','Diserahkan','Status','Jumlah','Diskaun','Selepas Diskaun','Deposit','Baki','Item'];
+        const rows = orders.map(o => [o.invoiceNumber||'', o.customerName||'', o.customerPhone||'', formatDate(o.orderDate), formatDate(o.completionDate), o.salesPerson||'', o.assignedDesigner||'', (DESIGN_STATUS[o.designStatus||'pending']||{}).label||'', o.productionStatus ? ((PRODUCTION_STATUS[o.productionStatus]||{}).label||'') : 'Belum Hantar', o.deliveryMethod === 'pickup' ? 'Pickup' : o.deliveryMethod === 'pos' ? 'Pos' : 'Belum Set', o.deliveryDate ? formatDate(o.deliveryDate) : '', o.deliveryAddress||'', o.deliveredAt ? formatTime(o.deliveredAt) : 'Belum', getStatusText(getOrderStatus(o)), (o.totalAmount||0).toFixed(2), (o.discount||0).toFixed(2), (o.subtotal||0).toFixed(2), (o.deposit||0).toFixed(2), (o.balance||0).toFixed(2), (o.items||[]).map(i=>`${i.description.replace(/\n/g, ' ')} (${i.quantity}x RM${i.price})`).join(' | ')]);
         const csv = [headers, ...rows].map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
         const blob = new Blob(['\ufeff' + csv], {type:'text/csv;charset=utf-8'});
         const url = URL.createObjectURL(blob);
@@ -3633,6 +3794,9 @@ document.addEventListener('DOMContentLoaded', function() {
             status: 'normal', createdBy: STAFF_NAME,
             assignedDesigner: $('designer-select').value || null,
             designNotes: $('design-notes-input').value || '',
+            deliveryMethod: $('delivery-method').value || null,
+            deliveryAddress: $('delivery-address').value || '',
+            deliveryDate: $('delivery-date').value || null,
             items: currentInvoiceItems.map(it => ({ description: it.description, price: it.price, quantity: it.quantity, total: it.total }))
         };
         if (!await addOrder(data)) { alert('❌ Gagal simpan.'); return; }
@@ -3651,6 +3815,8 @@ document.addEventListener('DOMContentLoaded', function() {
         $('designer-select').value = '';
         $('design-notes-input').value = '';
         $('deposit').value = ''; $('discount-value').value = ''; $('discount-type').value = 'fixed';
+        $('delivery-method').value = ''; $('delivery-address').value = ''; $('delivery-date').value = '';
+        $('delivery-address-group').style.display = 'none'; $('delivery-date-group').style.display = 'none';
         currentInvoiceItems = [];
         $('invoice-number').value = ''; currentlyLockedNumber = null;
         renderInvoiceTable();
@@ -3929,6 +4095,16 @@ document.addEventListener('DOMContentLoaded', function() {
     $('save-edit-order').addEventListener('click', saveEditedOrder);
     $('print-edit-order').addEventListener('click', printEditedOrder);
     $('edit-add-item').addEventListener('click', () => addEditRow());
+    
+    $('edit-delivery-method').addEventListener('change', function() {
+        $('edit-address-group').style.display = this.value === 'pos' ? 'block' : 'none';
+    });
+
+    $('delivery-method').addEventListener('change', function() {
+        const show = this.value !== '';
+        $('delivery-address-group').style.display = (this.value === 'pos') ? 'block' : 'none';
+        $('delivery-date-group').style.display = show ? 'block' : 'none';
+    });
 
     $('btn-back-to-list').addEventListener('click', backToList);
     $('btn-print-order').addEventListener('click', printOrder);
@@ -3938,6 +4114,22 @@ document.addEventListener('DOMContentLoaded', function() {
     $('btn-pending-order').addEventListener('click', async () => { if (currentOrder) { await updateOrderWithLog({...currentOrder, status:'pending'}, currentOrder); backToList(); }});
     $('btn-print-final').addEventListener('click', printFinal);
     $('btn-upload-file').addEventListener('click', () => { if (currentOrder) openUploadModal(currentOrder.invoiceNumber); });
+    
+    $('btn-mark-delivered').addEventListener('click', async () => {
+        if (!currentOrder) return;
+        if (!currentOrder.deliveryMethod) {
+            alert('⚠️ Sila set Kaedah Penghantaran (Pickup/Pos) di Edit Bill dahulu.');
+            return;
+        }
+        if (!confirm(`Tandakan order ${currentOrder.invoiceNumber} sebagai SUDAH DISERAHKAN ke pelanggan?`)) return;
+        const upd = { ...currentOrder, deliveredAt: new Date().toISOString(), deliveredBy: STAFF_NAME };
+        if (await updateOrderWithLog(upd, currentOrder)) {
+            await addAuditLog(currentOrder.invoiceNumber, 'update', 'Status', 'Siap', 'Diserahkan', `Diserahkan oleh ${STAFF_NAME}`);
+            alert('✅ Order ditandakan sebagai DISERAHKAN.');
+            currentOrder = upd;
+            backToList();
+        } else alert('❌ Gagal.');
+    });
 
     $('file-input').addEventListener('change', function(e) {
         const file = e.target.files[0];
@@ -4000,10 +4192,12 @@ document.addEventListener('DOMContentLoaded', function() {
     $('filter-sales').addEventListener('change', displayOrders);
     $('filter-designer').addEventListener('change', displayOrders);
     $('filter-design-status').addEventListener('change', displayOrders);
+    $('filter-delivery').addEventListener('change', displayOrders);
     document.querySelectorAll('#order-list-page .filter-btn').forEach(b => b.addEventListener('click', () => {
         if (b.id === 'reset-filter-btn') {
             $('filter-period').value='all'; $('filter-month').value=''; $('filter-year').value=''; 
             $('filter-sales').value=''; $('filter-designer').value=''; $('filter-design-status').value='';
+            $('filter-delivery').value='';
             $('search-orders').value='';
             document.querySelectorAll('#order-list-page .filter-btn').forEach(x => x.classList.remove('active'));
             document.querySelector('#order-list-page .filter-btn[data-filter="all"]').classList.add('active');
@@ -4089,6 +4283,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 await updateAvailableInvoiceNumbers();
             }
         }, 60000);
+        // Auto-refresh order list (backup realtime) setiap 30 saat
+        setInterval(async () => {
+            if (container.style.display !== 'block') return;
+            const t = document.querySelector('.tab-btn.active')?.id;
+            if (t === 'tab-orders' || t === 'tab-active' || t === 'tab-dashboard' || t === 'tab-design' || t === 'tab-production') {
+                await loadOrders();
+                if (t === 'tab-orders') displayOrders();
+                else if (t === 'tab-active') displayActiveOrders();
+                else if (t === 'tab-dashboard') updateDashboard();
+                else if (t === 'tab-design') displayDesignerOrders();
+                else if (t === 'tab-production') displayProductionOrders();
+            }
+        }, 30000);
         if (isDesigner) {
             setInterval(() => { if (document.querySelector('.tab-btn.active')?.id === 'tab-design') displayDesignerOrders(); }, 60000);
         }
