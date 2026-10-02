@@ -44,7 +44,6 @@ body { font-family: 'Arial', sans-serif; margin: 0; padding: 0; background-color
 .filter-btn[data-filter="pending"]:not(.active) { background: #fef3c7; color: #92400e; }
 .filter-btn[data-filter="sedia_serah"]:not(.active) { background: #dbeafe; color: #1e40af; }
 .filter-btn[data-filter="partial"]:not(.active) { background: #ffedd5; color: #9a3412; }
-.filter-btn[data-filter="partial"]:not(.active):has(.filter-count:empty),
 .filter-btn[data-filter="partial"]:not(.active).count-zero { background: #f3f4f6; color: #9ca3af; }
 .filter-btn[data-filter="completed"]:not(.active) { background: #d1fae5; color: #065f46; }
 .filter-select { padding: 10px; border: 1px solid #ddd; border-radius: 4px; background: white; cursor: pointer; }
@@ -532,6 +531,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
             <button class="filter-btn active" data-filter="all">Semua<span class="filter-count" id="count-all">0</span></button>
             <button class="filter-btn" data-filter="pending">🟡 Belum Siap<span class="filter-count" id="count-pending">0</span></button>
             <button class="filter-btn" data-filter="sedia_serah">🔵 Sedia Serah<span class="filter-count" id="count-sedia">0</span></button>
+            <button class="filter-btn" data-filter="partial">🟠 Serah Tidak Lengkap<span class="filter-count" id="count-partial">0</span></button>
             <button class="filter-btn" data-filter="completed">🟢 Selesai<span class="filter-count" id="count-completed">0</span></button>
             <button id="reset-filter-btn" class="filter-btn" style="background:#95a5a6;color:white;">Reset</button>
             <button id="export-csv-btn" class="filter-btn" style="background:#27ae60;color:white;">📥 Export CSV</button>
@@ -1178,7 +1178,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
     </div>
 </div>
 
-<!-- ═══════════════ MODAL PIN PENYERAHAN ═══════════════ -->
 <div id="delivery-pin-modal">
     <div class="delivery-pin-modal-content">
         <button class="modal-close-x" onclick="closeDeliveryPinModal()">×</button>
@@ -1204,7 +1203,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
     </div>
 </div>
 
-<!-- ═══════════════ MODAL PIN SELESAI ORDER ═══════════════ -->
 <div id="complete-pin-modal">
     <div class="complete-pin-modal-content">
         <button class="modal-close-x" onclick="closeCompletePinModal()">×</button>
@@ -1375,7 +1373,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let lockedNumbersMap = {};
     let availableInvoiceNumbers = [];
     let allOrdersCache = [];
-    let allDeliveriesCache = {};  // { invoice: [deliveries] }
+    let allDeliveriesCache = {};
     let allSalesPersonsCache = [];
     let allTemplatesCache = [];
     let allSizeCatsCache = [];
@@ -1406,7 +1404,6 @@ document.addEventListener('DOMContentLoaded', function() {
         done: { label: 'Siap', icon: '✅', cls: 'prod-done' }
     };
 
-    // ═══ FUNGSI BANTUAN ═══
     function formatDate(d) {
         if (!d || d === '-') return '-';
         try { const dt = new Date(d); if (isNaN(dt)) return '-';
@@ -1423,7 +1420,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function escapeHtml(s) { return (s||'').toString().replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
     function escapeAttr(s) { return (s||'').toString().replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
 
-    // ═══ BADGE FUNCTIONS ═══
     function getDesignStatusBadge(status) {
         const s = DESIGN_STATUS[status] || DESIGN_STATUS.pending;
         return `<span class="design-status-badge ${s.cls}">${s.icon} ${s.label}</span>`;
@@ -1454,14 +1450,28 @@ document.addEventListener('DOMContentLoaded', function() {
         return '<span style="color:#999;">-</span>';
     }
 
-    // Status "Serah" — Guna logik baru (partial delivery)
+    // ═══ FUNGSI BANTU UNTUK SERAH TIDAK LENGKAP ═══
+    function getDeliveredCountForOrder(o) {
+        const deliveries = (allDeliveriesCache[o.invoiceNumber] || []).filter(d => !d.undone);
+        const deliveredIndices = new Set();
+        deliveries.forEach(d => (d.item_indices || []).forEach(idx => deliveredIndices.add(idx)));
+        return deliveredIndices.size;
+    }
+
+    function isPartialDelivery(o) {
+        if (o.status === 'completed') return false;
+        if (o.productionStatus !== 'done') return false;
+        const total = (o.items || []).length;
+        const delivered = getDeliveredCountForOrder(o);
+        return delivered > 0 && delivered < total;
+    }
+
     function getSerahBadge(o) {
-        const deliveries = allDeliveriesCache[o.invoiceNumber] || [];
-        const activeDeliveries = deliveries.filter(d => !d.undone);
+        const deliveries = (allDeliveriesCache[o.invoiceNumber] || []).filter(d => !d.undone);
         const totalItems = (o.items || []).length;
         let deliveredCount = 0;
         const deliveredIndices = new Set();
-        activeDeliveries.forEach(d => {
+        deliveries.forEach(d => {
             (d.item_indices || []).forEach(idx => {
                 if (!deliveredIndices.has(idx)) {
                     deliveredIndices.add(idx);
@@ -1483,39 +1493,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return `<span style="display:inline-block;padding:3px 8px;background:#f39c12;color:white;border-radius:12px;font-size:11px;font-weight:bold;">🟡 Sedia Selesai</span>`;
         }
         return `<span style="display:inline-block;padding:3px 8px;background:#e67e22;color:white;border-radius:12px;font-size:11px;font-weight:bold;">🟠 ${deliveredCount}/${totalItems} Diserahkan</span>`;
-    }
-
-    function getDeliveredBadge(o) {
-        if (o.status === 'completed') {
-            return `<span style="display:inline-block;padding:3px 8px;background:#2ecc71;color:white;border-radius:12px;font-size:11px;font-weight:bold;">✅ Selesai</span>`;
-        }
-        if (o.productionStatus === 'done') {
-            return `<span style="display:inline-block;padding:3px 8px;background:#f39c12;color:white;border-radius:12px;font-size:11px;font-weight:bold;">⏳ Sedia</span>`;
-        }
-        return '<span style="color:#999;font-size:11px;">-</span>';
-    }
-
-    // Status utama order (untuk filter)
-    function getOrderMainStatus(o) {
-        if (o.status === 'completed') return 'completed';
-        if (o.productionStatus !== 'done') return 'pending';
-        return 'sedia_serah';
-        // Fungsi bantu: kira berapa item dah diserahkan untuk satu order
-function getDeliveredCountForOrder(o) {
-    const deliveries = (allDeliveriesCache[o.invoiceNumber] || []).filter(d => !d.undone);
-    const deliveredIndices = new Set();
-    deliveries.forEach(d => (d.item_indices || []).forEach(idx => deliveredIndices.add(idx)));
-    return deliveredIndices.size;
-}
-
-// Fungsi bantu: check jika order adalah "Serah Tidak Lengkap"
-function isPartialDelivery(o) {
-    if (o.status === 'completed') return false;
-    if (o.productionStatus !== 'done') return false;
-    const total = (o.items || []).length;
-    const delivered = getDeliveredCountForOrder(o);
-    return delivered > 0 && delivered < total;
-}
     }
 
     function getOrderStatus(o) {
@@ -1582,7 +1559,6 @@ function isPartialDelivery(o) {
         return !!(invoiceNum || customerName || customerPhone || hasItems);
     }
 
-    // ═══ LOAD DATA ═══
     async function loadAppSettings() {
         try {
             const { data } = await supabaseClient.from('app_settings').select('*').eq('key', 'boss_password').maybeSingle();
@@ -1686,7 +1662,6 @@ function isPartialDelivery(o) {
         await supabaseClient.from('staff_cards').update({last_login: new Date()}).eq('id', staffId);
     }
 
-    // ═══ AUDIT LOGS ═══
     async function addAuditLog(invoiceNumber, action, fieldChanged, oldValue, newValue, notes) {
         try {
             await supabaseClient.from('audit_logs').insert({
@@ -1734,7 +1709,6 @@ function isPartialDelivery(o) {
         } catch(e) { return []; }
     }
 
-    // ═══ LOAD DELIVERIES ═══
     async function loadAllDeliveries() {
         try {
             const { data, error } = await supabaseClient.from('order_deliveries').select('*').order('delivered_at', {ascending: false});
@@ -1780,7 +1754,6 @@ function isPartialDelivery(o) {
         } catch(e) { alert('Gagal undo: ' + e.message); return false; }
     }
 
-    // ═══ LOAD ORDERS ═══
     async function loadOrders() {
         try {
             const { data: orders, error } = await supabaseClient.from('orders').select('*').order('created_at',{ascending:false});
@@ -2794,7 +2767,6 @@ function isPartialDelivery(o) {
         note.style.display = 'none';
     }
 
-    // ═══ FILTER ORDERS ═══
     function getFilteredOrders() {
         let orders = [...allOrdersCache];
         const sf = document.querySelector('#order-list-page .filter-btn.active')?.dataset.filter || 'all';
@@ -2804,9 +2776,9 @@ function isPartialDelivery(o) {
         const deliveryFilter = $('filter-delivery').value;
         
         if (sf === 'completed') orders = orders.filter(o => o.status === 'completed');
-else if (sf === 'pending') orders = orders.filter(o => o.productionStatus !== 'done' && o.status !== 'completed');
-else if (sf === 'sedia_serah') orders = orders.filter(o => o.productionStatus === 'done' && o.status !== 'completed');
-else if (sf === 'partial') orders = orders.filter(isPartialDelivery);
+        else if (sf === 'pending') orders = orders.filter(o => o.productionStatus !== 'done' && o.status !== 'completed');
+        else if (sf === 'sedia_serah') orders = orders.filter(o => o.productionStatus === 'done' && o.status !== 'completed');
+        else if (sf === 'partial') orders = orders.filter(isPartialDelivery);
         
         if (period !== 'all') {
             const now = new Date(); now.setHours(0,0,0,0);
@@ -2833,27 +2805,24 @@ else if (sf === 'partial') orders = orders.filter(isPartialDelivery);
         return orders;
     }
 
-    // Counter untuk filter buttons
     function updateFilterCounts() {
-    const all = allOrdersCache;
-    const pending = all.filter(o => o.productionStatus !== 'done' && o.status !== 'completed');
-    const sedia = all.filter(o => o.productionStatus === 'done' && o.status !== 'completed');
-    const partial = all.filter(isPartialDelivery);
-    const completed = all.filter(o => o.status === 'completed');
-    if ($('count-all')) $('count-all').textContent = all.length;
-    if ($('count-pending')) $('count-pending').textContent = pending.length;
-    if ($('count-sedia')) $('count-sedia').textContent = sedia.length;
-    if ($('count-partial')) {
-        $('count-partial').textContent = partial.length;
-        // Toggle warna kelabu bila 0
-        const btn = document.querySelector('.filter-btn[data-filter="partial"]');
-        if (btn) {
-            if (partial.length === 0) btn.classList.add('count-zero');
-            else btn.classList.remove('count-zero');
+        const all = allOrdersCache;
+        const pending = all.filter(o => o.productionStatus !== 'done' && o.status !== 'completed');
+        const sedia = all.filter(o => o.productionStatus === 'done' && o.status !== 'completed');
+        const partial = all.filter(isPartialDelivery);
+        const completed = all.filter(o => o.status === 'completed');
+        if ($('count-all')) $('count-all').textContent = all.length;
+        if ($('count-pending')) $('count-pending').textContent = pending.length;
+        if ($('count-sedia')) $('count-sedia').textContent = sedia.length;
+        if ($('count-partial')) {
+            $('count-partial').textContent = partial.length;
+            const btn = document.querySelector('.filter-btn[data-filter="partial"]');
+            if (btn) {
+                if (partial.length === 0) btn.classList.add('count-zero');
+                else btn.classList.remove('count-zero');
+            }
         }
-    }
-    if ($('count-completed')) $('count-completed').textContent = completed.length;
-}
+        if ($('count-completed')) $('count-completed').textContent = completed.length;
     }
 
     async function displayOrders() {
@@ -3254,7 +3223,6 @@ else if (sf === 'partial') orders = orders.filter(isPartialDelivery);
         }).join('');
     }
 
-    // ═══ DETAIL ORDER ═══
     async function showOrderDetail(o) {
         currentOrder = o;
         currentDeliveryIndices = [];
@@ -3276,7 +3244,6 @@ else if (sf === 'partial') orders = orders.filter(isPartialDelivery);
         $('detail-deposit').textContent = formatRM(o.deposit);
         $('detail-balance').textContent = formatRM(o.balance);
         
-        // Delivery panel
         const dBadge = $('detail-delivery-badge');
         if (o.deliveryMethod === 'pickup') { dBadge.className = 'delivery-badge pickup'; dBadge.textContent = '🏪 Pickup di Kedai'; }
         else if (o.deliveryMethod === 'pos') { dBadge.className = 'delivery-badge pos'; dBadge.textContent = '📦 Pos / Kurier'; }
@@ -3292,11 +3259,9 @@ else if (sf === 'partial') orders = orders.filter(isPartialDelivery);
             $('detail-completed-row').style.display = 'none';
         }
         
-        // Render senarai item dengan checkbox
         renderDeliveryItemsChecklist(o);
         renderDeliveryHistory(o.invoiceNumber);
         
-        // Butang visibility
         const canComplete = o.status !== 'completed';
         $('btn-verify-delivery').style.display = (o.productionStatus === 'done' && o.status !== 'completed') ? 'inline-block' : 'none';
         $('btn-complete-order-manual').style.display = canComplete ? 'inline-block' : 'none';
@@ -3421,14 +3386,12 @@ else if (sf === 'partial') orders = orders.filter(isPartialDelivery);
         if (await undoDelivery(deliveryId, reason, STAFF_NAME)) {
             await addAuditLog(currentOrder.invoiceNumber, 'update', 'Undo Penyerahan', null, `Item: ${reason}`, `Undo oleh ${STAFF_NAME}`);
             await loadOrders();
-            // Refresh detail
             const updated = allOrdersCache.find(x => x.invoiceNumber === currentOrder.invoiceNumber);
             if (updated) await showOrderDetail(updated);
             alert('✅ Penyerahan di-undo.');
         }
     }
 
-    // ═══ POPUP PIN PENYERAHAN ═══
     window.openDeliveryPinModal = function() {
         if (!currentOrder) return;
         const checks = document.querySelectorAll('.delivery-item-check:checked');
@@ -3436,7 +3399,6 @@ else if (sf === 'partial') orders = orders.filter(isPartialDelivery);
         if (!indices.length) { alert('⚠️ Sila tick sekurang-kurangnya 1 item.'); return; }
         currentDeliveryIndices = indices;
         
-        // Papar senarai item yang dipilih
         const items = indices.map(idx => {
             const it = currentOrder.items[idx];
             const name = (it.description || '').split('\n')[0];
@@ -3445,7 +3407,6 @@ else if (sf === 'partial') orders = orders.filter(isPartialDelivery);
         $('deliv-pin-items').innerHTML = items;
         $('deliv-pin-invoice').textContent = currentOrder.invoiceNumber;
         
-        // Populate staff dropdown
         const activeStaff = allStaffCardsCache.filter(s => s.active);
         $('deliv-pin-staff').innerHTML = activeStaff.map(s => 
             `<option value="${escapeAttr(s.staff_name)}"${s.staff_name === STAFF_NAME ? ' selected' : ''}>${escapeHtml(s.staff_name)}${s.staff_name === STAFF_NAME ? ' (anda)' : ''}</option>`
@@ -3472,7 +3433,6 @@ else if (sf === 'partial') orders = orders.filter(isPartialDelivery);
             return;
         }
         
-        // Buat penyerahan
         const indices = currentDeliveryIndices;
         const summary = indices.map(idx => {
             const it = currentOrder.items[idx];
@@ -3489,7 +3449,6 @@ else if (sf === 'partial') orders = orders.filter(isPartialDelivery);
         }
     };
 
-    // ═══ POPUP PIN SELESAI ═══
     window.openCompletePinModal = function() {
         if (!currentOrder) return;
         const totalItems = (currentOrder.items||[]).length;
@@ -4432,7 +4391,6 @@ else if (sf === 'partial') orders = orders.filter(isPartialDelivery);
         $('dash-year').innerHTML = '<option value="">Auto</option>' + html;
     }
 
-    // ═══ EVENT LISTENERS ═══
     $('login-staff-btn').addEventListener('click', () => { if (STAFF_NAME && !confirm('Tukar staf?')) return; openQrLogin(); });
     $('login-pin-manual-btn').addEventListener('click', () => { if (STAFF_NAME && !confirm('Tukar staf?')) return; openManualPinLogin(); });
     $('login-password-btn').addEventListener('click', openPasswordLogin);
@@ -4618,7 +4576,6 @@ else if (sf === 'partial') orders = orders.filter(isPartialDelivery);
             deptStaff.map(s => `<option value="${escapeAttr(s.staff_name)}">${escapeHtml(s.staff_name)}</option>`).join('');
     });
 
-    // Autofocus PIN inputs
     ['deliv-pin-code', 'complete-pin-code'].forEach(id => {
         const el = $(id);
         if (el) el.addEventListener('keypress', e => {
