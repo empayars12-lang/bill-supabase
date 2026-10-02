@@ -37,8 +37,13 @@ body { font-family: 'Arial', sans-serif; margin: 0; padding: 0; background-color
 .tab-btn .badge-notif { position: absolute; top: 4px; right: 2px; background: #e74c3c; color: white; font-size: 10px; padding: 2px 6px; border-radius: 10px; font-weight: bold; }
 .search-filter { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
 .search-input { flex: 1; min-width: 200px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
-.filter-btn { padding: 10px 15px; background-color: #eee; border: none; border-radius: 4px; cursor: pointer; }
+.filter-btn { padding: 10px 15px; background-color: #eee; border: none; border-radius: 4px; cursor: pointer; position: relative; font-weight: bold; }
 .filter-btn.active { background-color: #6e48aa; color: white; }
+.filter-btn .filter-count { display: inline-block; background: rgba(0,0,0,0.15); color: inherit; padding: 2px 8px; border-radius: 10px; font-size: 11px; margin-left: 6px; font-weight: bold; }
+.filter-btn.active .filter-count { background: rgba(255,255,255,0.3); }
+.filter-btn[data-filter="pending"]:not(.active) { background: #fef3c7; color: #92400e; }
+.filter-btn[data-filter="sedia_serah"]:not(.active) { background: #dbeafe; color: #1e40af; }
+.filter-btn[data-filter="completed"]:not(.active) { background: #d1fae5; color: #065f46; }
 .filter-select { padding: 10px; border: 1px solid #ddd; border-radius: 4px; background: white; cursor: pointer; }
 .order-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
 .order-table th { background-color: #f2f2f2; padding: 12px 15px; text-align: left; font-weight: bold; border-bottom: 1px solid #ddd; font-size: 13px; }
@@ -121,14 +126,14 @@ th { background-color: #f2f2f2; }
 #sales-person-table th:first-child, #sales-person-table td:first-child { text-align: left; }
 #sales-person-table .commission-input { width: 60px; padding: 5px; text-align: right; }
 #sales-person-table .bill-count { cursor: pointer; text-decoration: underline; color: #007bff; }
-#send-production-modal, #pause-production-modal, #dept-modal, #password-modal, #name-modal, #template-modal, #size-cat-modal, #size-input-modal, #qr-login-modal, #pin-login-modal, #staff-modal, #qr-display-modal, #idcard-modal, #staff-password-login-modal, #staff-pin-manual-modal, #upload-modal, #pass-designer-modal, #file-notes-modal { position: fixed; z-index: 3500; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; padding: 20px; }
-.password-modal-content, .name-modal-content, .template-modal-content, .size-cat-modal-content, .size-input-modal-content, .qr-login-modal-content, .pin-login-modal-content, .staff-modal-content, .qr-display-modal-content, .idcard-modal-content, .staff-password-login-modal-content, .staff-pin-manual-modal-content, .upload-modal-content, .pass-designer-modal-content, .file-notes-modal-content {
+#send-production-modal, #pause-production-modal, #dept-modal, #password-modal, #name-modal, #template-modal, #size-cat-modal, #size-input-modal, #qr-login-modal, #pin-login-modal, #staff-modal, #qr-display-modal, #idcard-modal, #staff-password-login-modal, #staff-pin-manual-modal, #upload-modal, #pass-designer-modal, #file-notes-modal, #delivery-pin-modal, #complete-pin-modal { position: fixed; z-index: 3500; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; padding: 20px; }
+.password-modal-content, .name-modal-content, .template-modal-content, .size-cat-modal-content, .size-input-modal-content, .qr-login-modal-content, .pin-login-modal-content, .staff-modal-content, .qr-display-modal-content, .idcard-modal-content, .staff-password-login-modal-content, .staff-pin-manual-modal-content, .upload-modal-content, .pass-designer-modal-content, .file-notes-modal-content, .delivery-pin-modal-content, .complete-pin-modal-content {
     background: white; padding: 30px; border-radius: 12px; position: relative;
     width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto;
 }
 .password-modal-content { max-width: 400px; }
 .size-input-modal-content { max-width: 600px; }
-.qr-login-modal-content, .pin-login-modal-content, .staff-password-login-modal-content, .staff-pin-manual-modal-content { max-width: 450px; text-align: center; }
+.qr-login-modal-content, .pin-login-modal-content, .staff-password-login-modal-content, .staff-pin-manual-modal-content, .delivery-pin-modal-content, .complete-pin-modal-content { max-width: 450px; text-align: center; }
 .idcard-modal-content { max-width: 600px; }
 .upload-modal-content { max-width: 650px; }
 .pass-designer-modal-content { max-width: 450px; }
@@ -290,7 +295,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
 .prod-paused { background: #e67e22; color: white; }
 .prod-done { background: #2ecc71; color: white; }
 .auto-assign-note { font-size: 12px; color: #666; font-style: italic; margin-top: 3px; }
-/* === DELIVERY / PICKUP SECTION === */
 .delivery-panel { margin-top: 20px; padding: 20px; background: linear-gradient(135deg, #f0fff4 0%, #e8f5e9 100%); border-radius: 10px; border-left: 5px solid #27ae60; }
 .delivery-panel h4 { margin: 0 0 15px; color: #27ae60; display: flex; align-items: center; gap: 8px; }
 .delivery-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; }
@@ -298,8 +302,20 @@ body:not(.boss-mode) .boss-only { display: none !important; }
 .delivery-badge.pos { background: #9b59b6; color: white; }
 .delivery-badge.none { background: #ddd; color: #777; }
 .delivery-badge.delivered { background: #2ecc71; color: white; }
+.delivery-item-row { display: flex; align-items: flex-start; gap: 10px; padding: 10px; background: white; border-radius: 6px; margin-bottom: 6px; border-left: 3px solid #ddd; }
+.delivery-item-row.delivered { border-left-color: #2ecc71; background: #f0fff4; }
+.delivery-item-row input[type="checkbox"] { width: 20px; height: 20px; margin-top: 3px; cursor: pointer; }
+.delivery-item-row .item-info { flex: 1; }
+.delivery-item-row .item-name { font-weight: bold; font-size: 13px; }
+.delivery-item-row .item-detail { font-size: 11px; color: #666; margin-top: 2px; }
+.delivery-item-row .item-delivered-info { font-size: 11px; color: #27ae60; font-weight: bold; margin-top: 4px; }
+.delivery-history-item { padding: 10px 12px; background: white; border-left: 3px solid #27ae60; border-radius: 4px; margin-bottom: 8px; font-size: 12px; }
+.delivery-history-item.undone { border-left-color: #e74c3c; background: #fff5f5; opacity: 0.7; }
+.delivery-history-item .hist-header { font-weight: bold; color: #333; margin-bottom: 3px; }
+.delivery-history-item .hist-detail { color: #666; font-size: 11px; line-height: 1.5; }
+.delivery-history-item.undone .hist-header { text-decoration: line-through; color: #999; }
 @media print {
-    .no-print, .action-buttons, .tab-nav, .home-button-container, #password-modal, .add-sales-person, #bills-modal, #install-app-btn, #upload-modal, #pass-designer-modal, #file-notes-modal, #send-production-modal, #pause-production-modal { display: none !important; }
+    .no-print, .action-buttons, .tab-nav, .home-button-container, #password-modal, .add-sales-person, #bills-modal, #install-app-btn, #upload-modal, #pass-designer-modal, #file-notes-modal, #send-production-modal, #pause-production-modal, #delivery-pin-modal, #complete-pin-modal { display: none !important; }
     body { background: none; padding: 0; }
     .container { box-shadow: none; max-width: 100%; padding: 0; }
     #invoice-number-dropdown { display: none !important; }
@@ -340,7 +356,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         <div class="feature-card"><div class="feature-icon">📝</div><div class="feature-title">Urusan Order</div><div>Pantau status order dengan sistematik</div></div>
         <div class="feature-card"><div class="feature-icon">🎨</div><div class="feature-title">Design Tracking</div><div>Track status design secara real-time</div></div>
         <div class="feature-card"><div class="feature-icon">🏭</div><div class="feature-title">Production Tracking</div><div>Track kerja production ikut jabatan</div></div>
-        <div class="feature-card"><div class="feature-icon">🚚</div><div class="feature-title">Pickup / Pos</div><div>Track penghantaran & penyerahan</div></div>
+        <div class="feature-card"><div class="feature-icon">📦</div><div class="feature-title">Serah Bertahap</div><div>Track penyerahan item satu-satu</div></div>
     </div>
 </div>
 
@@ -507,14 +523,13 @@ body:not(.boss-mode) .boss-only { display: none !important; }
                 <option value="pickup">🏪 Pickup</option>
                 <option value="pos">📦 Pos</option>
                 <option value="unset">⚪ Belum Set</option>
-                <option value="delivered">✅ Diserahkan</option>
-                <option value="not_delivered">⏳ Belum Diserahkan</option>
             </select>
         </div>
         <div class="search-filter no-print" style="margin-top:-10px;">
-            <button class="filter-btn active" data-filter="all">Semua</button>
-            <button class="filter-btn" data-filter="pending">Belum Siap</button>
-            <button class="filter-btn" data-filter="completed">Selesai</button>
+            <button class="filter-btn active" data-filter="all">Semua<span class="filter-count" id="count-all">0</span></button>
+            <button class="filter-btn" data-filter="pending">🟡 Belum Siap<span class="filter-count" id="count-pending">0</span></button>
+            <button class="filter-btn" data-filter="sedia_serah">🔵 Sedia Serah<span class="filter-count" id="count-sedia">0</span></button>
+            <button class="filter-btn" data-filter="completed">🟢 Selesai<span class="filter-count" id="count-completed">0</span></button>
             <button id="reset-filter-btn" class="filter-btn" style="background:#95a5a6;color:white;">Reset</button>
             <button id="export-csv-btn" class="filter-btn" style="background:#27ae60;color:white;">📥 Export CSV</button>
         </div>
@@ -536,7 +551,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
     </div>
 
     <div id="active-orders-page" class="page">
-        <h2 style="margin-top:0;">📋 Order Aktif (Belum Siap)</h2>
+        <h2 style="margin-top:0;">📋 Order Aktif (Belum Selesai)</h2>
         <p style="color:#666;margin-top:-10px;">Disusun mengikut tarikh janji siap (paling urgent di atas).</p>
         <div class="search-filter no-print">
             <input type="text" id="search-active" class="search-input" placeholder="Cari no order, nama, telefon...">
@@ -550,7 +565,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         </div>
         <div style="overflow-x:auto;">
         <table class="order-table">
-            <thead><tr><th>No. Bil</th><th>Pelanggan</th><th>Jurujual</th><th>Designer</th><th>Status Design</th><th>Tarikh Janji</th><th>Status</th><th>Status Production</th><th>Hari Lagi</th><th>Deposit</th><th>Baki</th><th class="no-print">Tindakan</th></tr></thead>
+            <thead><tr><th>No. Bil</th><th>Pelanggan</th><th>Jurujual</th><th>Designer</th><th>Status Design</th><th>Tarikh Janji</th><th>Status</th><th>Status Production</th><th>Serah</th><th>Hari Lagi</th><th>Baki</th><th class="no-print">Tindakan</th></tr></thead>
             <tbody id="active-orders-container"></tbody>
         </table>
         </div>
@@ -627,7 +642,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         </div>
 
         <div class="delivery-panel" id="delivery-panel">
-            <h4>🚚 Info Penghantaran</h4>
+            <h4>📦 Penghantaran & Penyerahan Item</h4>
             <div class="design-row">
                 <label>Kaedah:</label>
                 <span id="detail-delivery-badge" class="delivery-badge none">⚪ Belum Set</span>
@@ -637,15 +652,25 @@ body:not(.boss-mode) .boss-only { display: none !important; }
                 <span id="detail-delivery-address" style="font-size:13px;color:#333;white-space:pre-wrap;">-</span>
             </div>
             <div class="design-row">
-                <label>Tarikh Kutipan / Pos:</label>
+                <label>Tarikh Kutipan/Pos:</label>
                 <span id="detail-delivery-date" style="font-weight:bold;">-</span>
             </div>
-            <div class="design-row" id="detail-delivered-row" style="display:none;">
-                <label>Diserahkan:</label>
-                <span id="detail-delivered-info" style="font-weight:bold;color:#27ae60;">-</span>
+            <div class="design-row" id="detail-completed-row" style="display:none;background:#f0fff4;padding:10px;border-radius:6px;">
+                <label style="min-width:auto;">✅ Selesai:</label>
+                <span id="detail-completed-info" style="font-weight:bold;color:#27ae60;">-</span>
             </div>
-            <div class="action-buttons" style="justify-content:flex-start; margin-top:10px;">
-                <button class="btn" id="btn-edit-delivery" style="background:#27ae60;" onclick="editDeliveryFromDetail()">✏️ Edit Kaedah</button>
+
+            <hr style="margin:20px 0;border:none;border-top:1px dashed #ccc;">
+            <h5 style="margin:0 0 10px;color:#27ae60;">📋 Senarai Item — Tanda Yang Nak Diserahkan:</h5>
+            <div id="detail-delivery-items"></div>
+            <div class="action-buttons" style="justify-content:flex-start;margin-top:15px;">
+                <button class="btn" id="btn-verify-delivery" style="background:#27ae60;" onclick="openDeliveryPinModal()">✅ Sahkan Penyerahan Item Bertanda</button>
+                <button class="btn" id="btn-complete-order-manual" style="background:#0284c7;" onclick="openCompletePinModal()">🟢 Tandakan Order Selesai</button>
+            </div>
+
+            <div id="delivery-history-section" style="margin-top:20px;">
+                <h5 style="color:#27ae60;margin-bottom:8px;">📜 Sejarah Penyerahan</h5>
+                <div id="delivery-history-list"><p style="color:#999;font-size:13px;">Belum ada penyerahan.</p></div>
             </div>
         </div>
 
@@ -717,10 +742,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
             <button class="btn btn-warning" id="btn-print-order">Cetak Bil Asal</button>
             <button class="btn btn-info" id="btn-edit-order">Edit Bill</button>
             <button class="btn btn-danger" id="btn-delete-order">Padam</button>
-            <button class="btn" id="btn-complete-order" style="background:#2ecc71;">Selesai</button>
-            <button class="btn" id="btn-pending-order" style="background:#f39c12;">Pending</button>
             <button class="btn" id="btn-print-final" style="background:#3498db;">Cetak Bil Akhir</button>
-            <button class="btn" id="btn-mark-delivered" style="background:#27ae60;">✅ Tandakan Diserahkan</button>
             <button class="btn" id="btn-upload-file" style="background:#6e48aa;">📎 Muat Naik Fail</button>
         </div>
     </div>
@@ -1153,6 +1175,57 @@ body:not(.boss-mode) .boss-only { display: none !important; }
     </div>
 </div>
 
+<!-- ═══════════════ MODAL PIN PENYERAHAN ═══════════════ -->
+<div id="delivery-pin-modal">
+    <div class="delivery-pin-modal-content">
+        <button class="modal-close-x" onclick="closeDeliveryPinModal()">×</button>
+        <h3 style="color:#27ae60;margin-top:0;">✅ Sahkan Penyerahan Item</h3>
+        <p style="color:#666;font-size:13px;margin-top:0;">Order: <strong id="deliv-pin-invoice">-</strong></p>
+        <div style="background:#f0fff4;padding:12px;border-radius:6px;margin-bottom:15px;text-align:left;">
+            <div style="font-size:12px;color:#666;margin-bottom:6px;">Item akan diserahkan:</div>
+            <div id="deliv-pin-items" style="font-size:13px;font-weight:bold;color:#27ae60;"></div>
+        </div>
+        <div class="form-group" style="text-align:left;">
+            <label>Staf yang serah:</label>
+            <select id="deliv-pin-staff" style="padding:10px;font-size:14px;"></select>
+        </div>
+        <div class="form-group" style="text-align:left;">
+            <label>Masukkan PIN staf tersebut:</label>
+            <input type="password" id="deliv-pin-code" maxlength="4" inputmode="numeric" placeholder="••••" style="padding:12px;font-size:20px;text-align:center;letter-spacing:8px;border:2px solid #ddd;border-radius:8px;">
+        </div>
+        <div id="deliv-pin-error" style="color:red;font-size:13px;margin-bottom:10px;display:none;"></div>
+        <div class="action-buttons" style="justify-content:center;">
+            <button class="btn btn-secondary" onclick="closeDeliveryPinModal()">Batal</button>
+            <button class="btn" style="background:#27ae60;" onclick="executeVerifyDelivery()">✅ Sahkan Penyerahan</button>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════ MODAL PIN SELESAI ORDER ═══════════════ -->
+<div id="complete-pin-modal">
+    <div class="complete-pin-modal-content">
+        <button class="modal-close-x" onclick="closeCompletePinModal()">×</button>
+        <h3 style="color:#0284c7;margin-top:0;">🟢 Sahkan Selesai Order</h3>
+        <p style="color:#666;font-size:13px;margin-top:0;">Order: <strong id="complete-pin-invoice">-</strong></p>
+        <div style="background:#f0f9ff;padding:12px;border-radius:6px;margin-bottom:15px;text-align:left;">
+            <div id="complete-pin-info" style="font-size:13px;color:#333;"></div>
+        </div>
+        <div class="form-group" style="text-align:left;">
+            <label>Staf yang selesaikan:</label>
+            <select id="complete-pin-staff" style="padding:10px;font-size:14px;"></select>
+        </div>
+        <div class="form-group" style="text-align:left;">
+            <label>Masukkan PIN staf tersebut:</label>
+            <input type="password" id="complete-pin-code" maxlength="4" inputmode="numeric" placeholder="••••" style="padding:12px;font-size:20px;text-align:center;letter-spacing:8px;border:2px solid #ddd;border-radius:8px;">
+        </div>
+        <div id="complete-pin-error" style="color:red;font-size:13px;margin-bottom:10px;display:none;"></div>
+        <div class="action-buttons" style="justify-content:center;">
+            <button class="btn btn-secondary" onclick="closeCompletePinModal()">Batal</button>
+            <button class="btn" style="background:#0284c7;" onclick="executeCompleteOrder()">🟢 Sahkan Selesai</button>
+        </div>
+    </div>
+</div>
+
 <div id="danger-modal">
     <div class="danger-modal-content">
         <h3>⚠️ AMARAN — TINDAKAN BERBAHAYA</h3>
@@ -1294,10 +1367,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const deletedBillsPage = $('deleted-bills-page'), settingsPage = $('settings-page');
 
     let currentOrder = null;
+    let currentDeliveryIndices = [];
     let currentlyLockedNumber = null;
     let lockedNumbersMap = {};
     let availableInvoiceNumbers = [];
     let allOrdersCache = [];
+    let allDeliveriesCache = {};  // { invoice: [deliveries] }
     let allSalesPersonsCache = [];
     let allTemplatesCache = [];
     let allSizeCatsCache = [];
@@ -1328,6 +1403,7 @@ document.addEventListener('DOMContentLoaded', function() {
         done: { label: 'Siap', icon: '✅', cls: 'prod-done' }
     };
 
+    // ═══ FUNGSI BANTUAN ═══
     function formatDate(d) {
         if (!d || d === '-') return '-';
         try { const dt = new Date(d); if (isNaN(dt)) return '-';
@@ -1344,6 +1420,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function escapeHtml(s) { return (s||'').toString().replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
     function escapeAttr(s) { return (s||'').toString().replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
 
+    // ═══ BADGE FUNCTIONS ═══
     function getDesignStatusBadge(status) {
         const s = DESIGN_STATUS[status] || DESIGN_STATUS.pending;
         return `<span class="design-status-badge ${s.cls}">${s.icon} ${s.label}</span>`;
@@ -1373,14 +1450,53 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         return '<span style="color:#999;">-</span>';
     }
+
+    // Status "Serah" — Guna logik baru (partial delivery)
+    function getSerahBadge(o) {
+        const deliveries = allDeliveriesCache[o.invoiceNumber] || [];
+        const activeDeliveries = deliveries.filter(d => !d.undone);
+        const totalItems = (o.items || []).length;
+        let deliveredCount = 0;
+        const deliveredIndices = new Set();
+        activeDeliveries.forEach(d => {
+            (d.item_indices || []).forEach(idx => {
+                if (!deliveredIndices.has(idx)) {
+                    deliveredIndices.add(idx);
+                    deliveredCount++;
+                }
+            });
+        });
+        
+        if (o.status === 'completed') {
+            return `<span style="display:inline-block;padding:3px 8px;background:#2ecc71;color:white;border-radius:12px;font-size:11px;font-weight:bold;">🟢 Selesai</span>`;
+        }
+        if (deliveredCount === 0) {
+            if (o.productionStatus === 'done') {
+                return `<span style="display:inline-block;padding:3px 8px;background:#3498db;color:white;border-radius:12px;font-size:11px;font-weight:bold;">🔵 Sedia</span>`;
+            }
+            return '<span style="color:#999;font-size:11px;">-</span>';
+        }
+        if (deliveredCount >= totalItems && totalItems > 0) {
+            return `<span style="display:inline-block;padding:3px 8px;background:#f39c12;color:white;border-radius:12px;font-size:11px;font-weight:bold;">🟡 Sedia Selesai</span>`;
+        }
+        return `<span style="display:inline-block;padding:3px 8px;background:#e67e22;color:white;border-radius:12px;font-size:11px;font-weight:bold;">🟠 ${deliveredCount}/${totalItems} Diserahkan</span>`;
+    }
+
     function getDeliveredBadge(o) {
-        if (o.deliveredAt) {
+        if (o.status === 'completed') {
             return `<span style="display:inline-block;padding:3px 8px;background:#2ecc71;color:white;border-radius:12px;font-size:11px;font-weight:bold;">✅ Selesai</span>`;
         }
         if (o.productionStatus === 'done') {
             return `<span style="display:inline-block;padding:3px 8px;background:#f39c12;color:white;border-radius:12px;font-size:11px;font-weight:bold;">⏳ Sedia</span>`;
         }
         return '<span style="color:#999;font-size:11px;">-</span>';
+    }
+
+    // Status utama order (untuk filter)
+    function getOrderMainStatus(o) {
+        if (o.status === 'completed') return 'completed';
+        if (o.productionStatus !== 'done') return 'pending';
+        return 'sedia_serah';
     }
 
     function getOrderStatus(o) {
@@ -1447,6 +1563,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return !!(invoiceNum || customerName || customerPhone || hasItems);
     }
 
+    // ═══ LOAD DATA ═══
     async function loadAppSettings() {
         try {
             const { data } = await supabaseClient.from('app_settings').select('*').eq('key', 'boss_password').maybeSingle();
@@ -1542,10 +1659,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const { data } = await supabaseClient.from('staff_cards').select('*').eq('id', staffId).eq('pin_code', pin).eq('active', true).maybeSingle();
         return data;
     }
+    async function verifyPinByName(name, pin) {
+        const { data } = await supabaseClient.from('staff_cards').select('*').eq('staff_name', name).eq('pin_code', pin).eq('active', true).maybeSingle();
+        return data;
+    }
     async function updateLastLogin(staffId) {
         await supabaseClient.from('staff_cards').update({last_login: new Date()}).eq('id', staffId);
     }
 
+    // ═══ AUDIT LOGS ═══
     async function addAuditLog(invoiceNumber, action, fieldChanged, oldValue, newValue, notes) {
         try {
             await supabaseClient.from('audit_logs').insert({
@@ -1593,6 +1715,53 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch(e) { return []; }
     }
 
+    // ═══ LOAD DELIVERIES ═══
+    async function loadAllDeliveries() {
+        try {
+            const { data, error } = await supabaseClient.from('order_deliveries').select('*').order('delivered_at', {ascending: false});
+            if (error) throw error;
+            allDeliveriesCache = {};
+            (data || []).forEach(d => {
+                if (!allDeliveriesCache[d.invoice_number]) allDeliveriesCache[d.invoice_number] = [];
+                allDeliveriesCache[d.invoice_number].push(d);
+            });
+            return allDeliveriesCache;
+        } catch(e) { console.error('loadDeliveries:', e); return {}; }
+    }
+
+    async function addDelivery(invoiceNumber, itemIndices, itemSummary, deliveryMethod, staffName) {
+        try {
+            const { data: order } = await supabaseClient.from('orders').select('id').eq('invoice_number', invoiceNumber).single();
+            if (!order) throw new Error('Order not found');
+            const { error } = await supabaseClient.from('order_deliveries').insert({
+                order_id: order.id,
+                invoice_number: invoiceNumber,
+                item_indices: itemIndices,
+                item_summary: itemSummary,
+                delivery_method: deliveryMethod,
+                delivered_by: staffName,
+                pin_verified: true,
+                delivered_at: new Date().toISOString()
+            });
+            if (error) throw error;
+            return true;
+        } catch(e) { console.error('addDelivery:', e); alert('Gagal simpan penyerahan: ' + e.message); return false; }
+    }
+
+    async function undoDelivery(deliveryId, reason, staffName) {
+        try {
+            const { error } = await supabaseClient.from('order_deliveries').update({
+                undone: true,
+                undone_at: new Date().toISOString(),
+                undone_by: staffName,
+                undo_reason: reason
+            }).eq('id', deliveryId);
+            if (error) throw error;
+            return true;
+        } catch(e) { alert('Gagal undo: ' + e.message); return false; }
+    }
+
+    // ═══ LOAD ORDERS ═══
     async function loadOrders() {
         try {
             const { data: orders, error } = await supabaseClient.from('orders').select('*').order('created_at',{ascending:false});
@@ -1628,12 +1797,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 deliveryAddress: o.delivery_address || '',
                 deliveryDate: o.delivery_date || null,
                 deliveredAt: o.delivered_at || null,
-                deliveredBy: o.delivered_by || null
+                deliveredBy: o.delivered_by || null,
+                completedBy: o.completed_by || null,
+                completedAt: o.completed_at || null,
+                completedPinVerified: o.completed_pin_verified || false
             }));
             allOrdersCache = result;
+            await loadAllDeliveries();
             return result;
         } catch(e) { console.error('loadOrders:', e); return []; }
     }
+
     async function addOrder(o) {
         try {
             const { data: ex } = await supabaseClient.from('orders').select('id').eq('invoice_number', o.invoiceNumber).maybeSingle();
@@ -1698,6 +1872,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (newOrder.hasOwnProperty('deliveryDate')) updateData.delivery_date = newOrder.deliveryDate;
             if (newOrder.hasOwnProperty('deliveredAt')) updateData.delivered_at = newOrder.deliveredAt;
             if (newOrder.hasOwnProperty('deliveredBy')) updateData.delivered_by = newOrder.deliveredBy;
+            if (newOrder.hasOwnProperty('completedBy')) updateData.completed_by = newOrder.completedBy;
+            if (newOrder.hasOwnProperty('completedAt')) updateData.completed_at = newOrder.completedAt;
+            if (newOrder.hasOwnProperty('completedPinVerified')) updateData.completed_pin_verified = newOrder.completedPinVerified;
 
             const { error } = await supabaseClient.from('orders').update(updateData).eq('invoice_number', newOrder.invoiceNumber);
             if (error) throw error;
@@ -1721,33 +1898,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (Math.abs((oldOrder.totalAmount||0) - (newOrder.totalAmount||0)) > 0.01) changes.push({f:'Jumlah Item', o:`RM${(oldOrder.totalAmount||0).toFixed(2)}`, n:`RM${(newOrder.totalAmount||0).toFixed(2)}`});
                 if ((oldOrder.salesPerson||'-') !== (newOrder.salesPerson||'-')) changes.push({f:'Jurujual', o:oldOrder.salesPerson||'-', n:newOrder.salesPerson||'-'});
                 if (oldOrder.status !== newOrder.status) changes.push({f:'Status', o:getStatusText(oldOrder.status), n:getStatusText(newOrder.status)});
-                if ((oldOrder.deliveryMethod||'-') !== (newOrder.deliveryMethod||'-')) changes.push({f:'Kaedah Penghantaran', o:oldOrder.deliveryMethod||'Belum Set', n:newOrder.deliveryMethod||'Belum Set'});
                 for (const c of changes) await addAuditLog(newOrder.invoiceNumber, 'update', c.f, c.o, c.n, null);
-                
-                const oldItems = oldOrder.items || [];
-                const newItems = newOrder.items || [];
-                function itemLabel(it) {
-                    const lines = (it.description || '').split('\n');
-                    return lines[0].trim() + (lines.length > 1 ? ' [' + lines.slice(1).join(' ') + ']' : '');
-                }
-                const oldMap = {}; oldItems.forEach(it => { const k = (it.description||'').trim(); if (!oldMap[k]) oldMap[k]=[]; oldMap[k].push(it); });
-                const newMap = {}; newItems.forEach(it => { const k = (it.description||'').trim(); if (!newMap[k]) newMap[k]=[]; newMap[k].push(it); });
-                for (const [desc, items] of Object.entries(newMap)) {
-                    if (!oldMap[desc]) {
-                        for (const it of items) await addAuditLog(newOrder.invoiceNumber, 'item_add', 'Item Ditambah', null, `${itemLabel(it)} (${it.quantity}x RM${(it.price||0).toFixed(2)}) = RM${(it.total||0).toFixed(2)}`);
-                    } else {
-                        const oldIt = oldMap[desc][0], newIt = items[0];
-                        const oldQty = oldMap[desc].reduce((s,i)=>s+(i.quantity||0),0);
-                        const newQty = items.reduce((s,i)=>s+(i.quantity||0),0);
-                        if (oldQty !== newQty) await addAuditLog(newOrder.invoiceNumber, 'item_update', 'Kuantiti Item', `${itemLabel(oldIt)}: ${oldQty}x`, `${itemLabel(newIt)}: ${newQty}x`);
-                        if (Math.abs((oldIt.price||0) - (newIt.price||0)) > 0.01) await addAuditLog(newOrder.invoiceNumber, 'item_update', 'Harga Item', `${itemLabel(oldIt)}: RM${(oldIt.price||0).toFixed(2)}`, `${itemLabel(newIt)}: RM${(newIt.price||0).toFixed(2)}`);
-                    }
-                }
-                for (const [desc, items] of Object.entries(oldMap)) {
-                    if (!newMap[desc]) {
-                        for (const it of items) await addAuditLog(newOrder.invoiceNumber, 'item_remove', 'Item Dibuang', `${itemLabel(it)} (${it.quantity}x RM${(it.price||0).toFixed(2)}) = RM${(it.total||0).toFixed(2)}`, null);
-                    }
-                }
             }
             return true;
         } catch(e) { console.error('updateOrder:', e); return false; }
@@ -1767,6 +1918,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return true;
         } catch(e) { console.error('deleteOrder:', e); return false; }
     }
+
     async function loadSalesPersons() {
         try {
             const { data } = await supabaseClient.from('sales_persons').select('*');
@@ -2623,6 +2775,7 @@ document.addEventListener('DOMContentLoaded', function() {
         note.style.display = 'none';
     }
 
+    // ═══ FILTER ORDERS ═══
     function getFilteredOrders() {
         let orders = [...allOrdersCache];
         const sf = document.querySelector('#order-list-page .filter-btn.active')?.dataset.filter || 'all';
@@ -2630,8 +2783,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const sales = $('filter-sales').value, search = $('search-orders').value.toLowerCase();
         const designer = $('filter-designer').value, designStatus = $('filter-design-status').value;
         const deliveryFilter = $('filter-delivery').value;
-        if (sf === 'completed') orders = orders.filter(o => getOrderStatus(o) === 'completed');
-        else if (sf === 'pending') orders = orders.filter(o => getOrderStatus(o) !== 'completed');
+        
+        if (sf === 'completed') orders = orders.filter(o => o.status === 'completed');
+        else if (sf === 'pending') orders = orders.filter(o => o.productionStatus !== 'done' && o.status !== 'completed');
+        else if (sf === 'sedia_serah') orders = orders.filter(o => o.productionStatus === 'done' && o.status !== 'completed');
+        
         if (period !== 'all') {
             const now = new Date(); now.setHours(0,0,0,0);
             orders = orders.filter(o => {
@@ -2650,16 +2806,28 @@ document.addEventListener('DOMContentLoaded', function() {
         if (designStatus) orders = orders.filter(o => (o.designStatus || 'pending') === designStatus);
         if (deliveryFilter) {
             if (deliveryFilter === 'unset') orders = orders.filter(o => !o.deliveryMethod);
-            else if (deliveryFilter === 'delivered') orders = orders.filter(o => o.deliveredAt);
-            else if (deliveryFilter === 'not_delivered') orders = orders.filter(o => !o.deliveredAt);
             else orders = orders.filter(o => o.deliveryMethod === deliveryFilter);
         }
         if (search) orders = orders.filter(o => (o.invoiceNumber||'').toLowerCase().includes(search) || (o.customerName||'').toLowerCase().includes(search) || (o.customerPhone||'').toLowerCase().includes(search) || (o.salesPerson||'').toLowerCase().includes(search));
         orders.sort((a,b) => new Date(b.orderDate||0) - new Date(a.orderDate||0));
         return orders;
     }
+
+    // Counter untuk filter buttons
+    function updateFilterCounts() {
+        const all = allOrdersCache;
+        const pending = all.filter(o => o.productionStatus !== 'done' && o.status !== 'completed');
+        const sedia = all.filter(o => o.productionStatus === 'done' && o.status !== 'completed');
+        const completed = all.filter(o => o.status === 'completed');
+        if ($('count-all')) $('count-all').textContent = all.length;
+        if ($('count-pending')) $('count-pending').textContent = pending.length;
+        if ($('count-sedia')) $('count-sedia').textContent = sedia.length;
+        if ($('count-completed')) $('count-completed').textContent = completed.length;
+    }
+
     async function displayOrders() {
         await loadOrders();
+        updateFilterCounts();
         const orders = getFilteredOrders();
         const tb = $('orders-container'); tb.innerHTML = '';
         if (!orders.length) tb.innerHTML = '<tr><td colspan="13" style="text-align:center;">Tiada order</td></tr>';
@@ -2677,11 +2845,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td>${designStatusHtml}</td>
                 <td>${productionCellHtml}</td>
                 <td>${getDeliveryMethodBadge(o)}</td>
-                <td>${getDeliveredBadge(o)}</td>
+                <td>${getSerahBadge(o)}</td>
                 <td class="status-cell"><span class="status-indicator status-${st}"></span>${getStatusText(st)}</td>
                 <td class="no-print"><div class="order-actions">
                     <button class="edit-btn" data-invoice="${o.invoiceNumber}">Edit</button>
-                    ${st !== 'completed' ? `<button class="complete-btn" data-invoice="${o.invoiceNumber}">Selesai</button>` : ''}
                 </div></td>`;
             tb.appendChild(tr);
         });
@@ -2694,14 +2861,13 @@ document.addEventListener('DOMContentLoaded', function() {
         $('summary-balance').textContent = formatRM(tbal);
         tb.querySelectorAll('.order-number').forEach(el => el.addEventListener('click', e => { const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice); if (o) showOrderDetail(o); }));
         tb.querySelectorAll('.edit-btn').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice); if (o) showEditOrderModal(o); }));
-        tb.querySelectorAll('.complete-btn').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice); if (o) showPaymentModal(o); }));
         applyBossMode();
     }
 
     async function displayActiveOrders() {
         await loadOrders();
         const s = $('filter-active-sales').value, srch = $('search-active').value.toLowerCase();
-        let orders = allOrdersCache.filter(o => getOrderStatus(o) !== 'completed' && !o.deliveredAt);
+        let orders = allOrdersCache.filter(o => o.status !== 'completed');
         if (s) orders = orders.filter(o => o.salesPerson === s);
         if (srch) orders = orders.filter(o => (o.invoiceNumber||'').toLowerCase().includes(srch) || (o.customerName||'').toLowerCase().includes(srch) || (o.customerPhone||'').toLowerCase().includes(srch));
         orders.sort((a,b) => { if (!a.completionDate && !b.completionDate) return 0; if (!a.completionDate) return 1; if (!b.completionDate) return -1; return new Date(a.completionDate) - new Date(b.completionDate); });
@@ -2720,12 +2886,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td>${formatDate(o.completionDate)}</td>
                 <td class="status-cell"><span class="status-indicator status-${st}"></span>${getStatusText(st)}</td>
                 <td>${productionCellHtml}</td>
+                <td>${getSerahBadge(o)}</td>
                 <td><span class="day-badge ${dr.cls}">${dr.text}</span></td>
-                <td>${formatRM(o.deposit)}</td><td>${formatRM(o.balance)}</td>
+                <td>${formatRM(o.balance)}</td>
                 <td class="no-print"><div class="order-actions">
                     <button class="print-btn" data-invoice="${o.invoiceNumber}">🖨️</button>
                     <button class="edit-btn" data-invoice="${o.invoiceNumber}">Edit</button>
-                    <button class="complete-btn" data-invoice="${o.invoiceNumber}">Selesai</button>
                 </div></td>`;
             tb.appendChild(tr);
         });
@@ -2736,7 +2902,6 @@ document.addEventListener('DOMContentLoaded', function() {
         $('active-summary-urgent').textContent = urgent;
         tb.querySelectorAll('.order-number').forEach(el => el.addEventListener('click', e => { const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice); if (o) showOrderDetail(o); }));
         tb.querySelectorAll('.edit-btn').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice); if (o) showEditOrderModal(o); }));
-        tb.querySelectorAll('.complete-btn').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice); if (o) showPaymentModal(o); }));
         tb.querySelectorAll('.print-btn').forEach(b => b.addEventListener('click', e => {
             e.stopPropagation();
             const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice);
@@ -2967,14 +3132,13 @@ document.addEventListener('DOMContentLoaded', function() {
     window.markProductionDone = async function(invoiceNumber) {
         const o = allOrdersCache.find(x => x.invoiceNumber === invoiceNumber);
         if (!o) return;
-        if (!confirm(`Tandakan production ${invoiceNumber} sebagai SIAP?\n\nOrder akan auto-completed.`)) return;
-        const upd = { ...o, productionStatus: 'done', status: 'completed', productionUpdatedAt: new Date(), productionUpdatedBy: STAFF_NAME };
+        if (!confirm(`Tandakan production ${invoiceNumber} sebagai SIAP?\n\nOrder akan sedia untuk diserahkan.`)) return;
+        const upd = { ...o, productionStatus: 'done', productionUpdatedAt: new Date(), productionUpdatedBy: STAFF_NAME };
         if (await updateOrderWithLog(upd, o)) {
-            await addProductionActivity(invoiceNumber, 'done', 'in_progress', 'done', 'Production siap. Order auto-completed.');
-            await addAuditLog(invoiceNumber, 'update', 'Status', 'DALAM PROSES', 'SELESAI', 'Auto-completed selepas production siap');
+            await addProductionActivity(invoiceNumber, 'done', 'in_progress', 'done', 'Production siap.');
             await loadOrders();
             await displayProductionOrders();
-            alert('✅ Production SIAP! Order auto-completed.');
+            alert('✅ Production SIAP!');
         }
     };
 
@@ -3059,8 +3223,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }).join('');
     }
 
+    // ═══ DETAIL ORDER ═══
     async function showOrderDetail(o) {
         currentOrder = o;
+        currentDeliveryIndices = [];
         $('detail-invoice-number').textContent = o.invoiceNumber;
         $('detail-customer-name').textContent = `${o.customerName||'-'} | ${o.customerPhone||'-'} (Jurujual: ${o.salesPerson||'-'})`;
         $('detail-order-date').textContent = formatDate(o.orderDate);
@@ -3078,14 +3244,8 @@ document.addEventListener('DOMContentLoaded', function() {
         $('detail-discount').textContent = formatRM(o.discount);
         $('detail-deposit').textContent = formatRM(o.deposit);
         $('detail-balance').textContent = formatRM(o.balance);
-        const st = getOrderStatus(o);
-        $('btn-complete-order').style.display = st === 'completed' ? 'none' : 'block';
-        $('btn-pending-order').style.display = st === 'pending' ? 'none' : 'block';
-        $('btn-print-final').style.display = st === 'completed' ? 'block' : 'none';
-        const canDeliver = o.productionStatus === 'done' && !o.deliveredAt;
-        $('btn-mark-delivered').style.display = canDeliver ? 'block' : 'none';
         
-        // Delivery info panel
+        // Delivery panel
         const dBadge = $('detail-delivery-badge');
         if (o.deliveryMethod === 'pickup') { dBadge.className = 'delivery-badge pickup'; dBadge.textContent = '🏪 Pickup di Kedai'; }
         else if (o.deliveryMethod === 'pos') { dBadge.className = 'delivery-badge pos'; dBadge.textContent = '📦 Pos / Kurier'; }
@@ -3093,12 +3253,23 @@ document.addEventListener('DOMContentLoaded', function() {
         $('detail-address-row').style.display = o.deliveryMethod === 'pos' ? 'flex' : 'none';
         $('detail-delivery-address').textContent = o.deliveryAddress || '-';
         $('detail-delivery-date').textContent = o.deliveryDate ? formatDate(o.deliveryDate) : '-';
-        if (o.deliveredAt) {
-            $('detail-delivered-row').style.display = 'flex';
-            $('detail-delivered-info').textContent = `${formatTime(o.deliveredAt)} oleh ${o.deliveredBy || '-'}`;
+        
+        if (o.completedAt) {
+            $('detail-completed-row').style.display = 'flex';
+            $('detail-completed-info').textContent = `${formatTime(o.completedAt)} oleh ${o.completedBy || '-'}`;
         } else {
-            $('detail-delivered-row').style.display = 'none';
+            $('detail-completed-row').style.display = 'none';
         }
+        
+        // Render senarai item dengan checkbox
+        renderDeliveryItemsChecklist(o);
+        renderDeliveryHistory(o.invoiceNumber);
+        
+        // Butang visibility
+        const canComplete = o.status !== 'completed';
+        $('btn-verify-delivery').style.display = (o.productionStatus === 'done' && o.status !== 'completed') ? 'inline-block' : 'none';
+        $('btn-complete-order-manual').style.display = canComplete ? 'inline-block' : 'none';
+        $('btn-print-final').style.display = o.status === 'completed' ? 'block' : 'none';
         
         await populateDesignerDropdown('detail-designer-select', o.assignedDesigner || '');
         $('detail-design-status-badge').outerHTML = getDesignStatusBadge(o.designStatus || 'pending').replace('class="design-status-badge', 'id="detail-design-status-badge" class="design-status-badge');
@@ -3138,6 +3309,215 @@ document.addEventListener('DOMContentLoaded', function() {
         orderDetailView.style.display = 'block';
     }
     
+    function renderDeliveryItemsChecklist(o) {
+        const cont = $('detail-delivery-items');
+        const items = o.items || [];
+        const deliveries = (allDeliveriesCache[o.invoiceNumber] || []).filter(d => !d.undone);
+        const deliveredIndices = new Set();
+        const deliveredMap = {};
+        deliveries.forEach(d => {
+            (d.item_indices || []).forEach(idx => {
+                deliveredIndices.add(idx);
+                deliveredMap[idx] = { by: d.delivered_by, at: d.delivered_at, method: d.delivery_method };
+            });
+        });
+        
+        if (!items.length) { cont.innerHTML = '<p style="color:#999;font-size:13px;">Tiada item.</p>'; return; }
+        
+        cont.innerHTML = items.map((it, idx) => {
+            const isDelivered = deliveredIndices.has(idx);
+            const lines = it.description.split('\n');
+            const itemName = lines[0];
+            const itemDetail = lines.slice(1).join(' ');
+            const info = deliveredMap[idx];
+            const infoHtml = isDelivered && info
+                ? `<div class="item-delivered-info">✅ Diserahkan ${formatTime(info.at)} oleh ${escapeHtml(info.by)}</div>`
+                : '';
+            const checkbox = isDelivered 
+                ? `<input type="checkbox" disabled checked>` 
+                : `<input type="checkbox" class="delivery-item-check" data-idx="${idx}" onchange="updateDeliverySelection()">`;
+            const cls = isDelivered ? 'delivery-item-row delivered' : 'delivery-item-row';
+            return `<div class="${cls}">
+                ${checkbox}
+                <div class="item-info">
+                    <div class="item-name">${idx+1}. ${escapeHtml(itemName)} (${it.quantity}x) — RM${(it.total||0).toFixed(2)}</div>
+                    ${itemDetail ? `<div class="item-detail">${escapeHtml(itemDetail)}</div>` : ''}
+                    ${infoHtml}
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    function updateDeliverySelection() {
+        const checks = document.querySelectorAll('.delivery-item-check:checked');
+        currentDeliveryIndices = Array.from(checks).map(c => parseInt(c.dataset.idx));
+    }
+
+    function renderDeliveryHistory(invoiceNumber) {
+        const cont = $('delivery-history-list');
+        const deliveries = allDeliveriesCache[invoiceNumber] || [];
+        if (!deliveries.length) {
+            cont.innerHTML = '<p style="color:#999;font-size:13px;">Belum ada penyerahan.</p>';
+            return;
+        }
+        cont.innerHTML = deliveries.map(d => {
+            const isUndone = d.undone;
+            const cls = isUndone ? 'delivery-history-item undone' : 'delivery-history-item';
+            const summary = d.item_summary || '-';
+            const undoInfo = isUndone 
+                ? `<div class="hist-detail">❌ Dibatalkan oleh <strong>${escapeHtml(d.undone_by||'-')}</strong> pada ${formatTime(d.undone_at)}<br>Sebab: <em>${escapeHtml(d.undo_reason||'-')}</em></div>` 
+                : '';
+            const undoBtn = isUndone ? '' : `<button class="btn btn-danger" style="padding:3px 8px;font-size:11px;margin-top:5px;" onclick="openUndoDelivery('${d.id}', '${escapeAttr(summary)}')">↩️ Undo</button>`;
+            return `<div class="${cls}">
+                <div class="hist-header">${isUndone ? '❌ DIBATALKAN' : '✅'} ${formatTime(d.delivered_at)} — ${escapeHtml(d.delivered_by)}</div>
+                <div class="hist-detail">
+                    Item: <strong>${escapeHtml(summary)}</strong><br>
+                    ${d.delivery_method ? 'Kaedah: ' + (d.delivery_method === 'pickup' ? '🏪 Pickup' : '📦 Pos') : ''}
+                </div>
+                ${undoInfo}
+                ${undoBtn}
+            </div>`;
+        }).join('');
+    }
+
+    window.openUndoDelivery = function(deliveryId, summary) {
+        const reason = prompt(`Undo penyerahan ini?\n\nItem: ${summary}\n\nMasukkan sebab undo:`);
+        if (!reason || !reason.trim()) return;
+        executeUndoDelivery(deliveryId, reason.trim());
+    };
+
+    async function executeUndoDelivery(deliveryId, reason) {
+        if (await undoDelivery(deliveryId, reason, STAFF_NAME)) {
+            await addAuditLog(currentOrder.invoiceNumber, 'update', 'Undo Penyerahan', null, `Item: ${reason}`, `Undo oleh ${STAFF_NAME}`);
+            await loadOrders();
+            // Refresh detail
+            const updated = allOrdersCache.find(x => x.invoiceNumber === currentOrder.invoiceNumber);
+            if (updated) await showOrderDetail(updated);
+            alert('✅ Penyerahan di-undo.');
+        }
+    }
+
+    // ═══ POPUP PIN PENYERAHAN ═══
+    window.openDeliveryPinModal = function() {
+        if (!currentOrder) return;
+        const checks = document.querySelectorAll('.delivery-item-check:checked');
+        const indices = Array.from(checks).map(c => parseInt(c.dataset.idx));
+        if (!indices.length) { alert('⚠️ Sila tick sekurang-kurangnya 1 item.'); return; }
+        currentDeliveryIndices = indices;
+        
+        // Papar senarai item yang dipilih
+        const items = indices.map(idx => {
+            const it = currentOrder.items[idx];
+            const name = (it.description || '').split('\n')[0];
+            return `<div>• ${escapeHtml(name)} (${it.quantity}x)</div>`;
+        }).join('');
+        $('deliv-pin-items').innerHTML = items;
+        $('deliv-pin-invoice').textContent = currentOrder.invoiceNumber;
+        
+        // Populate staff dropdown
+        const activeStaff = allStaffCardsCache.filter(s => s.active);
+        $('deliv-pin-staff').innerHTML = activeStaff.map(s => 
+            `<option value="${escapeAttr(s.staff_name)}"${s.staff_name === STAFF_NAME ? ' selected' : ''}>${escapeHtml(s.staff_name)}${s.staff_name === STAFF_NAME ? ' (anda)' : ''}</option>`
+        ).join('');
+        
+        $('deliv-pin-code').value = '';
+        $('deliv-pin-error').style.display = 'none';
+        $('delivery-pin-modal').style.display = 'flex';
+        setTimeout(() => $('deliv-pin-code').focus(), 200);
+    };
+    window.closeDeliveryPinModal = function() { $('delivery-pin-modal').style.display = 'none'; };
+    
+    window.executeVerifyDelivery = async function() {
+        const staffName = $('deliv-pin-staff').value;
+        const pin = $('deliv-pin-code').value.trim();
+        if (!staffName) { $('deliv-pin-error').textContent = 'Sila pilih staf.'; $('deliv-pin-error').style.display = 'block'; return; }
+        if (pin.length !== 4) { $('deliv-pin-error').textContent = 'PIN mesti 4 digit.'; $('deliv-pin-error').style.display = 'block'; return; }
+        const verified = await verifyPinByName(staffName, pin);
+        if (!verified) {
+            $('deliv-pin-error').textContent = '❌ PIN salah untuk ' + staffName;
+            $('deliv-pin-error').style.display = 'block';
+            $('deliv-pin-code').value = '';
+            $('deliv-pin-code').focus();
+            return;
+        }
+        
+        // Buat penyerahan
+        const indices = currentDeliveryIndices;
+        const summary = indices.map(idx => {
+            const it = currentOrder.items[idx];
+            return (it.description||'').split('\n')[0];
+        }).join(', ');
+        
+        if (await addDelivery(currentOrder.invoiceNumber, indices, summary, currentOrder.deliveryMethod, staffName)) {
+            await addAuditLog(currentOrder.invoiceNumber, 'update', 'Penyerahan', null, `${indices.length} item diserahkan`, `Diserahkan oleh ${staffName}`);
+            closeDeliveryPinModal();
+            alert(`✅ ${indices.length} item diserahkan oleh ${staffName}.`);
+            await loadOrders();
+            const updated = allOrdersCache.find(x => x.invoiceNumber === currentOrder.invoiceNumber);
+            if (updated) await showOrderDetail(updated);
+        }
+    };
+
+    // ═══ POPUP PIN SELESAI ═══
+    window.openCompletePinModal = function() {
+        if (!currentOrder) return;
+        const totalItems = (currentOrder.items||[]).length;
+        const deliveries = (allDeliveriesCache[currentOrder.invoiceNumber] || []).filter(d => !d.undone);
+        const deliveredIndices = new Set();
+        deliveries.forEach(d => (d.item_indices||[]).forEach(idx => deliveredIndices.add(idx)));
+        const deliveredCount = deliveredIndices.size;
+        
+        $('complete-pin-invoice').textContent = currentOrder.invoiceNumber;
+        $('complete-pin-info').innerHTML = `
+            <div>📦 Item diserahkan: <strong>${deliveredCount}/${totalItems}</strong></div>
+            <div>💰 Baki bayaran: <strong>RM ${(currentOrder.balance||0).toFixed(2)}</strong></div>
+            ${deliveredCount < totalItems ? '<div style="color:#e67e22;font-weight:bold;margin-top:5px;">⚠️ Belum semua item diserahkan!</div>' : ''}
+        `;
+        
+        const activeStaff = allStaffCardsCache.filter(s => s.active);
+        $('complete-pin-staff').innerHTML = activeStaff.map(s => 
+            `<option value="${escapeAttr(s.staff_name)}"${s.staff_name === STAFF_NAME ? ' selected' : ''}>${escapeHtml(s.staff_name)}${s.staff_name === STAFF_NAME ? ' (anda)' : ''}</option>`
+        ).join('');
+        
+        $('complete-pin-code').value = '';
+        $('complete-pin-error').style.display = 'none';
+        $('complete-pin-modal').style.display = 'flex';
+        setTimeout(() => $('complete-pin-code').focus(), 200);
+    };
+    window.closeCompletePinModal = function() { $('complete-pin-modal').style.display = 'none'; };
+    
+    window.executeCompleteOrder = async function() {
+        const staffName = $('complete-pin-staff').value;
+        const pin = $('complete-pin-code').value.trim();
+        if (!staffName) { $('complete-pin-error').textContent = 'Sila pilih staf.'; $('complete-pin-error').style.display = 'block'; return; }
+        if (pin.length !== 4) { $('complete-pin-error').textContent = 'PIN mesti 4 digit.'; $('complete-pin-error').style.display = 'block'; return; }
+        const verified = await verifyPinByName(staffName, pin);
+        if (!verified) {
+            $('complete-pin-error').textContent = '❌ PIN salah untuk ' + staffName;
+            $('complete-pin-error').style.display = 'block';
+            $('complete-pin-code').value = '';
+            $('complete-pin-code').focus();
+            return;
+        }
+        
+        const upd = { 
+            ...currentOrder, 
+            status: 'completed',
+            completedBy: staffName,
+            completedAt: new Date().toISOString(),
+            completedPinVerified: true
+        };
+        
+        if (await updateOrderWithLog(upd, currentOrder)) {
+            await addAuditLog(currentOrder.invoiceNumber, 'update', 'Status', 'DALAM PROSES', 'SELESAI', `Selesai oleh ${staffName}`);
+            closeCompletePinModal();
+            alert(`✅ Order ${currentOrder.invoiceNumber} ditandakan SELESAI oleh ${staffName}.`);
+            currentOrder = upd;
+            await loadOrders();
+            backToList();
+        }
+    };
+
     window.editDeliveryFromDetail = function() {
         if (!currentOrder) return;
         showEditOrderModal(currentOrder);
@@ -3447,25 +3827,6 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch (err) { alert('❌ Gagal: ' + err.message); }
     };
 
-    function showPaymentModal(o) {
-        currentOrder = o;
-        $('payment-date').value = new Date().toISOString().split('T')[0];
-        $('payment-amount').value = o.balance || 0;
-        $('payment-reference').value = '';
-        $('payment-modal').style.display = 'flex';
-    }
-    function hidePaymentModal() { $('payment-modal').style.display = 'none'; }
-    async function confirmPayment() {
-        if (!currentOrder) return;
-        const pi = {date:$('payment-date').value, method:$('payment-method').value, amount:parseFloat($('payment-amount').value)||0, reference:$('payment-reference').value};
-        const upd = {...currentOrder, paymentInfo:pi, status:'completed'};
-        if (await updateOrderWithLog(upd, currentOrder)) {
-            alert(`Pembayaran order ${currentOrder.invoiceNumber} direkodkan.`);
-            hidePaymentModal(); currentOrder = upd; printFinal();
-            backToList(); displayOrders(); displayActiveOrders(); updateDashboard();
-        } else alert('Gagal simpan.');
-    }
-
     async function showEditOrderModal(o) {
         currentOrder = o;
         $('edit-invoice-number').value = o.invoiceNumber;
@@ -3605,8 +3966,14 @@ document.addEventListener('DOMContentLoaded', function() {
     function exportCSV() {
         const orders = getFilteredOrders();
         if (!orders.length) return alert('Tiada order untuk export.');
-        const headers = ['No. Bil','Pelanggan','Telefon','Tarikh Order','Tarikh Siap','Jurujual','Designer','Status Design','Status Production','Kaedah','Tarikh Kutipan/Pos','Alamat','Diserahkan','Status','Jumlah','Diskaun','Selepas Diskaun','Deposit','Baki','Item'];
-        const rows = orders.map(o => [o.invoiceNumber||'', o.customerName||'', o.customerPhone||'', formatDate(o.orderDate), formatDate(o.completionDate), o.salesPerson||'', o.assignedDesigner||'', (DESIGN_STATUS[o.designStatus||'pending']||{}).label||'', o.productionStatus ? ((PRODUCTION_STATUS[o.productionStatus]||{}).label||'') : 'Belum Hantar', o.deliveryMethod === 'pickup' ? 'Pickup' : o.deliveryMethod === 'pos' ? 'Pos' : 'Belum Set', o.deliveryDate ? formatDate(o.deliveryDate) : '', o.deliveryAddress||'', o.deliveredAt ? formatTime(o.deliveredAt) : 'Belum', getStatusText(getOrderStatus(o)), (o.totalAmount||0).toFixed(2), (o.discount||0).toFixed(2), (o.subtotal||0).toFixed(2), (o.deposit||0).toFixed(2), (o.balance||0).toFixed(2), (o.items||[]).map(i=>`${i.description.replace(/\n/g, ' ')} (${i.quantity}x RM${i.price})`).join(' | ')]);
+        const headers = ['No. Bil','Pelanggan','Telefon','Tarikh Order','Tarikh Siap','Jurujual','Designer','Status Design','Status Production','Kaedah','Tarikh Kutipan/Pos','Alamat','Serah','Status','Jumlah','Diskaun','Selepas Diskaun','Deposit','Baki','Item'];
+        const rows = orders.map(o => {
+            const deliveries = (allDeliveriesCache[o.invoiceNumber] || []).filter(d => !d.undone);
+            const deliveredIndices = new Set();
+            deliveries.forEach(d => (d.item_indices||[]).forEach(idx => deliveredIndices.add(idx)));
+            const serahStatus = o.status === 'completed' ? 'Selesai' : deliveredIndices.size === 0 ? 'Belum Serah' : deliveredIndices.size + '/' + (o.items||[]).length + ' Diserahkan';
+            return [o.invoiceNumber||'', o.customerName||'', o.customerPhone||'', formatDate(o.orderDate), formatDate(o.completionDate), o.salesPerson||'', o.assignedDesigner||'', (DESIGN_STATUS[o.designStatus||'pending']||{}).label||'', o.productionStatus ? ((PRODUCTION_STATUS[o.productionStatus]||{}).label||'') : 'Belum Hantar', o.deliveryMethod === 'pickup' ? 'Pickup' : o.deliveryMethod === 'pos' ? 'Pos' : 'Belum Set', o.deliveryDate ? formatDate(o.deliveryDate) : '', o.deliveryAddress||'', serahStatus, getStatusText(getOrderStatus(o)), (o.totalAmount||0).toFixed(2), (o.discount||0).toFixed(2), (o.subtotal||0).toFixed(2), (o.deposit||0).toFixed(2), (o.balance||0).toFixed(2), (o.items||[]).map(i=>`${i.description.replace(/\n/g, ' ')} (${i.quantity}x RM${i.price})`).join(' | ')];
+        });
         const csv = [headers, ...rows].map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
         const blob = new Blob(['\ufeff' + csv], {type:'text/csv;charset=utf-8'});
         const url = URL.createObjectURL(blob);
@@ -3631,14 +3998,7 @@ document.addEventListener('DOMContentLoaded', function() {
         $('filter-designer').innerHTML = '<option value="">Semua Designer</option>' + designerNames.map(n => `<option value="${escapeAttr(n)}">${escapeHtml(n)}</option>`).join('');
         applyAutoSalesPerson();
     }
-    async function handleAddSalesPerson() {
-        alert('💡 Untuk tambah jurujual, sila pergi ke tab "⚙️ Tetapan" → section "Kad Staf" → klik "Tambah Staf Baru".');
-        if (sessionStorage.getItem('appAuthed') !== 'true' && !isBoss) {
-            showPasswordPrompt('access_tab', 'tab-settings');
-        } else {
-            switchTab('tab-settings');
-        }
-    }
+
     async function displaySalesPersonData() {
         await loadStaffCards();
         const activeStaff = allStaffCardsCache.filter(s => s.active);
@@ -4016,7 +4376,21 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             if (document.querySelector('.tab-btn.active')?.id === 'tab-production') displayProductionOrders();
         }).subscribe();
-        realtimeChannels = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12];
+        const c13 = supabaseClient.channel('deliveries_ch').on('postgres_changes', {event:'*', schema:'public', table:'order_deliveries'}, async () => {
+            await loadAllDeliveries();
+            const t = document.querySelector('.tab-btn.active')?.id;
+            if (t === 'tab-orders') displayOrders();
+            else if (t === 'tab-active') displayActiveOrders();
+            else if (currentOrder && orderDetailView.style.display === 'block') {
+                const updated = allOrdersCache.find(x => x.invoiceNumber === currentOrder.invoiceNumber);
+                if (updated) {
+                    currentOrder = updated;
+                    renderDeliveryItemsChecklist(updated);
+                    renderDeliveryHistory(updated.invoiceNumber);
+                }
+            }
+        }).subscribe();
+        realtimeChannels = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13];
     }
 
     function initYearDropdowns() {
@@ -4027,6 +4401,7 @@ document.addEventListener('DOMContentLoaded', function() {
         $('dash-year').innerHTML = '<option value="">Auto</option>' + html;
     }
 
+    // ═══ EVENT LISTENERS ═══
     $('login-staff-btn').addEventListener('click', () => { if (STAFF_NAME && !confirm('Tukar staf?')) return; openQrLogin(); });
     $('login-pin-manual-btn').addEventListener('click', () => { if (STAFF_NAME && !confirm('Tukar staf?')) return; openManualPinLogin(); });
     $('login-password-btn').addEventListener('click', openPasswordLogin);
@@ -4089,8 +4464,6 @@ document.addEventListener('DOMContentLoaded', function() {
     $('do-print-idcard-btn').addEventListener('click', doPrintIdCard);
     $('close-idcard-btn').addEventListener('click', closeIdCard);
     $('close-bills-modal').addEventListener('click', () => $('bills-modal').style.display = 'none');
-    $('cancel-payment').addEventListener('click', hidePaymentModal);
-    $('confirm-payment').addEventListener('click', confirmPayment);
     $('cancel-edit-order').addEventListener('click', hideEditOrderModal);
     $('save-edit-order').addEventListener('click', saveEditedOrder);
     $('print-edit-order').addEventListener('click', printEditedOrder);
@@ -4110,26 +4483,8 @@ document.addEventListener('DOMContentLoaded', function() {
     $('btn-print-order').addEventListener('click', printOrder);
     $('btn-edit-order').addEventListener('click', () => currentOrder && showEditOrderModal(currentOrder));
     $('btn-delete-order').addEventListener('click', promptDeleteOrder);
-    $('btn-complete-order').addEventListener('click', () => currentOrder && showPaymentModal(currentOrder));
-    $('btn-pending-order').addEventListener('click', async () => { if (currentOrder) { await updateOrderWithLog({...currentOrder, status:'pending'}, currentOrder); backToList(); }});
     $('btn-print-final').addEventListener('click', printFinal);
     $('btn-upload-file').addEventListener('click', () => { if (currentOrder) openUploadModal(currentOrder.invoiceNumber); });
-    
-    $('btn-mark-delivered').addEventListener('click', async () => {
-        if (!currentOrder) return;
-        if (!currentOrder.deliveryMethod) {
-            alert('⚠️ Sila set Kaedah Penghantaran (Pickup/Pos) di Edit Bill dahulu.');
-            return;
-        }
-        if (!confirm(`Tandakan order ${currentOrder.invoiceNumber} sebagai SUDAH DISERAHKAN ke pelanggan?`)) return;
-        const upd = { ...currentOrder, deliveredAt: new Date().toISOString(), deliveredBy: STAFF_NAME };
-        if (await updateOrderWithLog(upd, currentOrder)) {
-            await addAuditLog(currentOrder.invoiceNumber, 'update', 'Status', 'Siap', 'Diserahkan', `Diserahkan oleh ${STAFF_NAME}`);
-            alert('✅ Order ditandakan sebagai DISERAHKAN.');
-            currentOrder = upd;
-            backToList();
-        } else alert('❌ Gagal.');
-    });
 
     $('file-input').addEventListener('change', function(e) {
         const file = e.target.files[0];
@@ -4201,13 +4556,15 @@ document.addEventListener('DOMContentLoaded', function() {
             $('search-orders').value='';
             document.querySelectorAll('#order-list-page .filter-btn').forEach(x => x.classList.remove('active'));
             document.querySelector('#order-list-page .filter-btn[data-filter="all"]').classList.add('active');
+        } else if (b.id === 'export-csv-btn') {
+            exportCSV();
+            return;
         } else {
             document.querySelectorAll('#order-list-page .filter-btn').forEach(x => x.classList.remove('active'));
             b.classList.add('active');
         }
         displayOrders();
     }));
-    $('export-csv-btn').addEventListener('click', exportCSV);
     $('clear-all-orders-btn').addEventListener('click', () => showPasswordPrompt('clear_all_orders', 'Padam Semua Order'));
     $('search-active').addEventListener('input', displayActiveOrders);
     $('filter-active-sales').addEventListener('change', displayActiveOrders);
@@ -4228,6 +4585,17 @@ document.addEventListener('DOMContentLoaded', function() {
         const deptStaff = allStaffCardsCache.filter(s => s.active && s.is_production && s.department_id === deptId);
         staffSelect.innerHTML = '<option value="">-- Belum assign --</option>' + 
             deptStaff.map(s => `<option value="${escapeAttr(s.staff_name)}">${escapeHtml(s.staff_name)}</option>`).join('');
+    });
+
+    // Autofocus PIN inputs
+    ['deliv-pin-code', 'complete-pin-code'].forEach(id => {
+        const el = $(id);
+        if (el) el.addEventListener('keypress', e => {
+            if (e.key === 'Enter') {
+                if (id === 'deliv-pin-code') window.executeVerifyDelivery();
+                else if (id === 'complete-pin-code') window.executeCompleteOrder();
+            }
+        });
     });
 
     window.addEventListener('online', () => offlineBanner.style.display = 'none');
@@ -4283,7 +4651,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 await updateAvailableInvoiceNumbers();
             }
         }, 60000);
-        // Auto-refresh order list (backup realtime) setiap 30 saat
         setInterval(async () => {
             if (container.style.display !== 'block') return;
             const t = document.querySelector('.tab-btn.active')?.id;
