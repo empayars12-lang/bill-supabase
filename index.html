@@ -43,6 +43,9 @@ body { font-family: 'Arial', sans-serif; margin: 0; padding: 0; background-color
 .filter-btn.active .filter-count { background: rgba(255,255,255,0.3); }
 .filter-btn[data-filter="pending"]:not(.active) { background: #fef3c7; color: #92400e; }
 .filter-btn[data-filter="sedia_serah"]:not(.active) { background: #dbeafe; color: #1e40af; }
+.filter-btn[data-filter="partial"]:not(.active) { background: #ffedd5; color: #9a3412; }
+.filter-btn[data-filter="partial"]:not(.active):has(.filter-count:empty),
+.filter-btn[data-filter="partial"]:not(.active).count-zero { background: #f3f4f6; color: #9ca3af; }
 .filter-btn[data-filter="completed"]:not(.active) { background: #d1fae5; color: #065f46; }
 .filter-select { padding: 10px; border: 1px solid #ddd; border-radius: 4px; background: white; cursor: pointer; }
 .order-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
@@ -1497,6 +1500,22 @@ document.addEventListener('DOMContentLoaded', function() {
         if (o.status === 'completed') return 'completed';
         if (o.productionStatus !== 'done') return 'pending';
         return 'sedia_serah';
+        // Fungsi bantu: kira berapa item dah diserahkan untuk satu order
+function getDeliveredCountForOrder(o) {
+    const deliveries = (allDeliveriesCache[o.invoiceNumber] || []).filter(d => !d.undone);
+    const deliveredIndices = new Set();
+    deliveries.forEach(d => (d.item_indices || []).forEach(idx => deliveredIndices.add(idx)));
+    return deliveredIndices.size;
+}
+
+// Fungsi bantu: check jika order adalah "Serah Tidak Lengkap"
+function isPartialDelivery(o) {
+    if (o.status === 'completed') return false;
+    if (o.productionStatus !== 'done') return false;
+    const total = (o.items || []).length;
+    const delivered = getDeliveredCountForOrder(o);
+    return delivered > 0 && delivered < total;
+}
     }
 
     function getOrderStatus(o) {
@@ -2785,8 +2804,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const deliveryFilter = $('filter-delivery').value;
         
         if (sf === 'completed') orders = orders.filter(o => o.status === 'completed');
-        else if (sf === 'pending') orders = orders.filter(o => o.productionStatus !== 'done' && o.status !== 'completed');
-        else if (sf === 'sedia_serah') orders = orders.filter(o => o.productionStatus === 'done' && o.status !== 'completed');
+else if (sf === 'pending') orders = orders.filter(o => o.productionStatus !== 'done' && o.status !== 'completed');
+else if (sf === 'sedia_serah') orders = orders.filter(o => o.productionStatus === 'done' && o.status !== 'completed');
+else if (sf === 'partial') orders = orders.filter(isPartialDelivery);
         
         if (period !== 'all') {
             const now = new Date(); now.setHours(0,0,0,0);
@@ -2815,14 +2835,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Counter untuk filter buttons
     function updateFilterCounts() {
-        const all = allOrdersCache;
-        const pending = all.filter(o => o.productionStatus !== 'done' && o.status !== 'completed');
-        const sedia = all.filter(o => o.productionStatus === 'done' && o.status !== 'completed');
-        const completed = all.filter(o => o.status === 'completed');
-        if ($('count-all')) $('count-all').textContent = all.length;
-        if ($('count-pending')) $('count-pending').textContent = pending.length;
-        if ($('count-sedia')) $('count-sedia').textContent = sedia.length;
-        if ($('count-completed')) $('count-completed').textContent = completed.length;
+    const all = allOrdersCache;
+    const pending = all.filter(o => o.productionStatus !== 'done' && o.status !== 'completed');
+    const sedia = all.filter(o => o.productionStatus === 'done' && o.status !== 'completed');
+    const partial = all.filter(isPartialDelivery);
+    const completed = all.filter(o => o.status === 'completed');
+    if ($('count-all')) $('count-all').textContent = all.length;
+    if ($('count-pending')) $('count-pending').textContent = pending.length;
+    if ($('count-sedia')) $('count-sedia').textContent = sedia.length;
+    if ($('count-partial')) {
+        $('count-partial').textContent = partial.length;
+        // Toggle warna kelabu bila 0
+        const btn = document.querySelector('.filter-btn[data-filter="partial"]');
+        if (btn) {
+            if (partial.length === 0) btn.classList.add('count-zero');
+            else btn.classList.remove('count-zero');
+        }
+    }
+    if ($('count-completed')) $('count-completed').textContent = completed.length;
+}
     }
 
     async function displayOrders() {
