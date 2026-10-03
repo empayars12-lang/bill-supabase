@@ -137,7 +137,7 @@ th { background-color: #f2f2f2; }
 .password-modal-content { max-width: 400px; }
 .size-input-modal-content { max-width: 600px; }
 .qr-login-modal-content, .pin-login-modal-content, .staff-password-login-modal-content, .staff-pin-manual-modal-content, .delivery-pin-modal-content, .complete-pin-modal-content { max-width: 450px; text-align: center; }
-.quick-complete-modal-content { max-width: 520px; }
+.quick-complete-modal-content { max-width: 620px; }
 .idcard-modal-content { max-width: 600px; }
 .upload-modal-content { max-width: 650px; }
 .pass-designer-modal-content { max-width: 450px; }
@@ -319,6 +319,15 @@ body:not(.boss-mode) .boss-only { display: none !important; }
 .quick-complete-info-box { background: #f0f9ff; padding: 12px; border-radius: 6px; margin-bottom: 15px; border-left: 3px solid #0284c7; }
 .quick-complete-warning { background: #fff8e1; padding: 10px; border-radius: 6px; margin-bottom: 15px; border-left: 3px solid #f39c12; color: #92400e; font-size: 13px; }
 .quick-complete-success { background: #f0fff4; padding: 10px; border-radius: 6px; margin-bottom: 15px; border-left: 3px solid #27ae60; color: #065f46; font-size: 13px; }
+.qc-item-list { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 12px; max-height: 220px; overflow-y: auto; margin-bottom: 15px; }
+.qc-item-row { display: flex; align-items: flex-start; gap: 10px; padding: 8px; border-bottom: 1px solid #eee; }
+.qc-item-row:last-child { border-bottom: none; }
+.qc-item-row input[type="checkbox"] { width: 22px; height: 22px; margin-top: 2px; cursor: pointer; flex-shrink: 0; }
+.qc-item-row .qc-item-info { flex: 1; }
+.qc-item-row .qc-item-name { font-weight: bold; font-size: 13px; }
+.qc-item-row .qc-item-detail { font-size: 11px; color: #666; margin-top: 2px; }
+.qc-item-row .qc-item-price { font-weight: bold; color: #27ae60; font-size: 12px; }
+.qc-item-row.delivered { opacity: 0.5; background: #f0fff4; }
 @media print {
     .no-print, .action-buttons, .tab-nav, .home-button-container, #password-modal, .add-sales-person, #bills-modal, #install-app-btn, #upload-modal, #pass-designer-modal, #file-notes-modal, #send-production-modal, #pause-production-modal, #delivery-pin-modal, #complete-pin-modal, #quick-complete-modal { display: none !important; }
     body { background: none; padding: 0; }
@@ -647,34 +656,15 @@ body:not(.boss-mode) .boss-only { display: none !important; }
             <div class="detail-total"><span>Baki:</span><span id="detail-balance">RM0.00</span></div>
         </div>
 
-        <div class="delivery-panel" id="delivery-panel">
-            <h4>📦 Penghantaran & Penyerahan Item</h4>
-            <div class="design-row">
-                <label>Kaedah:</label>
-                <span id="detail-delivery-badge" class="delivery-badge none">⚪ Belum Set</span>
-            </div>
-            <div class="design-row" id="detail-address-row" style="display:none;">
-                <label>Alamat:</label>
-                <span id="detail-delivery-address" style="font-size:13px;color:#333;white-space:pre-wrap;">-</span>
-            </div>
-            <div class="design-row">
-                <label>Tarikh Kutipan/Pos:</label>
-                <span id="detail-delivery-date" style="font-weight:bold;">-</span>
-            </div>
-            <div class="design-row" id="detail-completed-row" style="display:none;background:#f0fff4;padding:10px;border-radius:6px;">
-                <label style="min-width:auto;">✅ Selesai:</label>
-                <span id="detail-completed-info" style="font-weight:bold;color:#27ae60;">-</span>
-            </div>
-
-            <hr style="margin:20px 0;border:none;border-top:1px dashed #ccc;">
-            <h5 style="margin:0 0 10px;color:#27ae60;">📋 Senarai Item — Tanda Yang Nak Diserahkan:</h5>
-            <div id="detail-delivery-items"></div>
-            <div class="action-buttons" style="justify-content:flex-start;margin-top:15px;">
-                <button class="btn" id="btn-verify-delivery" style="background:#27ae60;" onclick="openDeliveryPinModal()">✅ Sahkan Penyerahan Item Bertanda</button>
-            </div>
-
-            <div id="delivery-history-section" style="margin-top:20px;">
-                <h5 style="color:#27ae60;margin-bottom:8px;">📜 Sejarah Penyerahan</h5>
+        <!-- Panel penghantaran asal dibuang. Semua sekarang ada dalam pop-up Selesai. -->
+        <div style="margin-top:20px;padding:15px;background:#f0fff4;border-radius:8px;border-left:4px solid #27ae60;">
+            <h5 style="margin:0 0 8px;color:#27ae60;">📦 Info Penghantaran</h5>
+            <div class="design-row"><label>Kaedah:</label><span id="detail-delivery-badge" class="delivery-badge none">⚪ Belum Set</span></div>
+            <div class="design-row" id="detail-address-row" style="display:none;"><label>Alamat:</label><span id="detail-delivery-address" style="font-size:13px;color:#333;white-space:pre-wrap;">-</span></div>
+            <div class="design-row"><label>Tarikh Kutipan/Pos:</label><span id="detail-delivery-date" style="font-weight:bold;">-</span></div>
+            <div class="design-row" id="detail-completed-row" style="display:none;background:#e8f5e9;padding:10px;border-radius:6px;"><label style="min-width:auto;">✅ Selesai:</label><span id="detail-completed-info" style="font-weight:bold;color:#27ae60;">-</span></div>
+            <div style="margin-top:15px;">
+                <h6 style="margin:0 0 8px;color:#27ae60;">📜 Sejarah Penyerahan</h6>
                 <div id="delivery-history-list"><p style="color:#999;font-size:13px;">Belum ada penyerahan.</p></div>
             </div>
         </div>
@@ -1180,44 +1170,24 @@ body:not(.boss-mode) .boss-only { display: none !important; }
     </div>
 </div>
 
-<div id="delivery-pin-modal">
-    <div class="delivery-pin-modal-content">
-        <button class="modal-close-x" onclick="closeDeliveryPinModal()">×</button>
-        <h3 style="color:#27ae60;margin-top:0;">✅ Sahkan Penyerahan Item</h3>
-        <p style="color:#666;font-size:13px;margin-top:0;">Order: <strong id="deliv-pin-invoice">-</strong></p>
-        <div style="background:#f0fff4;padding:12px;border-radius:6px;margin-bottom:15px;text-align:left;">
-            <div style="font-size:12px;color:#666;margin-bottom:6px;">Item akan diserahkan:</div>
-            <div id="deliv-pin-items" style="font-size:13px;font-weight:bold;color:#27ae60;"></div>
-        </div>
-        <div class="form-group" style="text-align:left;">
-            <label>Staf yang serah:</label>
-            <select id="deliv-pin-staff" style="padding:10px;font-size:14px;"></select>
-        </div>
-        <div class="form-group" style="text-align:left;">
-            <label>Masukkan PIN staf tersebut:</label>
-            <input type="password" id="deliv-pin-code" maxlength="4" inputmode="numeric" placeholder="••••" style="padding:12px;font-size:20px;text-align:center;letter-spacing:8px;border:2px solid #ddd;border-radius:8px;">
-        </div>
-        <div id="deliv-pin-error" style="color:red;font-size:13px;margin-bottom:10px;display:none;"></div>
-        <div class="action-buttons" style="justify-content:center;">
-            <button class="btn btn-secondary" onclick="closeDeliveryPinModal()">Batal</button>
-            <button class="btn" style="background:#27ae60;" onclick="executeVerifyDelivery()">✅ Sahkan Penyerahan</button>
-        </div>
-    </div>
-</div>
-
-<!-- ═══════════════ MODAL BUTANG CEPAT: SELESAI ═══════════════ -->
+<!-- ════════ POP-UP SELESAI: PENGHANTARAN + PENYERAHAN + BAYARAN + PIN + PRINT ════════ -->
 <div id="quick-complete-modal">
     <div class="quick-complete-modal-content">
         <button class="modal-close-x" onclick="closeQuickCompleteModal()">×</button>
-        <h3 style="color:#0284c7;margin-top:0;">🟢 Selesai & Cetak Bil</h3>
+        <h3 style="color:#27ae60;margin-top:0;">✅ Selesai — Serah & Cetak Bil</h3>
         <p style="color:#666;font-size:13px;margin-top:0;">Order: <strong id="qc-invoice">-</strong></p>
         
         <div id="qc-info-box" class="quick-complete-info-box"></div>
         <div id="qc-warning-box" class="quick-complete-warning" style="display:none;"></div>
         <div id="qc-success-box" class="quick-complete-success" style="display:none;"></div>
-        
+
+        <!-- Senarai item + checkbox -->
+        <div style="text-align:left;font-weight:bold;font-size:13px;margin-bottom:6px;">📦 Tandakan item yang nak diserahkan:</div>
+        <div class="qc-item-list" id="qc-item-list"></div>
+
+        <!-- Staf + tarikh + bayaran -->
         <div class="form-group" style="text-align:left;">
-            <label>Staf yang selesaikan: <span style="color:#e74c3c;">*</span></label>
+            <label>Staf yang serah: <span style="color:#e74c3c;">*</span></label>
             <select id="qc-staff" style="padding:10px;font-size:14px;"></select>
         </div>
         <div class="form-group" style="text-align:left;">
@@ -1245,7 +1215,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         <div style="text-align:left; margin-bottom:15px;">
             <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:normal;">
                 <input type="checkbox" id="qc-print-bill" checked style="width:auto;margin:0;">
-                <span>🖨️ Cetak bill akhir selepas sahkan</span>
+                <span>🖨️ Cetak bill selepas sahkan</span>
             </label>
         </div>
         
@@ -1739,10 +1709,10 @@ document.addEventListener('DOMContentLoaded', function() {
             };
             if (paymentMethod) insertData.payment_method = paymentMethod;
             if (paymentAmount !== undefined && paymentAmount !== null) insertData.payment_amount = paymentAmount;
-            const { error } = await supabaseClient.from('order_deliveries').insert(insertData);
+            const { data: inserted, error } = await supabaseClient.from('order_deliveries').insert(insertData).select().single();
             if (error) throw error;
-            return true;
-        } catch(e) { console.error('addDelivery:', e); alert('Gagal simpan penyerahan: ' + e.message); return false; }
+            return inserted;
+        } catch(e) { console.error('addDelivery:', e); alert('Gagal simpan penyerahan: ' + e.message); return null; }
     }
 
     async function undoDelivery(deliveryId, reason, staffName) {
@@ -2842,7 +2812,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const designStatusHtml = getDesignStatusBadge(o.designStatus || 'pending');
             const productionCellHtml = getProductionCellHtml(o);
             
-            // Butang "✅ Selesai" — sentiasa muncul, disable kalau production belum siap
             const isProductionDone = o.productionStatus === 'done';
             const isCompleted = o.status === 'completed';
             let completeBtn;
@@ -2890,9 +2859,12 @@ document.addEventListener('DOMContentLoaded', function() {
         applyBossMode();
     }
 
-    // ═══ MODAL BUTANG CEPAT SELESAI ═══
+    // ═══════════════════════════════════════════════════════════════
+    // POP-UP SELESAI — PENGHANTARAN + PENYERAHAN + BAYARAN + PIN + PRINT
+    // ═══════════════════════════════════════════════════════════════
     window.openQuickCompleteModal = function(o) {
         quickCompleteOrder = o;
+        currentDeliveryIndices = [];
         const totalItems = (o.items||[]).length;
         const delivered = getDeliveredCountForOrder(o);
         const pending = totalItems - delivered;
@@ -2905,16 +2877,55 @@ document.addEventListener('DOMContentLoaded', function() {
             <div style="font-size:13px;margin-top:5px;">💰 Baki bayaran: <strong>RM ${(o.balance||0).toFixed(2)}</strong></div>
         `;
 
-        // Warning kalau ada production belum siap
+        // Warning kalau production belum siap
         if (o.productionStatus !== 'done') {
             $('qc-warning-box').style.display = 'block';
-            $('qc-warning-box').innerHTML = `⚠️ <strong>Perhatian:</strong> Production belum siap sepenuhnya. Order akan masuk kategori <strong>Serah Tidak Lengkap</strong> selepas sahkan.`;
+            $('qc-warning-box').innerHTML = `⚠️ <strong>Perhatian:</strong> Production belum siap sepenuhnya. Kalau tidak semua item ditick, order akan masuk kategori <strong>Serah Tidak Lengkap</strong>.`;
         } else {
             $('qc-warning-box').style.display = 'none';
         }
 
-        // Success box (info partial)
-        $('qc-success-box').style.display = 'none';
+        // Senarai item dengan checkbox
+        const deliveries = (allDeliveriesCache[o.invoiceNumber] || []).filter(d => !d.undone);
+        const deliveredIndices = new Set();
+        deliveries.forEach(d => (d.item_indices||[]).forEach(idx => deliveredIndices.add(idx)));
+
+        const itemListEl = $('qc-item-list');
+        if (!(o.items||[]).length) {
+            itemListEl.innerHTML = '<p style="color:#999;text-align:center;padding:15px;">Tiada item.</p>';
+        } else {
+            itemListEl.innerHTML = (o.items||[]).map((it, idx) => {
+                const lines = (it.description||'').split('\n');
+                const itemName = lines[0];
+                const itemDetail = lines.slice(1).join(' ');
+                const isDelivered = deliveredIndices.has(idx);
+                if (isDelivered) {
+                    return `<div class="qc-item-row delivered">
+                        <input type="checkbox" disabled checked>
+                        <div class="qc-item-info">
+                            <div class="qc-item-name">${idx+1}. ${escapeHtml(itemName)} (${it.quantity}x) — <span class="qc-item-price">RM${(it.total||0).toFixed(2)}</span></div>
+                            ${itemDetail ? `<div class="qc-item-detail">${escapeHtml(itemDetail)}</div>` : ''}
+                            <div style="color:#27ae60;font-weight:bold;font-size:11px;margin-top:3px;">✅ Sudah diserahkan</div>
+                        </div>
+                    </div>`;
+                }
+                return `<div class="qc-item-row">
+                    <input type="checkbox" class="qc-item-check" data-idx="${idx}" onchange="updateQCDeliverySelection()">
+                    <div class="qc-item-info">
+                        <div class="qc-item-name">${idx+1}. ${escapeHtml(itemName)} (${it.quantity}x) — <span class="qc-item-price">RM${(it.total||0).toFixed(2)}</span></div>
+                        ${itemDetail ? `<div class="qc-item-detail">${escapeHtml(itemDetail)}</div>` : ''}
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        // Auto-tick semua item yang belum diserahkan (kalau production dah siap)
+        if (o.productionStatus === 'done') {
+            document.querySelectorAll('.qc-item-check').forEach(cb => {
+                cb.checked = true;
+            });
+            updateQCDeliverySelection();
+        }
 
         // Staff dropdown
         const activeStaff = allStaffCardsCache.filter(s => s.active);
@@ -2939,9 +2950,15 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => $('qc-pin').focus(), 300);
     };
 
+    window.updateQCDeliverySelection = function() {
+        const checks = document.querySelectorAll('.qc-item-check:checked');
+        currentDeliveryIndices = Array.from(checks).map(c => parseInt(c.dataset.idx));
+    };
+
     window.closeQuickCompleteModal = function() {
         $('quick-complete-modal').style.display = 'none';
         quickCompleteOrder = null;
+        currentDeliveryIndices = [];
     };
 
     window.executeQuickComplete = async function() {
@@ -2953,9 +2970,19 @@ document.addEventListener('DOMContentLoaded', function() {
         const pin = $('qc-pin').value.trim();
         const shouldPrint = $('qc-print-bill').checked;
 
+        // Ambil indices dari checkbox
+        const checks = document.querySelectorAll('.qc-item-check:checked');
+        const selectedIndices = Array.from(checks).map(c => parseInt(c.dataset.idx));
+
         if (!staffName) { $('qc-error').textContent = 'Sila pilih staf.'; $('qc-error').style.display = 'block'; return; }
         if (!dateVal) { $('qc-error').textContent = 'Sila isi tarikh serah.'; $('qc-error').style.display = 'block'; return; }
         if (pin.length !== 4) { $('qc-error').textContent = 'PIN mesti 4 digit.'; $('qc-error').style.display = 'block'; return; }
+        if (selectedIndices.length === 0) {
+            // Benarkan simpan "selesai tanpa tick"? Tidak — mesti ada sekurang-kurangnya 1 item.
+            $('qc-error').textContent = '⚠️ Sila tick sekurang-kurangnya 1 item yang nak diserahkan.';
+            $('qc-error').style.display = 'block';
+            return;
+        }
 
         // Verify PIN
         const verified = await verifyPinByName(staffName, pin);
@@ -2969,52 +2996,64 @@ document.addEventListener('DOMContentLoaded', function() {
 
         $('qc-error').style.display = 'none';
 
-        // Simpan SEMUA item yang belum diserahkan sebagai satu delivery
         const o = quickCompleteOrder;
-        const deliveries = (allDeliveriesCache[o.invoiceNumber] || []).filter(d => !d.undone);
-        const deliveredIndices = new Set();
-        deliveries.forEach(d => (d.item_indices||[]).forEach(idx => deliveredIndices.add(idx)));
-        const remainingIndices = (o.items||[]).map((_, i) => i).filter(i => !deliveredIndices.has(i));
 
-        let newDeliveryId = null;
-        if (remainingIndices.length > 0) {
-            const summary = remainingIndices.map(idx => {
-                const it = o.items[idx];
-                return (it.description||'').split('\n')[0];
-            }).join(', ');
-            // Save delivery
-            const { data: orderRow } = await supabaseClient.from('orders').select('id').eq('invoice_number', o.invoiceNumber).single();
-            if (orderRow) {
-                const insertData = {
-                    order_id: orderRow.id,
-                    invoice_number: o.invoiceNumber,
-                    item_indices: remainingIndices,
-                    item_summary: summary,
-                    delivery_method: o.deliveryMethod,
-                    delivered_by: staffName,
-                    pin_verified: true,
-                    delivered_at: new Date(dateVal + 'T12:00:00').toISOString(),
-                    payment_method: payMethod,
-                    payment_amount: payAmount
-                };
-                const { data: insertRes, error: insErr } = await supabaseClient.from('order_deliveries').insert(insertData).select().single();
-                if (insErr) { alert('❌ Gagal simpan penyerahan: ' + insErr.message); return; }
-                newDeliveryId = insertRes.id;
-            }
+        // Simpan delivery record dengan item_indices yang dipilih
+        const summary = selectedIndices.map(idx => {
+            const it = o.items[idx];
+            return (it.description||'').split('\n')[0];
+        }).join(', ');
+
+        const deliveryResult = await addDelivery(
+            o.invoiceNumber, 
+            selectedIndices, 
+            summary, 
+            o.deliveryMethod, 
+            staffName,
+            payMethod,
+            payAmount,
+            dateVal
+        );
+
+        if (!deliveryResult) {
+            alert('❌ Gagal simpan penyerahan.');
+            return;
         }
 
-        // Update order: status='completed' jika SEMUA item dah diserahkan + production siap; else tetap 'normal' (jadikan sebagai Serah Tidak Lengkap)
-        const nowAllDelivered = (getDeliveredCountForOrder(o) + remainingIndices.length) >= (o.items||[]).length;
+        // Kira semula berapa item dah diserahkan
+        await loadAllDeliveries();
+        const totalItems = (o.items||[]).length;
+        const newDeliveredCount = getDeliveredCountForOrder({ invoiceNumber: o.invoiceNumber, items: o.items });
+        const allDelivered = newDeliveredCount >= totalItems;
+
+        // Tentukan status akhir
+        let newStatus = o.status;
+        let statusLabel = '';
+        if (allDelivered && o.productionStatus === 'done') {
+            newStatus = 'completed';
+            statusLabel = 'SELESAI PENUH';
+        } else if (allDelivered && o.productionStatus !== 'done') {
+            newStatus = 'normal'; // Serah Tidak Lengkap sebab production belum siap
+            statusLabel = 'SERAH TIDAK LENGKAP (production belum siap)';
+        } else if (!allDelivered) {
+            newStatus = 'normal'; // Serah Tidak Lengkap sebab item tak cukup
+            statusLabel = 'SERAH TIDAK LENGKAP (item belum cukup)';
+        }
+
+        // Update order
         const updateData = {
             ...o,
-            completedBy: staffName,
-            completedAt: new Date(dateVal + 'T12:00:00').toISOString(),
-            completedPinVerified: true
+            status: newStatus,
+            completedBy: allDelivered ? staffName : null,
+            completedAt: allDelivered ? new Date(dateVal + 'T12:00:00').toISOString() : null,
+            completedPinVerified: allDelivered ? true : false,
+            paymentInfo: {
+                date: dateVal,
+                method: payMethod,
+                amount: payAmount,
+                receivedBy: staffName
+            }
         };
-        if (nowAllDelivered && o.productionStatus === 'done') {
-            updateData.status = 'completed';
-        }
-        // Kalau tidak semua item siap → tetap 'normal' (badge akan jadi "Sedia Selesai" atau "X/Y Diserahkan")
 
         if (!await updateOrderWithLog(updateData, o)) {
             alert('❌ Gagal update order.');
@@ -3022,7 +3061,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         await addAuditLog(o.invoiceNumber, 'update', 'Penyerahan & Selesai', null, 
-            `${remainingIndices.length} item diserahkan oleh ${staffName} • Bayaran: ${payMethod} RM${payAmount.toFixed(2)}`, 
+            `${selectedIndices.length} item diserahkan oleh ${staffName} • Bayaran: ${payMethod} RM${payAmount.toFixed(2)} • Status: ${statusLabel}`, 
             `Selesai oleh ${staffName}`);
 
         // Update cache
@@ -3031,20 +3070,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
         closeQuickCompleteModal();
 
-        let msg = `✅ Order ${o.invoiceNumber} — ${remainingIndices.length} item diserahkan oleh ${staffName}.`;
-        if (nowAllDelivered && o.productionStatus === 'done') {
-            msg += '\n🟢 Status: SELESAI';
-        } else if (!nowAllDelivered) {
-            msg += '\n🟠 Status: SERAH TIDAK LENGKAP (ada item belum diserahkan)';
-        } else if (o.productionStatus !== 'done') {
-            msg += '\n🟠 Status: SERAH TIDAK LENGKAP (ada item belum siap production)';
-        }
+        let msg = `✅ Order ${o.invoiceNumber} — ${selectedIndices.length} item diserahkan oleh ${staffName}.`;
+        msg += `\n📊 Status: ${statusLabel}`;
         alert(msg);
 
-        // Print bill kalau perlu
+        // Print bill
         if (shouldPrint && updatedOrder) {
+            const isFinal = allDelivered && updatedOrder.productionStatus === 'done';
             const w = window.open('', '_blank');
-            if (w) { w.document.write(buildPrintHTML(updatedOrder, true)); w.document.close(); setTimeout(() => w.print(), 500); }
+            if (w) { 
+                w.document.write(buildPrintHTML(updatedOrder, isFinal, !isFinal)); 
+                w.document.close(); 
+                setTimeout(() => w.print(), 500); 
+            }
         }
 
         displayOrders();
@@ -3445,10 +3483,7 @@ document.addEventListener('DOMContentLoaded', function() {
             $('detail-completed-row').style.display = 'none';
         }
         
-        renderDeliveryItemsChecklist(o);
         renderDeliveryHistory(o.invoiceNumber);
-        
-        $('btn-verify-delivery').style.display = (o.productionStatus === 'done' && o.status !== 'completed') ? 'inline-block' : 'none';
         $('btn-print-final').style.display = o.status === 'completed' ? 'block' : 'none';
         
         await populateDesignerDropdown('detail-designer-select', o.assignedDesigner || '');
@@ -3487,56 +3522,6 @@ document.addEventListener('DOMContentLoaded', function() {
         orderListPage.style.display = 'none'; activeOrdersPage.style.display = 'none'; 
         designPage.style.display = 'none'; productionPage.style.display = 'none';
         orderDetailView.style.display = 'block';
-    }
-    
-    function renderDeliveryItemsChecklist(o) {
-        const cont = $('detail-delivery-items');
-        const items = o.items || [];
-        const deliveries = (allDeliveriesCache[o.invoiceNumber] || []).filter(d => !d.undone);
-        const deliveredIndices = new Set();
-        const deliveredMap = {};
-        deliveries.forEach(d => {
-            (d.item_indices || []).forEach(idx => {
-                deliveredIndices.add(idx);
-                deliveredMap[idx] = { by: d.delivered_by, at: d.delivered_at, method: d.delivery_method, payment_method: d.payment_method, payment_amount: d.payment_amount };
-            });
-        });
-        
-        if (!items.length) { cont.innerHTML = '<p style="color:#999;font-size:13px;">Tiada item.</p>'; return; }
-        
-        cont.innerHTML = items.map((it, idx) => {
-            const isDelivered = deliveredIndices.has(idx);
-            const lines = it.description.split('\n');
-            const itemName = lines[0];
-            const itemDetail = lines.slice(1).join(' ');
-            const info = deliveredMap[idx];
-            let infoHtml = '';
-            if (isDelivered && info) {
-                let payInfo = '';
-                if (info.payment_method) {
-                    const payLabel = {tunai:'💵 Tunai', 'bank-transfer':'🏦 Bank', 'kad-kredit':'💳 Kad', 'qr-pay':'📱 QR', 'lain':'📝 Lain'}[info.payment_method] || info.payment_method;
-                    payInfo = ` • ${payLabel} RM${(info.payment_amount||0).toFixed(2)}`;
-                }
-                infoHtml = `<div class="item-delivered-info">✅ Diserahkan ${formatTime(info.at)} oleh ${escapeHtml(info.by)}${payInfo}</div>`;
-            }
-            const checkbox = isDelivered 
-                ? `<input type="checkbox" disabled checked>` 
-                : `<input type="checkbox" class="delivery-item-check" data-idx="${idx}" onchange="updateDeliverySelection()">`;
-            const cls = isDelivered ? 'delivery-item-row delivered' : 'delivery-item-row';
-            return `<div class="${cls}">
-                ${checkbox}
-                <div class="item-info">
-                    <div class="item-name">${idx+1}. ${escapeHtml(itemName)} (${it.quantity}x) — RM${(it.total||0).toFixed(2)}</div>
-                    ${itemDetail ? `<div class="item-detail">${escapeHtml(itemDetail)}</div>` : ''}
-                    ${infoHtml}
-                </div>
-            </div>`;
-        }).join('');
-    }
-
-    function updateDeliverySelection() {
-        const checks = document.querySelectorAll('.delivery-item-check:checked');
-        currentDeliveryIndices = Array.from(checks).map(c => parseInt(c.dataset.idx));
     }
 
     function renderDeliveryHistory(invoiceNumber) {
@@ -3587,68 +3572,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    window.openDeliveryPinModal = function() {
-        if (!currentOrder) return;
-        const checks = document.querySelectorAll('.delivery-item-check:checked');
-        const indices = Array.from(checks).map(c => parseInt(c.dataset.idx));
-        if (!indices.length) { alert('⚠️ Sila tick sekurang-kurangnya 1 item.'); return; }
-        currentDeliveryIndices = indices;
-        
-        const items = indices.map(idx => {
-            const it = currentOrder.items[idx];
-            const name = (it.description || '').split('\n')[0];
-            return `<div>• ${escapeHtml(name)} (${it.quantity}x)</div>`;
-        }).join('');
-        $('deliv-pin-items').innerHTML = items;
-        $('deliv-pin-invoice').textContent = currentOrder.invoiceNumber;
-        
-        const activeStaff = allStaffCardsCache.filter(s => s.active);
-        $('deliv-pin-staff').innerHTML = activeStaff.map(s => 
-            `<option value="${escapeAttr(s.staff_name)}"${s.staff_name === STAFF_NAME ? ' selected' : ''}>${escapeHtml(s.staff_name)}${s.staff_name === STAFF_NAME ? ' (anda)' : ''}</option>`
-        ).join('');
-        
-        $('deliv-pin-code').value = '';
-        $('deliv-pin-error').style.display = 'none';
-        $('delivery-pin-modal').style.display = 'flex';
-        setTimeout(() => $('deliv-pin-code').focus(), 200);
-    };
-    window.closeDeliveryPinModal = function() { $('delivery-pin-modal').style.display = 'none'; };
-    
-    window.executeVerifyDelivery = async function() {
-        const staffName = $('deliv-pin-staff').value;
-        const pin = $('deliv-pin-code').value.trim();
-        if (!staffName) { $('deliv-pin-error').textContent = 'Sila pilih staf.'; $('deliv-pin-error').style.display = 'block'; return; }
-        if (pin.length !== 4) { $('deliv-pin-error').textContent = 'PIN mesti 4 digit.'; $('deliv-pin-error').style.display = 'block'; return; }
-        const verified = await verifyPinByName(staffName, pin);
-        if (!verified) {
-            $('deliv-pin-error').textContent = '❌ PIN salah untuk ' + staffName;
-            $('deliv-pin-error').style.display = 'block';
-            $('deliv-pin-code').value = '';
-            $('deliv-pin-code').focus();
-            return;
-        }
-        
-        const indices = currentDeliveryIndices;
-        const summary = indices.map(idx => {
-            const it = currentOrder.items[idx];
-            return (it.description||'').split('\n')[0];
-        }).join(', ');
-        
-        if (await addDelivery(currentOrder.invoiceNumber, indices, summary, currentOrder.deliveryMethod, staffName)) {
-            await addAuditLog(currentOrder.invoiceNumber, 'update', 'Penyerahan', null, `${indices.length} item diserahkan`, `Diserahkan oleh ${staffName}`);
-            closeDeliveryPinModal();
-            alert(`✅ ${indices.length} item diserahkan oleh ${staffName}.`);
-            await loadOrders();
-            const updated = allOrdersCache.find(x => x.invoiceNumber === currentOrder.invoiceNumber);
-            if (updated) await showOrderDetail(updated);
-        }
-    };
-
-    window.editDeliveryFromDetail = function() {
-        if (!currentOrder) return;
-        showEditOrderModal(currentOrder);
-    };
-    
     async function loadDesignActivityForDetail(invoiceNumber) {
         const activity = await loadDesignActivity(invoiceNumber);
         const el = $('design-activity-list');
@@ -3674,11 +3597,16 @@ document.addEventListener('DOMContentLoaded', function() {
         currentOrder = null;
     }
 
-    function buildPrintHTML(o, isFinal) {
+    function buildPrintHTML(o, isFinal, isPartial) {
         const title = isFinal ? 'INVOIS AKHIR' : 'INVOIS';
-        const stamp = isFinal ? '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-45deg);font-size:60px;color:rgba(0,0,0,0.2);font-weight:bold;border:5px solid rgba(0,0,0,0.2);padding:20px;z-index:1000;">SELESAI</div>' : '';
+        let stamp = '';
+        if (isFinal) {
+            stamp = '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-45deg);font-size:60px;color:rgba(46,204,113,0.25);font-weight:bold;border:5px solid rgba(46,204,113,0.25);padding:20px;z-index:1000;">SELESAI</div>';
+        } else if (isPartial) {
+            stamp = '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-45deg);font-size:48px;color:rgba(230,126,34,0.3);font-weight:bold;border:5px solid rgba(230,126,34,0.3);padding:20px;z-index:1000;">TIDAK LENGKAP</div>';
+        }
         let pay = '';
-        if (o.paymentInfo) pay = `<div class="bank-info"><p><strong>MAKLUMAT PEMBAYARAN</strong></p><p>Tarikh: ${formatDate(o.paymentInfo.date)}</p><p>Kaedah: ${o.paymentInfo.method}</p><p>Jumlah: RM${o.paymentInfo.amount}</p></div>`;
+        if (o.paymentInfo) pay = `<div class="bank-info"><p><strong>MAKLUMAT PEMBAYARAN</strong></p><p>Tarikh: ${formatDate(o.paymentInfo.date)}</p><p>Kaedah: ${o.paymentInfo.method}</p><p>Jumlah: RM${o.paymentInfo.amount}</p><p>Diterima oleh: ${o.paymentInfo.receivedBy||'-'}</p></div>`;
         let deliveryInfo = '';
         if (o.deliveryMethod) {
             const methodLabel = o.deliveryMethod === 'pickup' ? 'Pickup di Kedai' : 'Pos / Kurier';
@@ -4510,7 +4438,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 const updated = allOrdersCache.find(x => x.invoiceNumber === currentOrder.invoiceNumber);
                 if (updated) {
                     currentOrder = updated;
-                    renderDeliveryItemsChecklist(updated);
                     renderDeliveryHistory(updated.invoiceNumber);
                 }
             }
