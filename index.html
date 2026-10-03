@@ -137,8 +137,8 @@ th { background-color: #f2f2f2; }
 #sales-person-table th:first-child, #sales-person-table td:first-child { text-align: left; }
 #sales-person-table .commission-input { width: 60px; padding: 5px; text-align: right; }
 #sales-person-table .bill-count { cursor: pointer; text-decoration: underline; color: #007bff; }
-#send-production-modal, #pause-production-modal, #dept-modal, #password-modal, #name-modal, #template-modal, #size-cat-modal, #size-input-modal, #qr-login-modal, #pin-login-modal, #staff-modal, #qr-display-modal, #idcard-modal, #staff-password-login-modal, #staff-pin-manual-modal, #upload-modal, #pass-designer-modal, #file-notes-modal, #delivery-pin-modal, #complete-pin-modal, #quick-complete-modal, #print-options-modal { position: fixed; z-index: 3500; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; padding: 20px; }
-.password-modal-content, .name-modal-content, .template-modal-content, .size-cat-modal-content, .size-input-modal-content, .qr-login-modal-content, .pin-login-modal-content, .staff-modal-content, .qr-display-modal-content, .idcard-modal-content, .staff-password-login-modal-content, .staff-pin-manual-modal-content, .upload-modal-content, .pass-designer-modal-content, .file-notes-modal-content, .delivery-pin-modal-content, .complete-pin-modal-content, .quick-complete-modal-content, .print-options-modal-content {
+#send-production-modal, #pause-production-modal, #dept-modal, #password-modal, #name-modal, #template-modal, #size-cat-modal, #size-input-modal, #qr-login-modal, #pin-login-modal, #staff-modal, #qr-display-modal, #idcard-modal, #staff-password-login-modal, #staff-pin-manual-modal, #upload-modal, #pass-designer-modal, #file-notes-modal, #delivery-pin-modal, #complete-pin-modal, #quick-complete-modal, #print-options-modal, #incomplete-edit-modal { position: fixed; z-index: 3500; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; padding: 20px; }
+.password-modal-content, .name-modal-content, .template-modal-content, .size-cat-modal-content, .size-input-modal-content, .qr-login-modal-content, .pin-login-modal-content, .staff-modal-content, .qr-display-modal-content, .idcard-modal-content, .staff-password-login-modal-content, .staff-pin-manual-modal-content, .upload-modal-content, .pass-designer-modal-content, .file-notes-modal-content, .delivery-pin-modal-content, .complete-pin-modal-content, .quick-complete-modal-content, .print-options-modal-content, .incomplete-edit-modal-content {
     background: white; padding: 30px; border-radius: 12px; position: relative;
     width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto;
 }
@@ -147,6 +147,7 @@ th { background-color: #f2f2f2; }
 .qr-login-modal-content, .pin-login-modal-content, .staff-password-login-modal-content, .staff-pin-manual-modal-content, .delivery-pin-modal-content, .complete-pin-modal-content { max-width: 450px; text-align: center; }
 .quick-complete-modal-content { max-width: 620px; }
 .print-options-modal-content { max-width: 450px; text-align: center; }
+.incomplete-edit-modal-content { max-width: 650px; }
 .idcard-modal-content { max-width: 600px; }
 .upload-modal-content { max-width: 650px; }
 .pass-designer-modal-content { max-width: 450px; }
@@ -286,6 +287,11 @@ body:not(.boss-mode) .boss-only { display: none !important; }
 .production-activity-item { padding: 10px 12px; background: white; border-left: 3px solid #0284c7; border-radius: 4px; margin-bottom: 8px; font-size: 13px; }
 .production-activity-item .log-header { font-weight: bold; color: #333; margin-bottom: 5px; }
 .production-activity-item .log-detail { color: #666; font-size: 12px; line-height: 1.6; }
+.incomplete-note-panel { margin-top: 20px; padding: 20px; background: linear-gradient(135deg, #fff8e1, #fffbf0); border-radius: 10px; border-left: 5px solid #e67e22; }
+.incomplete-note-panel h4 { margin: 0 0 10px; color: #e67e22; display: flex; align-items: center; gap: 8px; }
+.incomplete-note-item { padding: 10px 12px; background: white; border-left: 3px solid #e67e22; border-radius: 4px; margin-bottom: 8px; font-size: 12px; }
+.incomplete-note-item .log-header { font-weight: bold; color: #333; margin-bottom: 5px; }
+.incomplete-note-item .log-detail { color: #666; font-size: 11px; line-height: 1.6; }
 .design-summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; margin-bottom: 20px; }
 .design-summary-card { padding: 18px; border-radius: 10px; text-align: center; color: white; box-shadow: 0 3px 8px rgba(0,0,0,0.1); }
 .design-summary-card .amount { font-size: 2rem; font-weight: bold; }
@@ -334,7 +340,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
 .print-options-btn.btn-final { background: #f0fff4; border-color: #27ae60; color: #27ae60; }
 .print-options-btn.btn-partial { background: #fff8e1; border-color: #e67e22; color: #d35400; }
 @media print {
-    .no-print, .action-buttons, .tab-nav, .home-button-container, #password-modal, .add-sales-person, #bills-modal, #install-app-btn, #upload-modal, #pass-designer-modal, #file-notes-modal, #send-production-modal, #pause-production-modal, #delivery-pin-modal, #complete-pin-modal, #quick-complete-modal, #print-options-modal { display: none !important; }
+    .no-print, .action-buttons, .tab-nav, .home-button-container, #password-modal, .add-sales-person, #bills-modal, #install-app-btn, #upload-modal, #pass-designer-modal, #file-notes-modal, #send-production-modal, #pause-production-modal, #delivery-pin-modal, #complete-pin-modal, #quick-complete-modal, #print-options-modal, #incomplete-edit-modal { display: none !important; }
     body { background: none; padding: 0; }
     .container { box-shadow: none; max-width: 100%; padding: 0; }
     #invoice-number-dropdown { display: none !important; }
@@ -672,6 +678,27 @@ body:not(.boss-mode) .boss-only { display: none !important; }
                 <div id="delivery-history-list"><p style="color:#999;font-size:13px;">Belum ada penyerahan.</p></div>
             </div>
         </div>
+
+        <!-- ═════ PANEL NOTA KEKURANGAN / NOTA SERAHAN ═════ -->
+        <div class="incomplete-note-panel" id="incomplete-note-panel">
+            <h4>📝 Nota Kekurangan / Nota Serahan</h4>
+            <p style="font-size:12px;color:#666;margin-top:0;margin-bottom:10px;">
+                Nota ini akan <strong>muncul dalam bill bila cetak</strong>. Guna untuk terangkan kepada pelanggan apa yang belum siap, apa yang sudah diambil, atau arahan khas.
+            </p>
+            <textarea id="detail-incomplete-note" placeholder="Contoh:&#10;✅ 2 item pertama dah diambil pada 03/10/2026.&#10;⏳ Baki item akan siap pada 07/10/2026.&#10;⏳ Tunggu customer confirm design akhir." style="height:100px;resize:vertical;font-family:'Courier New',monospace;font-size:13px;"></textarea>
+            <div style="font-size:11px;color:#666;margin-top:6px;font-style:italic;">
+                <span id="detail-note-updated-info">Belum pernah dikemaskini</span>
+            </div>
+            <div class="action-buttons no-print" style="justify-content:flex-start;margin-top:12px;">
+                <button class="btn" style="background:#e67e22;" onclick="saveIncompleteNote()">💾 Simpan Nota</button>
+                <button class="btn btn-secondary" onclick="clearIncompleteNote()">🗑️ Kosongkan</button>
+            </div>
+            <div id="incomplete-note-history-section" style="margin-top:15px;">
+                <h5 style="color:#e67e22;margin-bottom:8px;">📋 Sejarah Perubahan Nota</h5>
+                <div id="incomplete-note-history-list"><p style="color:#999;font-size:13px;">Belum ada sejarah.</p></div>
+            </div>
+        </div>
+        <!-- ═════ HUJUNG PANEL NOTA ═════ -->
 
         <div class="design-panel" id="design-panel">
             <h4>🎨 Info Design</h4>
@@ -1174,7 +1201,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
     </div>
 </div>
 
-<!-- ════════ POP-UP SELESAI ════════ -->
 <div id="quick-complete-modal">
     <div class="quick-complete-modal-content">
         <button class="modal-close-x" onclick="closeQuickCompleteModal()">×</button>
@@ -1229,7 +1255,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
     </div>
 </div>
 
-<!-- ════════ POP-UP PILIHAN PRINT ════════ -->
 <div id="print-options-modal">
     <div class="print-options-modal-content">
         <button class="modal-close-x" onclick="closePrintOptionsModal()">×</button>
@@ -1252,7 +1277,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         <button class="print-options-btn btn-partial" onclick="doPrintOption('partial')">
             <div style="font-size:28px;">⚠️</div>
             <div>Cetak Bill TIDAK LENGKAP</div>
-            <div style="font-size:11px;font-weight:normal;margin-top:4px;">Dengan cop TIDAK LENGKAP di tengah.</div>
+            <div style="font-size:11px;font-weight:normal;margin-top:4px;">Dengan cop TIDAK LENGKAP + senarai item sudah/belum diserahkan.</div>
         </button>
 
         <div class="action-buttons" style="justify-content:center;margin-top:15px;">
@@ -1333,6 +1358,10 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         <div class="form-group">
             <label>📝 Nota untuk Designer:</label>
             <textarea id="edit-design-notes" style="height:70px;resize:vertical;"></textarea>
+        </div>
+        <div class="form-group" style="background:#fff8e1;padding:12px;border-radius:6px;border-left:3px solid #e67e22;">
+            <label>📝 Nota Kekurangan / Nota Serahan (muncul dalam bill):</label>
+            <textarea id="edit-incomplete-note" placeholder="Contoh: 2 item pertama dah diambil..." style="height:80px;resize:vertical;font-family:'Courier New',monospace;font-size:13px;"></textarea>
         </div>
         <div class="action-buttons no-print">
             <button id="cancel-edit-order" class="btn btn-secondary">Batal</button>
@@ -1801,7 +1830,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 deliveredBy: o.delivered_by || null,
                 completedBy: o.completed_by || null,
                 completedAt: o.completed_at || null,
-                completedPinVerified: o.completed_pin_verified || false
+                completedPinVerified: o.completed_pin_verified || false,
+                incompleteNote: o.incomplete_note || '',
+                incompleteNoteUpdatedAt: o.incomplete_note_updated_at,
+                incompleteNoteUpdatedBy: o.incomplete_note_updated_by
             }));
             allOrdersCache = result;
             await loadAllDeliveries();
@@ -1876,6 +1908,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (newOrder.hasOwnProperty('completedBy')) updateData.completed_by = newOrder.completedBy;
             if (newOrder.hasOwnProperty('completedAt')) updateData.completed_at = newOrder.completedAt;
             if (newOrder.hasOwnProperty('completedPinVerified')) updateData.completed_pin_verified = newOrder.completedPinVerified;
+            if (newOrder.hasOwnProperty('incompleteNote')) updateData.incomplete_note = newOrder.incompleteNote;
+            if (newOrder.hasOwnProperty('incompleteNoteUpdatedAt')) updateData.incomplete_note_updated_at = newOrder.incompleteNoteUpdatedAt;
+            if (newOrder.hasOwnProperty('incompleteNoteUpdatedBy')) updateData.incomplete_note_updated_by = newOrder.incompleteNoteUpdatedBy;
 
             const { error } = await supabaseClient.from('orders').update(updateData).eq('invoice_number', newOrder.invoiceNumber);
             if (error) throw error;
@@ -2834,9 +2869,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if ($('count-completed')) $('count-completed').textContent = completed.length;
     }
 
-    // ═══════════════════════════════════════════════════════════
-    // DISPLAY ORDERS — SETIAP ORDER ADA BUTANG PRINT, PRINT AKHIR, EDIT, SELESAI
-    // ═══════════════════════════════════════════════════════════
     async function displayOrders() {
         await loadOrders();
         updateFilterCounts();
@@ -2854,7 +2886,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const isCompleted = o.status === 'completed';
             const isPartial = isPartialDelivery(o);
             
-            // Butang Selesai — hanya untuk order yang belum completed DAN production done
             let completeBtn = '';
             if (!isCompleted && isProductionDone) {
                 completeBtn = `<button class="complete-btn" data-invoice="${o.invoiceNumber}" title="Buka pop-up selesai">✅ Selesai</button>`;
@@ -2864,10 +2895,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 completeBtn = `<button class="complete-btn" disabled title="Production belum siap">✅ Selesai</button>`;
             }
             
-            // Butang Print Asal — sentiasa ada
             const printBtn = `<button class="print-btn" data-invoice="${o.invoiceNumber}" title="Cetak bill asal">🖨️ Cetak</button>`;
             
-            // Butang Print Akhir — jika completed atau partial
             let printFinalBtn = '';
             if (isCompleted) {
                 printFinalBtn = `<button class="print-final-btn" data-invoice="${o.invoiceNumber}" data-type="final" title="Cetak bill akhir (SELESAI)" style="background:#27ae60;">📄 Cetak Akhir</button>`;
@@ -2875,7 +2904,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 printFinalBtn = `<button class="print-final-btn" data-invoice="${o.invoiceNumber}" data-type="partial" title="Cetak bill TIDAK LENGKAP" style="background:#e67e22;">📄 Cetak Akhir</button>`;
             }
             
-            // Butang Edit — sentiasa ada
             const editBtn = `<button class="edit-btn" data-invoice="${o.invoiceNumber}" title="Edit order">✏️ Edit</button>`;
             
             tr.innerHTML = `<td><span class="order-number" data-invoice="${o.invoiceNumber}">${o.invoiceNumber||'-'}</span></td>
@@ -2904,7 +2932,6 @@ document.addEventListener('DOMContentLoaded', function() {
         $('summary-deposit').textContent = formatRM(td);
         $('summary-balance').textContent = formatRM(tbal);
         
-        // Attach listeners
         tb.querySelectorAll('.order-number').forEach(el => el.addEventListener('click', e => { 
             const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice); 
             if (o) showOrderDetail(o); 
@@ -2925,7 +2952,7 @@ document.addEventListener('DOMContentLoaded', function() {
             e.stopPropagation(); 
             const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice); 
             if (!o) return;
-            const type = e.target.dataset.type; // 'final' or 'partial'
+            const type = e.target.dataset.type;
             const w = window.open('', '_blank'); 
             if (!w) return alert('Pop-up diblok'); 
             w.document.write(buildPrintHTML(o, type === 'final', type === 'partial')); 
@@ -2950,9 +2977,55 @@ document.addEventListener('DOMContentLoaded', function() {
         applyBossMode();
     }
 
-    // ═══════════════════════════════════════════════════════════
-    // POP-UP SELESAI
-    // ═══════════════════════════════════════════════════════════
+    // ═══ NOTA KEKURANGAN — SIMPAN & SEJARAH ═══
+    window.saveIncompleteNote = async function() {
+        if (!currentOrder) return;
+        const newNote = $('detail-incomplete-note').value.trim();
+        const oldNote = currentOrder.incompleteNote || '';
+        if (newNote === oldNote) { alert('ℹ️ Nota tidak berubah.'); return; }
+        const upd = {
+            ...currentOrder,
+            incompleteNote: newNote,
+            incompleteNoteUpdatedAt: new Date(),
+            incompleteNoteUpdatedBy: STAFF_NAME
+        };
+        if (await updateOrderWithLog(upd, currentOrder)) {
+            await addAuditLog(currentOrder.invoiceNumber, 'update', 'Nota Serahan/Kekurangan', oldNote || '(kosong)', newNote || '(kosong)', `Nota dikemaskini oleh ${STAFF_NAME}`);
+            currentOrder = upd;
+            $('detail-note-updated-info').textContent = `✅ Dikemaskini ${formatTime(upd.incompleteNoteUpdatedAt)} oleh ${STAFF_NAME}`;
+            await loadIncompleteNoteHistory(currentOrder.invoiceNumber);
+            alert('✅ Nota disimpan.');
+        } else {
+            alert('❌ Gagal simpan nota.');
+        }
+    };
+    window.clearIncompleteNote = async function() {
+        if (!currentOrder) return;
+        if (!confirm('Kosongkan nota ini?')) return;
+        $('detail-incomplete-note').value = '';
+        await saveIncompleteNote();
+    };
+    async function loadIncompleteNoteHistory(invoiceNumber) {
+        const logs = await loadAuditLogs(invoiceNumber);
+        const noteLogs = logs.filter(l => l.field_changed === 'Nota Serahan/Kekurangan' || l.field_changed === 'Nota Serahan');
+        const el = $('incomplete-note-history-list');
+        if (!noteLogs.length) {
+            el.innerHTML = '<p style="color:#999;font-size:13px;">Belum ada sejarah.</p>';
+            return;
+        }
+        el.innerHTML = noteLogs.map(l => {
+            const oldV = l.old_value || '(kosong)';
+            const newV = l.new_value || '(kosong)';
+            return `<div class="incomplete-note-item">
+                <div class="log-header">📝 ${formatTime(l.changed_at)} — ${escapeHtml(l.staff_name||'-')}</div>
+                <div class="log-detail">
+                    <div style="color:#e74c3c;"><strong>Lama:</strong> ${escapeHtml(oldV)}</div>
+                    <div style="color:#27ae60;"><strong>Baru:</strong> ${escapeHtml(newV)}</div>
+                </div>
+            </div>`;
+        }).join('');
+    }
+
     window.openQuickCompleteModal = function(o) {
         quickCompleteOrder = o;
         currentDeliveryIndices = [];
@@ -3157,9 +3230,6 @@ document.addEventListener('DOMContentLoaded', function() {
         displayOrders();
     };
 
-    // ═══════════════════════════════════════════════════════════
-    // POP-UP PILIHAN PRINT
-    // ═══════════════════════════════════════════════════════════
     window.openPrintOptionsModal = function(o) {
         printOptionsOrder = o;
         $('print-options-invoice').textContent = o.invoiceNumber;
@@ -3614,6 +3684,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         renderDeliveryHistory(o.invoiceNumber);
+        
+        // Load Nota Kekurangan
+        $('detail-incomplete-note').value = o.incompleteNote || '';
+        if (o.incompleteNoteUpdatedAt) {
+            $('detail-note-updated-info').textContent = `✅ Dikemaskini ${formatTime(o.incompleteNoteUpdatedAt)} oleh ${o.incompleteNoteUpdatedBy||'-'}`;
+        } else {
+            $('detail-note-updated-info').textContent = 'Belum pernah dikemaskini';
+        }
+        await loadIncompleteNoteHistory(o.invoiceNumber);
+        
         $('btn-print-final').style.display = 'block';
         
         await populateDesignerDropdown('detail-designer-select', o.assignedDesigner || '');
@@ -3722,11 +3802,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const t = document.querySelector('.tab-btn.active');
         if (t && t.id === 'tab-active') { activeOrdersPage.style.display='block'; displayActiveOrders(); }
         else if (t && t.id === 'tab-design') { designPage.style.display='block'; displayDesignerOrders(); }
-        else if (t && t.id === 'tab-production') { productionPage.style.display='block'; displayProductionOrders(); }
+        else if (t && t.id === 'tab-production') { productionPage.style.display='block'; displayProductionPages(); }
         else { orderListPage.style.display='block'; displayOrders(); }
         currentOrder = null;
     }
 
+    // ═══════════════ BUILD PRINT HTML — dengan STATUS PENYERAHAN + NOTA ═══════════════
     function buildPrintHTML(o, isFinal, isPartial) {
         const title = isFinal ? 'INVOIS AKHIR' : (isPartial ? 'INVOIS - TIDAK LENGKAP' : 'INVOIS');
         let stamp = '';
@@ -3735,6 +3816,70 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (isPartial) {
             stamp = '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-45deg);font-size:64px;color:rgba(230,126,34,0.25);font-weight:bold;border:8px solid rgba(230,126,34,0.25);padding:25px;z-index:1000;border-radius:10px;">TIDAK LENGKAP</div>';
         }
+        
+        // ═══ STATUS PENYERAHAN — senarai item sudah/belum diserahkan + nota ═══
+        let deliveryStatusHtml = '';
+        const totalItems = (o.items||[]).length;
+        if (totalItems > 0) {
+            const deliveries = (allDeliveriesCache[o.invoiceNumber] || []).filter(d => !d.undone);
+            const deliveredMap = {};
+            deliveries.forEach(d => {
+                (d.item_indices||[]).forEach(idx => {
+                    if (!deliveredMap[idx]) {
+                        deliveredMap[idx] = { by: d.delivered_by, at: d.delivered_at, method: d.delivery_method };
+                    }
+                });
+            });
+            
+            const deliveredList = [];
+            const pendingList = [];
+            (o.items||[]).forEach((it, idx) => {
+                const itemName = (it.description||'').split('\n')[0];
+                if (deliveredMap[idx]) {
+                    deliveredList.push({ idx, name: itemName, qty: it.quantity, total: it.total, info: deliveredMap[idx] });
+                } else {
+                    pendingList.push({ idx, name: itemName, qty: it.quantity, total: it.total });
+                }
+            });
+            
+            if (deliveredList.length > 0 || pendingList.length > 0 || o.incompleteNote) {
+                deliveryStatusHtml = `<div style="margin-top:20px;padding:15px;background:#fff8e1;border-left:4px solid #e67e22;border-radius:4px;">
+                    <h4 style="margin:0 0 12px;color:#d35400;font-size:14px;">📦 STATUS PENYERAHAN ITEM</h4>`;
+                
+                if (deliveredList.length > 0) {
+                    deliveryStatusHtml += `<div style="margin-bottom:12px;">
+                        <strong style="color:#27ae60;font-size:12px;">✅ SUDAH DISERAHKAN (${deliveredList.length} item):</strong>
+                        <ul style="margin:6px 0 0;padding-left:20px;font-size:12px;line-height:1.7;">`;
+                    deliveredList.forEach(d => {
+                        deliveryStatusHtml += `<li><strong>${escapeHtml(d.name)}</strong> (${d.qty}x) — RM${(d.total||0).toFixed(2)} <span style="color:#27ae60;">[${formatDate(d.info.at)} oleh ${escapeHtml(d.info.by||'-')}]</span></li>`;
+                    });
+                    deliveryStatusHtml += `</ul></div>`;
+                }
+                
+                if (pendingList.length > 0) {
+                    deliveryStatusHtml += `<div>
+                        <strong style="color:#e67e22;font-size:12px;">⏳ BELUM DISERAHKAN (${pendingList.length} item):</strong>
+                        <ul style="margin:6px 0 0;padding-left:20px;font-size:12px;line-height:1.7;">`;
+                    pendingList.forEach(p => {
+                        deliveryStatusHtml += `<li><strong>${escapeHtml(p.name)}</strong> (${p.qty}x) — RM${(p.total||0).toFixed(2)}</li>`;
+                    });
+                    deliveryStatusHtml += `</ul></div>`;
+                }
+                
+                if (o.incompleteNote) {
+                    deliveryStatusHtml += `<div style="margin-top:12px;padding:10px;background:#fff;border-radius:4px;border:1px dashed #e67e22;">
+                        <strong style="color:#d35400;font-size:12px;">📝 NOTA:</strong>
+                        <div style="margin-top:5px;font-size:12px;color:#333;white-space:pre-wrap;line-height:1.6;">${escapeHtml(o.incompleteNote)}</div>`;
+                    if (o.incompleteNoteUpdatedBy) {
+                        deliveryStatusHtml += `<div style="margin-top:8px;font-size:10px;color:#888;font-style:italic;">Dikemaskini oleh: ${escapeHtml(o.incompleteNoteUpdatedBy)} — ${formatTime(o.incompleteNoteUpdatedAt)}</div>`;
+                    }
+                    deliveryStatusHtml += `</div>`;
+                }
+                
+                deliveryStatusHtml += `</div>`;
+            }
+        }
+        
         let pay = '';
         if (o.paymentInfo) pay = `<div class="bank-info"><p><strong>MAKLUMAT PEMBAYARAN</strong></p><p>Tarikh: ${formatDate(o.paymentInfo.date)}</p><p>Kaedah: ${o.paymentInfo.method}</p><p>Jumlah: RM${o.paymentInfo.amount}</p><p>Diterima oleh: ${o.paymentInfo.receivedBy||'-'}</p></div>`;
         let deliveryInfo = '';
@@ -3764,6 +3909,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <tbody>${(o.items||[]).map((it,i)=>`<tr><td>${i+1}</td><td>${renderItemDesc(it.description)}</td><td>${(it.price||0).toFixed(2)}</td><td style="text-align:center;">${it.quantity}</td><td style="text-align:right;">${(it.total||0).toFixed(2)}</td></tr>`).join('')}</tbody>
         <tfoot><tr class="table-summary-row"><td colspan="3">JUMLAH</td><td style="text-align:center;">${(o.items||[]).reduce((s,i)=>s+(i.quantity||0),0)}</td><td style="text-align:right;">${(o.totalAmount||0).toFixed(2)}</td></tr></tfoot></table>
         <div class="invoice-totals"><p>JUMLAH RM${(o.totalAmount||0).toFixed(2)}</p><p>DISKAUN RM${(o.discount||0).toFixed(2)}</p><p>JUMLAH SELEPAS DISKAUN RM${(o.subtotal||0).toFixed(2)}</p><p>DEPOSIT RM${(o.deposit||0).toFixed(2)}</p><p>BAKI RM${(o.balance||0).toFixed(2)}</p></div>
+        ${deliveryStatusHtml}
         ${pay}
         ${deliveryInfo}
         <div class="bank-info"><p><strong>BAYARAN</strong></p><p><strong>Maybank</strong><br>553104624047<br>EMPAYAR S KREATIF SOLUTION</p></div>
@@ -4036,6 +4182,7 @@ document.addEventListener('DOMContentLoaded', function() {
         $('edit-delivery-address').value = o.deliveryAddress || '';
         $('edit-delivery-date').value = o.deliveryDate || '';
         $('edit-address-group').style.display = o.deliveryMethod === 'pos' ? 'block' : 'none';
+        $('edit-incomplete-note').value = o.incompleteNote || '';
         await populateEditSalesDropdown();
         $('edit-sales-person').value = o.salesPerson || '';
         await populateDesignerDropdown('edit-designer-select', o.assignedDesigner || '');
@@ -4079,6 +4226,8 @@ document.addEventListener('DOMContentLoaded', function() {
     async function saveEditedOrder() {
         if (!currentOrder) return;
         const oldOrder = {...currentOrder};
+        const newNoteValue = $('edit-incomplete-note').value.trim();
+        const oldNoteValue = oldOrder.incompleteNote || '';
         const upd = {...currentOrder,
             customerName:$('edit-customer-name').value||'-',
             customerPhone:$('edit-customer-phone').value||'-',
@@ -4096,6 +4245,13 @@ document.addEventListener('DOMContentLoaded', function() {
             designUpdatedBy: STAFF_NAME,
             items:[]
         };
+        
+        if (newNoteValue !== oldNoteValue) {
+            upd.incompleteNote = newNoteValue;
+            upd.incompleteNoteUpdatedAt = new Date();
+            upd.incompleteNoteUpdatedBy = STAFF_NAME;
+        }
+        
         let ta = 0;
         $('edit-items-tbody').querySelectorAll('tr').forEach(r => {
             const d = r.querySelector('.edit-desc').value;
@@ -4107,9 +4263,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         upd.totalAmount = ta; upd.subtotal = ta - upd.discount; upd.balance = upd.subtotal - upd.deposit;
+        
         if (await updateOrderWithLog(upd, oldOrder)) {
             if (oldOrder.assignedDesigner !== upd.assignedDesigner) {
                 await addDesignActivity(upd.invoiceNumber, 'assigned', oldOrder.assignedDesigner||'-', upd.assignedDesigner||'-', 'Designer ditukar dari edit bill');
+            }
+            if (newNoteValue !== oldNoteValue) {
+                await addAuditLog(upd.invoiceNumber, 'update', 'Nota Serahan/Kekurangan', oldNoteValue || '(kosong)', newNoteValue || '(kosong)', `Nota dikemaskini via Edit Bill oleh ${STAFF_NAME}`);
             }
             alert(`Order ${upd.invoiceNumber} dikemaskini.`);
             hideEditOrderModal(); displayOrders(); displayActiveOrders(); updateDashboard();
@@ -4127,6 +4287,7 @@ document.addEventListener('DOMContentLoaded', function() {
             deliveryMethod:$('edit-delivery-method').value||null,
             deliveryAddress:$('edit-delivery-address').value||'',
             deliveryDate:$('edit-delivery-date').value||null,
+            incompleteNote: $('edit-incomplete-note').value.trim(),
             items:[]
         };
         let ta = 0;
@@ -4583,7 +4744,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         }).subscribe();
-        realtimeChannels = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13];
+        const c14 = supabaseClient.channel('audit_ch').on('postgres_changes', {event:'*', schema:'public', table:'audit_logs'}, () => {
+            if (currentOrder && orderDetailView.style.display === 'block') {
+                loadIncompleteNoteHistory(currentOrder.invoiceNumber);
+            }
+        }).subscribe();
+        realtimeChannels = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14];
     }
 
     function initYearDropdowns() {
