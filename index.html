@@ -4,6 +4,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Empayar S Kreatif - Sistem Invois & Order</title>
@@ -11,34 +12,48 @@
 <link rel="icon" href="https://arleta.site/interactivelink/68/Untitled-1.png">
 <link rel="apple-touch-icon" href="https://arleta.site/interactivelink/68/Untitled-1.png">
 <style>
+:root{
+  --primary:#6e48aa;
+  --primary-light:#9d50bb;
+  --success:#2ecc71;
+  --success-dark:#27ae60;
+  --danger:#e74c3c;
+  --warning:#f39c12;
+  --info:#3498db;
+  --font-family:'Arial', sans-serif;
+  --border-radius:8px;
+  --bg-body:#f5f5f5;
+  --text-body:#333;
+}
 html { overscroll-behavior-y: contain; overscroll-behavior-x: none; }
-body { font-family: 'Arial', sans-serif; margin: 0; padding: 0; background-color: #f5f5f5; color: #333; overscroll-behavior-y: contain; touch-action: pan-x pan-y; }
-.landing-page { text-align: center; padding: 40px 20px; background: linear-gradient(135deg, #6e48aa 0%, #9d50bb 100%); color: white; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+body { font-family: var(--font-family); margin: 0; padding: 0; background-color: var(--bg-body); color: var(--text-body); overscroll-behavior-y: contain; touch-action: pan-x pan-y; }
+.landing-page { text-align: center; padding: 40px 20px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); color: white; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
 .logo { font-size: 3.5rem; font-weight: bold; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
 .tagline { font-size: 1.2rem; margin-bottom: 40px; opacity: 0.9; }
 .action-buttons-landing { display: flex; flex-direction: column; gap: 15px; max-width: 350px; margin: 20px auto; }
 .btn-landing { padding: 15px 25px; border-radius: 50px; font-size: 1.1rem; font-weight: bold; border: none; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-.btn-primary-landing { background-color: #fff; color: #6e48aa; }
+.btn-primary-landing { background-color: #fff; color: var(--primary); }
 .btn-primary-landing:hover { transform: translateY(-3px); }
 .btn-secondary-landing { background-color: rgba(255,255,255,0.2); color: white; border: 2px solid white; }
 .btn-secondary-landing:hover { background-color: rgba(255,255,255,0.3); }
-#install-app-btn { background-color: #2ecc71; color: white; display: none; }
+#install-app-btn { background-color: var(--success); color: white; display: none; }
 .features { display: flex; justify-content: center; flex-wrap: wrap; gap: 30px; margin-top: 40px; }
 .feature-card { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 15px; padding: 25px; width: 250px; }
 .feature-icon { font-size: 2.5rem; margin-bottom: 15px; }
 .feature-title { font-weight: bold; margin-bottom: 10px; font-size: 1.2rem; }
-.container { max-width: 1200px; margin: 20px auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 15px rgba(0,0,0,0.1); display: none; }
+.container { max-width: 1200px; margin: 20px auto; background: white; padding: 20px; border-radius: var(--border-radius); box-shadow: 0 0 15px rgba(0,0,0,0.1); display: none; }
 .home-button-container { text-align: right; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
 .staff-badge { background: #e8f4fc; color: #2980b9; padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: bold; }
-.btn-home { background: #6e48aa; color: white; border: none; padding: 8px 15px; cursor: pointer; border-radius: 4px; font-size: 14px; }
+.btn-home { background: var(--primary); color: white; border: none; padding: 8px 15px; cursor: pointer; border-radius: 4px; font-size: 14px; }
 .tab-nav { display: flex; border-bottom: 1px solid #ddd; margin-bottom: 20px; flex-wrap: wrap; }
 .tab-btn { padding: 10px 15px; background: none; border: none; cursor: pointer; font-size: 15px; font-weight: bold; color: #555; border-bottom: 3px solid transparent; transition: all 0.3s; margin-right: 5px; margin-bottom: -1px; position: relative; }
-.tab-btn.active { color: #aa4871; border-bottom: 3px solid #6e48aa; }
-.tab-btn .badge-notif { position: absolute; top: 4px; right: 2px; background: #e74c3c; color: white; font-size: 10px; padding: 2px 6px; border-radius: 10px; font-weight: bold; }
+.tab-btn.active { color: #aa4871; border-bottom: 3px solid var(--primary); }
+.tab-btn.dragging { opacity: 0.5; background: #f0f0f0; }
+.tab-btn .badge-notif { position: absolute; top: 4px; right: 2px; background: var(--danger); color: white; font-size: 10px; padding: 2px 6px; border-radius: 10px; font-weight: bold; }
 .search-filter { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
 .search-input { flex: 1; min-width: 200px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
 .filter-btn { padding: 10px 15px; background-color: #eee; border: none; border-radius: 4px; cursor: pointer; position: relative; font-weight: bold; }
-.filter-btn.active { background-color: #6e48aa; color: white; }
+.filter-btn.active { background-color: var(--primary); color: white; }
 .filter-btn .filter-count { display: inline-block; background: rgba(0,0,0,0.15); color: inherit; padding: 2px 8px; border-radius: 10px; font-size: 11px; margin-left: 6px; font-weight: bold; }
 .filter-btn.active .filter-count { background: rgba(255,255,255,0.3); }
 .filter-btn[data-filter="pending"]:not(.active) { background: #fef3c7; color: #92400e; }
@@ -47,48 +62,48 @@ body { font-family: 'Arial', sans-serif; margin: 0; padding: 0; background-color
 .filter-btn[data-filter="partial"]:not(.active).count-zero { background: #f3f4f6; color: #9ca3af; }
 .filter-btn[data-filter="completed"]:not(.active) { background: #d1fae5; color: #065f46; }
 .filter-select { padding: 10px; border: 1px solid #ddd; border-radius: 4px; background: white; cursor: pointer; }
-.order-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+.order-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; background: white; border-radius: var(--border-radius); overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
 .order-table th { background-color: #f2f2f2; padding: 12px 15px; text-align: left; font-weight: bold; border-bottom: 1px solid #ddd; font-size: 13px; }
 .order-table td { padding: 12px 15px; border-bottom: 1px solid #eee; font-size: 13px; }
 .order-table tr:hover { background-color: #f9f9f9; }
-.order-number { font-weight: bold; color: #6e48aa; cursor: pointer; text-decoration: underline; }
+.order-number { font-weight: bold; color: var(--primary); cursor: pointer; text-decoration: underline; }
 .status-indicator { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 5px; }
-.status-new { background-color: #3498db; } .status-warning { background-color: #f39c12; } .status-urgent { background-color: #e74c3c; }
-.status-normal { background-color: #2ecc71; } .status-pending { background-color: #f39c12; } .status-completed { background-color: #95a5a6; }
+.status-new { background-color: var(--info); } .status-warning { background-color: var(--warning); } .status-urgent { background-color: var(--danger); }
+.status-normal { background-color: var(--success); } .status-pending { background-color: var(--warning); } .status-completed { background-color: #95a5a6; }
 .status-cell { display: flex; align-items: center; }
 .order-actions { display: flex; gap: 5px; flex-wrap: wrap; }
 .complete-btn, .pending-btn, .edit-btn, .print-btn, .print-final-btn, .convert-btn { color: white; border: none; border-radius: 4px; padding: 5px 10px; font-size: 12px; cursor: pointer; white-space: nowrap; }
-.complete-btn { background-color: #2ecc71; }
-.pending-btn { background-color: #f39c12; }
-.edit-btn { background-color: #f39c12; }
-.print-btn { background-color: #3498db; }
+.complete-btn { background-color: var(--success); }
+.pending-btn { background-color: var(--warning); }
+.edit-btn { background-color: var(--warning); }
+.print-btn { background-color: var(--info); }
 .print-final-btn { background-color: #9b59b6; }
 .convert-btn { background-color: #16a085; font-weight: bold; }
 .complete-btn:disabled { background: #ccc !important; cursor: not-allowed !important; opacity: 0.6; }
-.complete-btn:hover:not(:disabled) { background: #27ae60; }
+.complete-btn:hover:not(:disabled) { background: var(--success-dark); }
 .edit-btn:hover { background: #d35400; }
 .print-btn:hover { background: #2980b9; }
 .print-final-btn:hover { background: #8e44ad; }
 .convert-btn:hover { background: #1abc9c; }
-.order-detail-view { display: none; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 20px; margin-top: 20px; }
+.order-detail-view { display: none; background: white; border-radius: var(--border-radius); box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 20px; margin-top: 20px; }
 .detail-header { display: flex; justify-content: space-between; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #eee; flex-wrap: wrap; gap: 10px; }
 .detail-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #eee; }
 .detail-item .detail-desc { max-width: 70%; }
 .detail-item .detail-desc .size-line { font-size: 11px; color: #666; font-family: 'Courier New', monospace; margin-top: 3px; }
 .detail-total { display: flex; justify-content: space-between; margin-bottom: 10px; }
 .detail-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
-.audit-log-section { margin-top: 25px; padding: 15px; background: #f9f9f9; border-radius: 8px; }
-.audit-log-section h4 { margin-top: 0; color: #6e48aa; }
-.audit-log-item { padding: 10px; border-left: 3px solid #6e48aa; background: white; margin-bottom: 8px; border-radius: 4px; font-size: 13px; }
+.audit-log-section { margin-top: 25px; padding: 15px; background: #f9f9f9; border-radius: var(--border-radius); }
+.audit-log-section h4 { margin-top: 0; color: var(--primary); }
+.audit-log-item { padding: 10px; border-left: 3px solid var(--primary); background: white; margin-bottom: 8px; border-radius: 4px; font-size: 13px; }
 .audit-log-item .log-header { font-weight: bold; color: #333; margin-bottom: 5px; }
 .audit-log-item .log-detail { color: #666; font-size: 12px; line-height: 1.6; }
 .audit-log-item .log-detail strong { color: #333; }
-.audit-log-item.log-create { border-left-color: #2ecc71; }
-.audit-log-item.log-delete { border-left-color: #e74c3c; }
-.audit-log-item.log-update { border-left-color: #3498db; }
+.audit-log-item.log-create { border-left-color: var(--success); }
+.audit-log-item.log-delete { border-left-color: var(--danger); }
+.audit-log-item.log-update { border-left-color: var(--info); }
 .audit-log-item.log-item_add { border-left-color: #27ae60; background: #f0fff5; }
-.audit-log-item.log-item_remove { border-left-color: #e74c3c; background: #fff5f5; }
-.audit-log-item.log-item_update { border-left-color: #f39c12; background: #fffbf0; }
+.audit-log-item.log-item_remove { border-left-color: var(--danger); background: #fff5f5; }
+.audit-log-item.log-item_update { border-left-color: var(--warning); background: #fffbf0; }
 .page { display: none; } .page.active { display: block; }
 .header-info { text-align: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; }
 .header-info img { max-width: 120px; height: auto; }
@@ -100,42 +115,42 @@ table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
 th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
 th { background-color: #f2f2f2; }
 .quantity-control { display: flex; align-items: center; }
-.quantity-btn { background: #3498db; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 3px; margin: 0 5px; }
+.quantity-btn { background: var(--info); color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 3px; margin: 0 5px; }
 .quantity-input { width: 50px; text-align: center; font-size: 16px; font-weight: bold; }
 @media (max-width: 768px) {
-    .quantity-input { width: 70px; height: 44px; font-size: 18px; padding: 8px 4px; border: 2px solid #3498db; }
+    .quantity-input { width: 70px; height: 44px; font-size: 18px; padding: 8px 4px; border: 2px solid var(--info); }
     .quantity-btn { padding: 10px 14px; font-size: 18px; min-width: 44px; min-height: 44px; }
-    .edit-qty { width: 70px; height: 44px; font-size: 18px; padding: 8px 4px; border: 2px solid #3498db; }
+    .edit-qty { width: 70px; height: 44px; font-size: 18px; padding: 8px 4px; border: 2px solid var(--info); }
     .edit-minus, .edit-plus { padding: 10px 14px; font-size: 18px; min-width: 44px; min-height: 44px; }
 }
-.btn { background: #2ecc71; color: white; border: none; padding: 10px 15px; cursor: pointer; border-radius: 4px; font-size: 16px; }
-.btn:hover { background: #27ae60; }
+.btn { background: var(--success); color: white; border: none; padding: 10px 15px; cursor: pointer; border-radius: 4px; font-size: 16px; }
+.btn:hover { background: var(--success-dark); }
 .btn-secondary { background: #95a5a6; } .btn-secondary:hover { background: #7f8c8d; }
-.btn-danger { background: #e74c3c; } .btn-danger:hover { background: #c0392b; }
-.btn-warning { background: #f39c12; } .btn-warning:hover { background: #d35400; }
-.btn-info { background: #3498db; } .btn-info:hover { background: #2980b9; }
+.btn-danger { background: var(--danger); } .btn-danger:hover { background: #c0392b; }
+.btn-warning { background: var(--warning); } .btn-warning:hover { background: #d35400; }
+.btn-info { background: var(--info); } .btn-info:hover { background: #2980b9; }
 .btn-quotation { background: linear-gradient(135deg, #16a085, #1abc9c); color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; }
 .btn-quotation:hover { background: linear-gradient(135deg, #1abc9c, #16a085); }
-.btn-print-hantar { background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); font-weight: bold; padding: 12px 25px; font-size: 17px; box-shadow: 0 3px 10px rgba(46, 204, 113, 0.4); }
-.btn-size-input { background: linear-gradient(135deg, #3498db, #2980b9); color: white; border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px; box-shadow: 0 3px 10px rgba(52, 152, 219, 0.3); }
+.btn-print-hantar { background: linear-gradient(135deg, var(--success) 0%, var(--success-dark) 100%); font-weight: bold; padding: 12px 25px; font-size: 17px; box-shadow: 0 3px 10px rgba(46, 204, 113, 0.4); }
+.btn-size-input { background: linear-gradient(135deg, var(--info), #2980b9); color: white; border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px; box-shadow: 0 3px 10px rgba(52, 152, 219, 0.3); }
 .terms { font-size: 12px; margin-top: 20px; padding: 10px; background: #f9f9f9; border-radius: 4px; }
 .bank-info { margin-top: 20px; padding: 10px; background: #e8f4fc; border-radius: 4px; }
 .action-buttons { display: flex; justify-content: space-between; margin-top: 20px; gap: 10px; flex-wrap: wrap; }
 .invoice-totals { margin-top: 20px; font-weight: bold; text-align: right; }
 .invoice-preview { border: 1px solid #ddd; padding: 20px; background: white; margin-bottom: 20px; }
 .invoice-preview .size-breakdown { font-size: 11px; color: #555; font-family: 'Courier New', monospace; line-height: 1.5; margin-top: 3px; padding-left: 15px; }
-#offline-banner { position: fixed; bottom: 0; left: 0; right: 0; background: #e74c3c; color: white; padding: 10px; text-align: center; display: none; z-index: 1000; }
+#offline-banner { position: fixed; bottom: 0; left: 0; right: 0; background: var(--danger); color: white; padding: 10px; text-align: center; display: none; z-index: 1000; }
 .sync-status { font-size: 12px; color: #777; margin-top: 5px; }
 .discount-container { display: flex; gap: 10px; }
 #discount-type { width: 80px; }
-.dashboard-filters { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; padding: 15px; background: #f9f9f9; border-radius: 8px; }
+.dashboard-filters { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; padding: 15px; background: #f9f9f9; border-radius: var(--border-radius); }
 .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
-.dashboard-card { background-color: #f9f9f9; border: 1px solid #eee; border-radius: 8px; padding: 25px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-.dashboard-card h3 { margin-top: 0; color: #6e48aa; font-size: 1.2rem; margin-bottom: 15px; }
+.dashboard-card { background-color: #f9f9f9; border: 1px solid #eee; border-radius: var(--border-radius); padding: 25px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+.dashboard-card h3 { margin-top: 0; color: var(--primary); font-size: 1.2rem; margin-bottom: 15px; }
 .dashboard-card .amount { font-size: 2.5rem; font-weight: bold; color: #333; }
-.commission-section { margin-top: 30px; padding: 20px; background: #f9f9f9; border-radius: 8px; }
-.top-customers-section { margin-top: 30px; padding: 20px; background: #fff8e1; border-radius: 8px; }
-.add-sales-person { margin-bottom: 30px; padding: 20px; background-color: #f9f9f9; border-radius: 8px; display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
+.commission-section { margin-top: 30px; padding: 20px; background: #f9f9f9; border-radius: var(--border-radius); }
+.top-customers-section { margin-top: 30px; padding: 20px; background: #fff8e1; border-radius: var(--border-radius); }
+.add-sales-person { margin-bottom: 30px; padding: 20px; background-color: #f9f9f9; border-radius: var(--border-radius); display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
 .add-sales-person input { flex-grow: 1; min-width: 200px; }
 #sales-person-table th, #sales-person-table td { text-align: right; vertical-align: middle; }
 #sales-person-table th:first-child, #sales-person-table td:first-child { text-align: left; }
@@ -161,57 +176,57 @@ th { background-color: #f2f2f2; }
 #delete-reason-input { height: 60px; resize: vertical; }
 #password-error { color: red; font-size: 12px; margin-bottom: 10px; display: none; }
 .password-buttons button { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; margin: 0 5px; }
-#submit-password { background-color: #6e48aa; color: white; } #cancel-password { background-color: #ccc; }
+#submit-password { background-color: var(--primary); color: white; } #cancel-password { background-color: #ccc; }
 #bills-modal { position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; }
-.bills-modal-content { background-color: #fefefe; margin: auto; padding: 20px 30px; border-radius: 8px; position: relative; width: 80%; max-width: 500px; }
+.bills-modal-content { background-color: #fefefe; margin: auto; padding: 20px 30px; border-radius: var(--border-radius); position: relative; width: 80%; max-width: 500px; }
 #close-bills-modal { color: #aaa; position: absolute; top: 10px; right: 15px; font-size: 28px; font-weight: bold; cursor: pointer; }
 #bills-modal-list { list-style: none; padding: 0; margin-top: 15px; max-height: 300px; overflow-y: auto; }
 #bills-modal-list li { padding: 8px 0; border-bottom: 1px solid #eee; font-size: 14px; }
 #edit-order-modal { position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; }
-.edit-order-modal-content { background-color: #fefefe; margin: auto; padding: 20px 30px; border-radius: 8px; position: relative; width: 90%; max-width: 800px; max-height: 90vh; overflow-y: auto; }
+.edit-order-modal-content { background-color: #fefefe; margin: auto; padding: 20px 30px; border-radius: var(--border-radius); position: relative; width: 90%; max-width: 800px; max-height: 90vh; overflow-y: auto; }
 .table-summary-row td { background-color: #f9f9f9; font-weight: bold; text-align: right; border-top: 2px solid #ddd; }
 .invoice-number-container { position: relative; z-index: 50; }
 #invoice-number { cursor: pointer; background: white; }
-#invoice-number-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 2px solid #6e48aa; border-radius: 4px; max-height: 300px; overflow-y: auto; z-index: 99999; display: none; box-shadow: 0 4px 15px rgba(0,0,0,0.2); margin-top: 3px; }
+#invoice-number-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 2px solid var(--primary); border-radius: 4px; max-height: 300px; overflow-y: auto; z-index: 99999; display: none; box-shadow: 0 4px 15px rgba(0,0,0,0.2); margin-top: 3px; }
 .invoice-number-option { padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #eee; }
-.invoice-number-option.used { color: #e74c3c; text-decoration: line-through; background-color: #ffeaea; }
-.invoice-number-option.locked { color: #f39c12; background-color: #fff8e1; font-weight: bold; }
-.invoice-number-option.available { color: #2ecc71; }
+.invoice-number-option.used { color: var(--danger); text-decoration: line-through; background-color: #ffeaea; }
+.invoice-number-option.locked { color: var(--warning); background-color: #fff8e1; font-weight: bold; }
+.invoice-number-option.available { color: var(--success); }
 .day-badge { display: inline-block; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: bold; }
-.day-badge.late { background: #e74c3c; color: white; } .day-badge.today { background: #f39c12; color: white; }
-.day-badge.soon { background: #f1c40f; color: #333; } .day-badge.normal { background: #2ecc71; color: white; } .day-badge.na { background: #ddd; color: #777; }
+.day-badge.late { background: var(--danger); color: white; } .day-badge.today { background: var(--warning); color: white; }
+.day-badge.soon { background: #f1c40f; color: #333; } .day-badge.normal { background: var(--success); color: white; } .day-badge.na { background: #ddd; color: #777; }
 .summary-row { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
-.summary-box { flex: 1; min-width: 150px; background: #f0f4ff; padding: 15px; border-radius: 8px; border-left: 4px solid #6e48aa; }
-.summary-box .label { font-size: 12px; color: #666; } .summary-box .value { font-size: 1.5rem; font-weight: bold; color: #6e48aa; }
+.summary-box { flex: 1; min-width: 150px; background: #f0f4ff; padding: 15px; border-radius: var(--border-radius); border-left: 4px solid var(--primary); }
+.summary-box .label { font-size: 12px; color: #666; } .summary-box .value { font-size: 1.5rem; font-weight: bold; color: var(--primary); }
 .template-quick-add { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; align-items: center; padding: 10px; background: #f0f4ff; border-radius: 6px; }
-.template-btn { background: #6e48aa; color: white; border: none; padding: 6px 12px; border-radius: 15px; font-size: 12px; cursor: pointer; }
+.template-btn { background: var(--primary); color: white; border: none; padding: 6px 12px; border-radius: 15px; font-size: 12px; cursor: pointer; }
 .size-table-input { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
 .size-table-input th { padding: 10px; text-align: left; font-size: 13px; background: #f2f2f2; }
 .size-table-input td { padding: 8px 10px; border-bottom: 1px solid #eee; }
 .size-table-input input[type="number"] { width: 80px; padding: 8px; text-align: center; border: 2px solid #ddd; border-radius: 4px; font-weight: bold; }
 .size-table-input .size-total-cell { text-align: right; font-weight: bold; color: #27ae60; }
-.size-total-summary { background: #f0f4ff; padding: 15px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid #6e48aa; text-align: right; }
+.size-total-summary { background: #f0f4ff; padding: 15px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid var(--primary); text-align: right; }
 .size-cat-list { margin-top: 15px; }
-.size-cat-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 15px; background: #f9f9f9; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid #6e48aa; gap: 10px; flex-wrap: wrap; }
+.size-cat-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 15px; background: #f9f9f9; border-radius: var(--border-radius); margin-bottom: 10px; border-left: 4px solid var(--primary); gap: 10px; flex-wrap: wrap; }
 .size-cat-item .cat-info { flex: 1; min-width: 200px; }
 .size-cat-item .cat-name { font-weight: bold; color: #333; margin-bottom: 5px; }
 .size-cat-item .cat-sizes { font-size: 12px; color: #666; font-family: 'Courier New', monospace; margin-bottom: 5px; }
 .size-cat-item .cat-price { font-size: 13px; color: #27ae60; font-weight: bold; }
 .size-cat-item .cat-actions { display: flex; gap: 5px; }
 .size-cat-item button { padding: 6px 12px; font-size: 12px; border: none; border-radius: 4px; cursor: pointer; color: white; }
-.size-cat-item .btn-edit-cat { background: #3498db; }
-.size-cat-item .btn-del-cat { background: #e74c3c; }
+.size-cat-item .btn-edit-cat { background: var(--info); }
+.size-cat-item .btn-del-cat { background: var(--danger); }
 #danger-modal { position: fixed; z-index: 4000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(20, 0, 0, 0.85); display: none; justify-content: center; align-items: center; padding: 20px; }
-.danger-modal-content { background: white; padding: 30px; border-radius: 12px; width: 100%; max-width: 500px; border-top: 6px solid #e74c3c; }
-.danger-modal-content h3 { color: #e74c3c; margin-top: 0; }
-.danger-modal-content .warning-box { background: #fff5f5; border-left: 4px solid #e74c3c; padding: 15px; margin: 15px 0; border-radius: 4px; font-size: 14px; }
+.danger-modal-content { background: white; padding: 30px; border-radius: 12px; width: 100%; max-width: 500px; border-top: 6px solid var(--danger); }
+.danger-modal-content h3 { color: var(--danger); margin-top: 0; }
+.danger-modal-content .warning-box { background: #fff5f5; border-left: 4px solid var(--danger); padding: 15px; margin: 15px 0; border-radius: 4px; font-size: 14px; }
 .danger-modal-content input[type="text"] { padding: 12px; font-size: 16px; text-align: center; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; border: 2px solid #ddd; }
 .danger-modal-buttons { display: flex; gap: 10px; margin-top: 20px; }
 .danger-modal-buttons button { flex: 1; padding: 12px; border: none; border-radius: 6px; font-size: 15px; font-weight: bold; cursor: pointer; }
 #danger-cancel-btn { background: #95a5a6; color: white; }
-#danger-confirm-btn { background: #e74c3c; color: white; }
+#danger-confirm-btn { background: var(--danger); color: white; }
 #danger-confirm-btn:disabled { background: #ccc; cursor: not-allowed; }
-#danger-error { color: #e74c3c; font-size: 13px; margin-top: 10px; display: none; }
+#danger-error { color: var(--danger); font-size: 13px; margin-top: 10px; display: none; }
 body:not(.boss-mode) #order-list-page .summary-row { display: none !important; }
 body:not(.boss-mode) #active-orders-page .summary-row { display: none !important; }
 body:not(.boss-mode) #quotation-list-page .summary-row { display: none !important; }
@@ -219,29 +234,29 @@ body.boss-mode #order-list-page .summary-row { display: flex !important; }
 body.boss-mode #active-orders-page .summary-row { display: flex !important; }
 body.boss-mode #quotation-list-page .summary-row { display: flex !important; }
 body:not(.boss-mode) .boss-only { display: none !important; }
-.settings-section { background: #f9f9f9; padding: 25px; border-radius: 10px; margin-bottom: 25px; border-left: 5px solid #6e48aa; }
-.settings-section h3 { margin-top: 0; color: #6e48aa; display: flex; align-items: center; gap: 10px; }
-.staff-card-item { display: flex; align-items: center; gap: 15px; padding: 15px; background: white; border-radius: 8px; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); flex-wrap: wrap; }
+.settings-section { background: #f9f9f9; padding: 25px; border-radius: 10px; margin-bottom: 25px; border-left: 5px solid var(--primary); }
+.settings-section h3 { margin-top: 0; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+.staff-card-item { display: flex; align-items: center; gap: 15px; padding: 15px; background: white; border-radius: var(--border-radius); margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); flex-wrap: wrap; }
 .staff-card-item .staff-info { flex: 1; min-width: 180px; }
 .staff-card-item .staff-name { font-weight: bold; color: #333; font-size: 15px; }
 .staff-card-item .staff-meta { font-size: 12px; color: #666; margin-top: 3px; }
 .staff-card-item .staff-actions { display: flex; gap: 5px; flex-wrap: wrap; }
 .staff-card-item .staff-actions button { padding: 6px 10px; font-size: 12px; border: none; border-radius: 4px; cursor: pointer; color: white; }
-.staff-active { background: #2ecc71; } .staff-inactive { background: #95a5a6; }
-.btn-edit-staff { background: #3498db; } .btn-qr-staff { background: #9b59b6; } .btn-del-staff { background: #e74c3c; } .btn-toggle-staff { background: #f39c12; }
+.staff-active { background: var(--success); } .staff-inactive { background: #95a5a6; }
+.btn-edit-staff { background: var(--info); } .btn-qr-staff { background: #9b59b6; } .btn-del-staff { background: var(--danger); } .btn-toggle-staff { background: var(--warning); }
 .designer-badge { display: inline-block; background: linear-gradient(135deg, #e67e22, #d35400); color: white; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: bold; margin-left: 5px; }
 .production-badge { display: inline-block; background: linear-gradient(135deg, #0284c7, #0369a1); color: white; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: bold; margin-left: 5px; }
 .quotation-badge { display: inline-block; background: linear-gradient(135deg, #16a085, #1abc9c); color: white; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: bold; }
-.quotation-expired { background: linear-gradient(135deg, #e74c3c, #c0392b) !important; }
+.quotation-expired { background: linear-gradient(135deg, var(--danger), #c0392b) !important; }
 .quotation-valid { background: linear-gradient(135deg, #16a085, #1abc9c) !important; }
 #qr-reader { width: 100%; max-width: 400px; margin: 20px auto; }
-#qr-reader video { border-radius: 8px; }
-#qr-reader-status { text-align: center; margin-top: 10px; font-weight: bold; color: #6e48aa; font-size: 13px; line-height: 1.5; }
+#qr-reader video { border-radius: var(--border-radius); }
+#qr-reader-status { text-align: center; margin-top: 10px; font-weight: bold; color: var(--primary); font-size: 13px; line-height: 1.5; }
 .pin-input-wrapper { display: flex; gap: 10px; justify-content: center; margin: 20px 0; }
-.pin-digit { width: 50px; height: 60px; font-size: 24px; text-align: center; border: 2px solid #ddd; border-radius: 8px; font-weight: bold; }
-.pin-digit:focus { border-color: #6e48aa; outline: none; }
-.id-card-print { width: 100%; max-width: 500px; border: 2px solid #6e48aa; border-radius: 12px; padding: 20px; margin: 15px auto; background: white; }
-.id-card-header { background: linear-gradient(135deg, #6e48aa, #9d50bb); color: white; padding: 12px; margin: -20px -20px 20px -20px; border-radius: 10px 10px 0 0; text-align: center; }
+.pin-digit { width: 50px; height: 60px; font-size: 24px; text-align: center; border: 2px solid #ddd; border-radius: var(--border-radius); font-weight: bold; }
+.pin-digit:focus { border-color: var(--primary); outline: none; }
+.id-card-print { width: 100%; max-width: 500px; border: 2px solid var(--primary); border-radius: 12px; padding: 20px; margin: 15px auto; background: white; }
+.id-card-header { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; padding: 12px; margin: -20px -20px 20px -20px; border-radius: 10px 10px 0 0; text-align: center; }
 .id-card-header h3 { margin: 0; font-size: 16px; }
 .id-card-header p { margin: 3px 0 0; font-size: 11px; opacity: 0.9; }
 .id-card-body { display: flex; gap: 20px; align-items: flex-start; }
@@ -254,19 +269,19 @@ body:not(.boss-mode) .boss-only { display: none !important; }
 .print-btn-bar { display: flex; gap: 10px; justify-content: center; margin-top: 15px; }
 #staff-login-method { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
 .login-method-badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: bold; margin-left: 5px; }
-.login-method-qr_pin { background: #3498db; color: white; }
-.login-method-qr_only { background: #f39c12; color: white; }
+.login-method-qr_pin { background: var(--info); color: white; }
+.login-method-qr_only { background: var(--warning); color: white; }
 #manual-login-select { padding: 12px; font-size: 16px; width: 100%; margin: 10px 0; }
-#manual-login-pin { padding: 12px; font-size: 16px; text-align: center; letter-spacing: 5px; width: 100%; margin: 10px 0; border: 2px solid #ddd; border-radius: 8px; }
-.upload-area { border: 2px dashed #6e48aa; border-radius: 8px; padding: 20px; text-align: center; background: #f9f9f9; margin-bottom: 15px; }
+#manual-login-pin { padding: 12px; font-size: 16px; text-align: center; letter-spacing: 5px; width: 100%; margin: 10px 0; border: 2px solid #ddd; border-radius: var(--border-radius); }
+.upload-area { border: 2px dashed var(--primary); border-radius: var(--border-radius); padding: 20px; text-align: center; background: #f9f9f9; margin-bottom: 15px; }
 .upload-progress-container { display: none; margin: 15px 0; }
 .upload-progress-bg { background: #eee; border-radius: 4px; overflow: hidden; height: 20px; }
-.upload-progress-bar { height: 100%; background: #6e48aa; width: 0%; transition: width 0.3s; }
+.upload-progress-bar { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s; }
 .file-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 12px; background: #f9f9f9; border-radius: 6px; margin-bottom: 8px; gap: 10px; flex-wrap: wrap; }
 .file-item-info { flex: 1; min-width: 150px; }
 .file-item-name { font-weight: bold; font-size: 13px; word-break: break-all; }
 .file-item-meta { font-size: 11px; color: #666; margin-top: 3px; }
-.file-item-notes { font-size: 12px; color: #6e48aa; margin-top: 5px; padding: 5px 8px; background: #f0f4ff; border-radius: 4px; border-left: 3px solid #6e48aa; }
+.file-item-notes { font-size: 12px; color: var(--primary); margin-top: 5px; padding: 5px 8px; background: #f0f4ff; border-radius: 4px; border-left: 3px solid var(--primary); }
 .file-item-actions { display: flex; gap: 5px; flex-wrap: wrap; }
 .design-panel { margin-top: 20px; padding: 20px; background: linear-gradient(135deg, #fff9f0 0%, #fff5e1 100%); border-radius: 10px; border-left: 5px solid #e67e22; }
 .design-panel h4 { margin: 0 0 15px; color: #e67e22; display: flex; align-items: center; gap: 8px; }
@@ -275,20 +290,20 @@ body:not(.boss-mode) .boss-only { display: none !important; }
 .design-row select { flex: 1; min-width: 150px; }
 .design-status-badge { display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: bold; }
 .design-pending { background: #f1c40f; color: #333; }
-.design-in_progress { background: #3498db; color: white; }
+.design-in_progress { background: var(--info); color: white; }
 .design-sent_to_customer { background: #9b59b6; color: white; }
 .design-revision { background: #e67e22; color: white; }
-.design-confirmed { background: #2ecc71; color: white; }
+.design-confirmed { background: var(--success); color: white; }
 .design-completed { background: #95a5a6; color: white; }
 .design-status-buttons { display: flex; gap: 6px; flex-wrap: wrap; margin: 15px 0; }
 .design-status-btn { padding: 8px 14px; border: 2px solid #ddd; background: white; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; transition: all 0.2s; }
 .design-status-btn:hover { transform: translateY(-2px); box-shadow: 0 3px 8px rgba(0,0,0,0.1); }
 .design-status-btn.active { border-width: 3px; transform: scale(1.05); box-shadow: 0 3px 10px rgba(0,0,0,0.15); }
 .design-status-btn[data-status="pending"].active { background: #f1c40f; color: #333; border-color: #f1c40f; }
-.design-status-btn[data-status="in_progress"].active { background: #3498db; color: white; border-color: #3498db; }
+.design-status-btn[data-status="in_progress"].active { background: var(--info); color: white; border-color: var(--info); }
 .design-status-btn[data-status="sent_to_customer"].active { background: #9b59b6; color: white; border-color: #9b59b6; }
 .design-status-btn[data-status="revision"].active { background: #e67e22; color: white; border-color: #e67e22; }
-.design-status-btn[data-status="confirmed"].active { background: #2ecc71; color: white; border-color: #2ecc71; }
+.design-status-btn[data-status="confirmed"].active { background: var(--success); color: white; border-color: var(--success); }
 .design-status-btn[data-status="completed"].active { background: #95a5a6; color: white; border-color: #95a5a6; }
 .design-activity-item { padding: 10px 12px; background: white; border-left: 3px solid #e67e22; border-radius: 4px; margin-bottom: 8px; font-size: 13px; }
 .design-activity-item .log-header { font-weight: bold; color: #333; margin-bottom: 5px; }
@@ -305,11 +320,11 @@ body:not(.boss-mode) .boss-only { display: none !important; }
 .design-summary-card { padding: 18px; border-radius: 10px; text-align: center; color: white; box-shadow: 0 3px 8px rgba(0,0,0,0.1); }
 .design-summary-card .amount { font-size: 2rem; font-weight: bold; }
 .design-summary-card .label { font-size: 12px; opacity: 0.9; margin-top: 5px; }
-.design-summary-pending { background: linear-gradient(135deg, #f1c40f, #f39c12); }
-.design-summary-in_progress { background: linear-gradient(135deg, #3498db, #2980b9); }
+.design-summary-pending { background: linear-gradient(135deg, #f1c40f, var(--warning)); }
+.design-summary-in_progress { background: linear-gradient(135deg, var(--info), #2980b9); }
 .design-summary-sent_to_customer { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
 .design-summary-revision { background: linear-gradient(135deg, #e67e22, #d35400); }
-.design-summary-confirmed { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+.design-summary-confirmed { background: linear-gradient(135deg, var(--success), var(--success-dark)); }
 .design-summary-completed { background: linear-gradient(135deg, #95a5a6, #7f8c8d); }
 .production-panel { margin-top: 20px; padding: 20px; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius: 10px; border-left: 5px solid #0284c7; }
 .production-panel h4 { margin: 0 0 15px; color: #0284c7; display: flex; align-items: center; gap: 8px; }
@@ -317,24 +332,24 @@ body:not(.boss-mode) .boss-only { display: none !important; }
 .production-status-badge-wrap { display: flex; flex-direction: column; gap: 3px; }
 .production-status-badge-wrap .dept-label { font-size: 10px; color: #666; font-weight: bold; }
 .prod-pending { background: #f1c40f; color: #333; }
-.prod-in_progress { background: #3498db; color: white; }
+.prod-in_progress { background: var(--info); color: white; }
 .prod-paused { background: #e67e22; color: white; }
-.prod-done { background: #2ecc71; color: white; }
+.prod-done { background: var(--success); color: white; }
 .auto-assign-note { font-size: 12px; color: #666; font-style: italic; margin-top: 3px; }
 .delivery-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; }
-.delivery-badge.pickup { background: #3498db; color: white; }
+.delivery-badge.pickup { background: var(--info); color: white; }
 .delivery-badge.pos { background: #9b59b6; color: white; }
 .delivery-badge.none { background: #ddd; color: #777; }
-.delivery-badge.delivered { background: #2ecc71; color: white; }
+.delivery-badge.delivered { background: var(--success); color: white; }
 .delivery-history-item { padding: 10px 12px; background: white; border-left: 3px solid #27ae60; border-radius: 4px; margin-bottom: 8px; font-size: 12px; }
-.delivery-history-item.undone { border-left-color: #e74c3c; background: #fff5f5; opacity: 0.7; }
+.delivery-history-item.undone { border-left-color: var(--danger); background: #fff5f5; opacity: 0.7; }
 .delivery-history-item .hist-header { font-weight: bold; color: #333; margin-bottom: 3px; }
 .delivery-history-item .hist-detail { color: #666; font-size: 11px; line-height: 1.5; }
 .delivery-history-item.undone .hist-header { text-decoration: line-through; color: #999; }
 .quick-complete-info-box { background: #f0f9ff; padding: 12px; border-radius: 6px; margin-bottom: 15px; border-left: 3px solid #0284c7; }
-.quick-complete-warning { background: #fff8e1; padding: 10px; border-radius: 6px; margin-bottom: 15px; border-left: 3px solid #f39c12; color: #92400e; font-size: 13px; }
+.quick-complete-warning { background: #fff8e1; padding: 10px; border-radius: 6px; margin-bottom: 15px; border-left: 3px solid var(--warning); color: #92400e; font-size: 13px; }
 .quick-complete-success { background: #f0fff4; padding: 10px; border-radius: 6px; margin-bottom: 15px; border-left: 3px solid #27ae60; color: #065f46; font-size: 13px; }
-.qc-item-list { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 12px; max-height: 220px; overflow-y: auto; margin-bottom: 15px; }
+.qc-item-list { background: #fff; border: 1px solid #ddd; border-radius: var(--border-radius); padding: 12px; max-height: 220px; overflow-y: auto; margin-bottom: 15px; }
 .qc-item-row { display: flex; align-items: flex-start; gap: 10px; padding: 8px; border-bottom: 1px solid #eee; }
 .qc-item-row:last-child { border-bottom: none; }
 .qc-item-row input[type="checkbox"] { width: 22px; height: 22px; margin-top: 2px; cursor: pointer; flex-shrink: 0; }
@@ -343,28 +358,50 @@ body:not(.boss-mode) .boss-only { display: none !important; }
 .qc-item-row .qc-item-detail { font-size: 11px; color: #666; margin-top: 2px; }
 .qc-item-row .qc-item-price { font-weight: bold; color: #27ae60; font-size: 12px; }
 .qc-item-row.delivered { opacity: 0.5; background: #f0fff4; }
-.print-options-btn { padding: 15px; margin: 8px 0; border-radius: 8px; border: 2px solid; cursor: pointer; font-weight: bold; font-size: 14px; width: 100%; transition: all 0.2s; }
+.print-options-btn { padding: 15px; margin: 8px 0; border-radius: var(--border-radius); border: 2px solid; cursor: pointer; font-weight: bold; font-size: 14px; width: 100%; transition: all 0.2s; }
 .print-options-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
-.print-options-btn.btn-normal { background: #e8f4fc; border-color: #3498db; color: #2980b9; }
+.print-options-btn.btn-normal { background: #e8f4fc; border-color: var(--info); color: #2980b9; }
 .print-options-btn.btn-final { background: #f0fff4; border-color: #27ae60; color: #27ae60; }
 .print-options-btn.btn-partial { background: #fff8e1; border-color: #e67e22; color: #d35400; }
 .print-options-btn.btn-quotation { background: #e8f8f5; border-color: #16a085; color: #16a085; }
-.form-mode-toggle { display: flex; gap: 0; margin-bottom: 20px; background: #f0f4ff; border-radius: 8px; padding: 5px; max-width: 400px; }
+.form-mode-toggle { display: flex; gap: 0; margin-bottom: 20px; background: #f0f4ff; border-radius: var(--border-radius); padding: 5px; max-width: 400px; }
 .form-mode-btn { flex: 1; padding: 12px 20px; border: none; background: transparent; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px; color: #666; transition: all 0.2s; }
 .form-mode-btn.active { background: white; color: #16a085; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-.form-mode-btn.invoice-active { color: #6e48aa; }
-.attach-section { margin-top: 25px; padding: 20px; background: linear-gradient(135deg, #f5f7ff, #eef2ff); border-radius: 10px; border-left: 5px solid #6e48aa; }
-.attach-section h4 { margin: 0 0 12px; color: #6e48aa; display: flex; align-items: center; gap: 8px; }
-.pending-file-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 10px 12px; background: white; border-radius: 6px; margin-bottom: 8px; border-left: 3px solid #6e48aa; gap: 10px; flex-wrap: wrap; }
+.form-mode-btn.invoice-active { color: var(--primary); }
+.attach-section { margin-top: 25px; padding: 20px; background: linear-gradient(135deg, #f5f7ff, #eef2ff); border-radius: 10px; border-left: 5px solid var(--primary); }
+.attach-section h4 { margin: 0 0 12px; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+.pending-file-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 10px 12px; background: white; border-radius: 6px; margin-bottom: 8px; border-left: 3px solid var(--primary); gap: 10px; flex-wrap: wrap; }
 .pending-file-info { flex: 1; min-width: 150px; }
 .pending-file-name { font-weight: bold; font-size: 13px; word-break: break-all; }
 .pending-file-meta { font-size: 11px; color: #666; margin-top: 3px; }
+/* UI Customizer styles */
+.ui-editor-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-bottom: 15px; }
+.ui-editor-field { background: white; padding: 12px; border-radius: 6px; border: 1px solid #eee; }
+.ui-editor-field label { font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
+.ui-editor-field input, .ui-editor-field textarea { font-size: 13px; padding: 8px; }
+.color-row { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; background: white; padding: 10px; border-radius: 6px; border: 1px solid #eee; }
+.color-row label { flex: 1; margin: 0; font-size: 13px; }
+.color-row input[type="color"] { width: 60px; height: 40px; padding: 2px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; }
+.color-row input[type="text"] { width: 100px; font-family: monospace; font-size: 12px; }
+.toggle-row { display: flex; align-items: center; gap: 10px; padding: 10px; background: white; border-radius: 6px; margin-bottom: 8px; border: 1px solid #eee; }
+.toggle-row label { flex: 1; margin: 0; font-size: 13px; cursor: pointer; font-weight: normal; }
+.toggle-row input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; accent-color: var(--primary); }
+.col-item { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: white; border-radius: 6px; margin-bottom: 6px; border: 1px solid #eee; cursor: grab; }
+.col-item.dragging { opacity: 0.5; background: #f0f0f0; }
+.col-item .drag-handle { color: #999; font-size: 18px; cursor: grab; }
+.col-item .col-label { flex: 1; font-size: 13px; font-weight: bold; }
+.col-item input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary); }
+.tab-order-item { display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: white; border-radius: 6px; margin-bottom: 6px; border: 1px solid #eee; cursor: grab; }
+.tab-order-item.dragging { opacity: 0.5; background: #f0f0f0; }
+.tab-order-item .drag-handle { color: #999; font-size: 20px; }
+.tab-order-item .tab-name { flex: 1; font-weight: bold; font-size: 13px; }
+.ui-save-bar { position: sticky; bottom: 0; background: white; padding: 15px; border-top: 2px solid var(--primary); margin: 20px -25px -25px -25px; display: flex; gap: 10px; justify-content: flex-end; box-shadow: 0 -4px 10px rgba(0,0,0,0.05); }
 @media print {
     .no-print, .action-buttons, .tab-nav, .home-button-container, #password-modal, .add-sales-person, #bills-modal, #install-app-btn, #upload-modal, #pass-designer-modal, #file-notes-modal, #send-production-modal, #pause-production-modal, #delivery-pin-modal, #complete-pin-modal, #quick-complete-modal, #print-options-modal, #convert-quotation-modal { display: none !important; }
     body { background: none; padding: 0; }
     .container { box-shadow: none; max-width: 100%; padding: 0; }
     #invoice-number-dropdown { display: none !important; }
-    .id-card-print { border: 2px solid #6e48aa; page-break-inside: avoid; }
+    .id-card-print { border: 2px solid var(--primary); page-break-inside: avoid; }
 }
 @media (max-width: 768px) {
     .order-table { font-size: 12px; }
@@ -376,6 +413,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
     .id-card-body { flex-direction: column; align-items: center; text-align: center; }
     .design-row { flex-direction: column; align-items: stretch; }
     .design-status-buttons { justify-content: center; }
+    .ui-editor-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -384,27 +422,27 @@ body:not(.boss-mode) .boss-only { display: none !important; }
 <div id="offline-banner">Anda sedang di luar talian.</div>
 
 <div id="landing-page" class="landing-page">
-    <div class="logo">EMPAYAR S KREATIF</div>
-    <div class="tagline">Sistem Pengurusan Invois & Order</div>
+    <div class="logo" data-ui="company_name">EMPAYAR S KREATIF</div>
+    <div class="tagline" data-ui="tagline">Sistem Pengurusan Invois & Order</div>
     <div class="action-buttons-landing">
-        <button id="login-staff-btn" class="btn-landing btn-primary-landing">📷 Login QR + PIN</button>
-        <button id="login-pin-manual-btn" class="btn-landing btn-secondary-landing" style="background:#f39c12;color:white;border-color:#f39c12;">👤 Login Staf (PIN)</button>
-        <button id="login-password-btn" class="btn-landing btn-secondary-landing">🔑 Login Boss (Password)</button>
-        <button id="new-invoice-btn" class="btn-landing btn-secondary-landing">Buat Invois Baru</button>
-        <button id="new-quotation-btn" class="btn-landing btn-secondary-landing" style="background:#16a085;border-color:#16a085;">📋 Buat Quotation</button>
-        <button id="manage-orders-btn" class="btn-landing btn-secondary-landing">Urus Order</button>
-        <button id="manage-quotations-btn" class="btn-landing btn-secondary-landing" style="background:#1abc9c;border-color:#1abc9c;">📋 Senarai Quotation</button>
-        <button id="dashboard-btn" class="btn-landing btn-secondary-landing">Papan Pemuka Jualan</button>
-        <button id="settings-btn" class="btn-landing btn-secondary-landing">⚙️ Tetapan</button>
+        <button id="login-staff-btn" class="btn-landing btn-primary-landing" data-ui="btn_login_qr">📷 Login QR + PIN</button>
+        <button id="login-pin-manual-btn" class="btn-landing btn-secondary-landing" style="background:#f39c12;color:white;border-color:#f39c12;" data-ui="btn_login_pin">👤 Login Staf (PIN)</button>
+        <button id="login-password-btn" class="btn-landing btn-secondary-landing" data-ui="btn_login_boss">🔑 Login Boss (Password)</button>
+        <button id="new-invoice-btn" class="btn-landing btn-secondary-landing" data-ui="btn_new_invoice">Buat Invois Baru</button>
+        <button id="new-quotation-btn" class="btn-landing btn-secondary-landing" style="background:#16a085;border-color:#16a085;" data-ui="btn_new_quotation">📋 Buat Quotation</button>
+        <button id="manage-orders-btn" class="btn-landing btn-secondary-landing" data-ui="btn_manage_orders">Urus Order</button>
+        <button id="manage-quotations-btn" class="btn-landing btn-secondary-landing" style="background:#1abc9c;border-color:#1abc9c;" data-ui="btn_manage_quotations">📋 Senarai Quotation</button>
+        <button id="dashboard-btn" class="btn-landing btn-secondary-landing" data-ui="btn_dashboard">Papan Pemuka Jualan</button>
+        <button id="settings-btn" class="btn-landing btn-secondary-landing" data-ui="btn_settings">⚙️ Tetapan</button>
         <button id="install-app-btn" class="btn-landing">Pasang Aplikasi Ini</button>
     </div>
-    <div class="features">
-        <div class="feature-card"><div class="feature-icon">📊</div><div class="feature-title">Invois Profesional</div><div>Buat dan cetak invois dengan mudah</div></div>
-        <div class="feature-card"><div class="feature-icon">📋</div><div class="feature-title">Quotation</div><div>Sebut harga tanpa kacau statistik</div></div>
-        <div class="feature-card"><div class="feature-icon">📝</div><div class="feature-title">Urusan Order</div><div>Pantau status order dengan sistematik</div></div>
-        <div class="feature-card"><div class="feature-icon">🎨</div><div class="feature-title">Design Tracking</div><div>Track status design secara real-time</div></div>
-        <div class="feature-card"><div class="feature-icon">🏭</div><div class="feature-title">Production Tracking</div><div>Track kerja production ikut jabatan</div></div>
-        <div class="feature-card"><div class="feature-icon">📦</div><div class="feature-title">Serah Bertahap</div><div>Track penyerahan item satu-satu</div></div>
+    <div class="features" id="landing-features">
+        <div class="feature-card"><div class="feature-icon">📊</div><div class="feature-title" data-ui="feat1_title">Invois Profesional</div><div data-ui="feat1_desc">Buat dan cetak invois dengan mudah</div></div>
+        <div class="feature-card"><div class="feature-icon">📋</div><div class="feature-title" data-ui="feat2_title">Quotation</div><div data-ui="feat2_desc">Sebut harga tanpa kacau statistik</div></div>
+        <div class="feature-card"><div class="feature-icon">📝</div><div class="feature-title" data-ui="feat3_title">Urusan Order</div><div data-ui="feat3_desc">Pantau status order dengan sistematik</div></div>
+        <div class="feature-card"><div class="feature-icon">🎨</div><div class="feature-title" data-ui="feat4_title">Design Tracking</div><div data-ui="feat4_desc">Track status design secara real-time</div></div>
+        <div class="feature-card"><div class="feature-icon">🏭</div><div class="feature-title" data-ui="feat5_title">Production Tracking</div><div data-ui="feat5_desc">Track kerja production ikut jabatan</div></div>
+        <div class="feature-card"><div class="feature-icon">📦</div><div class="feature-title" data-ui="feat6_title">Serah Bertahap</div><div data-ui="feat6_desc">Track penyerahan item satu-satu</div></div>
     </div>
 </div>
 
@@ -418,18 +456,18 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         <button id="home-btn" class="btn-home">Laman Utama</button>
     </div>
 
-    <div class="tab-nav no-print">
-        <button class="tab-btn" id="tab-invoice">Buat Invois</button>
-        <button class="tab-btn" id="tab-orders">Senarai Order</button>
-        <button class="tab-btn" id="tab-active">Order Aktif</button>
-        <button class="tab-btn" id="tab-quotation" style="color:#16a085;">📋 Quotation<span id="quotation-notif-badge" class="badge-notif" style="display:none;background:#16a085;">0</span></button>
-        <button class="tab-btn" id="tab-design" style="display:none;">🎨 Design Saya<span id="design-notif-badge" class="badge-notif" style="display:none;">0</span></button>
-        <button class="tab-btn" id="tab-production" style="display:none;">🏭 Kerja Saya<span id="production-notif-badge" class="badge-notif" style="display:none;">0</span></button>
-        <button class="tab-btn" id="tab-dashboard">Papan Pemuka</button>
-        <button class="tab-btn" id="tab-sales-person">Jurujual</button>
-        <button class="tab-btn" id="tab-templates">Template & Saiz</button>
-        <button class="tab-btn" id="tab-deleted-bills">Bil Dibatalkan</button>
-        <button class="tab-btn" id="tab-settings">⚙️ Tetapan</button>
+    <div class="tab-nav no-print" id="tab-nav-container">
+        <button class="tab-btn" id="tab-invoice" data-tab-key="tab-invoice">Buat Invois</button>
+        <button class="tab-btn" id="tab-orders" data-tab-key="tab-orders">Senarai Order</button>
+        <button class="tab-btn" id="tab-active" data-tab-key="tab-active">Order Aktif</button>
+        <button class="tab-btn" id="tab-quotation" style="color:#16a085;" data-tab-key="tab-quotation">📋 Quotation<span id="quotation-notif-badge" class="badge-notif" style="display:none;background:#16a085;">0</span></button>
+        <button class="tab-btn" id="tab-design" style="display:none;" data-tab-key="tab-design">🎨 Design Saya<span id="design-notif-badge" class="badge-notif" style="display:none;">0</span></button>
+        <button class="tab-btn" id="tab-production" style="display:none;" data-tab-key="tab-production">🏭 Kerja Saya<span id="production-notif-badge" class="badge-notif" style="display:none;">0</span></button>
+        <button class="tab-btn" id="tab-dashboard" data-tab-key="tab-dashboard">Papan Pemuka</button>
+        <button class="tab-btn" id="tab-sales-person" data-tab-key="tab-sales-person">Jurujual</button>
+        <button class="tab-btn" id="tab-templates" data-tab-key="tab-templates">Template & Saiz</button>
+        <button class="tab-btn" id="tab-deleted-bills" data-tab-key="tab-deleted-bills">Bil Dibatalkan</button>
+        <button class="tab-btn" id="tab-settings" data-tab-key="tab-settings">⚙️ Tetapan</button>
     </div>
 
     <!-- ═══════════════ FORM INVOICE/QUOTATION (SHARED) ═══════════════ -->
@@ -441,8 +479,8 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         <div class="header-info">
             <img src="https://arleta.site/interactivelink/68/Untitled-1.png" alt="Logo">
             <div class="company-details">
-                <h2>EMPAYAR S KREATIF</h2>
-                <p>Hadapan Sek.Ren.Keb Ketereh, 16450 Kota Bharu Kelantan<br>TEL: 01133387532<br>(KT0565538-X)</p>
+                <h2 data-ui="company_name">EMPAYAR S KREATIF</h2>
+                <p data-ui="company_full_address">Hadapan Sek.Ren.Keb Ketereh, 16450 Kota Bharu Kelantan<br>TEL: 01133387532<br>(KT0565538-X)</p>
             </div>
             <h3 id="form-title">INVOIS</h3>
         </div>
@@ -486,7 +524,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
             </div>
         </div>
         <div class="form-group" id="deposit-group"><label>DEPOSIT (RM):</label><input type="number" id="deposit" placeholder="0.00" step="0.01"></div>
-        <div class="bank-info"><p><strong>Maybank</strong><br>553104624047<br>EMPAYAR S KREATIF SOLUTION</p></div>
+        <div class="bank-info" data-bank-info><p><strong>Maybank</strong><br>553104624047<br>EMPAYAR S KREATIF SOLUTION</p></div>
         <div class="form-group">
             <label>NAMA JURUJUAL:</label>
             <select id="sales-person"><option value="">Pilih Jurujual</option></select>
@@ -517,7 +555,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
             <input type="date" id="delivery-date">
         </div>
 
-        <!-- ═════ ATTACHMENT SECTION — DI FORM ═════ -->
         <div class="attach-section no-print">
             <h4>📎 Lampiran Fail (Optional)</h4>
             <p style="font-size:12px;color:#666;margin-top:0;">Muat naik gambar/PDF/docx untuk rujukan designer atau cetak. Fail akan disimpan bersama order ini.</p>
@@ -528,7 +565,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
             </div>
             <div id="form-pending-files-list"></div>
         </div>
-        <!-- ═════ HUJUNG ATTACHMENT ═════ -->
 
         <div class="action-buttons no-print"><button id="preview-invoice" class="btn">Pratonton Invois</button></div>
     </div>
@@ -536,7 +572,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
     <div id="preview-page" class="page">
         <div class="header-info">
             <img src="https://arleta.site/interactivelink/68/Untitled-1.png" alt="Logo">
-            <div class="company-details"><h2>EMPAYAR S KREATIF</h2><p>Hadapan Sek.Ren.Keb Ketereh, 16450 Kota Bharu Kelantan<br>TEL: 01133387532<br>(KT0565538-X)</p></div>
+            <div class="company-details"><h2 data-ui="company_name">EMPAYAR S KREATIF</h2><p data-ui="company_full_address">Hadapan Sek.Ren.Keb Ketereh, 16450 Kota Bharu Kelantan<br>TEL: 01133387532<br>(KT0565538-X)</p></div>
             <h3 id="preview-form-title">INVOIS</h3>
         </div>
         <div class="invoice-preview">
@@ -557,9 +593,9 @@ body:not(.boss-mode) .boss-only { display: none !important; }
                 <p id="preview-deposit-row">DEPOSIT RM<span id="preview-deposit">0.00</span></p>
                 <p>BAKI RM<span id="preview-balance">0.00</span></p>
             </div>
-            <div class="bank-info"><p><strong>BAYARAN</strong></p><p><strong>Maybank</strong><br>553104624047<br>EMPAYAR S KREATIF SOLUTION</p></div>
+            <div class="bank-info" data-bank-info><p><strong>BAYARAN</strong></p><p><strong>Maybank</strong><br>553104624047<br>EMPAYAR S KREATIF SOLUTION</p></div>
             <p><strong>NAMA JURUJUAL: </strong><span id="preview-sales-person"></span></p>
-            <div class="terms">
+            <div class="terms" data-terms>
                 <p><strong>TERMA & SYARAT TEMPAHAN</strong></p>
                 <p>*Setiap tempahan hendaklah disertakan DEPOSIT SEKURANG-KURANGNYA 50%</p>
                 <p>*(tempahan tanpa deposit tidak akan di proses)*</p>
@@ -618,14 +654,13 @@ body:not(.boss-mode) .boss-only { display: none !important; }
             <div class="summary-box"><div class="label">Jumlah Baki</div><div class="value" id="summary-balance">RM 0.00</div></div>
         </div>
         <div style="overflow-x:auto;">
-        <table class="order-table">
-            <thead><tr><th>No. Bil</th><th>Pelanggan</th><th>Telefon</th><th>Tarikh Order</th><th>Tarikh Siap</th><th>Jurujual</th><th>Designer</th><th>Status Design</th><th>Status Production</th><th>Kaedah</th><th>Serah</th><th>Status</th><th class="no-print">Tindakan</th></tr></thead>
+        <table class="order-table" id="orders-table-el">
+            <thead><tr id="orders-thead-row"></tr></thead>
             <tbody id="orders-container"></tbody>
         </table>
         </div>
     </div>
 
-    <!-- ═══════════════ QUOTATION LIST PAGE (BARU) ═══════════════ -->
     <div id="quotation-list-page" class="page">
         <h2 style="margin-top:0;color:#16a085;">📋 Senarai Quotation</h2>
         <p style="color:#666;margin-top:-10px;">Sebut harga sahaja. Tidak dikira dalam statistik jualan. Bila customer setuju, tekan <strong>✅ Convert to Order</strong>.</p>
@@ -895,7 +930,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
                 <tfoot><tr class="table-summary-row"><td colspan="4">JUMLAH KOMISEN</td><td id="commission-total">0.00</td></tr></tfoot>
             </table>
         </div>
-        <div class="top-customers-section">
+        <div class="top-customers-section" id="top-customers-section">
             <h3>🏆 Top 10 Pelanggan</h3>
             <table>
                 <thead><tr><th>#</th><th>Nama Pelanggan</th><th>Jumlah Bil</th><th>Jumlah Belanja (RM)</th><th>Telefon</th></tr></thead>
@@ -946,6 +981,100 @@ body:not(.boss-mode) .boss-only { display: none !important; }
 
     <div id="settings-page" class="page">
         <h2 style="margin-top:0;">⚙️ Tetapan Sistem</h2>
+
+        <!-- ═════════ UI CUSTOMIZER (BARU) ═════════ -->
+        <div class="settings-section" id="ui-customizer-section">
+            <h3>🎨 UI Customizer</h3>
+            <p style="font-size:13px;color:#666;margin-top:-5px;">Edit semua tulisan, warna tema, paparan, susunan tab & kolum — dari sini. Perubahan disimpan ke cloud dan digunakan oleh semua peranti.</p>
+            
+            <div style="margin-bottom:20px;">
+                <div class="action-buttons" style="justify-content:flex-start;">
+                    <button class="btn" onclick="window.uiResetSection('text')" style="background:#95a5a6;font-size:13px;">↺ Reset Tulisan</button>
+                    <button class="btn" onclick="window.uiResetSection('theme')" style="background:#95a5a6;font-size:13px;">↺ Reset Tema</button>
+                    <button class="btn" onclick="window.uiResetSection('layout')" style="background:#95a5a6;font-size:13px;">↺ Reset Paparan</button>
+                    <button class="btn" onclick="window.uiResetAll()" style="background:#e74c3c;font-size:13px;">🗑️ Reset SEMUA</button>
+                </div>
+            </div>
+
+            <!-- Tab dalam UI Customizer -->
+            <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:15px;border-bottom:2px solid #eee;padding-bottom:0;">
+                <button class="ui-tab-btn active" data-uitab="text" onclick="window.uiSwitchTab('text')">📝 Tulisan</button>
+                <button class="ui-tab-btn" data-uitab="theme" onclick="window.uiSwitchTab('theme')">🎨 Tema</button>
+                <button class="ui-tab-btn" data-uitab="layout" onclick="window.uiSwitchTab('layout')">👁️ Paparan</button>
+                <button class="ui-tab-btn" data-uitab="tabs" onclick="window.uiSwitchTab('tabs')">📑 Susunan Tab</button>
+                <button class="ui-tab-btn" data-uitab="columns" onclick="window.uiSwitchTab('columns')">📊 Kolum Order</button>
+            </div>
+            <style>
+                .ui-tab-btn{padding:10px 15px;background:none;border:none;font-weight:bold;cursor:pointer;color:#666;border-bottom:3px solid transparent;margin-bottom:-2px;font-size:13px;}
+                .ui-tab-btn.active{color:var(--primary);border-bottom-color:var(--primary);}
+                .ui-tab-content{display:none;}
+                .ui-tab-content.active{display:block;}
+            </style>
+
+            <!-- TAB: TEXT -->
+            <div class="ui-tab-content active" data-uicontent="text">
+                <h4 style="color:var(--primary);">📝 Tulisan Sistem</h4>
+                <div class="ui-editor-grid" id="ui-text-grid"></div>
+            </div>
+
+            <!-- TAB: THEME -->
+            <div class="ui-tab-content" data-uicontent="theme">
+                <h4 style="color:var(--primary);">🎨 Warna & Tema</h4>
+                <div id="ui-theme-list"></div>
+                <h4 style="color:var(--primary);margin-top:20px;">🔤 Font</h4>
+                <div class="ui-editor-field">
+                    <label>Font Family (CSS):</label>
+                    <select id="ui-font-family">
+                        <option value="'Arial', sans-serif">Arial</option>
+                        <option value="'Helvetica', sans-serif">Helvetica</option>
+                        <option value="'Segoe UI', sans-serif">Segoe UI</option>
+                        <option value="'Roboto', sans-serif">Roboto</option>
+                        <option value="'Open Sans', sans-serif">Open Sans</option>
+                        <option value="'Poppins', sans-serif">Poppins</option>
+                        <option value="'Courier New', monospace">Courier New</option>
+                        <option value="'Georgia', serif">Georgia</option>
+                    </select>
+                </div>
+                <div class="ui-editor-field">
+                    <label>Border Radius (contoh: 8px):</label>
+                    <input type="text" id="ui-border-radius" placeholder="8px">
+                </div>
+                <div class="ui-editor-field">
+                    <label>Warna Background Body:</label>
+                    <div style="display:flex;gap:10px;align-items:center;">
+                        <input type="color" id="ui-bg-body-color" style="width:60px;height:40px;">
+                        <input type="text" id="ui-bg-body" placeholder="#f5f5f5" style="flex:1;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: LAYOUT -->
+            <div class="ui-tab-content" data-uicontent="layout">
+                <h4 style="color:var(--primary);">👁️ Paparan — Tunjuk / Sembunyi</h4>
+                <div id="ui-layout-list"></div>
+            </div>
+
+            <!-- TAB: TABS ORDER -->
+            <div class="ui-tab-content" data-uicontent="tabs">
+                <h4 style="color:var(--primary);">📑 Susunan Tab</h4>
+                <p style="font-size:12px;color:#666;">Seret (drag) untuk susun semula tab. Tab yang tersembunyi tidak akan dipaparkan di UI.</p>
+                <div id="ui-tab-order-list"></div>
+            </div>
+
+            <!-- TAB: COLUMNS -->
+            <div class="ui-tab-content" data-uicontent="columns">
+                <h4 style="color:var(--primary);">📊 Kolum Table Order</h4>
+                <p style="font-size:12px;color:#666;">Seret untuk susun, tanda checkbox untuk tunjuk. Kolum "Tindakan" akan sentiasa ada di kanan.</p>
+                <div id="ui-columns-list"></div>
+            </div>
+
+            <!-- Save Bar -->
+            <div class="ui-save-bar">
+                <button class="btn btn-secondary" onclick="window.uiDiscardChanges()">Batal</button>
+                <button class="btn" onclick="window.uiSaveConfig()" style="background:var(--success);font-weight:bold;">💾 Simpan Semua Perubahan</button>
+            </div>
+        </div>
+
         <div class="settings-section">
             <h3>🔒 Tetapan Kata Laluan</h3>
             <p style="font-size:13px;color:#666;">Kata laluan untuk akses tab sensitif.</p>
@@ -1011,7 +1140,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
     </div>
 </div>
 
-<!-- Semua modal lain kekal seperti sebelumnya -->
 <div id="send-production-modal">
     <div class="staff-modal-content">
         <button class="modal-close-x" onclick="closeSendProductionModal()">×</button>
@@ -1537,7 +1665,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let allStaffCardsCache = [];
     let allDesignersCache = [];
     let currentInvoiceItems = [];
-    let pendingFiles = []; // Untuk fail yang belum save
+    let pendingFiles = [];
     let editingSizeItemIdx = null;
     let editingStaffId = null;
     let html5QrCode = null;
@@ -1545,7 +1673,510 @@ document.addEventListener('DOMContentLoaded', function() {
     let selectedFile = null;
     let currentFileNotesId = null;
     let allDepartmentsCache = [];
-    let formMode = 'invoice'; // 'invoice' atau 'quotation'
+    let formMode = 'invoice';
+
+    // ══════════════════════════════════════════════════════════════════
+    // ═══════════════ UI CONFIG SYSTEM (5 FEATURES) ═══════════════════
+    // ══════════════════════════════════════════════════════════════════
+
+    const DEFAULT_UI_CONFIG = {
+        text: {
+            company_name: 'EMPAYAR S KREATIF',
+            tagline: 'Sistem Pengurusan Invois & Order',
+            company_full_address: 'Hadapan Sek.Ren.Keb Ketereh, 16450 Kota Bharu Kelantan<br>TEL: 01133387532<br>(KT0565538-X)',
+            bank_info: '<p><strong>Maybank</strong><br>553104624047<br>EMPAYAR S KREATIF SOLUTION</p>',
+            btn_login_qr: '📷 Login QR + PIN',
+            btn_login_pin: '👤 Login Staf (PIN)',
+            btn_login_boss: '🔑 Login Boss (Password)',
+            btn_new_invoice: 'Buat Invois Baru',
+            btn_new_quotation: '📋 Buat Quotation',
+            btn_manage_orders: 'Urus Order',
+            btn_manage_quotations: '📋 Senarai Quotation',
+            btn_dashboard: 'Papan Pemuka Jualan',
+            btn_settings: '⚙️ Tetapan',
+            feat1_title: 'Invois Profesional', feat1_desc: 'Buat dan cetak invois dengan mudah',
+            feat2_title: 'Quotation', feat2_desc: 'Sebut harga tanpa kacau statistik',
+            feat3_title: 'Urusan Order', feat3_desc: 'Pantau status order dengan sistematik',
+            feat4_title: 'Design Tracking', feat4_desc: 'Track status design secara real-time',
+            feat5_title: 'Production Tracking', feat5_desc: 'Track kerja production ikut jabatan',
+            feat6_title: 'Serah Bertahap', feat6_desc: 'Track penyerahan item satu-satu',
+            tab_invoice: 'Buat Invois',
+            tab_orders: 'Senarai Order',
+            tab_active: 'Order Aktif',
+            tab_quotation: '📋 Quotation',
+            tab_design: '🎨 Design Saya',
+            tab_production: '🏭 Kerja Saya',
+            tab_dashboard: 'Papan Pemuka',
+            tab_sales_person: 'Jurujual',
+            tab_templates: 'Template & Saiz',
+            tab_deleted_bills: 'Bil Dibatalkan',
+            tab_settings: '⚙️ Tetapan',
+            terms_html: '<p><strong>TERMA & SYARAT TEMPAHAN</strong></p><p>*Setiap tempahan hendaklah disertakan DEPOSIT SEKURANG-KURANGNYA 50%</p><p>*(tempahan tanpa deposit tidak akan di proses)*</p><p>Tempahan yang dibuat TIDAK BOLEH DIBATALKAN, deposit TIDAK akan dikembalikan</p><p>Untuk Tempahan baju, Pertukaran saiz baju dikenarkan SEBELUM baju di order dengan supplier</p><p>Caj design yang dikenakan TIDAK AKAN DIKEMBALIKAN</p><p>Preview design akan dibuat SEBELUM proceed cetakan</p>'
+        },
+        theme: {
+            primary: '#6e48aa',
+            primary_light: '#9d50bb',
+            success: '#2ecc71',
+            success_dark: '#27ae60',
+            danger: '#e74c3c',
+            warning: '#f39c12',
+            info: '#3498db',
+            font_family: "'Arial', sans-serif",
+            border_radius: '8px',
+            bg_body: '#f5f5f5'
+        },
+        layout: {
+            show_tagline: true,
+            show_features: true,
+            show_top_customers: true,
+            show_tab_dashboard: true,
+            show_tab_sales_person: true,
+            show_tab_templates: true,
+            show_tab_deleted_bills: true,
+            show_tab_settings: true,
+            show_deposit_field: true,
+            show_delivery_field: true,
+            show_attach_section: true
+        },
+        tab_order: ['tab-invoice','tab-orders','tab-active','tab-quotation','tab-design','tab-production','tab-dashboard','tab-sales-person','tab-templates','tab-deleted-bills','tab-settings'],
+        column_order: [
+            { key: 'invoiceNumber', label: 'No. Bil', visible: true },
+            { key: 'customerName', label: 'Pelanggan', visible: true },
+            { key: 'customerPhone', label: 'Telefon', visible: true },
+            { key: 'orderDate', label: 'Tarikh Order', visible: true },
+            { key: 'completionDate', label: 'Tarikh Siap', visible: true },
+            { key: 'salesPerson', label: 'Jurujual', visible: true },
+            { key: 'assignedDesigner', label: 'Designer', visible: true },
+            { key: 'designStatus', label: 'Status Design', visible: true },
+            { key: 'productionStatus', label: 'Status Production', visible: true },
+            { key: 'deliveryMethod', label: 'Kaedah', visible: true },
+            { key: 'serah', label: 'Serah', visible: true },
+            { key: 'status', label: 'Status', visible: true }
+        ]
+    };
+
+    let UI_CONFIG = JSON.parse(JSON.stringify(DEFAULT_UI_CONFIG));
+    let uiTempConfig = null;
+
+    async function loadUIConfig() {
+        try {
+            const { data } = await supabaseClient.from('app_settings').select('value').eq('key', 'ui_config').maybeSingle();
+            if (data && data.value) {
+                const loaded = typeof data.value === 'string' ? JSON.parse(data.value) : data.value;
+                if (loaded && typeof loaded === 'object' && Object.keys(loaded).length > 0) {
+                    UI_CONFIG = deepMerge(JSON.parse(JSON.stringify(DEFAULT_UI_CONFIG)), loaded);
+                }
+            }
+        } catch(e) { console.error('loadUIConfig:', e); }
+    }
+
+    function deepMerge(target, source) {
+        for (const k in source) {
+            if (source[k] && typeof source[k] === 'object' && !Array.isArray(source[k])) {
+                target[k] = deepMerge(target[k] || {}, source[k]);
+            } else {
+                target[k] = source[k];
+            }
+        }
+        return target;
+    }
+
+    async function saveUIConfig(config) {
+        try {
+            const { data: ex } = await supabaseClient.from('app_settings').select('key').eq('key', 'ui_config').maybeSingle();
+            if (ex) {
+                await supabaseClient.from('app_settings').update({ value: config, updated_at: new Date() }).eq('key', 'ui_config');
+            } else {
+                await supabaseClient.from('app_settings').insert({ key: 'ui_config', value: config });
+            }
+            return true;
+        } catch(e) { alert('Gagal simpan: ' + e.message); return false; }
+    }
+
+    function applyUIConfig() {
+        // 1. Apply TEXT via data-ui attributes
+        document.querySelectorAll('[data-ui]').forEach(el => {
+            const key = el.dataset.ui;
+            if (UI_CONFIG.text[key] !== undefined) {
+                el.innerHTML = UI_CONFIG.text[key];
+            }
+        });
+        // Tab labels
+        const tabLabelMap = {
+            'tab-invoice': 'tab_invoice', 'tab-orders': 'tab_orders', 'tab-active': 'tab_active',
+            'tab-quotation': 'tab_quotation', 'tab-design': 'tab_design', 'tab-production': 'tab_production',
+            'tab-dashboard': 'tab_dashboard', 'tab-sales-person': 'tab_sales_person',
+            'tab-templates': 'tab_templates', 'tab-deleted-bills': 'tab_deleted_bills', 'tab-settings': 'tab_settings'
+        };
+        for (const [tabId, textKey] of Object.entries(tabLabelMap)) {
+            const btn = document.getElementById(tabId);
+            if (btn && UI_CONFIG.text[textKey]) {
+                // Preserve badge
+                const badge = btn.querySelector('.badge-notif');
+                btn.textContent = UI_CONFIG.text[textKey];
+                if (badge) btn.appendChild(badge);
+            }
+        }
+        // Bank info
+        document.querySelectorAll('[data-bank-info]').forEach(el => {
+            el.innerHTML = UI_CONFIG.text.bank_info;
+        });
+        // Terms
+        document.querySelectorAll('[data-terms]').forEach(el => {
+            el.innerHTML = UI_CONFIG.text.terms_html;
+        });
+        // Update preview form title based on mode
+        if (formMode === 'quotation') {
+            $('form-title').textContent = 'QUOTATION';
+            $('preview-form-title').textContent = 'QUOTATION';
+        } else {
+            $('form-title').textContent = 'INVOIS';
+            $('preview-form-title').textContent = 'INVOIS';
+        }
+        // 2. Apply THEME
+        const root = document.documentElement;
+        const t = UI_CONFIG.theme;
+        if (t.primary) root.style.setProperty('--primary', t.primary);
+        if (t.primary_light) root.style.setProperty('--primary-light', t.primary_light);
+        if (t.success) root.style.setProperty('--success', t.success);
+        if (t.success_dark) root.style.setProperty('--success-dark', t.success_dark);
+        if (t.danger) root.style.setProperty('--danger', t.danger);
+        if (t.warning) root.style.setProperty('--warning', t.warning);
+        if (t.info) root.style.setProperty('--info', t.info);
+        if (t.font_family) root.style.setProperty('--font-family', t.font_family);
+        if (t.border_radius) root.style.setProperty('--border-radius', t.border_radius);
+        if (t.bg_body) root.style.setProperty('--bg-body', t.bg_body);
+        // Update theme-color meta
+        const metaTheme = document.querySelector('meta[name="theme-color"]');
+        if (metaTheme && t.primary) metaTheme.content = t.primary;
+        // 3. Apply LAYOUT
+        const L = UI_CONFIG.layout;
+        const features = $('landing-features');
+        if (features) features.style.display = L.show_features ? 'flex' : 'none';
+        const tagline = document.querySelector('.tagline');
+        if (tagline) tagline.style.display = L.show_tagline ? 'block' : 'none';
+        const topCust = $('top-customers-section');
+        if (topCust) topCust.style.display = L.show_top_customers ? 'block' : 'none';
+        const attachSec = document.querySelector('.attach-section');
+        if (attachSec) attachSec.style.display = L.show_attach_section ? 'block' : 'none';
+        const depositGroup = $('deposit-group');
+        if (depositGroup && formMode !== 'quotation') depositGroup.style.display = L.show_deposit_field ? 'block' : 'none';
+        // Tab visibility (respect boss-mode too)
+        const hasBossAccess = (sessionStorage.getItem('appAuthed') === 'true' || isBoss);
+        const tabVisMap = {
+            'tab-dashboard': 'show_tab_dashboard', 'tab-sales-person': 'show_tab_sales_person',
+            'tab-templates': 'show_tab_templates', 'tab-deleted-bills': 'show_tab_deleted_bills',
+            'tab-settings': 'show_tab_settings'
+        };
+        for (const [tabId, key] of Object.entries(tabVisMap)) {
+            const btn = $(tabId);
+            if (!btn) continue;
+            if (!L[key]) { btn.style.display = 'none'; btn.dataset.hiddenByConfig = '1'; }
+            else { delete btn.dataset.hiddenByConfig; }
+        }
+        // 4. Apply TAB ORDER
+        const nav = $('tab-nav-container');
+        if (nav && Array.isArray(UI_CONFIG.tab_order)) {
+            UI_CONFIG.tab_order.forEach(tabId => {
+                const el = document.getElementById(tabId);
+                if (el && el.parentNode === nav) nav.appendChild(el);
+            });
+        }
+        // 5. Apply COLUMN ORDER for order table
+        applyColumnConfig();
+        // Re-apply boss mode on top (to hide protected tabs if not boss)
+        applyBossMode();
+    }
+
+    // ═══ COLUMN CONFIG ═══
+    function getVisibleOrderColumns() {
+        return (UI_CONFIG.column_order || []).filter(c => c.visible);
+    }
+    function renderOrderThead() {
+        const theadRow = $('orders-thead-row');
+        if (!theadRow) return;
+        const cols = getVisibleOrderColumns();
+        theadRow.innerHTML = cols.map(c => `<th>${escapeHtml(c.label)}</th>`).join('') + '<th class="no-print">Tindakan</th>';
+    }
+    function applyColumnConfig() { renderOrderThead(); }
+    function buildOrderRowCells(o, orders) {
+        const cols = getVisibleOrderColumns();
+        const designerText = o.assignedDesigner ? escapeHtml(o.assignedDesigner) : '<span style="color:#999;">-</span>';
+        const designStatusHtml = getDesignStatusBadge(o.designStatus || 'pending');
+        const productionCellHtml = getProductionCellHtml(o);
+        const isProductionDone = o.productionStatus === 'done';
+        const isCompleted = o.status === 'completed';
+        const isPartial = isPartialDelivery(o);
+        let completeBtn = '';
+        if (!isCompleted && isProductionDone) completeBtn = `<button class="complete-btn" data-invoice="${o.invoiceNumber}" title="Buka pop-up selesai">✅ Selesai</button>`;
+        else if (isCompleted) completeBtn = `<button class="complete-btn" disabled title="Order sudah selesai" style="background:#95a5a6;">✅ Selesai</button>`;
+        else completeBtn = `<button class="complete-btn" disabled title="Production belum siap">✅ Selesai</button>`;
+        const printBtn = `<button class="print-btn" data-invoice="${o.invoiceNumber}" title="Cetak bill asal">🖨️ Cetak</button>`;
+        let printFinalBtn = '';
+        if (isCompleted) printFinalBtn = `<button class="print-final-btn" data-invoice="${o.invoiceNumber}" data-type="final" title="Cetak bill akhir (SELESAI)" style="background:#27ae60;">📄 Cetak Akhir</button>`;
+        else if (isPartial) printFinalBtn = `<button class="print-final-btn" data-invoice="${o.invoiceNumber}" data-type="partial" title="Cetak bill TIDAK LENGKAP" style="background:#e67e22;">📄 Cetak Akhir</button>`;
+        const editBtn = `<button class="edit-btn" data-invoice="${o.invoiceNumber}" title="Edit order">✏️ Edit</button>`;
+        const st = getOrderStatus(o);
+        const cellMap = {
+            invoiceNumber: `<td><span class="order-number" data-invoice="${o.invoiceNumber}">${o.invoiceNumber||'-'}</span></td>`,
+            customerName: `<td>${escapeHtml(o.customerName)||'-'}</td>`,
+            customerPhone: `<td>${escapeHtml(o.customerPhone)||'-'}</td>`,
+            orderDate: `<td>${formatDate(o.orderDate)}</td>`,
+            completionDate: `<td>${formatDate(o.completionDate)}</td>`,
+            salesPerson: `<td>${escapeHtml(o.salesPerson)||'-'}</td>`,
+            assignedDesigner: `<td>${designerText}</td>`,
+            designStatus: `<td>${designStatusHtml}</td>`,
+            productionStatus: `<td>${productionCellHtml}</td>`,
+            deliveryMethod: `<td>${getDeliveryMethodBadge(o)}</td>`,
+            serah: `<td>${getSerahBadge(o)}</td>`,
+            status: `<td class="status-cell"><span class="status-indicator status-${st}"></span>${getStatusText(st)}</td>`
+        };
+        const cells = cols.map(c => cellMap[c.key] || '<td>-</td>').join('');
+        return cells + `<td class="no-print"><div class="order-actions">${printBtn}${printFinalBtn}${editBtn}${completeBtn}</div></td>`;
+    }
+
+    // ═══ UI EDITOR ═══
+    const UI_TEXT_FIELDS = [
+        { key: 'company_name', label: 'Nama Syarikat' },
+        { key: 'tagline', label: 'Tagline' },
+        { key: 'company_full_address', label: 'Alamat Penuh (HTML <br> dibenarkan)', type: 'textarea' },
+        { key: 'bank_info', label: 'Info Bank (HTML)', type: 'textarea' },
+        { key: 'btn_login_qr', label: 'Butang: Login QR' },
+        { key: 'btn_login_pin', label: 'Butang: Login PIN' },
+        { key: 'btn_login_boss', label: 'Butang: Login Boss' },
+        { key: 'btn_new_invoice', label: 'Butang: Invois Baru' },
+        { key: 'btn_new_quotation', label: 'Butang: Quotation Baru' },
+        { key: 'btn_manage_orders', label: 'Butang: Urus Order' },
+        { key: 'btn_manage_quotations', label: 'Butang: Senarai Quotation' },
+        { key: 'btn_dashboard', label: 'Butang: Papan Pemuka' },
+        { key: 'btn_settings', label: 'Butang: Tetapan' },
+        { key: 'feat1_title', label: 'Feature 1 — Tajuk' }, { key: 'feat1_desc', label: 'Feature 1 — Deskripsi' },
+        { key: 'feat2_title', label: 'Feature 2 — Tajuk' }, { key: 'feat2_desc', label: 'Feature 2 — Deskripsi' },
+        { key: 'feat3_title', label: 'Feature 3 — Tajuk' }, { key: 'feat3_desc', label: 'Feature 3 — Deskripsi' },
+        { key: 'feat4_title', label: 'Feature 4 — Tajuk' }, { key: 'feat4_desc', label: 'Feature 4 — Deskripsi' },
+        { key: 'feat5_title', label: 'Feature 5 — Tajuk' }, { key: 'feat5_desc', label: 'Feature 5 — Deskripsi' },
+        { key: 'feat6_title', label: 'Feature 6 — Tajuk' }, { key: 'feat6_desc', label: 'Feature 6 — Deskripsi' },
+        { key: 'tab_invoice', label: 'Tab: Buat Invois' },
+        { key: 'tab_orders', label: 'Tab: Senarai Order' },
+        { key: 'tab_active', label: 'Tab: Order Aktif' },
+        { key: 'tab_quotation', label: 'Tab: Quotation' },
+        { key: 'tab_design', label: 'Tab: Design Saya' },
+        { key: 'tab_production', label: 'Tab: Kerja Saya' },
+        { key: 'tab_dashboard', label: 'Tab: Papan Pemuka' },
+        { key: 'tab_sales_person', label: 'Tab: Jurujual' },
+        { key: 'tab_templates', label: 'Tab: Template & Saiz' },
+        { key: 'tab_deleted_bills', label: 'Tab: Bil Dibatalkan' },
+        { key: 'tab_settings', label: 'Tab: Tetapan' },
+        { key: 'terms_html', label: 'Terma & Syarat (HTML)', type: 'textarea' }
+    ];
+
+    const UI_THEME_FIELDS = [
+        { key: 'primary', label: 'Warna Utama (Primary)' },
+        { key: 'primary_light', label: 'Warna Utama Cerah (Primary Light)' },
+        { key: 'success', label: 'Warna Success (Hijau)' },
+        { key: 'success_dark', label: 'Warna Success Dark' },
+        { key: 'danger', label: 'Warna Danger (Merah)' },
+        { key: 'warning', label: 'Warna Warning (Kuning/Oren)' },
+        { key: 'info', label: 'Warna Info (Biru)' }
+    ];
+
+    const UI_LAYOUT_FIELDS = [
+        { key: 'show_tagline', label: 'Tunjuk Tagline di Landing Page' },
+        { key: 'show_features', label: 'Tunjuk Kad Features di Landing Page' },
+        { key: 'show_top_customers', label: 'Tunjuk "Top 10 Pelanggan" di Papan Pemuka' },
+        { key: 'show_tab_dashboard', label: 'Tunjuk Tab "Papan Pemuka"' },
+        { key: 'show_tab_sales_person', label: 'Tunjuk Tab "Jurujual"' },
+        { key: 'show_tab_templates', label: 'Tunjuk Tab "Template & Saiz"' },
+        { key: 'show_tab_deleted_bills', label: 'Tunjuk Tab "Bil Dibatalkan"' },
+        { key: 'show_tab_settings', label: 'Tunjuk Tab "Tetapan"' },
+        { key: 'show_deposit_field', label: 'Tunjuk Field Deposit di Form Invois' },
+        { key: 'show_delivery_field', label: 'Tunjuk Field Kaedah Penghantaran' },
+        { key: 'show_attach_section', label: 'Tunjuk Section Lampiran Fail' }
+    ];
+
+    const TAB_LABELS = {
+        'tab-invoice': '📄 Buat Invois',
+        'tab-orders': '📋 Senarai Order',
+        'tab-active': '⚡ Order Aktif',
+        'tab-quotation': '📋 Quotation',
+        'tab-design': '🎨 Design Saya',
+        'tab-production': '🏭 Kerja Saya',
+        'tab-dashboard': '📊 Papan Pemuka',
+        'tab-sales-person': '👥 Jurujual',
+        'tab-templates': '⚡ Template & Saiz',
+        'tab-deleted-bills': '🗑️ Bil Dibatalkan',
+        'tab-settings': '⚙️ Tetapan'
+    };
+
+    function renderUIEditor() {
+        uiTempConfig = JSON.parse(JSON.stringify(UI_CONFIG));
+        // TEXT
+        const textGrid = $('ui-text-grid');
+        if (textGrid) {
+            textGrid.innerHTML = UI_TEXT_FIELDS.map(f => {
+                const v = uiTempConfig.text[f.key] || '';
+                if (f.type === 'textarea') {
+                    return `<div class="ui-editor-field" style="grid-column:1/-1;"><label>${f.label}</label><textarea data-ui-field="text.${f.key}" style="height:70px;">${escapeHtml(v)}</textarea></div>`;
+                }
+                return `<div class="ui-editor-field"><label>${f.label}</label><input type="text" data-ui-field="text.${f.key}" value="${escapeAttr(v)}"></div>`;
+            }).join('');
+        }
+        // THEME
+        const themeList = $('ui-theme-list');
+        if (themeList) {
+            themeList.innerHTML = UI_THEME_FIELDS.map(f => {
+                const v = uiTempConfig.theme[f.key] || '#000000';
+                return `<div class="color-row"><label>${f.label}</label><input type="color" data-ui-color="${f.key}" value="${v}"><input type="text" data-ui-field="theme.${f.key}" value="${escapeAttr(v)}" maxlength="20"></div>`;
+            }).join('');
+        }
+        $('ui-font-family').value = uiTempConfig.theme.font_family || "'Arial', sans-serif";
+        $('ui-border-radius').value = uiTempConfig.theme.border_radius || '8px';
+        $('ui-bg-body').value = uiTempConfig.theme.bg_body || '#f5f5f5';
+        $('ui-bg-body-color').value = uiTempConfig.theme.bg_body || '#f5f5f5';
+        // LAYOUT
+        const layoutList = $('ui-layout-list');
+        if (layoutList) {
+            layoutList.innerHTML = UI_LAYOUT_FIELDS.map(f => {
+                const v = uiTempConfig.layout[f.key];
+                return `<div class="toggle-row"><input type="checkbox" data-ui-toggle="layout.${f.key}" ${v?'checked':''} id="tog_${f.key}"><label for="tog_${f.key}">${f.label}</label></div>`;
+            }).join('');
+        }
+        // TABS ORDER
+        renderUITabOrderList();
+        // COLUMNS
+        renderUIColumnsList();
+    }
+
+    function renderUITabOrderList() {
+        const list = $('ui-tab-order-list');
+        if (!list) return;
+        const order = uiTempConfig.tab_order || DEFAULT_UI_CONFIG.tab_order;
+        list.innerHTML = order.map(tabId => {
+            const label = TAB_LABELS[tabId] || tabId;
+            return `<div class="tab-order-item" data-tab-id="${tabId}"><span class="drag-handle">⋮⋮</span><span class="tab-name">${escapeHtml(label)}</span></div>`;
+        }).join('');
+        if (typeof Sortable !== 'undefined') {
+            new Sortable(list, {
+                animation: 150,
+                handle: '.drag-handle',
+                onEnd: () => {
+                    const newOrder = [...list.querySelectorAll('.tab-order-item')].map(el => el.dataset.tabId);
+                    uiTempConfig.tab_order = newOrder;
+                }
+            });
+        }
+    }
+
+    function renderUIColumnsList() {
+        const list = $('ui-columns-list');
+        if (!list) return;
+        const cols = uiTempConfig.column_order || DEFAULT_UI_CONFIG.column_order;
+        list.innerHTML = cols.map(c => {
+            return `<div class="col-item" data-col-key="${c.key}"><span class="drag-handle">⋮⋮</span><span class="col-label">${escapeHtml(c.label)}</span><input type="checkbox" data-col-vis="${c.key}" ${c.visible?'checked':''}></div>`;
+        }).join('');
+        if (typeof Sortable !== 'undefined') {
+            new Sortable(list, {
+                animation: 150,
+                handle: '.drag-handle',
+                onEnd: () => {
+                    const newOrder = [...list.querySelectorAll('.col-item')].map(el => {
+                        const key = el.dataset.colKey;
+                        const existing = uiTempConfig.column_order.find(c => c.key === key);
+                        return existing || { key, label: key, visible: true };
+                    });
+                    uiTempConfig.column_order = newOrder;
+                }
+            });
+        }
+    }
+
+    function collectUIEditorValues() {
+        // Text fields
+        document.querySelectorAll('[data-ui-field]').forEach(el => {
+            const path = el.dataset.uiField;
+            const [sect, key] = path.split('.');
+            if (!uiTempConfig[sect]) uiTempConfig[sect] = {};
+            uiTempConfig[sect][key] = el.value;
+        });
+        // Toggles
+        document.querySelectorAll('[data-ui-toggle]').forEach(el => {
+            const path = el.dataset.uiToggle;
+            const [sect, key] = path.split('.');
+            if (!uiTempConfig[sect]) uiTempConfig[sect] = {};
+            uiTempConfig[sect][key] = el.checked;
+        });
+        // Column visibility
+        const newCols = (uiTempConfig.column_order || []).map(c => {
+            const cb = document.querySelector(`[data-col-vis="${c.key}"]`);
+            return { ...c, visible: cb ? cb.checked : c.visible };
+        });
+        uiTempConfig.column_order = newCols;
+        // Font family / radius / bg
+        if ($('ui-font-family')) uiTempConfig.theme.font_family = $('ui-font-family').value;
+        if ($('ui-border-radius')) uiTempConfig.theme.border_radius = $('ui-border-radius').value;
+        if ($('ui-bg-body')) uiTempConfig.theme.bg_body = $('ui-bg-body').value;
+    }
+
+    // Wire up color inputs to text inputs
+    document.addEventListener('input', function(e) {
+        if (e.target.matches('[data-ui-color]')) {
+            const key = e.target.dataset.uiColor;
+            const txt = document.querySelector(`[data-ui-field="theme.${key}"]`);
+            if (txt) txt.value = e.target.value;
+        }
+        if (e.target.matches('[data-ui-field^="theme."]')) {
+            const key = e.target.dataset.uiField.split('.')[1];
+            const color = document.querySelector(`[data-ui-color="${key}"]`);
+            if (color && /^#[0-9A-Fa-f]{6}$/.test(e.target.value)) color.value = e.target.value;
+        }
+        if (e.target.id === 'ui-bg-body') {
+            if (/^#[0-9A-Fa-f]{6}$/.test(e.target.value)) $('ui-bg-body-color').value = e.target.value;
+        }
+    });
+    document.addEventListener('input', function(e) {
+        if (e.target.id === 'ui-bg-body-color') {
+            $('ui-bg-body').value = e.target.value;
+        }
+    });
+
+    window.uiSwitchTab = function(tab) {
+        document.querySelectorAll('.ui-tab-btn').forEach(b => b.classList.toggle('active', b.dataset.uitab === tab));
+        document.querySelectorAll('.ui-tab-content').forEach(c => c.classList.toggle('active', c.dataset.uicontent === tab));
+    };
+
+    window.uiSaveConfig = async function() {
+        collectUIEditorValues();
+        // Deep merge text over existing (in case some fields not rendered)
+        const merged = JSON.parse(JSON.stringify(DEFAULT_UI_CONFIG));
+        // Preserve existing text not in form
+        for (const k in UI_CONFIG.text) if (!(k in uiTempConfig.text)) uiTempConfig.text[k] = UI_CONFIG.text[k];
+        UI_CONFIG = deepMerge(merged, uiTempConfig);
+        if (await saveUIConfig(UI_CONFIG)) {
+            applyUIConfig();
+            alert('✅ Konfigurasi UI berjaya disimpan!\n\nPerubahan akan digunakan oleh semua peranti.');
+        }
+    };
+    window.uiDiscardChanges = function() {
+        if (!confirm('Buang semua perubahan yang belum disimpan?')) return;
+        renderUIEditor();
+        alert('✅ Perubahan dibuang.');
+    };
+    window.uiResetSection = function(section) {
+        if (!confirm(`Reset ${section} ke default?`)) return;
+        uiTempConfig[section] = JSON.parse(JSON.stringify(DEFAULT_UI_CONFIG[section]));
+        renderUIEditor();
+        alert('Reset. Tekan "Simpan Semua Perubahan" untuk apply.');
+    };
+    window.uiResetAll = function() {
+        if (!confirm('Reset SEMUA ke default? Ini akan memadam semua customization.')) return;
+        uiTempConfig = JSON.parse(JSON.stringify(DEFAULT_UI_CONFIG));
+        renderUIEditor();
+        alert('Reset semua. Tekan "Simpan Semua Perubahan" untuk apply.');
+    };
+
+    // ══════════════════════════════════════════════════════════════════
+    // ═════════════════════ END UI CONFIG SYSTEM ═══════════════════════
+    // ══════════════════════════════════════════════════════════════════
 
     const DESIGN_STATUS = {
         pending: { label: 'Pending', icon: '🟡', cls: 'design-pending' },
@@ -1668,7 +2299,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.classList.add('boss-mode');
             ['tab-dashboard','tab-sales-person','tab-templates','tab-deleted-bills','tab-settings'].forEach(id => {
                 const btn = document.getElementById(id);
-                if (btn) btn.style.display = '';
+                if (btn && !btn.dataset.hiddenByConfig) btn.style.display = '';
             });
         } else {
             document.body.classList.remove('boss-mode');
@@ -1678,9 +2309,9 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
         const designTab = $('tab-design');
-        if (designTab) designTab.style.display = (isDesigner || hasBossAccess) ? '' : 'none';
+        if (designTab && !designTab.dataset.hiddenByConfig) designTab.style.display = (isDesigner || hasBossAccess) ? '' : 'none';
         const prodTab = $('tab-production');
-        if (prodTab) prodTab.style.display = (isProduction || hasBossAccess) ? '' : 'none';
+        if (prodTab && !prodTab.dataset.hiddenByConfig) prodTab.style.display = (isProduction || hasBossAccess) ? '' : 'none';
     }
 
     function hasUnsavedFormData() {
@@ -2171,7 +2802,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    // ═══════════ SWITCH FORM MODE (Invois vs Quotation) ═══════════
     window.switchFormMode = function(mode) {
         if (hasUnsavedFormData() && mode !== formMode) {
             if (!confirm('Ada data belum disimpan. Tukar mode akan reset form. Teruskan?')) return;
@@ -2202,7 +2832,7 @@ document.addEventListener('DOMContentLoaded', function() {
             $('form-number-label').textContent = 'NO.BIL';
             $('invoice-number').placeholder = 'Klik untuk pilih nombor bil';
             $('quotation-validity-group').style.display = 'none';
-            $('deposit-group').style.display = 'block';
+            $('deposit-group').style.display = UI_CONFIG.layout.show_deposit_field ? 'block' : 'none';
             $('preview-deposit-row').style.display = 'block';
             $('preview-valid-until-row').style.display = 'none';
             $('mode-invoice-btn').classList.add('active', 'invoice-active');
@@ -2229,7 +2859,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById(id).classList.add('active');
         orderDetailView.style.display = 'none';
         const map = {
-            'tab-invoice':[invoicePage, ()=>{ switchFormMode('invoice'); populateSalesPersonDropdown(); populateDesignerDropdown('designer-select'); updateAvailableInvoiceNumbers(); renderTemplateButtons(); updateCustomerDatalist(); loadSizeCategories(); renderInvoiceTable(); applyAutoSalesPerson(); renderPendingFiles();}],
+            'tab-invoice':[invoicePage, ()=>{ switchFormMode(formMode); populateSalesPersonDropdown(); populateDesignerDropdown('designer-select'); updateAvailableInvoiceNumbers(); renderTemplateButtons(); updateCustomerDatalist(); loadSizeCategories(); renderInvoiceTable(); applyAutoSalesPerson(); renderPendingFiles();}],
             'tab-orders':[orderListPage, ()=>displayOrders()],
             'tab-active':[activeOrdersPage, ()=>displayActiveOrders()],
             'tab-quotation':[quotationListPage, ()=>displayQuotations()],
@@ -2239,7 +2869,7 @@ document.addEventListener('DOMContentLoaded', function() {
             'tab-sales-person':[salesPersonPage, ()=>displaySalesPersonData()],
             'tab-templates':[templatesPage, ()=>{displayTemplates(); displaySizeCategories();}],
             'tab-deleted-bills':[deletedBillsPage, ()=>displayDeletedBills()],
-            'tab-settings':[settingsPage, ()=>{loadStaffCards().then(displayStaffCards); window.loadDepartments().then(window.displayDepartments);}]
+            'tab-settings':[settingsPage, ()=>{loadStaffCards().then(displayStaffCards); window.loadDepartments().then(window.displayDepartments); renderUIEditor();}]
         };
         if (map[id]) { const [p, fn] = map[id]; p.style.display='block'; p.classList.add('active'); fn(); }
         applyBossMode();
@@ -2537,7 +3167,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.closeQrDisplay = function() { $('qr-display-modal').style.display = 'none'; };
     async function printIdCard(staff) {
         const container = $('idcard-preview');
-        container.innerHTML = `<div class="id-card-print" id="id-card-content"><div class="id-card-header"><h3>EMPAYAR S KREATIF</h3><p>Kad Pengenalan Staf</p></div><div class="id-card-body"><div class="id-card-info"><div class="field"><div class="field-label">Nama</div><div class="field-value">${escapeHtml(staff.staff_name)}</div></div><div class="field"><div class="field-label">Jawatan</div><div class="field-value">${escapeHtml(staff.jawatan||'Staff')}</div></div><div class="field"><div class="field-label">ID</div><div class="field-value">ESK-${staff.id.substring(0,6).toUpperCase()}</div></div></div><div class="id-card-qr" id="idcard-qr-target"></div></div><div class="id-card-footer">Kad ini hak milik Empayar S Kreatif.</div></div>`;
+        container.innerHTML = `<div class="id-card-print" id="id-card-content"><div class="id-card-header"><h3>${escapeHtml(UI_CONFIG.text.company_name)}</h3><p>Kad Pengenalan Staf</p></div><div class="id-card-body"><div class="id-card-info"><div class="field"><div class="field-label">Nama</div><div class="field-value">${escapeHtml(staff.staff_name)}</div></div><div class="field"><div class="field-label">Jawatan</div><div class="field-value">${escapeHtml(staff.jawatan||'Staff')}</div></div><div class="field"><div class="field-label">ID</div><div class="field-value">ESK-${staff.id.substring(0,6).toUpperCase()}</div></div></div><div class="id-card-qr" id="idcard-qr-target"></div></div><div class="id-card-footer">Kad ini hak milik ${escapeHtml(UI_CONFIG.text.company_name)}.</div></div>`;
         try {
             const canvas = document.createElement('canvas');
             await QRCode.toCanvas(canvas, staff.qr_token, { width: 130, margin: 1 });
@@ -2718,7 +3348,6 @@ document.addEventListener('DOMContentLoaded', function() {
         $('total-amount').textContent = ta.toFixed(2);
     }
 
-    // ═══════════ PENDING FILES (untuk form invoice/quotation) ═══════════
     function renderPendingFiles() {
         const cont = $('form-pending-files-list');
         if (!cont) return;
@@ -2831,7 +3460,6 @@ document.addEventListener('DOMContentLoaded', function() {
         note.style.display = 'none';
     }
 
-    // Filter ORDERS (exclude quotation)
     function getFilteredOrders() {
         let orders = allOrdersCache.filter(o => !o.isQuotation);
         const sf = document.querySelector('#order-list-page .filter-btn.active')?.dataset.filter || 'all';
@@ -2915,38 +3543,14 @@ document.addEventListener('DOMContentLoaded', function() {
         await loadOrders();
         updateFilterCounts();
         updateQuotationBadge();
+        renderOrderThead();
         const orders = getFilteredOrders();
         const tb = $('orders-container'); tb.innerHTML = '';
-        if (!orders.length) tb.innerHTML = '<tr><td colspan="13" style="text-align:center;">Tiada order</td></tr>';
+        const colCount = getVisibleOrderColumns().length + 1;
+        if (!orders.length) tb.innerHTML = `<tr><td colspan="${colCount}" style="text-align:center;">Tiada order</td></tr>`;
         orders.forEach(o => {
-            const st = getOrderStatus(o);
             const tr = document.createElement('tr');
-            const designerText = o.assignedDesigner ? escapeHtml(o.assignedDesigner) : '<span style="color:#999;">-</span>';
-            const designStatusHtml = getDesignStatusBadge(o.designStatus || 'pending');
-            const productionCellHtml = getProductionCellHtml(o);
-            const isProductionDone = o.productionStatus === 'done';
-            const isCompleted = o.status === 'completed';
-            const isPartial = isPartialDelivery(o);
-            let completeBtn = '';
-            if (!isCompleted && isProductionDone) completeBtn = `<button class="complete-btn" data-invoice="${o.invoiceNumber}" title="Buka pop-up selesai">✅ Selesai</button>`;
-            else if (isCompleted) completeBtn = `<button class="complete-btn" disabled title="Order sudah selesai" style="background:#95a5a6;">✅ Selesai</button>`;
-            else completeBtn = `<button class="complete-btn" disabled title="Production belum siap">✅ Selesai</button>`;
-            const printBtn = `<button class="print-btn" data-invoice="${o.invoiceNumber}" title="Cetak bill asal">🖨️ Cetak</button>`;
-            let printFinalBtn = '';
-            if (isCompleted) printFinalBtn = `<button class="print-final-btn" data-invoice="${o.invoiceNumber}" data-type="final" title="Cetak bill akhir (SELESAI)" style="background:#27ae60;">📄 Cetak Akhir</button>`;
-            else if (isPartial) printFinalBtn = `<button class="print-final-btn" data-invoice="${o.invoiceNumber}" data-type="partial" title="Cetak bill TIDAK LENGKAP" style="background:#e67e22;">📄 Cetak Akhir</button>`;
-            const editBtn = `<button class="edit-btn" data-invoice="${o.invoiceNumber}" title="Edit order">✏️ Edit</button>`;
-            tr.innerHTML = `<td><span class="order-number" data-invoice="${o.invoiceNumber}">${o.invoiceNumber||'-'}</span></td>
-                <td>${escapeHtml(o.customerName)||'-'}</td><td>${escapeHtml(o.customerPhone)||'-'}</td>
-                <td>${formatDate(o.orderDate)}</td><td>${formatDate(o.completionDate)}</td>
-                <td>${escapeHtml(o.salesPerson)||'-'}</td>
-                <td>${designerText}</td>
-                <td>${designStatusHtml}</td>
-                <td>${productionCellHtml}</td>
-                <td>${getDeliveryMethodBadge(o)}</td>
-                <td>${getSerahBadge(o)}</td>
-                <td class="status-cell"><span class="status-indicator status-${st}"></span>${getStatusText(st)}</td>
-                <td class="no-print"><div class="order-actions">${printBtn}${printFinalBtn}${editBtn}${completeBtn}</div></td>`;
+            tr.innerHTML = buildOrderRowCells(o, orders);
             tb.appendChild(tr);
         });
         const ts = orders.reduce((s,o)=>s+(o.subtotal||0),0);
@@ -2972,7 +3576,6 @@ document.addEventListener('DOMContentLoaded', function() {
         applyBossMode();
     }
 
-    // ═══════════ DISPLAY QUOTATIONS ═══════════
     async function displayQuotations() {
         await loadOrders();
         updateQuotationBadge();
@@ -3043,17 +3646,14 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch(e) { alert('❌ Gagal padam: ' + e.message); }
     };
 
-    // ═══════════ CONVERT QUOTATION TO ORDER ═══════════
     window.openConvertQuotationModal = async function(o) {
         convertQuotationOrder = o;
         $('convert-quotation-number').textContent = o.invoiceNumber;
         $('convert-quotation-customer').textContent = o.customerName || '-';
         $('convert-quotation-amount').textContent = formatRM(o.subtotal);
-        // Generate available invoice numbers (25DXXXX)
         const used = allOrdersCache.filter(x => !x.isQuotation).map(x => x.invoiceNumber);
         const available = generateInvoiceNumbers().filter(n => !used.includes(n)).slice(0, 50);
         $('convert-new-invoice-number').innerHTML = '<option value="">-- Pilih No. Bil --</option>' + available.map(n => `<option value="${n}">${n}</option>`).join('');
-        // Auto set completion date
         const d = new Date(); d.setDate(d.getDate() + 7);
         $('convert-completion-date').value = d.toISOString().split('T')[0];
         $('convert-deposit').value = '';
@@ -3078,30 +3678,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const newSubtotal = oldQ.subtotal;
         const newBalance = newSubtotal - newDeposit;
         
-        // Update quotation jadi order
-        const updateData = {
-            ...oldQ,
-            invoiceNumber: newInvNum,
-            isQuotation: false,
-            convertedToOrderAt: new Date(),
-            convertedToOrderBy: STAFF_NAME,
-            originalQuotationNumber: oldQ.invoiceNumber,
-            completionDate: newCompletionDate || oldQ.completionDate,
-            deposit: newDeposit,
-            balance: newBalance,
-            quotationNotes: notes || oldQ.quotationNotes,
-            status: 'normal'
-        };
-        
-        // 1. Delete old quotation row (sebab PK guna invoice_number unique)
         try {
-            // Simpan items sementara
             const savedItems = oldQ.items;
-            
-            // Delete old
             await supabaseClient.from('orders').delete().eq('invoice_number', oldQ.invoiceNumber);
             
-            // Insert as new order
             const insertData = {
                 invoice_number: newInvNum,
                 customer_name: oldQ.customerName,
@@ -3136,14 +3716,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const { data: newO, error } = await supabaseClient.from('orders').insert(insertData).select().single();
             if (error) throw error;
             
-            // Insert items
             if (savedItems.length) {
                 await supabaseClient.from('order_items').insert(savedItems.map(it => ({
                     order_id: newO.id, description: it.description, price: it.price, quantity: it.quantity, total: it.total
                 })));
             }
             
-            // Log
             await addAuditLog(newInvNum, 'create', null, null, null, 
                 `Order dicipta dari Quotation ${oldQ.invoiceNumber} oleh ${STAFF_NAME}. Deposit: RM${newDeposit}${notes ? '. Nota: ' + notes : ''}`);
             
@@ -3160,7 +3738,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    // ═══════════ NOTA KEKURANGAN ═══════════
     window.saveIncompleteNote = async function() {
         if (!currentOrder) return;
         const newNote = $('detail-incomplete-note').value.trim();
@@ -3704,7 +4281,6 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (isPartial) {
             stamp = '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-45deg);font-size:64px;color:rgba(230,126,34,0.25);font-weight:bold;border:8px solid rgba(230,126,34,0.25);padding:25px;z-index:1000;border-radius:10px;">TIDAK LENGKAP</div>';
         }
-        // Quotation warning box
         let quotationWarning = '';
         if (isQuotation) {
             quotationWarning = `<div style="margin-top:20px;padding:15px;background:#e8f8f5;border-left:4px solid #16a085;border-radius:4px;">
@@ -3717,7 +4293,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 </p>
             </div>`;
         }
-        // Delivery status
         let deliveryStatusHtml = '';
         if (!isQuotation) {
             const totalItems = (o.items||[]).length;
@@ -3764,15 +4339,19 @@ document.addEventListener('DOMContentLoaded', function() {
             if (lines.length === 1) return lines[0];
             return `${lines[0]}<div style="font-size:11px;color:#555;font-family:'Courier New',monospace;padding-left:15px;margin-top:3px;">${lines.slice(1).join(' ')}</div>`;
         }
+        const bankHtml = UI_CONFIG.text.bank_info || '';
+        const termsHtml = UI_CONFIG.text.terms_html || '';
+        const companyAddrHtml = UI_CONFIG.text.company_full_address || '';
+        const companyName = UI_CONFIG.text.company_name || 'EMPAYAR S KREATIF';
         return `<!DOCTYPE html><html><head><title>Cetak - ${o.invoiceNumber}</title><style>
-            body{font-family:Arial,sans-serif;margin:20px;}.header{text-align:center;margin-bottom:20px;border-bottom:1px solid #eee;padding-bottom:15px;}
+            body{font-family:${UI_CONFIG.theme.font_family};margin:20px;}.header{text-align:center;margin-bottom:20px;border-bottom:1px solid #eee;padding-bottom:15px;}
             .header img{max-width:120px;}.company-details{text-align:left;}.header h2{margin:0;}.header p{margin:2px 0;}
             table{width:100%;border-collapse:collapse;margin-bottom:20px;}th,td{border:1px solid #ddd;padding:8px;text-align:left;}th{background:#f2f2f2;font-size:12px;}
             td{font-size:12px;}.invoice-totals{margin-top:20px;font-weight:bold;text-align:right;font-size:13px;}.bank-info{margin-top:20px;padding:10px;background:#e8f4fc;border-radius:4px;font-size:12px;}
             .terms{font-size:11px;margin-top:20px;padding:10px;background:#f9f9f9;border-radius:4px;line-height:1.6;}.table-summary-row{background:#f9f9f9;font-weight:bold;}
         </style></head><body style="position:relative;">${stamp}
         <div class="header"><img src="https://arleta.site/interactivelink/68/Untitled-1.png">
-        <div class="company-details"><h2>EMPAYAR S KREATIF</h2><p>Hadapan Sek.Ren.Keb Ketereh, 16450 Kota Bharu Kelantan<br>TEL: 01133387532<br>(KT0565538-X)</p></div><h3>${title}</h3></div>
+        <div class="company-details"><h2>${escapeHtml(companyName)}</h2><p>${companyAddrHtml}</p></div><h3>${title}</h3></div>
         <p><strong>${isQuotation ? 'NO.QUOTATION' : 'NO.BIL'}:</strong> ${o.invoiceNumber}</p>
         <p><strong>KEPADA:</strong> ${o.customerName||'-'}</p>
         <p><strong>NO. TELEFON:</strong> ${o.customerPhone||'-'}</p>
@@ -3785,9 +4364,9 @@ document.addEventListener('DOMContentLoaded', function() {
         ${deliveryStatusHtml}
         ${pay}
         ${deliveryInfo}
-        ${!isQuotation ? `<div class="bank-info"><p><strong>BAYARAN</strong></p><p><strong>Maybank</strong><br>553104624047<br>EMPAYAR S KREATIF SOLUTION</p></div>` : ''}
+        ${!isQuotation ? `<div class="bank-info"><p><strong>BAYARAN</strong></p>${bankHtml}</div>` : ''}
         <p><strong>NAMA JURUJUAL:</strong> ${o.salesPerson||'-'}</p>
-        ${!isQuotation ? `<div class="terms"><p><strong>TERMA & SYARAT TEMPAHAN</strong></p><p>*DEPOSIT SEKURANG-KURANGNYA 50%</p><p>Tempahan TIDAK BOLEH DIBATALKAN, deposit TIDAK akan dikembalikan</p><p>Pertukaran saiz dikenarkan SEBELUM order dengan supplier</p><p>Caj design TIDAK AKAN DIKEMBALIKAN</p><p>Preview design SEBELUM proceed cetakan</p></div>` : `<div class="terms" style="background:#e8f8f5;"><p><strong>TERMA QUOTATION</strong></p><p>• Sebut harga ini sah untuk tempoh yang dinyatakan</p><p>• Harga tertakluk kepada perubahan tanpa notis</p><p>• Untuk confirm order, deposit diperlukan</p><p>• Hubungi kami untuk sebarang pertanyaan</p></div>`}
+        ${!isQuotation ? `<div class="terms">${termsHtml}</div>` : `<div class="terms" style="background:#e8f8f5;"><p><strong>TERMA QUOTATION</strong></p><p>• Sebut harga ini sah untuk tempoh yang dinyatakan</p><p>• Harga tertakluk kepada perubahan tanpa notis</p><p>• Untuk confirm order, deposit diperlukan</p><p>• Hubungi kami untuk sebarang pertanyaan</p></div>`}
         </body></html>`;
     }
     function printOrder() { if (!currentOrder) return; openPrintOptionsModal(currentOrder); }
@@ -4220,7 +4799,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const salesPersons = activeStaff.map(s => { const found = spList.find(x => x.name === s.staff_name); return { name: s.staff_name, commission: found ? found.commission : 0 }; });
         const period = $('dash-period').value, monthSel = $('dash-month').value, yearSel = $('dash-year').value, sf = $('dash-sales').value;
         const [start, end] = getPeriodRange(period, monthSel, yearSel);
-        // Filter out quotations!
         const filtered = orders.filter(o => {
             if (o.isQuotation) return false;
             if (sf && o.salesPerson !== sf) return false;
@@ -4309,7 +4887,6 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         if (!await addOrder(data)) { alert('❌ Gagal simpan.'); return; }
         
-        // Upload pending files (kalau ada)
         if (pendingFiles.length > 0) {
             await uploadPendingFilesToOrder(inv);
         }
@@ -4453,7 +5030,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const c5 = supabaseClient.channel('tpl_ch').on('postgres_changes', {event:'*', schema:'public', table:'item_templates'}, () => { renderTemplateButtons(); if (document.querySelector('.tab-btn.active')?.id === 'tab-templates') displayTemplates(); }).subscribe();
         const c6 = supabaseClient.channel('sizecat_ch').on('postgres_changes', {event:'*', schema:'public', table:'size_categories'}, async () => { await loadSizeCategories(); if (document.querySelector('.tab-btn.active')?.id === 'tab-templates') displaySizeCategories(); }).subscribe();
         const c7 = supabaseClient.channel('staff_ch').on('postgres_changes', {event:'*', schema:'public', table:'staff_cards'}, async () => { await loadStaffCards(); await populateSalesPersonDropdown(); if (document.querySelector('.tab-btn.active')?.id === 'tab-settings') displayStaffCards(); }).subscribe();
-        const c8 = supabaseClient.channel('settings_ch').on('postgres_changes', {event:'*', schema:'public', table:'app_settings'}, async () => { await loadAppSettings(); }).subscribe();
+        const c8 = supabaseClient.channel('settings_ch').on('postgres_changes', {event:'*', schema:'public', table:'app_settings'}, async (payload) => { 
+            await loadAppSettings(); 
+            if (payload?.new?.key === 'ui_config') {
+                await loadUIConfig();
+                applyUIConfig();
+                if (document.querySelector('.tab-btn.active')?.id === 'tab-settings') renderUIEditor();
+            }
+        }).subscribe();
         const c9 = supabaseClient.channel('files_ch').on('postgres_changes', {event:'*', schema:'public', table:'order_files'}, () => { if (currentUploadInvoice && $('upload-modal').style.display === 'flex') loadExistingFiles(currentUploadInvoice); }).subscribe();
         const c10 = supabaseClient.channel('design_act_ch').on('postgres_changes', {event:'*', schema:'public', table:'design_activity'}, () => { if (currentOrder && orderDetailView.style.display === 'block') loadDesignActivityForDetail(currentOrder.invoiceNumber); }).subscribe();
         const c11 = supabaseClient.channel('dept_ch').on('postgres_changes', {event:'*', schema:'public', table:'departments'}, async () => { await window.loadDepartments(); if (document.querySelector('.tab-btn.active')?.id === 'tab-settings') window.displayDepartments(); }).subscribe();
@@ -4556,7 +5140,6 @@ document.addEventListener('DOMContentLoaded', function() {
     $('btn-print-final').addEventListener('click', printFinal);
     $('btn-upload-file').addEventListener('click', () => { if (currentOrder) openUploadModal(currentOrder.invoiceNumber); });
 
-    // FILE INPUT DI FORM (invoice/quotation)
     $('form-file-input').addEventListener('change', function(e) {
         const files = e.target.files;
         if (!files || !files.length) return;
@@ -4631,7 +5214,6 @@ document.addEventListener('DOMContentLoaded', function() {
     $('clear-all-orders-btn').addEventListener('click', () => showPasswordPrompt('clear_all_orders', 'Padam Semua Order'));
     $('search-active').addEventListener('input', displayActiveOrders);
     $('filter-active-sales').addEventListener('change', displayActiveOrders);
-    // Quotation filter
     if ($('search-quotations')) $('search-quotations').addEventListener('input', displayQuotations);
     if ($('filter-quotation-status')) $('filter-quotation-status').addEventListener('change', displayQuotations);
     if ($('filter-quotation-sales')) $('filter-quotation-sales').addEventListener('change', displayQuotations);
@@ -4680,6 +5262,7 @@ document.addEventListener('DOMContentLoaded', function() {
         isBoss = sessionStorage.getItem('isBoss') === 'true';
         applyBossMode();
         await loadAppSettings();
+        await loadUIConfig();
         await window.loadDepartments();
         await loadStaffCards();
         await loadDesigners();
@@ -4695,6 +5278,7 @@ document.addEventListener('DOMContentLoaded', function() {
         renderInvoiceTable();
         renderPendingFiles();
         initRealtime();
+        applyUIConfig();
         await updateAvailableInvoiceNumbers();
         await renderTemplateButtons();
         if (STAFF_NAME) {
