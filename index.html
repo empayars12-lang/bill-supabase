@@ -13,17 +13,9 @@
 <link rel="apple-touch-icon" href="https://arleta.site/interactivelink/68/Untitled-1.png">
 <style>
 :root{
-  --primary:#6e48aa;
-  --primary-light:#9d50bb;
-  --success:#2ecc71;
-  --success-dark:#27ae60;
-  --danger:#e74c3c;
-  --warning:#f39c12;
-  --info:#3498db;
-  --font-family:'Arial', sans-serif;
-  --border-radius:8px;
-  --bg-body:#f5f5f5;
-  --text-body:#333;
+  --primary:#6e48aa;--primary-light:#9d50bb;--success:#2ecc71;--success-dark:#27ae60;
+  --danger:#e74c3c;--warning:#f39c12;--info:#3498db;--font-family:'Arial', sans-serif;
+  --border-radius:8px;--bg-body:#f5f5f5;--text-body:#333;
 }
 html { overscroll-behavior-y: contain; overscroll-behavior-x: none; }
 body { font-family: var(--font-family); margin: 0; padding: 0; background-color: var(--bg-body); color: var(--text-body); overscroll-behavior-y: contain; touch-action: pan-x pan-y; }
@@ -157,10 +149,7 @@ th { background-color: #f2f2f2; }
 #sales-person-table .commission-input { width: 60px; padding: 5px; text-align: right; }
 #sales-person-table .bill-count { cursor: pointer; text-decoration: underline; color: #007bff; }
 #send-production-modal, #pause-production-modal, #dept-modal, #password-modal, #name-modal, #template-modal, #size-cat-modal, #size-input-modal, #qr-login-modal, #pin-login-modal, #staff-modal, #qr-display-modal, #idcard-modal, #staff-password-login-modal, #staff-pin-manual-modal, #upload-modal, #pass-designer-modal, #file-notes-modal, #delivery-pin-modal, #complete-pin-modal, #quick-complete-modal, #print-options-modal, #convert-quotation-modal { position: fixed; z-index: 3500; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; padding: 20px; }
-.password-modal-content, .name-modal-content, .template-modal-content, .size-cat-modal-content, .size-input-modal-content, .qr-login-modal-content, .pin-login-modal-content, .staff-modal-content, .qr-display-modal-content, .idcard-modal-content, .staff-password-login-modal-content, .staff-pin-manual-modal-content, .upload-modal-content, .pass-designer-modal-content, .file-notes-modal-content, .delivery-pin-modal-content, .complete-pin-modal-content, .quick-complete-modal-content, .print-options-modal-content, .convert-quotation-modal-content {
-    background: white; padding: 30px; border-radius: 12px; position: relative;
-    width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto;
-}
+.password-modal-content, .name-modal-content, .template-modal-content, .size-cat-modal-content, .size-input-modal-content, .qr-login-modal-content, .pin-login-modal-content, .staff-modal-content, .qr-display-modal-content, .idcard-modal-content, .staff-password-login-modal-content, .staff-pin-manual-modal-content, .upload-modal-content, .pass-designer-modal-content, .file-notes-modal-content, .delivery-pin-modal-content, .complete-pin-modal-content, .quick-complete-modal-content, .print-options-modal-content, .convert-quotation-modal-content { background: white; padding: 30px; border-radius: 12px; position: relative; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; }
 .password-modal-content { max-width: 400px; }
 .size-input-modal-content { max-width: 600px; }
 .qr-login-modal-content, .pin-login-modal-content, .staff-password-login-modal-content, .staff-pin-manual-modal-content, .delivery-pin-modal-content, .complete-pin-modal-content { max-width: 450px; text-align: center; }
@@ -339,6 +328,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
 .delivery-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; }
 .delivery-badge.pickup { background: var(--info); color: white; }
 .delivery-badge.pos { background: #9b59b6; color: white; }
+.delivery-badge.cod { background: #e67e22; color: white; }
 .delivery-badge.none { background: #ddd; color: #777; }
 .delivery-badge.delivered { background: var(--success); color: white; }
 .delivery-history-item { padding: 10px 12px; background: white; border-left: 3px solid #27ae60; border-radius: 4px; margin-bottom: 8px; font-size: 12px; }
@@ -374,7 +364,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
 .pending-file-info { flex: 1; min-width: 150px; }
 .pending-file-name { font-weight: bold; font-size: 13px; word-break: break-all; }
 .pending-file-meta { font-size: 11px; color: #666; margin-top: 3px; }
-/* UI Customizer styles */
 .ui-editor-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-bottom: 15px; }
 .ui-editor-field { background: white; padding: 12px; border-radius: 6px; border: 1px solid #eee; }
 .ui-editor-field label { font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
@@ -396,6 +385,10 @@ body:not(.boss-mode) .boss-only { display: none !important; }
 .tab-order-item .drag-handle { color: #999; font-size: 20px; }
 .tab-order-item .tab-name { flex: 1; font-weight: bold; font-size: 13px; }
 .ui-save-bar { position: sticky; bottom: 0; background: white; padding: 15px; border-top: 2px solid var(--primary); margin: 20px -25px -25px -25px; display: flex; gap: 10px; justify-content: flex-end; box-shadow: 0 -4px 10px rgba(0,0,0,0.05); }
+.ui-tab-btn{padding:10px 15px;background:none;border:none;font-weight:bold;cursor:pointer;color:#666;border-bottom:3px solid transparent;margin-bottom:-2px;font-size:13px;}
+.ui-tab-btn.active{color:var(--primary);border-bottom-color:var(--primary);}
+.ui-tab-content{display:none;}
+.ui-tab-content.active{display:block;}
 @media print {
     .no-print, .action-buttons, .tab-nav, .home-button-container, #password-modal, .add-sales-person, #bills-modal, #install-app-btn, #upload-modal, #pass-designer-modal, #file-notes-modal, #send-production-modal, #pause-production-modal, #delivery-pin-modal, #complete-pin-modal, #quick-complete-modal, #print-options-modal, #convert-quotation-modal { display: none !important; }
     body { background: none; padding: 0; }
@@ -470,7 +463,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         <button class="tab-btn" id="tab-settings" data-tab-key="tab-settings">⚙️ Tetapan</button>
     </div>
 
-    <!-- ═══════════════ FORM INVOICE/QUOTATION (SHARED) ═══════════════ -->
     <div id="invoice-page" class="page">
         <div class="form-mode-toggle no-print">
             <button class="form-mode-btn invoice-active" id="mode-invoice-btn" onclick="switchFormMode('invoice')">📄 Invois / Order</button>
@@ -544,6 +536,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
                 <option value="">⚪ Belum Set</option>
                 <option value="pickup">🏪 Pickup di Kedai</option>
                 <option value="pos">📦 Pos / Kurier</option>
+                <option value="cod">💰 COD (Cash on Delivery)</option>
             </select>
         </div>
         <div class="form-group" id="delivery-address-group" style="display:none;">
@@ -632,6 +625,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
                 <option value="">Semua Kaedah</option>
                 <option value="pickup">🏪 Pickup</option>
                 <option value="pos">📦 Pos</option>
+                <option value="cod">💰 COD</option>
                 <option value="unset">⚪ Belum Set</option>
             </select>
         </div>
@@ -664,6 +658,9 @@ body:not(.boss-mode) .boss-only { display: none !important; }
     <div id="quotation-list-page" class="page">
         <h2 style="margin-top:0;color:#16a085;">📋 Senarai Quotation</h2>
         <p style="color:#666;margin-top:-10px;">Sebut harga sahaja. Tidak dikira dalam statistik jualan. Bila customer setuju, tekan <strong>✅ Convert to Order</strong>.</p>
+        <p id="quotation-privacy-note" style="display:none;color:#d35400;margin-top:-10px;background:#fff8e1;padding:8px 12px;border-radius:6px;border-left:3px solid #f39c12;font-size:13px;">
+            🔒 <strong>Nota:</strong> Anda hanya boleh lihat quotation milik anda sahaja. Ini untuk melindungi customer anda.
+        </p>
         <div class="search-filter no-print">
             <input type="text" id="search-quotations" class="search-input" placeholder="Cari no quotation, nama, telefon...">
             <select id="filter-quotation-status" class="filter-select">
@@ -982,7 +979,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
     <div id="settings-page" class="page">
         <h2 style="margin-top:0;">⚙️ Tetapan Sistem</h2>
 
-        <!-- ═════════ UI CUSTOMIZER (BARU) ═════════ -->
         <div class="settings-section" id="ui-customizer-section">
             <h3>🎨 UI Customizer</h3>
             <p style="font-size:13px;color:#666;margin-top:-5px;">Edit semua tulisan, warna tema, paparan, susunan tab & kolum — dari sini. Perubahan disimpan ke cloud dan digunakan oleh semua peranti.</p>
@@ -996,7 +992,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
                 </div>
             </div>
 
-            <!-- Tab dalam UI Customizer -->
             <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:15px;border-bottom:2px solid #eee;padding-bottom:0;">
                 <button class="ui-tab-btn active" data-uitab="text" onclick="window.uiSwitchTab('text')">📝 Tulisan</button>
                 <button class="ui-tab-btn" data-uitab="theme" onclick="window.uiSwitchTab('theme')">🎨 Tema</button>
@@ -1004,20 +999,12 @@ body:not(.boss-mode) .boss-only { display: none !important; }
                 <button class="ui-tab-btn" data-uitab="tabs" onclick="window.uiSwitchTab('tabs')">📑 Susunan Tab</button>
                 <button class="ui-tab-btn" data-uitab="columns" onclick="window.uiSwitchTab('columns')">📊 Kolum Order</button>
             </div>
-            <style>
-                .ui-tab-btn{padding:10px 15px;background:none;border:none;font-weight:bold;cursor:pointer;color:#666;border-bottom:3px solid transparent;margin-bottom:-2px;font-size:13px;}
-                .ui-tab-btn.active{color:var(--primary);border-bottom-color:var(--primary);}
-                .ui-tab-content{display:none;}
-                .ui-tab-content.active{display:block;}
-            </style>
 
-            <!-- TAB: TEXT -->
             <div class="ui-tab-content active" data-uicontent="text">
                 <h4 style="color:var(--primary);">📝 Tulisan Sistem</h4>
                 <div class="ui-editor-grid" id="ui-text-grid"></div>
             </div>
 
-            <!-- TAB: THEME -->
             <div class="ui-tab-content" data-uicontent="theme">
                 <h4 style="color:var(--primary);">🎨 Warna & Tema</h4>
                 <div id="ui-theme-list"></div>
@@ -1048,27 +1035,23 @@ body:not(.boss-mode) .boss-only { display: none !important; }
                 </div>
             </div>
 
-            <!-- TAB: LAYOUT -->
             <div class="ui-tab-content" data-uicontent="layout">
                 <h4 style="color:var(--primary);">👁️ Paparan — Tunjuk / Sembunyi</h4>
                 <div id="ui-layout-list"></div>
             </div>
 
-            <!-- TAB: TABS ORDER -->
             <div class="ui-tab-content" data-uicontent="tabs">
                 <h4 style="color:var(--primary);">📑 Susunan Tab</h4>
                 <p style="font-size:12px;color:#666;">Seret (drag) untuk susun semula tab. Tab yang tersembunyi tidak akan dipaparkan di UI.</p>
                 <div id="ui-tab-order-list"></div>
             </div>
 
-            <!-- TAB: COLUMNS -->
             <div class="ui-tab-content" data-uicontent="columns">
                 <h4 style="color:var(--primary);">📊 Kolum Table Order</h4>
                 <p style="font-size:12px;color:#666;">Seret untuk susun, tanda checkbox untuk tunjuk. Kolum "Tindakan" akan sentiasa ada di kanan.</p>
                 <div id="ui-columns-list"></div>
             </div>
 
-            <!-- Save Bar -->
             <div class="ui-save-bar">
                 <button class="btn btn-secondary" onclick="window.uiDiscardChanges()">Batal</button>
                 <button class="btn" onclick="window.uiSaveConfig()" style="background:var(--success);font-weight:bold;">💾 Simpan Semua Perubahan</button>
@@ -1102,7 +1085,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
     </div>
 </div>
 
-<!-- ═══════════════ MODAL: CONVERT QUOTATION TO ORDER ═══════════════ -->
 <div id="convert-quotation-modal">
     <div class="convert-quotation-modal-content">
         <button class="modal-close-x" onclick="closeConvertQuotationModal()">×</button>
@@ -1572,6 +1554,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
                 <option value="">⚪ Belum Set</option>
                 <option value="pickup">🏪 Pickup di Kedai</option>
                 <option value="pos">📦 Pos / Kurier</option>
+                <option value="cod">💰 COD (Cash on Delivery)</option>
             </select>
         </div>
         <div class="form-group" id="edit-address-group" style="display:none;">
@@ -1675,10 +1658,6 @@ document.addEventListener('DOMContentLoaded', function() {
     let allDepartmentsCache = [];
     let formMode = 'invoice';
 
-    // ══════════════════════════════════════════════════════════════════
-    // ═══════════════ UI CONFIG SYSTEM (5 FEATURES) ═══════════════════
-    // ══════════════════════════════════════════════════════════════════
-
     const DEFAULT_UI_CONFIG = {
         text: {
             company_name: 'EMPAYAR S KREATIF',
@@ -1714,29 +1693,18 @@ document.addEventListener('DOMContentLoaded', function() {
             terms_html: '<p><strong>TERMA & SYARAT TEMPAHAN</strong></p><p>*Setiap tempahan hendaklah disertakan DEPOSIT SEKURANG-KURANGNYA 50%</p><p>*(tempahan tanpa deposit tidak akan di proses)*</p><p>Tempahan yang dibuat TIDAK BOLEH DIBATALKAN, deposit TIDAK akan dikembalikan</p><p>Untuk Tempahan baju, Pertukaran saiz baju dikenarkan SEBELUM baju di order dengan supplier</p><p>Caj design yang dikenakan TIDAK AKAN DIKEMBALIKAN</p><p>Preview design akan dibuat SEBELUM proceed cetakan</p>'
         },
         theme: {
-            primary: '#6e48aa',
-            primary_light: '#9d50bb',
-            success: '#2ecc71',
-            success_dark: '#27ae60',
-            danger: '#e74c3c',
-            warning: '#f39c12',
-            info: '#3498db',
+            primary: '#6e48aa', primary_light: '#9d50bb',
+            success: '#2ecc71', success_dark: '#27ae60',
+            danger: '#e74c3c', warning: '#f39c12', info: '#3498db',
             font_family: "'Arial', sans-serif",
             border_radius: '8px',
             bg_body: '#f5f5f5'
         },
         layout: {
-            show_tagline: true,
-            show_features: true,
-            show_top_customers: true,
-            show_tab_dashboard: true,
-            show_tab_sales_person: true,
-            show_tab_templates: true,
-            show_tab_deleted_bills: true,
-            show_tab_settings: true,
-            show_deposit_field: true,
-            show_delivery_field: true,
-            show_attach_section: true
+            show_tagline: true, show_features: true, show_top_customers: true,
+            show_tab_dashboard: true, show_tab_sales_person: true, show_tab_templates: true,
+            show_tab_deleted_bills: true, show_tab_settings: true,
+            show_deposit_field: true, show_delivery_field: true, show_attach_section: true
         },
         tab_order: ['tab-invoice','tab-orders','tab-active','tab-quotation','tab-design','tab-production','tab-dashboard','tab-sales-person','tab-templates','tab-deleted-bills','tab-settings'],
         column_order: [
@@ -1769,39 +1737,28 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } catch(e) { console.error('loadUIConfig:', e); }
     }
-
     function deepMerge(target, source) {
         for (const k in source) {
             if (source[k] && typeof source[k] === 'object' && !Array.isArray(source[k])) {
                 target[k] = deepMerge(target[k] || {}, source[k]);
-            } else {
-                target[k] = source[k];
-            }
+            } else { target[k] = source[k]; }
         }
         return target;
     }
-
     async function saveUIConfig(config) {
         try {
             const { data: ex } = await supabaseClient.from('app_settings').select('key').eq('key', 'ui_config').maybeSingle();
-            if (ex) {
-                await supabaseClient.from('app_settings').update({ value: config, updated_at: new Date() }).eq('key', 'ui_config');
-            } else {
-                await supabaseClient.from('app_settings').insert({ key: 'ui_config', value: config });
-            }
+            if (ex) await supabaseClient.from('app_settings').update({ value: config, updated_at: new Date() }).eq('key', 'ui_config');
+            else await supabaseClient.from('app_settings').insert({ key: 'ui_config', value: config });
             return true;
         } catch(e) { alert('Gagal simpan: ' + e.message); return false; }
     }
 
     function applyUIConfig() {
-        // 1. Apply TEXT via data-ui attributes
         document.querySelectorAll('[data-ui]').forEach(el => {
             const key = el.dataset.ui;
-            if (UI_CONFIG.text[key] !== undefined) {
-                el.innerHTML = UI_CONFIG.text[key];
-            }
+            if (UI_CONFIG.text[key] !== undefined) el.innerHTML = UI_CONFIG.text[key];
         });
-        // Tab labels
         const tabLabelMap = {
             'tab-invoice': 'tab_invoice', 'tab-orders': 'tab_orders', 'tab-active': 'tab_active',
             'tab-quotation': 'tab_quotation', 'tab-design': 'tab_design', 'tab-production': 'tab_production',
@@ -1811,21 +1768,13 @@ document.addEventListener('DOMContentLoaded', function() {
         for (const [tabId, textKey] of Object.entries(tabLabelMap)) {
             const btn = document.getElementById(tabId);
             if (btn && UI_CONFIG.text[textKey]) {
-                // Preserve badge
                 const badge = btn.querySelector('.badge-notif');
                 btn.textContent = UI_CONFIG.text[textKey];
                 if (badge) btn.appendChild(badge);
             }
         }
-        // Bank info
-        document.querySelectorAll('[data-bank-info]').forEach(el => {
-            el.innerHTML = UI_CONFIG.text.bank_info;
-        });
-        // Terms
-        document.querySelectorAll('[data-terms]').forEach(el => {
-            el.innerHTML = UI_CONFIG.text.terms_html;
-        });
-        // Update preview form title based on mode
+        document.querySelectorAll('[data-bank-info]').forEach(el => { el.innerHTML = UI_CONFIG.text.bank_info; });
+        document.querySelectorAll('[data-terms]').forEach(el => { el.innerHTML = UI_CONFIG.text.terms_html; });
         if (formMode === 'quotation') {
             $('form-title').textContent = 'QUOTATION';
             $('preview-form-title').textContent = 'QUOTATION';
@@ -1833,7 +1782,6 @@ document.addEventListener('DOMContentLoaded', function() {
             $('form-title').textContent = 'INVOIS';
             $('preview-form-title').textContent = 'INVOIS';
         }
-        // 2. Apply THEME
         const root = document.documentElement;
         const t = UI_CONFIG.theme;
         if (t.primary) root.style.setProperty('--primary', t.primary);
@@ -1846,10 +1794,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (t.font_family) root.style.setProperty('--font-family', t.font_family);
         if (t.border_radius) root.style.setProperty('--border-radius', t.border_radius);
         if (t.bg_body) root.style.setProperty('--bg-body', t.bg_body);
-        // Update theme-color meta
         const metaTheme = document.querySelector('meta[name="theme-color"]');
         if (metaTheme && t.primary) metaTheme.content = t.primary;
-        // 3. Apply LAYOUT
         const L = UI_CONFIG.layout;
         const features = $('landing-features');
         if (features) features.style.display = L.show_features ? 'flex' : 'none';
@@ -1861,8 +1807,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (attachSec) attachSec.style.display = L.show_attach_section ? 'block' : 'none';
         const depositGroup = $('deposit-group');
         if (depositGroup && formMode !== 'quotation') depositGroup.style.display = L.show_deposit_field ? 'block' : 'none';
-        // Tab visibility (respect boss-mode too)
-        const hasBossAccess = (sessionStorage.getItem('appAuthed') === 'true' || isBoss);
         const tabVisMap = {
             'tab-dashboard': 'show_tab_dashboard', 'tab-sales-person': 'show_tab_sales_person',
             'tab-templates': 'show_tab_templates', 'tab-deleted-bills': 'show_tab_deleted_bills',
@@ -1874,7 +1818,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!L[key]) { btn.style.display = 'none'; btn.dataset.hiddenByConfig = '1'; }
             else { delete btn.dataset.hiddenByConfig; }
         }
-        // 4. Apply TAB ORDER
         const nav = $('tab-nav-container');
         if (nav && Array.isArray(UI_CONFIG.tab_order)) {
             UI_CONFIG.tab_order.forEach(tabId => {
@@ -1882,13 +1825,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (el && el.parentNode === nav) nav.appendChild(el);
             });
         }
-        // 5. Apply COLUMN ORDER for order table
         applyColumnConfig();
-        // Re-apply boss mode on top (to hide protected tabs if not boss)
         applyBossMode();
     }
 
-    // ═══ COLUMN CONFIG ═══
     function getVisibleOrderColumns() {
         return (UI_CONFIG.column_order || []).filter(c => c.visible);
     }
@@ -1935,7 +1875,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return cells + `<td class="no-print"><div class="order-actions">${printBtn}${printFinalBtn}${editBtn}${completeBtn}</div></td>`;
     }
 
-    // ═══ UI EDITOR ═══
     const UI_TEXT_FIELDS = [
         { key: 'company_name', label: 'Nama Syarikat' },
         { key: 'tagline', label: 'Tagline' },
@@ -1969,21 +1908,19 @@ document.addEventListener('DOMContentLoaded', function() {
         { key: 'tab_settings', label: 'Tab: Tetapan' },
         { key: 'terms_html', label: 'Terma & Syarat (HTML)', type: 'textarea' }
     ];
-
     const UI_THEME_FIELDS = [
         { key: 'primary', label: 'Warna Utama (Primary)' },
-        { key: 'primary_light', label: 'Warna Utama Cerah (Primary Light)' },
+        { key: 'primary_light', label: 'Warna Utama Cerah' },
         { key: 'success', label: 'Warna Success (Hijau)' },
         { key: 'success_dark', label: 'Warna Success Dark' },
         { key: 'danger', label: 'Warna Danger (Merah)' },
-        { key: 'warning', label: 'Warna Warning (Kuning/Oren)' },
+        { key: 'warning', label: 'Warna Warning (Oren)' },
         { key: 'info', label: 'Warna Info (Biru)' }
     ];
-
     const UI_LAYOUT_FIELDS = [
         { key: 'show_tagline', label: 'Tunjuk Tagline di Landing Page' },
         { key: 'show_features', label: 'Tunjuk Kad Features di Landing Page' },
-        { key: 'show_top_customers', label: 'Tunjuk "Top 10 Pelanggan" di Papan Pemuka' },
+        { key: 'show_top_customers', label: 'Tunjuk "Top 10 Pelanggan"' },
         { key: 'show_tab_dashboard', label: 'Tunjuk Tab "Papan Pemuka"' },
         { key: 'show_tab_sales_person', label: 'Tunjuk Tab "Jurujual"' },
         { key: 'show_tab_templates', label: 'Tunjuk Tab "Template & Saiz"' },
@@ -1993,24 +1930,15 @@ document.addEventListener('DOMContentLoaded', function() {
         { key: 'show_delivery_field', label: 'Tunjuk Field Kaedah Penghantaran' },
         { key: 'show_attach_section', label: 'Tunjuk Section Lampiran Fail' }
     ];
-
     const TAB_LABELS = {
-        'tab-invoice': '📄 Buat Invois',
-        'tab-orders': '📋 Senarai Order',
-        'tab-active': '⚡ Order Aktif',
-        'tab-quotation': '📋 Quotation',
-        'tab-design': '🎨 Design Saya',
-        'tab-production': '🏭 Kerja Saya',
-        'tab-dashboard': '📊 Papan Pemuka',
-        'tab-sales-person': '👥 Jurujual',
-        'tab-templates': '⚡ Template & Saiz',
-        'tab-deleted-bills': '🗑️ Bil Dibatalkan',
-        'tab-settings': '⚙️ Tetapan'
+        'tab-invoice': '📄 Buat Invois', 'tab-orders': '📋 Senarai Order', 'tab-active': '⚡ Order Aktif',
+        'tab-quotation': '📋 Quotation', 'tab-design': '🎨 Design Saya', 'tab-production': '🏭 Kerja Saya',
+        'tab-dashboard': '📊 Papan Pemuka', 'tab-sales-person': '👥 Jurujual',
+        'tab-templates': '⚡ Template & Saiz', 'tab-deleted-bills': '🗑️ Bil Dibatalkan', 'tab-settings': '⚙️ Tetapan'
     };
 
     function renderUIEditor() {
         uiTempConfig = JSON.parse(JSON.stringify(UI_CONFIG));
-        // TEXT
         const textGrid = $('ui-text-grid');
         if (textGrid) {
             textGrid.innerHTML = UI_TEXT_FIELDS.map(f => {
@@ -2021,7 +1949,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 return `<div class="ui-editor-field"><label>${f.label}</label><input type="text" data-ui-field="text.${f.key}" value="${escapeAttr(v)}"></div>`;
             }).join('');
         }
-        // THEME
         const themeList = $('ui-theme-list');
         if (themeList) {
             themeList.innerHTML = UI_THEME_FIELDS.map(f => {
@@ -2033,7 +1960,6 @@ document.addEventListener('DOMContentLoaded', function() {
         $('ui-border-radius').value = uiTempConfig.theme.border_radius || '8px';
         $('ui-bg-body').value = uiTempConfig.theme.bg_body || '#f5f5f5';
         $('ui-bg-body-color').value = uiTempConfig.theme.bg_body || '#f5f5f5';
-        // LAYOUT
         const layoutList = $('ui-layout-list');
         if (layoutList) {
             layoutList.innerHTML = UI_LAYOUT_FIELDS.map(f => {
@@ -2041,12 +1967,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 return `<div class="toggle-row"><input type="checkbox" data-ui-toggle="layout.${f.key}" ${v?'checked':''} id="tog_${f.key}"><label for="tog_${f.key}">${f.label}</label></div>`;
             }).join('');
         }
-        // TABS ORDER
         renderUITabOrderList();
-        // COLUMNS
         renderUIColumnsList();
     }
-
     function renderUITabOrderList() {
         const list = $('ui-tab-order-list');
         if (!list) return;
@@ -2057,8 +1980,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }).join('');
         if (typeof Sortable !== 'undefined') {
             new Sortable(list, {
-                animation: 150,
-                handle: '.drag-handle',
+                animation: 150, handle: '.drag-handle',
                 onEnd: () => {
                     const newOrder = [...list.querySelectorAll('.tab-order-item')].map(el => el.dataset.tabId);
                     uiTempConfig.tab_order = newOrder;
@@ -2066,7 +1988,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     }
-
     function renderUIColumnsList() {
         const list = $('ui-columns-list');
         if (!list) return;
@@ -2076,8 +1997,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }).join('');
         if (typeof Sortable !== 'undefined') {
             new Sortable(list, {
-                animation: 150,
-                handle: '.drag-handle',
+                animation: 150, handle: '.drag-handle',
                 onEnd: () => {
                     const newOrder = [...list.querySelectorAll('.col-item')].map(el => {
                         const key = el.dataset.colKey;
@@ -2089,35 +2009,28 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     }
-
     function collectUIEditorValues() {
-        // Text fields
         document.querySelectorAll('[data-ui-field]').forEach(el => {
             const path = el.dataset.uiField;
             const [sect, key] = path.split('.');
             if (!uiTempConfig[sect]) uiTempConfig[sect] = {};
             uiTempConfig[sect][key] = el.value;
         });
-        // Toggles
         document.querySelectorAll('[data-ui-toggle]').forEach(el => {
             const path = el.dataset.uiToggle;
             const [sect, key] = path.split('.');
             if (!uiTempConfig[sect]) uiTempConfig[sect] = {};
             uiTempConfig[sect][key] = el.checked;
         });
-        // Column visibility
         const newCols = (uiTempConfig.column_order || []).map(c => {
             const cb = document.querySelector(`[data-col-vis="${c.key}"]`);
             return { ...c, visible: cb ? cb.checked : c.visible };
         });
         uiTempConfig.column_order = newCols;
-        // Font family / radius / bg
         if ($('ui-font-family')) uiTempConfig.theme.font_family = $('ui-font-family').value;
         if ($('ui-border-radius')) uiTempConfig.theme.border_radius = $('ui-border-radius').value;
         if ($('ui-bg-body')) uiTempConfig.theme.bg_body = $('ui-bg-body').value;
     }
-
-    // Wire up color inputs to text inputs
     document.addEventListener('input', function(e) {
         if (e.target.matches('[data-ui-color]')) {
             const key = e.target.dataset.uiColor;
@@ -2132,28 +2045,22 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.target.id === 'ui-bg-body') {
             if (/^#[0-9A-Fa-f]{6}$/.test(e.target.value)) $('ui-bg-body-color').value = e.target.value;
         }
-    });
-    document.addEventListener('input', function(e) {
         if (e.target.id === 'ui-bg-body-color') {
             $('ui-bg-body').value = e.target.value;
         }
     });
-
     window.uiSwitchTab = function(tab) {
         document.querySelectorAll('.ui-tab-btn').forEach(b => b.classList.toggle('active', b.dataset.uitab === tab));
         document.querySelectorAll('.ui-tab-content').forEach(c => c.classList.toggle('active', c.dataset.uicontent === tab));
     };
-
     window.uiSaveConfig = async function() {
         collectUIEditorValues();
-        // Deep merge text over existing (in case some fields not rendered)
         const merged = JSON.parse(JSON.stringify(DEFAULT_UI_CONFIG));
-        // Preserve existing text not in form
         for (const k in UI_CONFIG.text) if (!(k in uiTempConfig.text)) uiTempConfig.text[k] = UI_CONFIG.text[k];
         UI_CONFIG = deepMerge(merged, uiTempConfig);
         if (await saveUIConfig(UI_CONFIG)) {
             applyUIConfig();
-            alert('✅ Konfigurasi UI berjaya disimpan!\n\nPerubahan akan digunakan oleh semua peranti.');
+            alert('✅ Konfigurasi UI berjaya disimpan!');
         }
     };
     window.uiDiscardChanges = function() {
@@ -2168,15 +2075,11 @@ document.addEventListener('DOMContentLoaded', function() {
         alert('Reset. Tekan "Simpan Semua Perubahan" untuk apply.');
     };
     window.uiResetAll = function() {
-        if (!confirm('Reset SEMUA ke default? Ini akan memadam semua customization.')) return;
+        if (!confirm('Reset SEMUA ke default?')) return;
         uiTempConfig = JSON.parse(JSON.stringify(DEFAULT_UI_CONFIG));
         renderUIEditor();
         alert('Reset semua. Tekan "Simpan Semua Perubahan" untuk apply.');
     };
-
-    // ══════════════════════════════════════════════════════════════════
-    // ═════════════════════ END UI CONFIG SYSTEM ═══════════════════════
-    // ══════════════════════════════════════════════════════════════════
 
     const DESIGN_STATUS = {
         pending: { label: 'Pending', icon: '🟡', cls: 'design-pending' },
@@ -2186,14 +2089,12 @@ document.addEventListener('DOMContentLoaded', function() {
         confirmed: { label: 'Confirmed', icon: '🟢', cls: 'design-confirmed' },
         completed: { label: 'Selesai', icon: '⚫', cls: 'design-completed' }
     };
-
     const PRODUCTION_STATUS = {
         pending: { label: 'Pending', icon: '🟡', cls: 'prod-pending' },
         in_progress: { label: 'In Progress', icon: '🔵', cls: 'prod-in_progress' },
         paused: { label: 'Paused', icon: '🟠', cls: 'prod-paused' },
         done: { label: 'Siap', icon: '✅', cls: 'prod-done' }
     };
-
     function formatDate(d) {
         if (!d || d === '-') return '-';
         try { const dt = new Date(d); if (isNaN(dt)) return '-';
@@ -2210,7 +2111,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function escapeHtml(s) { return (s||'').toString().replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
     function escapeAttr(s) { return (s||'').toString().replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
     function genTempId() { return 'tmp_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8); }
-
     function getDesignStatusBadge(status) {
         const s = DESIGN_STATUS[status] || DESIGN_STATUS.pending;
         return `<span class="design-status-badge ${s.cls}">${s.icon} ${s.label}</span>`;
@@ -2231,6 +2131,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const dateStr = o.deliveryDate ? formatDate(o.deliveryDate) : '';
         if (o.deliveryMethod === 'pickup') return `<span style="display:inline-block;padding:3px 8px;background:#3498db;color:white;border-radius:12px;font-size:11px;font-weight:bold;text-align:center;">🏪 Pickup${dateStr ? '<br><small style="font-size:9px;">'+dateStr+'</small>' : ''}</span>`;
         if (o.deliveryMethod === 'pos') return `<span style="display:inline-block;padding:3px 8px;background:#9b59b6;color:white;border-radius:12px;font-size:11px;font-weight:bold;text-align:center;">📦 Pos${dateStr ? '<br><small style="font-size:9px;">'+dateStr+'</small>' : ''}</span>`;
+        if (o.deliveryMethod === 'cod') return `<span style="display:inline-block;padding:3px 8px;background:#e67e22;color:white;border-radius:12px;font-size:11px;font-weight:bold;text-align:center;">💰 COD${dateStr ? '<br><small style="font-size:9px;">'+dateStr+'</small>' : ''}</span>`;
         return '<span style="color:#999;">-</span>';
     }
     function getDeliveredCountForOrder(o) {
@@ -2313,7 +2214,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const prodTab = $('tab-production');
         if (prodTab && !prodTab.dataset.hiddenByConfig) prodTab.style.display = (isProduction || hasBossAccess) ? '' : 'none';
     }
-
     function hasUnsavedFormData() {
         const invoiceNum = $('invoice-number').value;
         const customerName = $('customer-name').value.trim();
@@ -2321,7 +2221,6 @@ document.addEventListener('DOMContentLoaded', function() {
         let hasItems = currentInvoiceItems.length > 0;
         return !!(invoiceNum || customerName || customerPhone || hasItems || pendingFiles.length > 0);
     }
-
     async function loadAppSettings() {
         try {
             const { data } = await supabaseClient.from('app_settings').select('*').eq('key', 'boss_password').maybeSingle();
@@ -2337,7 +2236,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return true;
         } catch(e) { alert('Gagal: ' + e.message); return false; }
     }
-
     async function loadStaffCards() {
         try {
             const { data, error } = await supabaseClient.from('staff_cards').select('*').order('created_at', {ascending: true});
@@ -2424,7 +2322,6 @@ document.addEventListener('DOMContentLoaded', function() {
     async function updateLastLogin(staffId) {
         await supabaseClient.from('staff_cards').update({last_login: new Date()}).eq('id', staffId);
     }
-
     async function addAuditLog(invoiceNumber, action, fieldChanged, oldValue, newValue, notes) {
         try {
             await supabaseClient.from('audit_logs').insert({
@@ -2471,7 +2368,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return data || [];
         } catch(e) { return []; }
     }
-
     async function loadAllDeliveries() {
         try {
             const { data, error } = await supabaseClient.from('order_deliveries').select('*').order('delivered_at', {ascending: false});
@@ -2484,7 +2380,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return allDeliveriesCache;
         } catch(e) { console.error('loadDeliveries:', e); return {}; }
     }
-
     async function addDelivery(invoiceNumber, itemIndices, itemSummary, deliveryMethod, staffName, paymentMethod, paymentAmount, deliveryDate) {
         try {
             const { data: order } = await supabaseClient.from('orders').select('id').eq('invoice_number', invoiceNumber).single();
@@ -2513,7 +2408,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return true;
         } catch(e) { alert('Gagal undo: ' + e.message); return false; }
     }
-
     async function loadOrders() {
         try {
             const { data: orders, error } = await supabaseClient.from('orders').select('*').order('created_at',{ascending:false});
@@ -2565,7 +2459,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return result;
         } catch(e) { console.error('loadOrders:', e); return []; }
     }
-
     async function addOrder(o) {
         try {
             const { data: ex } = await supabaseClient.from('orders').select('id').eq('invoice_number', o.invoiceNumber).maybeSingle();
@@ -2593,7 +2486,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if (o.deliveryMethod) insertData.delivery_method = o.deliveryMethod;
             if (o.deliveryAddress) insertData.delivery_address = o.deliveryAddress;
             if (o.deliveryDate) insertData.delivery_date = o.deliveryDate;
-
             const { data: newO, error } = await supabaseClient.from('orders').insert(insertData).select().single();
             if (error) throw error;
             if (o.items && o.items.length) {
@@ -2609,7 +2501,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return true;
         } catch(e) { console.error('addOrder:', e); alert('Gagal simpan: ' + e.message); return false; }
     }
-
     async function updateOrderWithLog(newOrder, oldOrder) {
         try {
             const updateData = {
@@ -2623,7 +2514,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const props = ['assignedDesigner','designStatus','designNotes','designUpdatedAt','designUpdatedBy','productionDepartment','productionStatus','productionNotes','productionAssignedTo','productionUpdatedAt','productionUpdatedBy','deliveryMethod','deliveryAddress','deliveryDate','deliveredAt','deliveredBy','completedBy','completedAt','completedPinVerified','incompleteNote','incompleteNoteUpdatedAt','incompleteNoteUpdatedBy','isQuotation','quotationValidUntil','convertedToOrderAt','convertedToOrderBy','originalQuotationNumber','quotationNotes'];
             const dbMap = {'assignedDesigner':'assigned_designer','designStatus':'design_status','designNotes':'design_notes','designUpdatedAt':'design_updated_at','designUpdatedBy':'design_updated_by','productionDepartment':'production_department','productionStatus':'production_status','productionNotes':'production_notes','productionAssignedTo':'production_assigned_to','productionUpdatedAt':'production_updated_at','productionUpdatedBy':'production_updated_by','deliveryMethod':'delivery_method','deliveryAddress':'delivery_address','deliveryDate':'delivery_date','deliveredAt':'delivered_at','deliveredBy':'delivered_by','completedBy':'completed_by','completedAt':'completed_at','completedPinVerified':'completed_pin_verified','incompleteNote':'incomplete_note','incompleteNoteUpdatedAt':'incomplete_note_updated_at','incompleteNoteUpdatedBy':'incomplete_note_updated_by','isQuotation':'is_quotation','quotationValidUntil':'quotation_valid_until','convertedToOrderAt':'converted_to_order_at','convertedToOrderBy':'converted_to_order_by','originalQuotationNumber':'original_quotation_number','quotationNotes':'quotation_notes'};
             props.forEach(p => { if (newOrder.hasOwnProperty(p)) updateData[dbMap[p]] = newOrder[p]; });
-
             const { error } = await supabaseClient.from('orders').update(updateData).eq('invoice_number', newOrder.invoiceNumber);
             if (error) throw error;
             const { data: row } = await supabaseClient.from('orders').select('id').eq('invoice_number', newOrder.invoiceNumber).single();
@@ -2651,7 +2541,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return true;
         } catch(e) { console.error('updateOrder:', e); return false; }
     }
-
     async function deleteOrder(inv, reason) {
         try {
             const orders = await loadOrders();
@@ -2666,7 +2555,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return true;
         } catch(e) { console.error('deleteOrder:', e); return false; }
     }
-
     async function loadSalesPersons() {
         try {
             const { data } = await supabaseClient.from('sales_persons').select('*');
@@ -2727,7 +2615,6 @@ document.addEventListener('DOMContentLoaded', function() {
         try { await supabaseClient.from('size_categories').delete().eq('id', id); return true; }
         catch(e) { alert('Gagal: ' + e.message); return false; }
     }
-
     async function fetchActiveLocks() {
         const cutoff = new Date(Date.now() - 30*60*1000).toISOString();
         const { data } = await supabaseClient.from('invoice_locks').select('*').gt('locked_at', cutoff);
@@ -2754,10 +2641,8 @@ document.addEventListener('DOMContentLoaded', function() {
     async function unlockCurrentNumber() {
         if (currentlyLockedNumber) { await unlockInvoiceNumber(currentlyLockedNumber); currentlyLockedNumber = null; }
     }
-
     function generateInvoiceNumbers() { const a=[]; for (let i=1;i<=9999;i++) a.push('25D'+i.toString().padStart(4,'0')); return a; }
     function generateQuotationNumbers() { const a=[]; for (let i=1;i<=9999;i++) a.push('QUO-25D'+i.toString().padStart(4,'0')); return a; }
-
     async function updateAvailableInvoiceNumbers() {
         try {
             const orders = await loadOrders();
@@ -2775,7 +2660,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function populateDropdown(used, locked) {
         const d = $('invoice-number-dropdown'); d.innerHTML = '';
         if (availableInvoiceNumbers.length === 0) {
-            d.innerHTML = '<div style="padding:15px;text-align:center;color:#e74c3c;">Tiada no. tersedia. Semua telah digunakan.</div>';
+            d.innerHTML = '<div style="padding:15px;text-align:center;color:#e74c3c;">Tiada no. tersedia.</div>';
             return;
         }
         availableInvoiceNumbers.slice(0, 200).forEach(n => { 
@@ -2791,9 +2676,7 @@ document.addEventListener('DOMContentLoaded', function() {
             d.appendChild(info);
         }
     }
-
     window.loadInvoiceNumbersForDropdown = async function() { await updateAvailableInvoiceNumbers(); };
-
     window.selectInvoiceNumber = async function(num) {
         const locked = await lockInvoiceNumber(num);
         if (locked) {
@@ -2801,7 +2684,6 @@ document.addEventListener('DOMContentLoaded', function() {
             $('invoice-number-dropdown').style.display = 'none';
         }
     };
-
     window.switchFormMode = function(mode) {
         if (hasUnsavedFormData() && mode !== formMode) {
             if (!confirm('Ada data belum disimpan. Tukar mode akan reset form. Teruskan?')) return;
@@ -2845,7 +2727,6 @@ document.addEventListener('DOMContentLoaded', function() {
         currentlyLockedNumber = null;
         updateAvailableInvoiceNumbers();
     };
-
     function showLandingPage() { landingPage.style.display='flex'; container.style.display='none'; }
     function showContainer(tab) { landingPage.style.display='none'; container.style.display='block'; document.getElementById(tab).click(); }
     function switchTab(id) {
@@ -2874,7 +2755,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (map[id]) { const [p, fn] = map[id]; p.style.display='block'; p.classList.add('active'); fn(); }
         applyBossMode();
     }
-
     function showPasswordPrompt(action, target) {
         $('password-input').value=''; $('delete-reason-input').value=''; $('password-error').style.display='none';
         $('password-action').value=action; $('password-target-id').value=target;
@@ -2903,7 +2783,6 @@ document.addEventListener('DOMContentLoaded', function() {
             applyBossMode(); hidePasswordPrompt(); showDangerModal();
         }
     }
-
     function showDangerModal() {
         $('danger-confirm-input').value = ''; $('danger-error').style.display = 'none';
         $('danger-confirm-btn').disabled = true;
@@ -2928,7 +2807,6 @@ document.addEventListener('DOMContentLoaded', function() {
             $('danger-confirm-btn').textContent = '🗑️ PADAM SEMUA';
         }
     }
-
     function openQrLogin() { $('qr-login-modal').style.display = 'flex'; $('qr-reader-status').textContent = 'Sedia scan...'; startQrScanner(); }
     window.closeQrLogin = function() { $('qr-login-modal').style.display = 'none'; stopQrScanner(); };
     async function startQrScanner() {
@@ -2979,6 +2857,7 @@ document.addEventListener('DOMContentLoaded', function() {
         await updateLastLogin(staff.id);
         CURRENT_STAFF = null;
         applyBossMode();
+        await populateSalesPersonDropdown();
         let msg = '✅ Selamat datang, ' + staff.staff_name + '!';
         if (isDesigner) msg += '\n🎨 Tab "Design Saya" tersedia.';
         if (isProduction) {
@@ -3015,7 +2894,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         el.addEventListener('keydown', (e) => { if (e.key === 'Backspace' && !el.value && idx > 0) $('pin-' + idx).focus(); });
     });
-
     async function openManualPinLogin() {
         await loadStaffCards();
         const activeStaff = allStaffCardsCache.filter(s => s.active);
@@ -3041,7 +2919,6 @@ document.addEventListener('DOMContentLoaded', function() {
         closeManualPinLogin();
         await performLogin(verified);
     }
-
     function openPasswordLogin() {
         $('staff-login-password').value = '';
         $('staff-password-error').style.display = 'none';
@@ -3059,11 +2936,11 @@ document.addEventListener('DOMContentLoaded', function() {
         sessionStorage.setItem('isBoss', 'true');
         $('staff-badge').textContent = '👑 BOSS';
         applyBossMode();
+        await populateSalesPersonDropdown();
         closePasswordLogin();
         alert('✅ Selamat datang, BOSS!');
         showContainer('tab-invoice');
     }
-
     async function changePassword() {
         const oldPwd = $('old-password').value;
         const newPwd = $('new-password').value;
@@ -3076,7 +2953,6 @@ document.addEventListener('DOMContentLoaded', function() {
             $('old-password').value = ''; $('new-password').value = ''; $('confirm-password').value = '';
         }
     }
-
     function displayStaffCards() {
         const cont = $('staff-cards-list');
         if (!allStaffCardsCache.length) { cont.innerHTML = '<p style="text-align:center;color:#999;padding:20px;">Tiada staf.</p>'; return; }
@@ -3186,7 +3062,6 @@ document.addEventListener('DOMContentLoaded', function() {
         w.document.close();
         setTimeout(() => { w.print(); }, 500);
     }
-
     function displaySizeCategories() {
         const list = $('size-cat-list');
         if (!allSizeCatsCache.length) { list.innerHTML = '<p style="text-align:center;color:#999;padding:20px;">Tiada kategori.</p>'; return; }
@@ -3224,7 +3099,6 @@ document.addEventListener('DOMContentLoaded', function() {
         else ok = await addSizeCategory(name, sizes, price);
         if (ok) { await loadSizeCategories(); displaySizeCategories(); closeSizeCatModal(); }
     }
-
     async function openSizeInputModal(editIdx = null) {
         await loadSizeCategories();
         if (!allSizeCatsCache.length) { alert('Tiada kategori saiz.'); return; }
@@ -3290,7 +3164,6 @@ document.addEventListener('DOMContentLoaded', function() {
         renderInvoiceTable();
         closeSizeInputModal();
     }
-
     function renderInvoiceTable() {
         const tbody = $('items-table').querySelector('tbody');
         tbody.innerHTML = '';
@@ -3347,7 +3220,6 @@ document.addEventListener('DOMContentLoaded', function() {
         $('total-quantity').textContent = tq;
         $('total-amount').textContent = ta.toFixed(2);
     }
-
     function renderPendingFiles() {
         const cont = $('form-pending-files-list');
         if (!cont) return;
@@ -3401,7 +3273,6 @@ document.addEventListener('DOMContentLoaded', function() {
         pendingFiles = [];
         renderPendingFiles();
     }
-
     async function displayTemplates() {
         const tpls = await loadTemplates();
         const tb = $('template-list'); tb.innerHTML = '';
@@ -3432,7 +3303,6 @@ document.addEventListener('DOMContentLoaded', function() {
             btnCont.appendChild(b);
         });
     }
-
     async function populateDesignerDropdown(selectId, selectedValue = '') {
         await loadDesigners();
         const sel = $(selectId);
@@ -3441,7 +3311,6 @@ document.addEventListener('DOMContentLoaded', function() {
         sel.innerHTML = '<option value="">-- Pilih Designer --</option>' + allDesignersCache.map(d => `<option value="${escapeAttr(d.staff_name)}">${escapeHtml(d.staff_name)}</option>`).join('');
         if (currentVal) sel.value = currentVal;
     }
-
     function applyAutoSalesPerson() {
         const sel = $('sales-person');
         const note = $('sales-person-auto-note');
@@ -3459,7 +3328,6 @@ document.addEventListener('DOMContentLoaded', function() {
         sel.style.display = 'block';
         note.style.display = 'none';
     }
-
     function getFilteredOrders() {
         let orders = allOrdersCache.filter(o => !o.isQuotation);
         const sf = document.querySelector('#order-list-page .filter-btn.active')?.dataset.filter || 'all';
@@ -3467,12 +3335,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const sales = $('filter-sales').value, search = $('search-orders').value.toLowerCase();
         const designer = $('filter-designer').value, designStatus = $('filter-design-status').value;
         const deliveryFilter = $('filter-delivery').value;
-        
         if (sf === 'completed') orders = orders.filter(o => o.status === 'completed');
         else if (sf === 'pending') orders = orders.filter(o => o.productionStatus !== 'done' && o.status !== 'completed');
         else if (sf === 'sedia_serah') orders = orders.filter(o => o.productionStatus === 'done' && o.status !== 'completed');
         else if (sf === 'partial') orders = orders.filter(isPartialDelivery);
-        
         if (period !== 'all') {
             const now = new Date(); now.setHours(0,0,0,0);
             orders = orders.filter(o => {
@@ -3499,6 +3365,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     function getFilteredQuotations() {
         let orders = allOrdersCache.filter(o => o.isQuotation);
+        const hasBossAccess = (sessionStorage.getItem('appAuthed') === 'true' || isBoss || STAFF_NAME === 'BOSS');
+        if (!hasBossAccess) {
+            if (!STAFF_NAME) return [];
+            orders = orders.filter(o => o.salesPerson === STAFF_NAME);
+        }
         const statusFilter = $('filter-quotation-status').value;
         const sales = $('filter-quotation-sales').value;
         const search = $('search-quotations').value.toLowerCase();
@@ -3511,7 +3382,6 @@ document.addEventListener('DOMContentLoaded', function() {
         orders.sort((a,b) => new Date(b.orderDate||0) - new Date(a.orderDate||0));
         return orders;
     }
-
     function updateFilterCounts() {
         const all = allOrdersCache.filter(o => !o.isQuotation);
         const pending = all.filter(o => o.productionStatus !== 'done' && o.status !== 'completed');
@@ -3529,7 +3399,15 @@ document.addEventListener('DOMContentLoaded', function() {
         if ($('count-completed')) $('count-completed').textContent = completed.length;
     }
     function updateQuotationBadge() {
-        const quotations = allOrdersCache.filter(o => o.isQuotation && !o.convertedToOrderAt);
+        const hasBossAccess = (sessionStorage.getItem('appAuthed') === 'true' || isBoss || STAFF_NAME === 'BOSS');
+        let quotations = allOrdersCache.filter(o => o.isQuotation && !o.convertedToOrderAt);
+        if (!hasBossAccess) {
+            if (STAFF_NAME) {
+                quotations = quotations.filter(o => o.salesPerson === STAFF_NAME);
+            } else {
+                quotations = [];
+            }
+        }
         const t = new Date(); t.setHours(0,0,0,0);
         const active = quotations.filter(o => o.quotationValidUntil && new Date(o.quotationValidUntil) >= t);
         const badge = $('quotation-notif-badge');
@@ -3538,7 +3416,6 @@ document.addEventListener('DOMContentLoaded', function() {
             else badge.style.display = 'none';
         }
     }
-
     async function displayOrders() {
         await loadOrders();
         updateFilterCounts();
@@ -3560,7 +3437,6 @@ document.addEventListener('DOMContentLoaded', function() {
         $('summary-sales').textContent = formatRM(ts);
         $('summary-deposit').textContent = formatRM(td);
         $('summary-balance').textContent = formatRM(tbal);
-        
         tb.querySelectorAll('.order-number').forEach(el => el.addEventListener('click', e => { const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice); if (o) showOrderDetail(o); }));
         tb.querySelectorAll('.print-btn').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice); if (!o) return; const w = window.open('', '_blank'); if (!w) return alert('Pop-up diblok'); w.document.write(buildPrintHTML(o, false, false)); w.document.close(); setTimeout(()=>w.print(), 500); }));
         tb.querySelectorAll('.print-final-btn').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice); if (!o) return; const type = e.target.dataset.type; const w = window.open('', '_blank'); if (!w) return alert('Pop-up diblok'); w.document.write(buildPrintHTML(o, type === 'final', type === 'partial')); w.document.close(); setTimeout(()=>w.print(), 500); }));
@@ -3575,13 +3451,27 @@ document.addEventListener('DOMContentLoaded', function() {
         }));
         applyBossMode();
     }
-
     async function displayQuotations() {
         await loadOrders();
         updateQuotationBadge();
+        const hasBossAccess = (sessionStorage.getItem('appAuthed') === 'true' || isBoss || STAFF_NAME === 'BOSS');
+        const privacyNote = $('quotation-privacy-note');
+        if (privacyNote) {
+            if (!hasBossAccess && STAFF_NAME) {
+                privacyNote.style.display = 'block';
+                privacyNote.innerHTML = `🔒 <strong>Nota:</strong> Anda hanya boleh lihat quotation milik <strong>${escapeHtml(STAFF_NAME)}</strong> sahaja. Ini untuk melindungi customer anda.`;
+            } else {
+                privacyNote.style.display = 'none';
+            }
+        }
         const quotations = getFilteredQuotations();
         const tb = $('quotations-container'); tb.innerHTML = '';
-        if (!quotations.length) tb.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:20px;">Tiada quotation. Buat quotation baru dari tab "Buat Invois" → pilih mode Quotation.</td></tr>';
+        if (!quotations.length) {
+            const emptyMsg = hasBossAccess 
+                ? 'Tiada quotation. Buat quotation baru dari tab "Buat Invois" → pilih mode Quotation.'
+                : 'Anda belum ada quotation. Buat quotation baru dari tab "Buat Invois" → pilih mode Quotation.';
+            tb.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:20px;">${emptyMsg}</td></tr>`;
+        }
         quotations.forEach(o => {
             const tr = document.createElement('tr');
             const dr = o.quotationValidUntil ? getDaysRemaining(o.quotationValidUntil) : {text:'-',cls:'na'};
@@ -3610,7 +3500,6 @@ document.addEventListener('DOMContentLoaded', function() {
         $('quotation-summary-count').textContent = quotations.length;
         $('quotation-summary-value').textContent = formatRM(totalValue);
         $('quotation-summary-expired').textContent = expiredCount;
-        
         tb.querySelectorAll('.print-btn').forEach(b => b.addEventListener('click', e => {
             e.stopPropagation();
             const o = quotations.find(x => x.invoiceNumber === e.target.dataset.invoice);
@@ -3634,7 +3523,6 @@ document.addEventListener('DOMContentLoaded', function() {
         applyBossMode();
     }
     window.displayQuotations = displayQuotations;
-
     window.promptDeleteQuotation = async function(invoiceNumber) {
         if (!confirm(`Padam quotation ${invoiceNumber}?\n\nTindakan ini tidak boleh dikembalikan.`)) return;
         try {
@@ -3645,7 +3533,6 @@ document.addEventListener('DOMContentLoaded', function() {
             displayQuotations();
         } catch(e) { alert('❌ Gagal padam: ' + e.message); }
     };
-
     window.openConvertQuotationModal = async function(o) {
         convertQuotationOrder = o;
         $('convert-quotation-number').textContent = o.invoiceNumber;
@@ -3671,17 +3558,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const newCompletionDate = $('convert-completion-date').value;
         const newDeposit = parseFloat($('convert-deposit').value) || 0;
         const notes = $('convert-notes').value.trim();
-        
         if (!newInvNum) { $('convert-error').textContent = 'Sila pilih no. bil order baru.'; $('convert-error').style.display = 'block'; return; }
-        
         const oldQ = convertQuotationOrder;
         const newSubtotal = oldQ.subtotal;
         const newBalance = newSubtotal - newDeposit;
-        
         try {
             const savedItems = oldQ.items;
             await supabaseClient.from('orders').delete().eq('invoice_number', oldQ.invoiceNumber);
-            
             const insertData = {
                 invoice_number: newInvNum,
                 customer_name: oldQ.customerName,
@@ -3712,22 +3595,17 @@ document.addEventListener('DOMContentLoaded', function() {
             if (oldQ.deliveryMethod) insertData.delivery_method = oldQ.deliveryMethod;
             if (oldQ.deliveryAddress) insertData.delivery_address = oldQ.deliveryAddress;
             if (oldQ.deliveryDate) insertData.delivery_date = oldQ.deliveryDate;
-            
             const { data: newO, error } = await supabaseClient.from('orders').insert(insertData).select().single();
             if (error) throw error;
-            
             if (savedItems.length) {
                 await supabaseClient.from('order_items').insert(savedItems.map(it => ({
                     order_id: newO.id, description: it.description, price: it.price, quantity: it.quantity, total: it.total
                 })));
             }
-            
             await addAuditLog(newInvNum, 'create', null, null, null, 
                 `Order dicipta dari Quotation ${oldQ.invoiceNumber} oleh ${STAFF_NAME}. Deposit: RM${newDeposit}${notes ? '. Nota: ' + notes : ''}`);
-            
             closeConvertQuotationModal();
-            alert(`✅ Quotation ${oldQ.invoiceNumber} berjaya convert ke Order ${newInvNum}!\n\n${newDeposit > 0 ? 'Deposit: ' + formatRM(newDeposit) + '\nBaki: ' + formatRM(newBalance) : 'Belum ada deposit'}`);
-            
+            alert(`✅ Quotation ${oldQ.invoiceNumber} berjaya convert ke Order ${newInvNum}!`);
             await loadOrders();
             displayQuotations();
             displayOrders();
@@ -3737,7 +3615,6 @@ document.addEventListener('DOMContentLoaded', function() {
             $('convert-error').style.display = 'block';
         }
     };
-
     window.saveIncompleteNote = async function() {
         if (!currentOrder) return;
         const newNote = $('detail-incomplete-note').value.trim();
@@ -3769,7 +3646,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return `<div class="incomplete-note-item"><div class="log-header">📝 ${formatTime(l.changed_at)} — ${escapeHtml(l.staff_name||'-')}</div><div class="log-detail"><div style="color:#e74c3c;"><strong>Lama:</strong> ${escapeHtml(oldV)}</div><div style="color:#27ae60;"><strong>Baru:</strong> ${escapeHtml(newV)}</div></div></div>`;
         }).join('');
     }
-
     window.openQuickCompleteModal = function(o) {
         quickCompleteOrder = o;
         currentDeliveryIndices = [];
@@ -3780,9 +3656,8 @@ document.addEventListener('DOMContentLoaded', function() {
         $('qc-info-box').innerHTML = `<div style="font-size:13px;font-weight:bold;">📦 Item: ${totalItems} | ✅ Diserahkan: ${delivered} | ⏳ Baki: ${pending}</div><div style="font-size:13px;margin-top:5px;">💰 Baki bayaran: <strong>RM ${(o.balance||0).toFixed(2)}</strong></div>`;
         if (o.productionStatus !== 'done') {
             $('qc-warning-box').style.display = 'block';
-            $('qc-warning-box').innerHTML = `⚠️ <strong>Perhatian:</strong> Production belum siap sepenuhnya. Kalau tidak semua item ditick, order akan masuk kategori <strong>Serah Tidak Lengkap</strong>.`;
+            $('qc-warning-box').innerHTML = `⚠️ <strong>Perhatian:</strong> Production belum siap sepenuhnya.`;
         } else $('qc-warning-box').style.display = 'none';
-
         const deliveries = (allDeliveriesCache[o.invoiceNumber] || []).filter(d => !d.undone);
         const deliveredIndices = new Set();
         deliveries.forEach(d => (d.item_indices||[]).forEach(idx => deliveredIndices.add(idx)));
@@ -3863,7 +3738,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         displayOrders();
     };
-
     window.openPrintOptionsModal = function(o) {
         printOptionsOrder = o;
         $('print-options-invoice').textContent = o.invoiceNumber;
@@ -3884,7 +3758,6 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => w.print(), 500);
         closePrintOptionsModal();
     };
-
     async function displayActiveOrders() {
         await loadOrders();
         const s = $('filter-active-sales').value, srch = $('search-active').value.toLowerCase();
@@ -3935,7 +3808,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }));
         applyBossMode();
     }
-
     async function displayDesignerOrders() {
         if (!STAFF_NAME) return;
         await loadOrders();
@@ -3984,7 +3856,6 @@ document.addEventListener('DOMContentLoaded', function() {
         currentOrder = o;
         window.openSendToProductionModal();
     };
-
     async function displayProductionOrders() {
         if (!STAFF_NAME) return;
         await loadOrders();
@@ -3996,7 +3867,7 @@ document.addEventListener('DOMContentLoaded', function() {
         $('production-staff-name').textContent = STAFF_NAME;
         let orders = allOrdersCache.filter(o => o.productionStatus && o.productionDepartment && !o.isQuotation);
         if (!hasBossAccess) {
-            if (!myDeptId) { $('production-orders-container').innerHTML = '<tr><td colspan="8" style="text-align:center;color:#e74c3c;padding:20px;">⚠️ Anda belum di-assign ke jabatan. Sila hubungi Boss.</td></tr>'; $('production-summary-cards').innerHTML = ''; return; }
+            if (!myDeptId) { $('production-orders-container').innerHTML = '<tr><td colspan="8" style="text-align:center;color:#e74c3c;padding:20px;">⚠️ Anda belum di-assign ke jabatan.</td></tr>'; $('production-summary-cards').innerHTML = ''; return; }
             orders = orders.filter(o => o.productionDepartment === myDeptId);
         }
         const search = $('search-production').value.toLowerCase();
@@ -4050,7 +3921,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     window.displayProductionOrders = displayProductionOrders;
-
     window.startProduction = async function(invoiceNumber) {
         const o = allOrdersCache.find(x => x.invoiceNumber === invoiceNumber);
         if (!o) return;
@@ -4088,7 +3958,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const upd = { ...o, productionStatus: 'done', productionUpdatedAt: new Date(), productionUpdatedBy: STAFF_NAME };
         if (await updateOrderWithLog(upd, o)) { await addProductionActivity(invoiceNumber, 'done', 'in_progress', 'done', 'Production siap.'); await loadOrders(); await displayProductionOrders(); alert('✅ Production SIAP!'); }
     };
-
     window.openSendToProductionModal = async function() {
         if (!currentOrder) return;
         await window.loadDepartments();
@@ -4119,7 +3988,6 @@ document.addEventListener('DOMContentLoaded', function() {
             await refreshProductionPanel();
         } else alert('❌ Gagal hantar');
     };
-
     async function refreshProductionPanel() {
         if (!currentOrder) return;
         const prodDept = allDepartmentsCache.find(d => d.id === currentOrder.productionDepartment);
@@ -4149,7 +4017,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return `<div class="production-activity-item"><div class="log-header">${formatTime(a.created_at)} — ${escapeHtml(a.staff_name||'-')}</div><div class="log-detail">${detail}</div></div>`;
         }).join('');
     }
-
     async function showOrderDetail(o) {
         currentOrder = o;
         currentDeliveryIndices = [];
@@ -4173,6 +4040,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const dBadge = $('detail-delivery-badge');
         if (o.deliveryMethod === 'pickup') { dBadge.className = 'delivery-badge pickup'; dBadge.textContent = '🏪 Pickup di Kedai'; }
         else if (o.deliveryMethod === 'pos') { dBadge.className = 'delivery-badge pos'; dBadge.textContent = '📦 Pos / Kurier'; }
+        else if (o.deliveryMethod === 'cod') { dBadge.className = 'delivery-badge cod'; dBadge.textContent = '💰 COD (Cash on Delivery)'; }
         else { dBadge.className = 'delivery-badge none'; dBadge.textContent = '⚪ Belum Set'; }
         $('detail-address-row').style.display = o.deliveryMethod === 'pos' ? 'flex' : 'none';
         $('detail-delivery-address').textContent = o.deliveryAddress || '-';
@@ -4212,7 +4080,6 @@ document.addEventListener('DOMContentLoaded', function() {
         designPage.style.display = 'none'; productionPage.style.display = 'none';
         orderDetailView.style.display = 'block';
     }
-
     function renderDeliveryHistory(invoiceNumber) {
         const cont = $('delivery-history-list');
         const deliveries = allDeliveriesCache[invoiceNumber] || [];
@@ -4228,7 +4095,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             const undoInfo = isUndone ? `<div class="hist-detail">❌ Dibatalkan oleh <strong>${escapeHtml(d.undone_by||'-')}</strong> pada ${formatTime(d.undone_at)}<br>Sebab: <em>${escapeHtml(d.undo_reason||'-')}</em></div>` : '';
             const undoBtn = isUndone ? '' : `<button class="btn btn-danger" style="padding:3px 8px;font-size:11px;margin-top:5px;" onclick="openUndoDelivery('${d.id}', '${escapeAttr(summary)}')">↩️ Undo</button>`;
-            return `<div class="${cls}"><div class="hist-header">${isUndone ? '❌ DIBATALKAN' : '✅'} ${formatTime(d.delivered_at)} — ${escapeHtml(d.delivered_by)}</div><div class="hist-detail">Item: <strong>${escapeHtml(summary)}</strong><br>${d.delivery_method ? 'Kaedah: ' + (d.delivery_method === 'pickup' ? '🏪 Pickup' : '📦 Pos') : ''}${payInfo}</div>${undoInfo}${undoBtn}</div>`;
+            const methodLabel = d.delivery_method === 'pickup' ? '🏪 Pickup' : d.delivery_method === 'pos' ? '📦 Pos' : d.delivery_method === 'cod' ? '💰 COD' : d.delivery_method;
+            return `<div class="${cls}"><div class="hist-header">${isUndone ? '❌ DIBATALKAN' : '✅'} ${formatTime(d.delivered_at)} — ${escapeHtml(d.delivered_by)}</div><div class="hist-detail">Item: <strong>${escapeHtml(summary)}</strong><br>${d.delivery_method ? 'Kaedah: ' + methodLabel : ''}${payInfo}</div>${undoInfo}${undoBtn}</div>`;
         }).join('');
     }
     window.openUndoDelivery = function(deliveryId, summary) {
@@ -4259,7 +4127,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return `<div class="design-activity-item"><div class="log-header">${formatTime(a.created_at)} - ${escapeHtml(a.designer_name||'-')}</div><div class="log-detail">${detail}</div></div>`;
         }).join('');
     }
-
     function backToList() {
         orderDetailView.style.display = 'none';
         const t = document.querySelector('.tab-btn.active');
@@ -4270,29 +4137,14 @@ document.addEventListener('DOMContentLoaded', function() {
         else { orderListPage.style.display='block'; displayOrders(); }
         currentOrder = null;
     }
-
     function buildPrintHTML(o, isFinal, isPartial, isQuotation) {
         let title = isQuotation ? 'QUOTATION' : (isFinal ? 'INVOIS AKHIR' : (isPartial ? 'INVOIS - TIDAK LENGKAP' : 'INVOIS'));
         let stamp = '';
-        if (isQuotation) {
-            stamp = '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-45deg);font-size:80px;color:rgba(22,160,133,0.15);font-weight:bold;border:8px solid rgba(22,160,133,0.15);padding:30px;z-index:1000;border-radius:10px;">QUOTATION</div>';
-        } else if (isFinal) {
-            stamp = '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-45deg);font-size:80px;color:rgba(46,204,113,0.2);font-weight:bold;border:8px solid rgba(46,204,113,0.2);padding:30px;z-index:1000;border-radius:10px;">SELESAI</div>';
-        } else if (isPartial) {
-            stamp = '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-45deg);font-size:64px;color:rgba(230,126,34,0.25);font-weight:bold;border:8px solid rgba(230,126,34,0.25);padding:25px;z-index:1000;border-radius:10px;">TIDAK LENGKAP</div>';
-        }
+        if (isQuotation) stamp = '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-45deg);font-size:80px;color:rgba(22,160,133,0.15);font-weight:bold;border:8px solid rgba(22,160,133,0.15);padding:30px;z-index:1000;border-radius:10px;">QUOTATION</div>';
+        else if (isFinal) stamp = '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-45deg);font-size:80px;color:rgba(46,204,113,0.2);font-weight:bold;border:8px solid rgba(46,204,113,0.2);padding:30px;z-index:1000;border-radius:10px;">SELESAI</div>';
+        else if (isPartial) stamp = '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-45deg);font-size:64px;color:rgba(230,126,34,0.25);font-weight:bold;border:8px solid rgba(230,126,34,0.25);padding:25px;z-index:1000;border-radius:10px;">TIDAK LENGKAP</div>';
         let quotationWarning = '';
-        if (isQuotation) {
-            quotationWarning = `<div style="margin-top:20px;padding:15px;background:#e8f8f5;border-left:4px solid #16a085;border-radius:4px;">
-                <h4 style="margin:0 0 8px;color:#16a085;font-size:14px;">📋 INI ADALAH SEBUT HARGA SAHAJA</h4>
-                <p style="font-size:12px;margin:5px 0;line-height:1.6;">
-                    • Dokumen ini <strong>BUKAN INVOIS RASMI</strong><br>
-                    • Harga tertakluk kepada perubahan tanpa notis<br>
-                    • Sah sehingga: <strong>${formatDate(o.quotationValidUntil)}</strong><br>
-                    • Untuk terima sebutharga ini, sila hubungi kami
-                </p>
-            </div>`;
-        }
+        if (isQuotation) quotationWarning = `<div style="margin-top:20px;padding:15px;background:#e8f8f5;border-left:4px solid #16a085;border-radius:4px;"><h4 style="margin:0 0 8px;color:#16a085;font-size:14px;">📋 INI ADALAH SEBUT HARGA SAHAJA</h4><p style="font-size:12px;margin:5px 0;line-height:1.6;">• Dokumen ini <strong>BUKAN INVOIS RASMI</strong><br>• Harga tertakluk kepada perubahan tanpa notis<br>• Sah sehingga: <strong>${formatDate(o.quotationValidUntil)}</strong><br>• Untuk terima sebutharga ini, sila hubungi kami</p></div>`;
         let deliveryStatusHtml = '';
         if (!isQuotation) {
             const totalItems = (o.items||[]).length;
@@ -4331,7 +4183,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (o.paymentInfo && !isQuotation) pay = `<div class="bank-info"><p><strong>MAKLUMAT PEMBAYARAN</strong></p><p>Tarikh: ${formatDate(o.paymentInfo.date)}</p><p>Kaedah: ${o.paymentInfo.method}</p><p>Jumlah: RM${o.paymentInfo.amount}</p><p>Diterima oleh: ${o.paymentInfo.receivedBy||'-'}</p></div>`;
         let deliveryInfo = '';
         if (o.deliveryMethod && !isQuotation) {
-            const methodLabel = o.deliveryMethod === 'pickup' ? 'Pickup di Kedai' : 'Pos / Kurier';
+            const methodLabel = o.deliveryMethod === 'pickup' ? 'Pickup di Kedai' : o.deliveryMethod === 'pos' ? 'Pos / Kurier' : o.deliveryMethod === 'cod' ? 'COD (Cash on Delivery)' : o.deliveryMethod;
             deliveryInfo = `<div class="bank-info" style="background:#f0fff4;border-left:4px solid #27ae60;"><p><strong>KAEDAH PENGHANTARAN: ${methodLabel}</strong></p>${o.deliveryAddress ? `<p>Alamat: ${o.deliveryAddress}</p>` : ''}${o.deliveryDate ? `<p>Tarikh: ${formatDate(o.deliveryDate)}</p>` : ''}</div>`;
         }
         function renderItemDesc(desc) {
@@ -4380,7 +4232,6 @@ document.addEventListener('DOMContentLoaded', function() {
         w.document.close(); 
         setTimeout(()=>w.print(),500); 
     }
-
     window.updateDesignerFromDetail = async function() {
         if (!currentOrder) return;
         const newDesigner = $('detail-designer-select').value;
@@ -4443,11 +4294,10 @@ document.addEventListener('DOMContentLoaded', function() {
             await addDesignActivity(currentOrder.invoiceNumber, 'reassigned', oldDesigner, newDesigner, reason);
             currentOrder = upd;
             closePassDesignerModal();
-            alert(`✅ Order di-pass ke ${newDesigner}\nStatus reset ke Pending.`);
+            alert(`✅ Order di-pass ke ${newDesigner}`);
             backToList();
         } else alert('❌ Gagal pass');
     };
-
     function openUploadModal(invoiceNumber) {
         currentUploadInvoice = invoiceNumber;
         selectedFile = null;
@@ -4548,7 +4398,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if (currentUploadInvoice) loadExistingFiles(currentUploadInvoice);
         } catch (err) { alert('❌ Gagal: ' + err.message); }
     };
-
     async function showEditOrderModal(o) {
         currentOrder = o;
         $('edit-invoice-number').value = o.invoiceNumber;
@@ -4675,7 +4524,6 @@ document.addEventListener('DOMContentLoaded', function() {
         w.document.close();
         setTimeout(()=>w.print(),500);
     }
-
     function promptDeleteOrder() { 
         if (!currentOrder) return;
         if (currentOrder.isQuotation) { window.promptDeleteQuotation(currentOrder.invoiceNumber); return; }
@@ -4688,7 +4536,6 @@ document.addEventListener('DOMContentLoaded', function() {
             backToList(); displayOrders(); displayActiveOrders(); updateDashboard(); displayDeletedBills();
         } else alert('Gagal padam.');
     }
-
     function exportCSV() {
         const orders = getFilteredOrders();
         if (!orders.length) return alert('Tiada order untuk export.');
@@ -4697,7 +4544,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const deliveredCount = getDeliveredCountForOrder(o);
             const totalItems = (o.items||[]).length;
             const serahStatus = o.status === 'completed' ? 'Selesai' : deliveredCount === 0 ? 'Belum Serah' : deliveredCount + '/' + totalItems + ' Diserahkan';
-            return [o.invoiceNumber||'', o.customerName||'', o.customerPhone||'', formatDate(o.orderDate), formatDate(o.completionDate), o.salesPerson||'', o.assignedDesigner||'', (DESIGN_STATUS[o.designStatus||'pending']||{}).label||'', o.productionStatus ? ((PRODUCTION_STATUS[o.productionStatus]||{}).label||'') : 'Belum Hantar', o.deliveryMethod === 'pickup' ? 'Pickup' : o.deliveryMethod === 'pos' ? 'Pos' : 'Belum Set', o.deliveryDate ? formatDate(o.deliveryDate) : '', o.deliveryAddress||'', serahStatus, getStatusText(getOrderStatus(o)), (o.totalAmount||0).toFixed(2), (o.discount||0).toFixed(2), (o.subtotal||0).toFixed(2), (o.deposit||0).toFixed(2), (o.balance||0).toFixed(2), (o.items||[]).map(i=>`${i.description.replace(/\n/g, ' ')} (${i.quantity}x RM${i.price})`).join(' | ')];
+            const methodLabel = o.deliveryMethod === 'pickup' ? 'Pickup' : o.deliveryMethod === 'pos' ? 'Pos' : o.deliveryMethod === 'cod' ? 'COD' : 'Belum Set';
+            return [o.invoiceNumber||'', o.customerName||'', o.customerPhone||'', formatDate(o.orderDate), formatDate(o.completionDate), o.salesPerson||'', o.assignedDesigner||'', (DESIGN_STATUS[o.designStatus||'pending']||{}).label||'', o.productionStatus ? ((PRODUCTION_STATUS[o.productionStatus]||{}).label||'') : 'Belum Hantar', methodLabel, o.deliveryDate ? formatDate(o.deliveryDate) : '', o.deliveryAddress||'', serahStatus, getStatusText(getOrderStatus(o)), (o.totalAmount||0).toFixed(2), (o.discount||0).toFixed(2), (o.subtotal||0).toFixed(2), (o.deposit||0).toFixed(2), (o.balance||0).toFixed(2), (o.items||[]).map(i=>`${i.description.replace(/\n/g, ' ')} (${i.quantity}x RM${i.price})`).join(' | ')];
         });
         const csv = [headers, ...rows].map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
         const blob = new Blob(['\ufeff' + csv], {type:'text/csv;charset=utf-8'});
@@ -4721,7 +4569,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const a = document.createElement('a'); a.href = url; a.download = `quotations-${new Date().toISOString().split('T')[0]}.csv`; a.click();
         URL.revokeObjectURL(url);
     }
-
     async function populateSalesPersonDropdown() {
         await loadStaffCards();
         const staffList = allStaffCardsCache.filter(s => s.active);
@@ -4732,14 +4579,28 @@ document.addEventListener('DOMContentLoaded', function() {
         const opts = '<option value="">Semua Jurujual</option>' + names.map(n => `<option value="${escapeAttr(n)}">${escapeHtml(n)}</option>`).join('');
         $('filter-sales').innerHTML = opts; 
         $('filter-active-sales').innerHTML = opts;
-        if ($('filter-quotation-sales')) $('filter-quotation-sales').innerHTML = opts;
+        if ($('filter-quotation-sales')) {
+            const hasBossAccess = (sessionStorage.getItem('appAuthed') === 'true' || isBoss || STAFF_NAME === 'BOSS');
+            if (hasBossAccess) {
+                $('filter-quotation-sales').innerHTML = opts;
+                $('filter-quotation-sales').disabled = false;
+                $('filter-quotation-sales').style.opacity = '1';
+            } else if (STAFF_NAME) {
+                $('filter-quotation-sales').innerHTML = `<option value="${escapeAttr(STAFF_NAME)}">${escapeHtml(STAFF_NAME)}</option>`;
+                $('filter-quotation-sales').value = STAFF_NAME;
+                $('filter-quotation-sales').disabled = true;
+                $('filter-quotation-sales').style.opacity = '0.6';
+            } else {
+                $('filter-quotation-sales').innerHTML = '<option value="">--</option>';
+                $('filter-quotation-sales').disabled = true;
+            }
+        }
         $('dash-sales').innerHTML = '<option value="">Semua</option>' + names.map(n => `<option value="${escapeAttr(n)}">${escapeHtml(n)}</option>`).join('');
         await loadDesigners();
         const designerNames = allDesignersCache.map(d => d.staff_name);
         $('filter-designer').innerHTML = '<option value="">Semua Designer</option>' + designerNames.map(n => `<option value="${escapeAttr(n)}">${escapeHtml(n)}</option>`).join('');
         applyAutoSalesPerson();
     }
-
     async function displaySalesPersonData() {
         await loadStaffCards();
         const activeStaff = allStaffCardsCache.filter(s => s.active);
@@ -4781,7 +4642,6 @@ document.addEventListener('DOMContentLoaded', function() {
         names.sort();
         $('customer-list').innerHTML = names.map(n => `<option value="${escapeAttr(n)}">`).join('');
     }
-
     function getPeriodRange(period, monthSel, yearSel) {
         const now = new Date();
         const year = yearSel ? parseInt(yearSel) : now.getFullYear();
@@ -4851,7 +4711,6 @@ document.addEventListener('DOMContentLoaded', function() {
         $('monthly-deposit').textContent = formatRM(sumRange(monthStart, 'deposit'));
         $('yearly-sales').textContent = formatRM(sumRange(yearStart, 'subtotal'));
     }
-
     async function submitAndPrint() {
         let salesPerson = $('sales-person').value;
         if (!salesPerson && STAFF_NAME && STAFF_NAME !== 'BOSS') {
@@ -4886,11 +4745,9 @@ document.addEventListener('DOMContentLoaded', function() {
             items: currentInvoiceItems.map(it => ({ description: it.description, price: it.price, quantity: it.quantity, total: it.total }))
         };
         if (!await addOrder(data)) { alert('❌ Gagal simpan.'); return; }
-        
         if (pendingFiles.length > 0) {
             await uploadPendingFilesToOrder(inv);
         }
-        
         await unlockCurrentNumber();
         const w = window.open('', '_blank');
         if (w) { w.document.write(buildPrintHTML(data, false, false, isQ)); w.document.close(); setTimeout(() => w.print(), 500); }
@@ -4954,7 +4811,6 @@ document.addEventListener('DOMContentLoaded', function() {
         $('preview-total-quantity').textContent = tq;
         $('preview-total-amount').textContent = ta.toFixed(2);
     }
-
     window.loadDepartments = async function() {
         try {
             const { data, error } = await supabaseClient.from('departments').select('*').order('sort_order', { ascending: true });
@@ -5009,7 +4865,6 @@ document.addEventListener('DOMContentLoaded', function() {
         try { const { error } = await supabaseClient.from('departments').delete().eq('id', id); if (error) throw error; await window.loadDepartments(); window.displayDepartments(); }
         catch(e) { alert('Gagal: ' + e.message); }
     };
-
     let realtimeChannels = [];
     function initRealtime() {
         realtimeChannels.forEach(c => supabaseClient.removeChannel(c));
@@ -5055,7 +4910,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const c14 = supabaseClient.channel('audit_ch').on('postgres_changes', {event:'*', schema:'public', table:'audit_logs'}, () => { if (currentOrder && orderDetailView.style.display === 'block') loadIncompleteNoteHistory(currentOrder.invoiceNumber); }).subscribe();
         realtimeChannels = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14];
     }
-
     function initYearDropdowns() {
         const y = new Date().getFullYear();
         let html = '';
@@ -5063,8 +4917,6 @@ document.addEventListener('DOMContentLoaded', function() {
         $('filter-year').innerHTML = '<option value="">Semua Tahun</option>' + html;
         $('dash-year').innerHTML = '<option value="">Auto</option>' + html;
     }
-
-    // ═══ EVENT LISTENERS ═══
     $('login-staff-btn').addEventListener('click', () => { if (STAFF_NAME && !confirm('Tukar staf?')) return; openQrLogin(); });
     $('login-pin-manual-btn').addEventListener('click', () => { if (STAFF_NAME && !confirm('Tukar staf?')) return; openManualPinLogin(); });
     $('login-password-btn').addEventListener('click', openPasswordLogin);
@@ -5075,7 +4927,6 @@ document.addEventListener('DOMContentLoaded', function() {
     $('cancel-manual-pin').addEventListener('click', closeManualPinLogin);
     $('submit-manual-pin').addEventListener('click', submitManualPinLogin);
     $('manual-login-pin').addEventListener('keypress', e => { if (e.key === 'Enter') submitManualPinLogin(); });
-    
     $('new-invoice-btn').addEventListener('click', () => {
         if (!STAFF_NAME) { if (confirm('Sila login staf dahulu. Login PIN manual sekarang?')) openManualPinLogin(); return; }
         showContainer('tab-invoice');
@@ -5104,7 +4955,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     $('goto-settings-btn').addEventListener('click', () => { if (sessionStorage.getItem('appAuthed') !== 'true' && !isBoss) showPasswordPrompt('access_tab', 'tab-settings'); else switchTab('tab-settings'); });
     document.querySelectorAll('.tab-btn').forEach(t => t.addEventListener('click', () => switchTab(t.id)));
-
     $('submit-password').addEventListener('click', checkPassword);
     $('cancel-password').addEventListener('click', hidePasswordPrompt);
     $('password-input').addEventListener('keypress', e => { if (e.key === 'Enter') checkPassword(); });
@@ -5114,7 +4964,6 @@ document.addEventListener('DOMContentLoaded', function() {
     $('danger-confirm-input').addEventListener('input', e => { const ok = e.target.value.trim().toUpperCase() === 'PADAM SEMUA'; $('danger-confirm-btn').disabled = !ok; if (ok) $('danger-error').style.display = 'none'; });
     $('cancel-pin-login').addEventListener('click', closePinLogin);
     $('submit-pin-login').addEventListener('click', submitPinLogin);
-
     $('change-password-btn').addEventListener('click', changePassword);
     $('add-dept-btn').addEventListener('click', () => window.openDeptModal());
     $('cancel-dept').addEventListener('click', () => window.closeDeptModal());
@@ -5130,23 +4979,20 @@ document.addEventListener('DOMContentLoaded', function() {
     $('save-edit-order').addEventListener('click', saveEditedOrder);
     $('print-edit-order').addEventListener('click', printEditedOrder);
     $('edit-add-item').addEventListener('click', () => addEditRow());
-    $('edit-delivery-method').addEventListener('change', function() { $('edit-address-group').style.display = this.value === 'pos' ? 'block' : 'none'; });
-    $('delivery-method').addEventListener('change', function() { const show = this.value !== ''; $('delivery-address-group').style.display = (this.value === 'pos') ? 'block' : 'none'; $('delivery-date-group').style.display = show ? 'block' : 'none'; });
-
+    $('edit-delivery-method').addEventListener('change', function() { $('edit-address-group').style.display = (this.value === 'pos' || this.value === 'cod') ? 'block' : 'none'; });
+    $('delivery-method').addEventListener('change', function() { const show = this.value !== ''; $('delivery-address-group').style.display = (this.value === 'pos' || this.value === 'cod') ? 'block' : 'none'; $('delivery-date-group').style.display = show ? 'block' : 'none'; });
     $('btn-back-to-list').addEventListener('click', backToList);
     $('btn-print-order').addEventListener('click', printOrder);
     $('btn-edit-order').addEventListener('click', () => currentOrder && showEditOrderModal(currentOrder));
     $('btn-delete-order').addEventListener('click', promptDeleteOrder);
     $('btn-print-final').addEventListener('click', printFinal);
     $('btn-upload-file').addEventListener('click', () => { if (currentOrder) openUploadModal(currentOrder.invoiceNumber); });
-
     $('form-file-input').addEventListener('change', function(e) {
         const files = e.target.files;
         if (!files || !files.length) return;
         handleFormFileSelect(Array.from(files));
         e.target.value = '';
     });
-
     $('file-input').addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (!file) return;
@@ -5159,7 +5005,6 @@ document.addEventListener('DOMContentLoaded', function() {
         $('file-notes-input-group').style.display = 'block';
         $('upload-error').style.display = 'none';
     });
-
     $('add-template-btn').addEventListener('click', handleAddTemplate);
     $('open-size-input-btn').addEventListener('click', () => openSizeInputModal());
     $('cancel-size-input').addEventListener('click', closeSizeInputModal);
@@ -5168,9 +5013,7 @@ document.addEventListener('DOMContentLoaded', function() {
     $('add-size-cat-btn').addEventListener('click', () => openSizeCatModal());
     $('cancel-size-cat').addEventListener('click', closeSizeCatModal);
     $('save-size-cat').addEventListener('click', saveSizeCat);
-
     $('add-item').addEventListener('click', () => { currentInvoiceItems.push({description:'', price:0, quantity:1, total:0}); renderInvoiceTable(); });
-
     $('invoice-number').addEventListener('click', window.openInvoiceDropdown);
     $('invoice-number').addEventListener('focus', window.openInvoiceDropdown);
     $('invoice-number-dropdown').addEventListener('click', async e => {
@@ -5178,7 +5021,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (await lockInvoiceNumber(opt.dataset.value)) { $('invoice-number').value = opt.dataset.value; $('invoice-number-dropdown').style.display = 'none'; }
     });
     document.addEventListener('click', e => { if (!e.target.closest('.invoice-number-container')) $('invoice-number-dropdown').style.display = 'none'; });
-
     $('preview-invoice').addEventListener('click', () => {
         if (!$('invoice-number').value) return alert('Pilih no. dahulu.');
         if (currentInvoiceItems.length === 0) return alert('Sila tambah sekurang-kurangnya 1 item.');
@@ -5191,7 +5033,6 @@ document.addEventListener('DOMContentLoaded', function() {
         previewPage.classList.remove('active'); invoicePage.classList.add('active');
     });
     $('submit-and-print').addEventListener('click', submitAndPrint);
-
     $('search-orders').addEventListener('input', displayOrders);
     $('filter-period').addEventListener('change', displayOrders);
     $('filter-month').addEventListener('change', displayOrders);
@@ -5227,7 +5068,6 @@ document.addEventListener('DOMContentLoaded', function() {
     $('filter-design-only-status').addEventListener('change', displayDesignerOrders);
     $('search-production').addEventListener('input', displayProductionOrders);
     $('filter-production-status').addEventListener('change', displayProductionOrders);
-
     $('send-prod-dept').addEventListener('change', function() {
         const deptId = this.value;
         const staffSelect = $('send-prod-staff');
@@ -5235,12 +5075,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const deptStaff = allStaffCardsCache.filter(s => s.active && s.is_production && s.department_id === deptId);
         staffSelect.innerHTML = '<option value="">-- Belum assign --</option>' + deptStaff.map(s => `<option value="${escapeAttr(s.staff_name)}">${escapeHtml(s.staff_name)}</option>`).join('');
     });
-
     ['deliv-pin-code', 'qc-pin'].forEach(id => {
         const el = $(id);
         if (el) el.addEventListener('keypress', e => { if (e.key === 'Enter') { if (id === 'deliv-pin-code') window.executeVerifyDelivery(); else if (id === 'qc-pin') window.executeQuickComplete(); } });
     });
-
     window.addEventListener('online', () => offlineBanner.style.display = 'none');
     window.addEventListener('offline', () => offlineBanner.style.display = 'block');
     window.addEventListener('beforeunload', (e) => {
@@ -5252,7 +5090,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const onInvoicePage = activeTab === 'tab-invoice' || activeTab === 'tab-preview';
         if (onInvoicePage && hasUnsavedFormData()) { e.preventDefault(); e.returnValue = 'Ada data belum disimpan.'; return e.returnValue; }
     });
-
     (async function init() {
         offlineBanner.style.display = navigator.onLine ? 'none' : 'block';
         initYearDropdowns();
