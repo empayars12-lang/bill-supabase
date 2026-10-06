@@ -1806,7 +1806,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const attachSec = document.querySelector('.attach-section');
         if (attachSec) attachSec.style.display = L.show_attach_section ? 'block' : 'none';
         const depositGroup = $('deposit-group');
-        if (depositGroup && formMode !== 'quotation') depositGroup.style.display = L.show_deposit_field ? 'block' : 'none';
+        if (depositGroup) depositGroup.style.display = L.show_deposit_field ? 'block' : 'none';
         const tabVisMap = {
             'tab-dashboard': 'show_tab_dashboard', 'tab-sales-person': 'show_tab_sales_person',
             'tab-templates': 'show_tab_templates', 'tab-deleted-bills': 'show_tab_deleted_bills',
@@ -2700,8 +2700,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 const d = new Date(); d.setDate(d.getDate() + 30);
                 $('quotation-valid-until').value = d.toISOString().split('T')[0];
             }
-            $('deposit-group').style.display = 'none';
-            $('preview-deposit-row').style.display = 'none';
+            // ✅ FIX: Deposit field kekal dipaparkan untuk quotation
+            $('deposit-group').style.display = UI_CONFIG.layout.show_deposit_field ? 'block' : 'none';
+            $('preview-deposit-row').style.display = 'block';
             $('preview-valid-until-row').style.display = 'block';
             $('mode-quotation-btn').classList.add('active');
             $('mode-invoice-btn').classList.remove('active', 'invoice-active');
@@ -3543,7 +3544,7 @@ document.addEventListener('DOMContentLoaded', function() {
         $('convert-new-invoice-number').innerHTML = '<option value="">-- Pilih No. Bil --</option>' + available.map(n => `<option value="${n}">${n}</option>`).join('');
         const d = new Date(); d.setDate(d.getDate() + 7);
         $('convert-completion-date').value = d.toISOString().split('T')[0];
-        $('convert-deposit').value = '';
+        $('convert-deposit').value = o.deposit ? o.deposit.toFixed(2) : '';
         $('convert-notes').value = '';
         $('convert-error').style.display = 'none';
         $('convert-quotation-modal').style.display = 'flex';
@@ -4212,7 +4213,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <table><thead><tr><th style="width:5%;">No.</th><th>Item</th><th style="width:15%;">Harga/Unit</th><th style="width:10%;">Kuantiti</th><th style="width:15%;">Jumlah (RM)</th></tr></thead>
         <tbody>${(o.items||[]).map((it,i)=>`<tr><td>${i+1}</td><td>${renderItemDesc(it.description)}</td><td>${(it.price||0).toFixed(2)}</td><td style="text-align:center;">${it.quantity}</td><td style="text-align:right;">${(it.total||0).toFixed(2)}</td></tr>`).join('')}</tbody>
         <tfoot><tr class="table-summary-row"><td colspan="3">JUMLAH</td><td style="text-align:center;">${(o.items||[]).reduce((s,i)=>s+(i.quantity||0),0)}</td><td style="text-align:right;">${(o.totalAmount||0).toFixed(2)}</td></tr></tfoot></table>
-        <div class="invoice-totals"><p>JUMLAH RM${(o.totalAmount||0).toFixed(2)}</p><p>DISKAUN RM${(o.discount||0).toFixed(2)}</p><p>JUMLAH SELEPAS DISKAUN RM${(o.subtotal||0).toFixed(2)}</p>${!isQuotation ? `<p>DEPOSIT RM${(o.deposit||0).toFixed(2)}</p><p>BAKI RM${(o.balance||0).toFixed(2)}</p>` : ''}</div>
+        <div class="invoice-totals"><p>JUMLAH RM${(o.totalAmount||0).toFixed(2)}</p><p>DISKAUN RM${(o.discount||0).toFixed(2)}</p><p>JUMLAH SELEPAS DISKAUN RM${(o.subtotal||0).toFixed(2)}</p><p>DEPOSIT RM${(o.deposit||0).toFixed(2)}</p><p>BAKI RM${(o.balance||0).toFixed(2)}</p></div>
         ${deliveryStatusHtml}
         ${pay}
         ${deliveryInfo}
@@ -4556,10 +4557,11 @@ document.addEventListener('DOMContentLoaded', function() {
     function exportQuotationCSV() {
         const quotations = getFilteredQuotations();
         if (!quotations.length) return alert('Tiada quotation untuk export.');
-        const headers = ['No. Quotation','Pelanggan','Telefon','Tarikh','Sah Sehingga','Jurujual','Jumlah','Status','Telah Convert Ke'];
+        const headers = ['No. Quotation','Pelanggan','Telefon','Tarikh','Sah Sehingga','Jurujual','Jumlah','Deposit','Status','Telah Convert Ke'];
         const rows = quotations.map(o => [
             o.invoiceNumber||'', o.customerName||'', o.customerPhone||'', formatDate(o.orderDate),
             formatDate(o.quotationValidUntil), o.salesPerson||'', (o.subtotal||0).toFixed(2),
+            (o.deposit||0).toFixed(2),
             o.convertedToOrderAt ? 'Sudah Convert' : (o.quotationValidUntil && new Date(o.quotationValidUntil) < new Date() ? 'Luput' : 'Sah'),
             o.convertedToOrderAt ? 'Ya' : 'Belum'
         ]);
@@ -4724,6 +4726,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (currentInvoiceItems.length === 0) return alert('Sila tambah sekurang-kurangnya 1 item.');
         const isQ = formMode === 'quotation';
         if (!confirm(`📤 ${isQ ? 'Simpan Quotation' : 'Hantar order'} ${inv} ${isQ ? '' : '& cetak invois'}?`)) return;
+        const depositVal = parseFloat($('deposit').value) || 0;
+        const subtotalVal = parseFloat($('preview-subtotal').textContent) || 0;
         const data = {
             invoiceNumber: inv, customerName: $('customer-name').value || '-',
             customerPhone: $('customer-phone').value || '-',
@@ -4731,9 +4735,9 @@ document.addEventListener('DOMContentLoaded', function() {
             salesPerson: salesPerson,
             totalAmount: parseFloat($('preview-total').textContent) || 0,
             discount: parseFloat($('preview-discount').textContent) || 0,
-            subtotal: parseFloat($('preview-subtotal').textContent) || 0,
-            deposit: isQ ? 0 : (parseFloat($('deposit').value) || 0),
-            balance: isQ ? (parseFloat($('preview-subtotal').textContent) || 0) : (parseFloat($('preview-balance').textContent) || 0),
+            subtotal: subtotalVal,
+            deposit: depositVal,
+            balance: subtotalVal - depositVal,
             status: 'normal', createdBy: STAFF_NAME,
             assignedDesigner: isQ ? null : ($('designer-select').value || null),
             designNotes: isQ ? '' : ($('design-notes-input').value || ''),
@@ -4802,7 +4806,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const dt = $('discount-type').value;
         const da = dt === 'percent' ? ta * (dv/100) : dv;
         const st = ta - da;
-        const dep = formMode === 'quotation' ? 0 : (parseFloat($('deposit').value)||0);
+        const dep = parseFloat($('deposit').value)||0;
         $('preview-total').textContent = ta.toFixed(2);
         $('preview-discount').textContent = da.toFixed(2);
         $('preview-subtotal').textContent = st.toFixed(2);
