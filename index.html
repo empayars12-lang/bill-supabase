@@ -33,7 +33,7 @@ body { font-family: var(--font-family); margin: 0; padding: 0; background-color:
 .feature-card { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 15px; padding: 25px; width: 250px; }
 .feature-icon { font-size: 2.5rem; margin-bottom: 15px; }
 .feature-title { font-weight: bold; margin-bottom: 10px; font-size: 1.2rem; }
-.container { max-width: 1200px; margin: 20px auto; background: white; padding: 20px; border-radius: var(--border-radius); box-shadow: 0 0 15px rgba(0,0,0,0.1); display: none; }
+.container { max-width: 1400px; margin: 20px auto; background: white; padding: 15px; border-radius: var(--border-radius); box-shadow: 0 0 15px rgba(0,0,0,0.1); display: none; }
 .home-button-container { text-align: right; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
 .staff-badge { background: #e8f4fc; color: #2980b9; padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: bold; }
 .btn-home { background: var(--primary); color: white; border: none; padding: 8px 15px; cursor: pointer; border-radius: 4px; font-size: 14px; }
@@ -389,6 +389,73 @@ body:not(.boss-mode) .boss-only { display: none !important; }
 .ui-tab-btn.active{color:var(--primary);border-bottom-color:var(--primary);}
 .ui-tab-content{display:none;}
 .ui-tab-content.active{display:block;}
+
+/* ============================================================ */
+/* ===== COMPACT ORDER TABLE — FIT IN ONE LINE (NEW) ========== */
+/* ============================================================ */
+.order-table {
+  table-layout: auto;
+  width: 100%;
+  font-size: 11px;
+}
+.order-table th {
+  padding: 5px 4px !important;
+  font-size: 10px !important;
+  white-space: nowrap;
+  line-height: 1.2;
+  font-weight: 700;
+}
+.order-table td {
+  padding: 5px 4px !important;
+  font-size: 11px !important;
+  white-space: nowrap;
+  line-height: 1.3;
+  vertical-align: middle;
+}
+.order-table .order-number { font-size: 11px; }
+.order-table .day-badge {
+  padding: 2px 5px !important;
+  font-size: 9px !important;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+.order-table .design-status-badge,
+.order-table .production-status-badge {
+  padding: 2px 6px !important;
+  font-size: 9px !important;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+.order-table .production-status-badge-wrap { gap: 1px; }
+.order-table .production-status-badge-wrap .dept-label { font-size: 8px; line-height: 1; }
+.order-table .order-actions { gap: 2px; flex-wrap: nowrap; }
+.order-table .order-actions button {
+  padding: 3px 5px !important;
+  font-size: 10px !important;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+.order-table .status-indicator { width: 7px; height: 7px; margin-right: 3px; }
+.order-table .quotation-badge {
+  padding: 2px 6px !important;
+  font-size: 9px !important;
+  white-space: nowrap;
+}
+.order-table .login-method-badge { font-size: 8px; padding: 1px 5px; }
+/* Hide delivery cell clutter */
+.order-table .delivery-cell-inner { display: inline-flex; flex-direction: column; align-items: center; gap: 1px; }
+/* Responsive: on small screens make even tighter */
+@media (max-width: 900px) {
+  .order-table th { font-size: 9px !important; padding: 4px 3px !important; }
+  .order-table td { font-size: 10px !important; padding: 4px 3px !important; }
+  .order-table .order-actions button { padding: 2px 4px !important; font-size: 9px !important; }
+  .order-table .design-status-badge,
+  .order-table .production-status-badge { font-size: 8px !important; padding: 1px 4px !important; }
+  .order-table .day-badge { font-size: 8px !important; padding: 1px 4px !important; }
+}
+/* Wrapper no longer needs horizontal scroll */
+.table-wrap { width: 100%; overflow-x: visible; }
+
 @media print {
     .no-print, .action-buttons, .tab-nav, .home-button-container, #password-modal, .add-sales-person, #bills-modal, #install-app-btn, #upload-modal, #pass-designer-modal, #file-notes-modal, #send-production-modal, #pause-production-modal, #delivery-pin-modal, #complete-pin-modal, #quick-complete-modal, #print-options-modal, #convert-quotation-modal { display: none !important; }
     body { background: none; padding: 0; }
@@ -397,8 +464,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
     .id-card-print { border: 2px solid var(--primary); page-break-inside: avoid; }
 }
 @media (max-width: 768px) {
-    .order-table { font-size: 12px; }
-    .order-table th, .order-table td { padding: 8px 10px; }
     .search-filter, .dashboard-filters { flex-direction: column; align-items: stretch; }
     .header-info { flex-direction: column; }
     .company-details { text-align: center; }
@@ -647,7 +712,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
             <div class="summary-box"><div class="label">Jumlah Deposit</div><div class="value" id="summary-deposit">RM 0.00</div></div>
             <div class="summary-box"><div class="label">Jumlah Baki</div><div class="value" id="summary-balance">RM 0.00</div></div>
         </div>
-        <div style="overflow-x:auto;">
+        <div class="table-wrap">
         <table class="order-table" id="orders-table-el">
             <thead><tr id="orders-thead-row"></tr></thead>
             <tbody id="orders-container"></tbody>
@@ -677,7 +742,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
             <div class="summary-box" style="border-left-color:#1abc9c;"><div class="label">Nilai Quotation</div><div class="value" id="quotation-summary-value" style="color:#1abc9c;">RM 0.00</div></div>
             <div class="summary-box" style="border-left-color:#e74c3c;"><div class="label">Sudah Luput</div><div class="value" id="quotation-summary-expired" style="color:#e74c3c;">0</div></div>
         </div>
-        <div style="overflow-x:auto;">
+        <div class="table-wrap">
         <table class="order-table">
             <thead>
                 <tr>
@@ -709,7 +774,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
             <div class="summary-box" style="border-left-color:#e74c3c;"><div class="label">Lewat</div><div class="value" id="active-summary-late" style="color:#e74c3c;">0</div></div>
             <div class="summary-box" style="border-left-color:#f39c12;"><div class="label">≤ 3 Hari</div><div class="value" id="active-summary-urgent" style="color:#f39c12;">0</div></div>
         </div>
-        <div style="overflow-x:auto;">
+        <div class="table-wrap">
         <table class="order-table">
             <thead><tr><th>No. Bil</th><th>Pelanggan</th><th>Jurujual</th><th>Designer</th><th>Status Design</th><th>Tarikh Janji</th><th>Status</th><th>Status Production</th><th>Serah</th><th>Hari Lagi</th><th>Baki</th><th class="no-print">Tindakan</th></tr></thead>
             <tbody id="active-orders-container"></tbody>
@@ -733,7 +798,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
                 <option value="completed">⚫ Selesai</option>
             </select>
         </div>
-        <div style="overflow-x:auto;">
+        <div class="table-wrap">
         <table class="order-table">
             <thead><tr><th>No. Bil</th><th>Pelanggan</th><th>Tarikh Janji</th><th>Status Design</th><th>Status Production</th><th>Nota</th><th class="no-print">Tindakan</th></tr></thead>
             <tbody id="design-orders-container"></tbody>
@@ -755,7 +820,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
                 <option value="done">✅ Done</option>
             </select>
         </div>
-        <div style="overflow-x:auto;">
+        <div class="table-wrap">
         <table class="order-table">
             <thead>
                 <tr>
@@ -1844,13 +1909,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const designerText = o.assignedDesigner ? escapeHtml(o.assignedDesigner) : '<span style="color:#999;">-</span>';
         const designStatusHtml = getDesignStatusBadge(o.designStatus || 'pending');
         const productionCellHtml = getProductionCellHtml(o);
-        const isProductionDone = o.productionStatus === 'done';
         const isCompleted = o.status === 'completed';
         const isPartial = isPartialDelivery(o);
+        // ===== FIX: Butang Selesai aktif untuk SEMUA order (kecuali yang dah selesai) =====
         let completeBtn = '';
-        if (!isCompleted && isProductionDone) completeBtn = `<button class="complete-btn" data-invoice="${o.invoiceNumber}" title="Buka pop-up selesai">✅ Selesai</button>`;
-        else if (isCompleted) completeBtn = `<button class="complete-btn" disabled title="Order sudah selesai" style="background:#95a5a6;">✅ Selesai</button>`;
-        else completeBtn = `<button class="complete-btn" disabled title="Production belum siap">✅ Selesai</button>`;
+        if (isCompleted) completeBtn = `<button class="complete-btn" disabled title="Order sudah selesai" style="background:#95a5a6;">✅ Selesai</button>`;
+        else completeBtn = `<button class="complete-btn" data-invoice="${o.invoiceNumber}" title="Buka pop-up selesai">✅ Selesai</button>`;
         const printBtn = `<button class="print-btn" data-invoice="${o.invoiceNumber}" title="Cetak bill asal">🖨️ Cetak</button>`;
         let printFinalBtn = '';
         if (isCompleted) printFinalBtn = `<button class="print-final-btn" data-invoice="${o.invoiceNumber}" data-type="final" title="Cetak bill akhir (SELESAI)" style="background:#27ae60;">📄 Cetak Akhir</button>`;
@@ -2121,17 +2185,17 @@ document.addEventListener('DOMContentLoaded', function() {
         return `<span class="production-status-badge ${s.cls}">${s.icon} ${s.label}</span>`;
     }
     function getProductionCellHtml(o) {
-        if (!o.productionStatus) return '<span class="production-status-badge" style="background:#f0f0f0;color:#999;font-size:10px;">⚪ Belum Hantar</span>';
+        if (!o.productionStatus) return '<span class="production-status-badge" style="background:#f0f0f0;color:#999;font-size:9px;">⚪ Belum Hantar</span>';
         const deptName = o.productionDepartment ? (allDepartmentsCache.find(d => d.id === o.productionDepartment)?.name || '?') : '-';
         const s = PRODUCTION_STATUS[o.productionStatus] || PRODUCTION_STATUS.pending;
         return `<div class="production-status-badge-wrap"><span class="dept-label">${escapeHtml(deptName)}</span><span class="production-status-badge ${s.cls}">${s.icon} ${s.label}</span></div>`;
     }
     function getDeliveryMethodBadge(o) {
-        if (!o.deliveryMethod) return '<span style="color:#999;font-size:11px;">⚪ Belum set</span>';
+        if (!o.deliveryMethod) return '<span style="color:#999;font-size:10px;">⚪ -</span>';
         const dateStr = o.deliveryDate ? formatDate(o.deliveryDate) : '';
-        if (o.deliveryMethod === 'pickup') return `<span style="display:inline-block;padding:3px 8px;background:#3498db;color:white;border-radius:12px;font-size:11px;font-weight:bold;text-align:center;">🏪 Pickup${dateStr ? '<br><small style="font-size:9px;">'+dateStr+'</small>' : ''}</span>`;
-        if (o.deliveryMethod === 'pos') return `<span style="display:inline-block;padding:3px 8px;background:#9b59b6;color:white;border-radius:12px;font-size:11px;font-weight:bold;text-align:center;">📦 Pos${dateStr ? '<br><small style="font-size:9px;">'+dateStr+'</small>' : ''}</span>`;
-        if (o.deliveryMethod === 'cod') return `<span style="display:inline-block;padding:3px 8px;background:#e67e22;color:white;border-radius:12px;font-size:11px;font-weight:bold;text-align:center;">💰 COD${dateStr ? '<br><small style="font-size:9px;">'+dateStr+'</small>' : ''}</span>`;
+        if (o.deliveryMethod === 'pickup') return `<span style="display:inline-block;padding:2px 6px;background:#3498db;color:white;border-radius:8px;font-size:9px;font-weight:bold;white-space:nowrap;">🏪 Pickup${dateStr ? ' • '+dateStr : ''}</span>`;
+        if (o.deliveryMethod === 'pos') return `<span style="display:inline-block;padding:2px 6px;background:#9b59b6;color:white;border-radius:8px;font-size:9px;font-weight:bold;white-space:nowrap;">📦 Pos${dateStr ? ' • '+dateStr : ''}</span>`;
+        if (o.deliveryMethod === 'cod') return `<span style="display:inline-block;padding:2px 6px;background:#e67e22;color:white;border-radius:8px;font-size:9px;font-weight:bold;white-space:nowrap;">💰 COD${dateStr ? ' • '+dateStr : ''}</span>`;
         return '<span style="color:#999;">-</span>';
     }
     function getDeliveredCountForOrder(o) {
@@ -2149,13 +2213,13 @@ document.addEventListener('DOMContentLoaded', function() {
     function getSerahBadge(o) {
         const totalItems = (o.items || []).length;
         const deliveredCount = getDeliveredCountForOrder(o);
-        if (o.status === 'completed') return `<span style="display:inline-block;padding:3px 8px;background:#2ecc71;color:white;border-radius:12px;font-size:11px;font-weight:bold;">🟢 Selesai</span>`;
+        if (o.status === 'completed') return `<span style="display:inline-block;padding:2px 6px;background:#2ecc71;color:white;border-radius:8px;font-size:10px;font-weight:bold;">🟢 Selesai</span>`;
         if (deliveredCount === 0) {
-            if (o.productionStatus === 'done') return `<span style="display:inline-block;padding:3px 8px;background:#3498db;color:white;border-radius:12px;font-size:11px;font-weight:bold;">🔵 Sedia</span>`;
-            return '<span style="color:#999;font-size:11px;">-</span>';
+            if (o.productionStatus === 'done') return `<span style="display:inline-block;padding:2px 6px;background:#3498db;color:white;border-radius:8px;font-size:10px;font-weight:bold;">🔵 Sedia</span>`;
+            return '<span style="color:#999;font-size:10px;">-</span>';
         }
-        if (deliveredCount >= totalItems && totalItems > 0) return `<span style="display:inline-block;padding:3px 8px;background:#f39c12;color:white;border-radius:12px;font-size:11px;font-weight:bold;">🟡 Sedia Selesai</span>`;
-        return `<span style="display:inline-block;padding:3px 8px;background:#e67e22;color:white;border-radius:12px;font-size:11px;font-weight:bold;">🟠 ${deliveredCount}/${totalItems} Diserahkan</span>`;
+        if (deliveredCount >= totalItems && totalItems > 0) return `<span style="display:inline-block;padding:2px 6px;background:#f39c12;color:white;border-radius:8px;font-size:10px;font-weight:bold;">🟡 Sedia Selesai</span>`;
+        return `<span style="display:inline-block;padding:2px 6px;background:#e67e22;color:white;border-radius:8px;font-size:10px;font-weight:bold;">🟠 ${deliveredCount}/${totalItems}</span>`;
     }
     function getOrderStatus(o) {
         if (o.status === 'completed') return 'completed';
@@ -2172,22 +2236,22 @@ document.addEventListener('DOMContentLoaded', function() {
         if (days <= 6) return 'warning';
         return 'normal';
     }
-    function getStatusText(s) { return {new:'BARU',warning:'PERHATIAN',urgent:'SEGERA',completed:'SELESAI',pending:'PENDING'}[s] || 'DALAM PROSES'; }
+    function getStatusText(s) { return {new:'BARU',warning:'PERHATIAN',urgent:'SEGERA',completed:'SELESAI',pending:'PENDING'}[s] || 'PROSES'; }
     function getDaysRemaining(d) {
         if (!d) return {text:'-',cls:'na'};
         const t = new Date(); t.setHours(0,0,0,0);
         const c = new Date(d); c.setHours(0,0,0,0);
         if (isNaN(c)) return {text:'-',cls:'na'};
         const days = Math.ceil((c - t)/(1000*3600*24));
-        if (days < 0) return {text:`Lewat! (${Math.abs(days)}h)`,cls:'late'};
-        if (days === 0) return {text:'Hari ini!',cls:'today'};
+        if (days < 0) return {text:`Lewat ${Math.abs(days)}h`,cls:'late'};
+        if (days === 0) return {text:'Hari ini',cls:'today'};
         if (days === 1) return {text:'Esok',cls:'soon'};
-        if (days <= 3) return {text:`${days} hari lagi`,cls:'soon'};
-        return {text:`${days} hari lagi`,cls:'normal'};
+        if (days <= 3) return {text:`${days} hari`,cls:'soon'};
+        return {text:`${days} hari`,cls:'normal'};
     }
     function getQuotationStatusBadge(o) {
         if (!o.isQuotation) return '';
-        if (o.convertedToOrderAt) return '<span class="quotation-badge" style="background:linear-gradient(135deg,#3498db,#2980b9);">✅ Sudah Convert</span>';
+        if (o.convertedToOrderAt) return '<span class="quotation-badge" style="background:linear-gradient(135deg,#3498db,#2980b9);">✅ Convert</span>';
         const valid = o.quotationValidUntil ? new Date(o.quotationValidUntil) : null;
         const t = new Date(); t.setHours(0,0,0,0);
         if (valid && valid < t) return '<span class="quotation-badge quotation-expired">🔴 LUPUT</span>';
@@ -2700,7 +2764,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 const d = new Date(); d.setDate(d.getDate() + 30);
                 $('quotation-valid-until').value = d.toISOString().split('T')[0];
             }
-            // ✅ FIX: Deposit field kekal dipaparkan untuk quotation
             $('deposit-group').style.display = UI_CONFIG.layout.show_deposit_field ? 'block' : 'none';
             $('preview-deposit-row').style.display = 'block';
             $('preview-valid-until-row').style.display = 'block';
@@ -3479,14 +3542,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const statusBadge = getQuotationStatusBadge(o);
             let convertBtn = '';
             if (!o.convertedToOrderAt) {
-                convertBtn = `<button class="convert-btn" data-invoice="${o.invoiceNumber}" title="Convert ke Order">✅ Convert to Order</button>`;
+                convertBtn = `<button class="convert-btn" data-invoice="${o.invoiceNumber}" title="Convert ke Order">✅ Convert</button>`;
             }
             const printBtn = `<button class="print-btn" data-invoice="${o.invoiceNumber}" title="Cetak quotation">🖨️ Cetak</button>`;
             const editBtn = `<button class="edit-btn" data-invoice="${o.invoiceNumber}" title="Edit">✏️ Edit</button>`;
-            const deleteBtn = `<button class="btn btn-danger" data-invoice="${o.invoiceNumber}" onclick="promptDeleteQuotation('${o.invoiceNumber}')" style="padding:5px 10px;font-size:12px;">🗑️</button>`;
+            const deleteBtn = `<button class="btn btn-danger" data-invoice="${o.invoiceNumber}" onclick="promptDeleteQuotation('${o.invoiceNumber}')" style="padding:3px 5px;font-size:10px;">🗑️</button>`;
             tr.innerHTML = `
                 <td><strong style="color:#16a085;">${o.invoiceNumber||'-'}</strong></td>
-                <td>${escapeHtml(o.customerName)||'-'}<br><small style="color:#666;">${escapeHtml(o.customerPhone)||''}</small></td>
+                <td>${escapeHtml(o.customerName)||'-'}<br><small style="color:#666;font-size:10px;">${escapeHtml(o.customerPhone)||''}</small></td>
                 <td>${formatDate(o.orderDate)}</td>
                 <td>${formatDate(o.quotationValidUntil)}<br><span class="day-badge ${dr.cls}">${dr.text}</span></td>
                 <td>${escapeHtml(o.salesPerson)||'-'}</td>
@@ -3655,9 +3718,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const pending = totalItems - delivered;
         $('qc-invoice').textContent = o.invoiceNumber;
         $('qc-info-box').innerHTML = `<div style="font-size:13px;font-weight:bold;">📦 Item: ${totalItems} | ✅ Diserahkan: ${delivered} | ⏳ Baki: ${pending}</div><div style="font-size:13px;margin-top:5px;">💰 Baki bayaran: <strong>RM ${(o.balance||0).toFixed(2)}</strong></div>`;
+        // ===== FIX: Warning sahaja, bukan block =====
         if (o.productionStatus !== 'done') {
             $('qc-warning-box').style.display = 'block';
-            $('qc-warning-box').innerHTML = `⚠️ <strong>Perhatian:</strong> Production belum siap sepenuhnya.`;
+            $('qc-warning-box').innerHTML = `⚠️ <strong>Perhatian:</strong> Production belum ditanda "Siap" dalam sistem. Anda masih boleh teruskan jika kerja sebenarnya sudah siap.`;
         } else $('qc-warning-box').style.display = 'none';
         const deliveries = (allDeliveriesCache[o.invoiceNumber] || []).filter(d => !d.undone);
         const deliveredIndices = new Set();
@@ -3674,6 +3738,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return `<div class="qc-item-row"><input type="checkbox" class="qc-item-check" data-idx="${idx}" onchange="updateQCDeliverySelection()"><div class="qc-item-info"><div class="qc-item-name">${idx+1}. ${escapeHtml(itemName)} (${it.quantity}x) — <span class="qc-item-price">RM${(it.total||0).toFixed(2)}</span></div>${itemDetail ? `<div class="qc-item-detail">${escapeHtml(itemDetail)}</div>` : ''}</div></div>`;
             }).join('');
         }
+        // Auto-tick semua kalau production dah done
         if (o.productionStatus === 'done') { document.querySelectorAll('.qc-item-check').forEach(cb => { cb.checked = true; }); updateQCDeliverySelection(); }
         const activeStaff = allStaffCardsCache.filter(s => s.active);
         $('qc-staff').innerHTML = activeStaff.map(s => `<option value="${escapeAttr(s.staff_name)}"${s.staff_name === STAFF_NAME ? ' selected' : ''}>${escapeHtml(s.staff_name)}${s.staff_name === STAFF_NAME ? ' (anda)' : ''}</option>`).join('');
@@ -3719,10 +3784,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const totalItems = (o.items||[]).length;
         const newDeliveredCount = getDeliveredCountForOrder({ invoiceNumber: o.invoiceNumber, items: o.items });
         const allDelivered = newDeliveredCount >= totalItems;
+        // ===== FIX: Selesai walau production belum done =====
         let newStatus = o.status, statusLabel = '';
-        if (allDelivered && o.productionStatus === 'done') { newStatus = 'completed'; statusLabel = 'SELESAI PENUH'; }
-        else if (allDelivered && o.productionStatus !== 'done') { newStatus = 'normal'; statusLabel = 'SERAH TIDAK LENGKAP (production belum siap)'; }
-        else if (!allDelivered) { newStatus = 'normal'; statusLabel = 'SERAH TIDAK LENGKAP (item belum cukup)'; }
+        if (allDelivered) { newStatus = 'completed'; statusLabel = 'SELESAI'; }
+        else { newStatus = 'normal'; statusLabel = 'SERAH TIDAK LENGKAP (item belum cukup)'; }
         const updateData = { ...o, status: newStatus, completedBy: allDelivered ? staffName : null, completedAt: allDelivered ? new Date(dateVal + 'T12:00:00').toISOString() : null, completedPinVerified: allDelivered ? true : false, paymentInfo: { date: dateVal, method: payMethod, amount: payAmount, receivedBy: staffName } };
         if (!await updateOrderWithLog(updateData, o)) { alert('❌ Gagal update order.'); return; }
         await addAuditLog(o.invoiceNumber, 'update', 'Penyerahan & Selesai', null, `${selectedIndices.length} item diserahkan oleh ${staffName} • Bayaran: ${payMethod} RM${payAmount.toFixed(2)} • Status: ${statusLabel}`, `Selesai oleh ${staffName}`);
@@ -3732,12 +3797,13 @@ document.addEventListener('DOMContentLoaded', function() {
         let msg = `✅ Order ${o.invoiceNumber} — ${selectedIndices.length} item diserahkan oleh ${staffName}.\n📊 Status: ${statusLabel}`;
         alert(msg);
         if (shouldPrint && updatedOrder) {
-            const isFinal = allDelivered && updatedOrder.productionStatus === 'done';
+            const isFinal = allDelivered;
             const isPartial = !isFinal;
             const w = window.open('', '_blank');
             if (w) { w.document.write(buildPrintHTML(updatedOrder, isFinal, isPartial)); w.document.close(); setTimeout(() => w.print(), 500); }
         }
         displayOrders();
+        if (activeOrdersPage.style.display === 'block') displayActiveOrders();
     };
     window.openPrintOptionsModal = function(o) {
         printOptionsOrder = o;
@@ -3773,10 +3839,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const st = getOrderStatus(o); const dr = getDaysRemaining(o.completionDate);
             if (dr.cls === 'late') late++; else if (dr.cls === 'today' || dr.cls === 'soon') urgent++;
             const productionCellHtml = getProductionCellHtml(o);
-            const isProductionDone = o.productionStatus === 'done';
-            let completeBtn = '';
-            if (isProductionDone) completeBtn = `<button class="complete-btn" data-invoice="${o.invoiceNumber}">✅ Selesai</button>`;
-            else completeBtn = `<button class="complete-btn" disabled title="Production belum siap">✅ Selesai</button>`;
+            // ===== FIX: Butang Selesai AKTIF untuk semua order =====
+            const completeBtn = `<button class="complete-btn" data-invoice="${o.invoiceNumber}">✅ Selesai</button>`;
             const tr = document.createElement('tr');
             tr.innerHTML = `<td><span class="order-number" data-invoice="${o.invoiceNumber}">${o.invoiceNumber||'-'}</span></td>
                 <td>${escapeHtml(o.customerName)||'-'}</td><td>${escapeHtml(o.salesPerson)||'-'}</td>
@@ -3833,14 +3897,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const tr = document.createElement('tr');
             const notesPreview = (o.designNotes||'').substring(0, 50) + ((o.designNotes||'').length > 50 ? '...' : '');
             let actionButtons = '';
-            if (!o.productionStatus) actionButtons = `<button class="btn" style="background:#0284c7;padding:5px 10px;font-size:12px;margin-right:3px;" onclick="openSendToProductionModalForInvoice('${o.invoiceNumber}')">📤 Hantar</button>`;
-            actionButtons += `<button class="edit-btn" data-invoice="${o.invoiceNumber}">Buka</button>`;
+            if (!o.productionStatus) actionButtons = `<button class="btn" style="background:#0284c7;padding:3px 6px;font-size:10px;margin-right:2px;" onclick="openSendToProductionModalForInvoice('${o.invoiceNumber}')">📤 Hantar</button>`;
+            actionButtons += `<button class="edit-btn" data-invoice="${o.invoiceNumber}" style="padding:3px 6px;font-size:10px;">Buka</button>`;
             tr.innerHTML = `<td><span class="order-number" data-invoice="${o.invoiceNumber}">${o.invoiceNumber||'-'}</span></td>
                 <td>${escapeHtml(o.customerName)||'-'}</td>
                 <td>${formatDate(o.completionDate)}</td>
                 <td>${getDesignStatusBadge(o.designStatus || 'pending')}</td>
                 <td>${getProductionStatusBadge(o.productionStatus)}</td>
-                <td style="font-size:11px;color:#666;max-width:180px;">${escapeHtml(notesPreview)||'-'}</td>
+                <td style="font-size:10px;color:#666;max-width:150px;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(notesPreview)||'-'}</td>
                 <td class="no-print">${actionButtons}</td>`;
             tb.appendChild(tr);
         });
@@ -3902,19 +3966,19 @@ document.addEventListener('DOMContentLoaded', function() {
             const itemsText = (o.items||[]).map(it => it.description.split('\n')[0]).join(', ');
             const itemsPreview = itemsText.substring(0, 40) + (itemsText.length > 40 ? '...' : '');
             const fileCount = fileCountMap[o.invoiceNumber] || 0;
-            const fileHtml = fileCount > 0 ? `<button class="btn btn-info" onclick="openUploadModal('${o.invoiceNumber}')" style="padding:3px 8px;font-size:11px;">📎 ${fileCount}</button>` : '<span style="color:#999;">-</span>';
+            const fileHtml = fileCount > 0 ? `<button class="btn btn-info" onclick="openUploadModal('${o.invoiceNumber}')" style="padding:2px 5px;font-size:10px;">📎 ${fileCount}</button>` : '<span style="color:#999;">-</span>';
             const notesPreview = (o.productionNotes || '').substring(0, 40) + ((o.productionNotes || '').length > 40 ? '...' : '');
             const notesHtml = o.productionStatus === 'paused' ? `<span style="color:#e67e22;font-weight:bold;">⚠️ ${escapeHtml(notesPreview)}</span>` : escapeHtml(notesPreview) || '-';
             let actions = '';
-            if (o.productionStatus === 'pending') actions = `<button class="btn" style="background:#3498db;padding:5px 10px;font-size:12px;" onclick="startProduction('${o.invoiceNumber}')">▶️ Start</button>`;
-            else if (o.productionStatus === 'in_progress') actions = `<button class="btn" style="background:#e67e22;padding:5px 10px;font-size:12px;margin-right:3px;" onclick="openPauseProductionModal('${o.invoiceNumber}')">⏸️ Pause</button><button class="btn" style="background:#2ecc71;padding:5px 10px;font-size:12px;" onclick="markProductionDone('${o.invoiceNumber}')">✅ Done</button>`;
-            else if (o.productionStatus === 'paused') actions = `<button class="btn" style="background:#3498db;padding:5px 10px;font-size:12px;" onclick="resumeProduction('${o.invoiceNumber}')">▶️ Resume</button>`;
-            else if (o.productionStatus === 'done') actions = '<span style="color:#2ecc71;font-weight:bold;">✅ Siap</span>';
+            if (o.productionStatus === 'pending') actions = `<button class="btn" style="background:#3498db;padding:3px 6px;font-size:10px;" onclick="startProduction('${o.invoiceNumber}')">▶️ Start</button>`;
+            else if (o.productionStatus === 'in_progress') actions = `<button class="btn" style="background:#e67e22;padding:3px 6px;font-size:10px;margin-right:2px;" onclick="openPauseProductionModal('${o.invoiceNumber}')">⏸️</button><button class="btn" style="background:#2ecc71;padding:3px 6px;font-size:10px;" onclick="markProductionDone('${o.invoiceNumber}')">✅</button>`;
+            else if (o.productionStatus === 'paused') actions = `<button class="btn" style="background:#3498db;padding:3px 6px;font-size:10px;" onclick="resumeProduction('${o.invoiceNumber}')">▶️</button>`;
+            else if (o.productionStatus === 'done') actions = '<span style="color:#2ecc71;font-weight:bold;font-size:11px;">✅ Siap</span>';
             tr.innerHTML = `<td><strong style="color:#0284c7;">${o.invoiceNumber}</strong></td>
-                <td>${escapeHtml(o.customerName)||'-'}<br><small style="color:#666;">${escapeHtml(o.customerPhone)||''}</small></td>
-                <td style="font-size:12px;max-width:180px;">${escapeHtml(itemsPreview)}</td>
+                <td>${escapeHtml(o.customerName)||'-'}<br><small style="color:#666;font-size:10px;">${escapeHtml(o.customerPhone)||''}</small></td>
+                <td style="font-size:10px;max-width:150px;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(itemsPreview)}</td>
                 <td>${fileHtml}</td>
-                <td style="font-size:11px;max-width:150px;">${notesHtml}</td>
+                <td style="font-size:10px;max-width:120px;overflow:hidden;text-overflow:ellipsis;">${notesHtml}</td>
                 <td>${formatDate(o.completionDate)}<br><span class="day-badge ${dr.cls}">${dr.text}</span></td>
                 <td>${getProductionStatusBadge(o.productionStatus)}</td>
                 <td class="no-print">${actions}</td>`;
