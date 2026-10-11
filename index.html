@@ -64,13 +64,15 @@ body { font-family: var(--font-family); margin: 0; padding: 0; background-color:
 .status-normal { background-color: var(--success); } .status-pending { background-color: var(--warning); } .status-completed { background-color: #95a5a6; }
 .status-cell { display: flex; align-items: center; }
 .order-actions { display: flex; gap: 5px; flex-wrap: wrap; }
-.complete-btn, .pending-btn, .edit-btn, .print-btn, .print-final-btn, .convert-btn { color: white; border: none; border-radius: 4px; padding: 5px 10px; font-size: 12px; cursor: pointer; white-space: nowrap; }
+.complete-btn, .pending-btn, .edit-btn, .print-btn, .print-final-btn, .convert-btn, .wa-btn { color: white; border: none; border-radius: 4px; padding: 5px 10px; font-size: 12px; cursor: pointer; white-space: nowrap; }
 .complete-btn { background-color: var(--success); }
 .pending-btn { background-color: var(--warning); }
 .edit-btn { background-color: var(--warning); }
 .print-btn { background-color: var(--info); }
 .print-final-btn { background-color: #9b59b6; }
 .convert-btn { background-color: #16a085; font-weight: bold; }
+.wa-btn { background-color: #25D366; font-weight: bold; }
+.wa-btn:hover { background-color: #128C7E; }
 .complete-btn:disabled { background: #ccc !important; cursor: not-allowed !important; opacity: 0.6; }
 .complete-btn:hover:not(:disabled) { background: var(--success-dark); }
 .edit-btn:hover { background: #d35400; }
@@ -121,6 +123,7 @@ th { background-color: #f2f2f2; }
 .btn-danger { background: var(--danger); } .btn-danger:hover { background: #c0392b; }
 .btn-warning { background: var(--warning); } .btn-warning:hover { background: #d35400; }
 .btn-info { background: var(--info); } .btn-info:hover { background: #2980b9; }
+.btn-wa { background: #25D366; } .btn-wa:hover { background: #128C7E; }
 .btn-quotation { background: linear-gradient(135deg, #16a085, #1abc9c); color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; }
 .btn-quotation:hover { background: linear-gradient(135deg, #1abc9c, #16a085); }
 .btn-print-hantar { background: linear-gradient(135deg, var(--success) 0%, var(--success-dark) 100%); font-weight: bold; padding: 12px 25px; font-size: 17px; box-shadow: 0 3px 10px rgba(46, 204, 113, 0.4); }
@@ -148,14 +151,15 @@ th { background-color: #f2f2f2; }
 #sales-person-table th:first-child, #sales-person-table td:first-child { text-align: left; }
 #sales-person-table .commission-input { width: 60px; padding: 5px; text-align: right; }
 #sales-person-table .bill-count { cursor: pointer; text-decoration: underline; color: #007bff; }
-#send-production-modal, #pause-production-modal, #dept-modal, #password-modal, #name-modal, #template-modal, #size-cat-modal, #size-input-modal, #qr-login-modal, #pin-login-modal, #staff-modal, #qr-display-modal, #idcard-modal, #staff-password-login-modal, #staff-pin-manual-modal, #upload-modal, #pass-designer-modal, #file-notes-modal, #delivery-pin-modal, #complete-pin-modal, #quick-complete-modal, #print-options-modal, #convert-quotation-modal { position: fixed; z-index: 3500; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; padding: 20px; }
-.password-modal-content, .name-modal-content, .template-modal-content, .size-cat-modal-content, .size-input-modal-content, .qr-login-modal-content, .pin-login-modal-content, .staff-modal-content, .qr-display-modal-content, .idcard-modal-content, .staff-password-login-modal-content, .staff-pin-manual-modal-content, .upload-modal-content, .pass-designer-modal-content, .file-notes-modal-content, .delivery-pin-modal-content, .complete-pin-modal-content, .quick-complete-modal-content, .print-options-modal-content, .convert-quotation-modal-content { background: white; padding: 30px; border-radius: 12px; position: relative; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; }
+#send-production-modal, #pause-production-modal, #dept-modal, #password-modal, #name-modal, #template-modal, #size-cat-modal, #size-input-modal, #qr-login-modal, #pin-login-modal, #staff-modal, #qr-display-modal, #idcard-modal, #staff-password-login-modal, #staff-pin-manual-modal, #upload-modal, #pass-designer-modal, #file-notes-modal, #delivery-pin-modal, #complete-pin-modal, #quick-complete-modal, #print-options-modal, #convert-quotation-modal, #wa-options-modal { position: fixed; z-index: 3500; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; padding: 20px; }
+.password-modal-content, .name-modal-content, .template-modal-content, .size-cat-modal-content, .size-input-modal-content, .qr-login-modal-content, .pin-login-modal-content, .staff-modal-content, .qr-display-modal-content, .idcard-modal-content, .staff-password-login-modal-content, .staff-pin-manual-modal-content, .upload-modal-content, .pass-designer-modal-content, .file-notes-modal-content, .delivery-pin-modal-content, .complete-pin-modal-content, .quick-complete-modal-content, .print-options-modal-content, .convert-quotation-modal-content, .wa-options-modal-content { background: white; padding: 30px; border-radius: 12px; position: relative; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; }
 .password-modal-content { max-width: 400px; }
 .size-input-modal-content { max-width: 600px; }
 .qr-login-modal-content, .pin-login-modal-content, .staff-password-login-modal-content, .staff-pin-manual-modal-content, .delivery-pin-modal-content, .complete-pin-modal-content { max-width: 450px; text-align: center; }
 .quick-complete-modal-content { max-width: 620px; }
 .print-options-modal-content { max-width: 450px; text-align: center; }
 .convert-quotation-modal-content { max-width: 520px; }
+.wa-options-modal-content { max-width: 550px; }
 .idcard-modal-content { max-width: 600px; }
 .upload-modal-content { max-width: 650px; }
 .pass-designer-modal-content { max-width: 450px; }
@@ -354,6 +358,8 @@ body:not(.boss-mode) .boss-only { display: none !important; }
 .print-options-btn.btn-final { background: #f0fff4; border-color: #27ae60; color: #27ae60; }
 .print-options-btn.btn-partial { background: #fff8e1; border-color: #e67e22; color: #d35400; }
 .print-options-btn.btn-quotation { background: #e8f8f5; border-color: #16a085; color: #16a085; }
+.wa-options-btn { padding: 15px; margin: 8px 0; border-radius: var(--border-radius); border: 2px solid #25D366; background: #f0fff4; color: #128C7E; cursor: pointer; font-weight: bold; font-size: 14px; width: 100%; transition: all 0.2s; }
+.wa-options-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(37,211,102,0.3); background: #dcfce7; }
 .form-mode-toggle { display: flex; gap: 0; margin-bottom: 20px; background: #f0f4ff; border-radius: var(--border-radius); padding: 5px; max-width: 400px; }
 .form-mode-btn { flex: 1; padding: 12px 20px; border: none; background: transparent; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px; color: #666; transition: all 0.2s; }
 .form-mode-btn.active { background: white; color: #16a085; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
@@ -391,7 +397,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
 .ui-tab-content.active{display:block;}
 
 /* ============================================================ */
-/* ===== COMPACT ORDER TABLE — FIT IN ONE LINE (NEW) ========== */
+/* ===== COMPACT ORDER TABLE — FIT IN ONE LINE =============== */
 /* ============================================================ */
 .order-table {
   table-layout: auto;
@@ -442,9 +448,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
   white-space: nowrap;
 }
 .order-table .login-method-badge { font-size: 8px; padding: 1px 5px; }
-/* Hide delivery cell clutter */
 .order-table .delivery-cell-inner { display: inline-flex; flex-direction: column; align-items: center; gap: 1px; }
-/* Responsive: on small screens make even tighter */
 @media (max-width: 900px) {
   .order-table th { font-size: 9px !important; padding: 4px 3px !important; }
   .order-table td { font-size: 10px !important; padding: 4px 3px !important; }
@@ -453,11 +457,10 @@ body:not(.boss-mode) .boss-only { display: none !important; }
   .order-table .production-status-badge { font-size: 8px !important; padding: 1px 4px !important; }
   .order-table .day-badge { font-size: 8px !important; padding: 1px 4px !important; }
 }
-/* Wrapper no longer needs horizontal scroll */
 .table-wrap { width: 100%; overflow-x: visible; }
 
 @media print {
-    .no-print, .action-buttons, .tab-nav, .home-button-container, #password-modal, .add-sales-person, #bills-modal, #install-app-btn, #upload-modal, #pass-designer-modal, #file-notes-modal, #send-production-modal, #pause-production-modal, #delivery-pin-modal, #complete-pin-modal, #quick-complete-modal, #print-options-modal, #convert-quotation-modal { display: none !important; }
+    .no-print, .action-buttons, .tab-nav, .home-button-container, #password-modal, .add-sales-person, #bills-modal, #install-app-btn, #upload-modal, #pass-designer-modal, #file-notes-modal, #send-production-modal, #pause-production-modal, #delivery-pin-modal, #complete-pin-modal, #quick-complete-modal, #print-options-modal, #convert-quotation-modal, #wa-options-modal { display: none !important; }
     body { background: none; padding: 0; }
     .container { box-shadow: none; max-width: 100%; padding: 0; }
     #invoice-number-dropdown { display: none !important; }
@@ -501,6 +504,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         <div class="feature-card"><div class="feature-icon">🎨</div><div class="feature-title" data-ui="feat4_title">Design Tracking</div><div data-ui="feat4_desc">Track status design secara real-time</div></div>
         <div class="feature-card"><div class="feature-icon">🏭</div><div class="feature-title" data-ui="feat5_title">Production Tracking</div><div data-ui="feat5_desc">Track kerja production ikut jabatan</div></div>
         <div class="feature-card"><div class="feature-icon">📦</div><div class="feature-title" data-ui="feat6_title">Serah Bertahap</div><div data-ui="feat6_desc">Track penyerahan item satu-satu</div></div>
+        <div class="feature-card"><div class="feature-icon">📱</div><div class="feature-title" data-ui="feat7_title">Hantar WhatsApp</div><div data-ui="feat7_desc">Hantar bill terus ke WhatsApp customer</div></div>
     </div>
 </div>
 
@@ -950,6 +954,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
             <button class="btn btn-secondary" id="btn-back-to-list">Kembali</button>
             <button class="btn btn-warning" id="btn-print-order">🖨️ Cetak Bill Asal</button>
             <button class="btn btn-info" id="btn-edit-order">✏️ Edit Bill</button>
+            <button class="btn btn-wa" id="btn-wa-order">📱 Hantar WhatsApp</button>
             <button class="btn btn-danger" id="btn-delete-order">Padam</button>
             <button class="btn" id="btn-print-final" style="background:#3498db;">📄 Cetak Bill Akhir</button>
             <button class="btn" id="btn-upload-file" style="background:#6e48aa;">📎 Muat Naik Fail</button>
@@ -1063,6 +1068,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
                 <button class="ui-tab-btn" data-uitab="layout" onclick="window.uiSwitchTab('layout')">👁️ Paparan</button>
                 <button class="ui-tab-btn" data-uitab="tabs" onclick="window.uiSwitchTab('tabs')">📑 Susunan Tab</button>
                 <button class="ui-tab-btn" data-uitab="columns" onclick="window.uiSwitchTab('columns')">📊 Kolum Order</button>
+                <button class="ui-tab-btn" data-uitab="wa" onclick="window.uiSwitchTab('wa')">📱 WhatsApp</button>
             </div>
 
             <div class="ui-tab-content active" data-uicontent="text">
@@ -1115,6 +1121,48 @@ body:not(.boss-mode) .boss-only { display: none !important; }
                 <h4 style="color:var(--primary);">📊 Kolum Table Order</h4>
                 <p style="font-size:12px;color:#666;">Seret untuk susun, tanda checkbox untuk tunjuk. Kolum "Tindakan" akan sentiasa ada di kanan.</p>
                 <div id="ui-columns-list"></div>
+            </div>
+
+            <div class="ui-tab-content" data-uicontent="wa">
+                <h4 style="color:#25D366;">📱 Tetapan WhatsApp</h4>
+                <p style="font-size:13px;color:#666;">Customize mesej yang akan dihantar kepada customer.</p>
+                <div class="ui-editor-field" style="margin-bottom:15px;">
+                    <label>Negara Kod Default (untuk nombor tanpa kod):</label>
+                    <input type="text" id="ui-wa-country-code" value="60" maxlength="3" placeholder="60">
+                    <div style="font-size:11px;color:#666;margin-top:3px;">Malaysia = 60, Indonesia = 62, Singapore = 65</div>
+                </div>
+                <div class="ui-editor-field" style="margin-bottom:15px;">
+                    <label>Template Mesej WhatsApp:</label>
+                    <textarea id="ui-wa-template" style="height:200px;font-family:'Courier New',monospace;font-size:12px;" placeholder="Hi {nama}, ini bill anda...">Assalamualaikum {nama} 🙏
+
+Terima kasih kerana memilih {syarikat}!
+
+📄 *NO. BIL:* {no_bil}
+📅 *Tarikh:* {tarikh}
+💰 *Jumlah:* RM {jumlah}
+💵 *Deposit:* RM {deposit}
+💳 *Baki:* RM {baki}
+
+Untuk maklumat lanjut:
+📞 {telefon_syarikat}
+
+Terima kasih! 😊</textarea>
+                    <div style="font-size:11px;color:#666;margin-top:5px;line-height:1.7;">
+                        <strong>Variables yang boleh guna:</strong><br>
+                        <code>{nama}</code> - Nama customer<br>
+                        <code>{no_bil}</code> - No. bil/invoice<br>
+                        <code>{tarikh}</code> - Tarikh order<br>
+                        <code>{jumlah}</code> - Jumlah selepas diskaun<br>
+                        <code>{deposit}</code> - Deposit<br>
+                        <code>{baki}</code> - Baki<br>
+                        <code>{telefon_syarikat}</code> - No. telefon syarikat<br>
+                        <code>{syarikat}</code> - Nama syarikat
+                    </div>
+                </div>
+                <div class="toggle-row">
+                    <input type="checkbox" id="ui-wa-auto-download" checked>
+                    <label for="ui-wa-auto-download">Auto-download PDF bila tekan butang WhatsApp (recommended)</label>
+                </div>
             </div>
 
             <div class="ui-save-bar">
@@ -1183,6 +1231,50 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         <div class="action-buttons" style="justify-content:center;">
             <button class="btn btn-secondary" onclick="closeConvertQuotationModal()">Batal</button>
             <button class="btn" style="background:#16a085;" onclick="executeConvertQuotation()">✅ Convert Sekarang</button>
+        </div>
+    </div>
+</div>
+
+<!-- ============ WHATSAPP OPTIONS MODAL ============ -->
+<div id="wa-options-modal">
+    <div class="wa-options-modal-content">
+        <button class="modal-close-x" onclick="closeWAOptionsModal()">×</button>
+        <h3 style="color:#25D366;margin-top:0;">📱 Hantar via WhatsApp</h3>
+        <p style="color:#666;font-size:13px;margin-top:0;">Order: <strong id="wa-options-invoice">-</strong></p>
+        <p style="color:#666;font-size:12px;margin-top:0;">Pelanggan: <span id="wa-options-customer">-</span></p>
+        <p style="color:#666;font-size:12px;margin-top:0;">Telefon: <span id="wa-options-phone">-</span></p>
+        
+        <div style="background:#f0fff4;padding:12px;border-radius:8px;margin:15px 0;border-left:3px solid #25D366;">
+            <div style="font-size:12px;color:#065f46;line-height:1.6;">
+                <strong>ℹ️ Cara guna:</strong><br>
+                1. WhatsApp akan buka dengan mesej sedia ada<br>
+                2. Attach PDF (tekan 📎 / drag & drop)<br>
+                3. Tekan <strong>Send</strong> ✅
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label>📝 Preview Mesej (boleh edit):</label>
+            <textarea id="wa-message-preview" style="height:200px;font-family:'Courier New',monospace;font-size:12px;"></textarea>
+        </div>
+        
+        <div style="text-align:left;margin-bottom:15px;">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:normal;">
+                <input type="checkbox" id="wa-download-pdf" checked style="width:auto;margin:0;">
+                <span>📄 Auto-download PDF bill (untuk attach)</span>
+            </label>
+        </div>
+        
+        <div id="wa-error" style="color:red;font-size:13px;margin-bottom:10px;display:none;"></div>
+        
+        <button class="wa-options-btn" onclick="executeSendWhatsApp()">
+            <div style="font-size:32px;">📱</div>
+            <div>BUKA WHATSAPP & HANTAR</div>
+            <div style="font-size:11px;font-weight:normal;margin-top:4px;">WhatsApp Web / App akan terbuka</div>
+        </button>
+        
+        <div class="action-buttons" style="justify-content:center;margin-top:10px;">
+            <button class="btn btn-secondary" onclick="closeWAOptionsModal()">Tutup</button>
         </div>
     </div>
 </div>
@@ -1530,6 +1622,12 @@ body:not(.boss-mode) .boss-only { display: none !important; }
                 <span>🖨️ Cetak bill selepas sahkan</span>
             </label>
         </div>
+        <div style="text-align:left; margin-bottom:15px;">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:normal;">
+                <input type="checkbox" id="qc-send-wa" style="width:auto;margin:0;">
+                <span>📱 Hantar WhatsApp ke customer selepas sahkan</span>
+            </label>
+        </div>
         <div id="qc-error" style="color:red;font-size:13px;margin-bottom:10px;display:none;"></div>
         <div class="action-buttons" style="justify-content:center;">
             <button class="btn btn-secondary" onclick="closeQuickCompleteModal()">Batal</button>
@@ -1700,6 +1798,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let quickCompleteOrder = null;
     let printOptionsOrder = null;
     let convertQuotationOrder = null;
+    let waOptionsOrder = null;
     let currentDeliveryIndices = [];
     let currentlyLockedNumber = null;
     let lockedNumbersMap = {};
@@ -1744,6 +1843,7 @@ document.addEventListener('DOMContentLoaded', function() {
             feat4_title: 'Design Tracking', feat4_desc: 'Track status design secara real-time',
             feat5_title: 'Production Tracking', feat5_desc: 'Track kerja production ikut jabatan',
             feat6_title: 'Serah Bertahap', feat6_desc: 'Track penyerahan item satu-satu',
+            feat7_title: 'Hantar WhatsApp', feat7_desc: 'Hantar bill terus ke WhatsApp customer',
             tab_invoice: 'Buat Invois',
             tab_orders: 'Senarai Order',
             tab_active: 'Order Aktif',
@@ -1770,6 +1870,24 @@ document.addEventListener('DOMContentLoaded', function() {
             show_tab_dashboard: true, show_tab_sales_person: true, show_tab_templates: true,
             show_tab_deleted_bills: true, show_tab_settings: true,
             show_deposit_field: true, show_delivery_field: true, show_attach_section: true
+        },
+        whatsapp: {
+            country_code: '60',
+            template: `Assalamualaikum {nama} 🙏
+
+Terima kasih kerana memilih {syarikat}!
+
+📄 *NO. BIL:* {no_bil}
+📅 *Tarikh:* {tarikh}
+💰 *Jumlah:* RM {jumlah}
+💵 *Deposit:* RM {deposit}
+💳 *Baki:* RM {baki}
+
+Untuk maklumat lanjut:
+📞 {telefon_syarikat}
+
+Terima kasih! 😊`,
+            auto_download_pdf: true
         },
         tab_order: ['tab-invoice','tab-orders','tab-active','tab-quotation','tab-design','tab-production','tab-dashboard','tab-sales-person','tab-templates','tab-deleted-bills','tab-settings'],
         column_order: [
@@ -1911,7 +2029,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const productionCellHtml = getProductionCellHtml(o);
         const isCompleted = o.status === 'completed';
         const isPartial = isPartialDelivery(o);
-        // ===== FIX: Butang Selesai aktif untuk SEMUA order (kecuali yang dah selesai) =====
         let completeBtn = '';
         if (isCompleted) completeBtn = `<button class="complete-btn" disabled title="Order sudah selesai" style="background:#95a5a6;">✅ Selesai</button>`;
         else completeBtn = `<button class="complete-btn" data-invoice="${o.invoiceNumber}" title="Buka pop-up selesai">✅ Selesai</button>`;
@@ -1920,6 +2037,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (isCompleted) printFinalBtn = `<button class="print-final-btn" data-invoice="${o.invoiceNumber}" data-type="final" title="Cetak bill akhir (SELESAI)" style="background:#27ae60;">📄 Cetak Akhir</button>`;
         else if (isPartial) printFinalBtn = `<button class="print-final-btn" data-invoice="${o.invoiceNumber}" data-type="partial" title="Cetak bill TIDAK LENGKAP" style="background:#e67e22;">📄 Cetak Akhir</button>`;
         const editBtn = `<button class="edit-btn" data-invoice="${o.invoiceNumber}" title="Edit order">✏️ Edit</button>`;
+        const waBtn = o.customerPhone ? `<button class="wa-btn" data-invoice="${o.invoiceNumber}" title="Hantar WhatsApp">📱 WA</button>` : '';
         const st = getOrderStatus(o);
         const cellMap = {
             invoiceNumber: `<td><span class="order-number" data-invoice="${o.invoiceNumber}">${o.invoiceNumber||'-'}</span></td>`,
@@ -1936,7 +2054,7 @@ document.addEventListener('DOMContentLoaded', function() {
             status: `<td class="status-cell"><span class="status-indicator status-${st}"></span>${getStatusText(st)}</td>`
         };
         const cells = cols.map(c => cellMap[c.key] || '<td>-</td>').join('');
-        return cells + `<td class="no-print"><div class="order-actions">${printBtn}${printFinalBtn}${editBtn}${completeBtn}</div></td>`;
+        return cells + `<td class="no-print"><div class="order-actions">${printBtn}${printFinalBtn}${waBtn}${editBtn}${completeBtn}</div></td>`;
     }
 
     const UI_TEXT_FIELDS = [
@@ -1959,6 +2077,7 @@ document.addEventListener('DOMContentLoaded', function() {
         { key: 'feat4_title', label: 'Feature 4 — Tajuk' }, { key: 'feat4_desc', label: 'Feature 4 — Deskripsi' },
         { key: 'feat5_title', label: 'Feature 5 — Tajuk' }, { key: 'feat5_desc', label: 'Feature 5 — Deskripsi' },
         { key: 'feat6_title', label: 'Feature 6 — Tajuk' }, { key: 'feat6_desc', label: 'Feature 6 — Deskripsi' },
+        { key: 'feat7_title', label: 'Feature 7 — Tajuk' }, { key: 'feat7_desc', label: 'Feature 7 — Deskripsi' },
         { key: 'tab_invoice', label: 'Tab: Buat Invois' },
         { key: 'tab_orders', label: 'Tab: Senarai Order' },
         { key: 'tab_active', label: 'Tab: Order Aktif' },
@@ -2031,6 +2150,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 return `<div class="toggle-row"><input type="checkbox" data-ui-toggle="layout.${f.key}" ${v?'checked':''} id="tog_${f.key}"><label for="tog_${f.key}">${f.label}</label></div>`;
             }).join('');
         }
+        // WhatsApp config
+        if ($('ui-wa-country-code')) $('ui-wa-country-code').value = uiTempConfig.whatsapp.country_code || '60';
+        if ($('ui-wa-template')) $('ui-wa-template').value = uiTempConfig.whatsapp.template || '';
+        if ($('ui-wa-auto-download')) $('ui-wa-auto-download').checked = uiTempConfig.whatsapp.auto_download_pdf !== false;
         renderUITabOrderList();
         renderUIColumnsList();
     }
@@ -2094,6 +2217,11 @@ document.addEventListener('DOMContentLoaded', function() {
         if ($('ui-font-family')) uiTempConfig.theme.font_family = $('ui-font-family').value;
         if ($('ui-border-radius')) uiTempConfig.theme.border_radius = $('ui-border-radius').value;
         if ($('ui-bg-body')) uiTempConfig.theme.bg_body = $('ui-bg-body').value;
+        // WhatsApp
+        if (!uiTempConfig.whatsapp) uiTempConfig.whatsapp = {};
+        if ($('ui-wa-country-code')) uiTempConfig.whatsapp.country_code = $('ui-wa-country-code').value.trim() || '60';
+        if ($('ui-wa-template')) uiTempConfig.whatsapp.template = $('ui-wa-template').value;
+        if ($('ui-wa-auto-download')) uiTempConfig.whatsapp.auto_download_pdf = $('ui-wa-auto-download').checked;
     }
     document.addEventListener('input', function(e) {
         if (e.target.matches('[data-ui-color]')) {
@@ -2143,6 +2271,84 @@ document.addEventListener('DOMContentLoaded', function() {
         uiTempConfig = JSON.parse(JSON.stringify(DEFAULT_UI_CONFIG));
         renderUIEditor();
         alert('Reset semua. Tekan "Simpan Semua Perubahan" untuk apply.');
+    };
+
+    // ============ WHATSAPP HELPER ============
+    function normalizePhone(phone) {
+        if (!phone) return '';
+        let p = phone.toString().replace(/[^0-9]/g, '');
+        if (!p) return '';
+        const cc = (UI_CONFIG.whatsapp?.country_code) || '60';
+        // Kalau dah start dengan 60, kekal
+        if (p.startsWith(cc)) return p;
+        // Kalau start dengan 0, buang 0 dan tambah country code
+        if (p.startsWith('0')) p = cc + p.substring(1);
+        // Kalau start dengan 1 (contoh 1234... tanpa 0), tambah cc
+        else if (p.length < 10) p = cc + p;
+        return p;
+    }
+    function buildWhatsAppMessage(o) {
+        let template = (UI_CONFIG.whatsapp?.template) || DEFAULT_UI_CONFIG.whatsapp.template;
+        const syarikat = UI_CONFIG.text.company_name || 'EMPAYAR S KREATIF';
+        const phoneMatch = (UI_CONFIG.text.company_full_address || '').match(/TEL:\s*([0-9]+)/);
+        const telefonSyarikat = phoneMatch ? phoneMatch[1] : '-';
+        const tarikh = formatDate(o.orderDate);
+        return template
+            .replace(/{nama}/g, o.customerName || '-')
+            .replace(/{no_bil}/g, o.invoiceNumber || '-')
+            .replace(/{tarikh}/g, tarikh)
+            .replace(/{jumlah}/g, (o.subtotal || 0).toFixed(2))
+            .replace(/{deposit}/g, (o.deposit || 0).toFixed(2))
+            .replace(/{baki}/g, (o.balance || 0).toFixed(2))
+            .replace(/{telefon_syarikat}/g, telefonSyarikat)
+            .replace(/{syarikat}/g, syarikat);
+    }
+    window.openWAOptionsModal = function(o) {
+        if (!o) return;
+        if (!o.customerPhone) { alert('⚠️ Customer tiada nombor telefon. Sila edit order dahulu.'); return; }
+        waOptionsOrder = o;
+        const normalizedPhone = normalizePhone(o.customerPhone);
+        $('wa-options-invoice').textContent = o.invoiceNumber;
+        $('wa-options-customer').textContent = o.customerName || '-';
+        $('wa-options-phone').textContent = o.customerPhone + ' → ' + normalizedPhone;
+        $('wa-message-preview').value = buildWhatsAppMessage(o);
+        if ($('wa-download-pdf')) $('wa-download-pdf').checked = UI_CONFIG.whatsapp?.auto_download_pdf !== false;
+        $('wa-error').style.display = 'none';
+        $('wa-options-modal').style.display = 'flex';
+    };
+    window.closeWAOptionsModal = function() {
+        $('wa-options-modal').style.display = 'none';
+        waOptionsOrder = null;
+    };
+    window.executeSendWhatsApp = async function() {
+        if (!waOptionsOrder) return;
+        const o = waOptionsOrder;
+        const message = $('wa-message-preview').value;
+        const phone = normalizePhone(o.customerPhone);
+        const shouldDownloadPdf = $('wa-download-pdf').checked;
+        if (!phone) { $('wa-error').textContent = '❌ Nombor telefon tidak sah.'; $('wa-error').style.display = 'block'; return; }
+        // 1. Download PDF dulu (kalau di-check)
+        if (shouldDownloadPdf) {
+            try {
+                const w = window.open('', '_blank');
+                if (w) {
+                    w.document.write(buildPrintHTML(o, o.status === 'completed', isPartialDelivery(o), o.isQuotation));
+                    w.document.close();
+                    setTimeout(() => { w.print(); }, 500);
+                    // Nota: User boleh "Save as PDF" dalam print dialog
+                }
+            } catch(e) { console.error('PDF error:', e); }
+        }
+        // 2. Buka WhatsApp
+        const encodedMsg = encodeURIComponent(message);
+        const waUrl = `https://wa.me/${phone}?text=${encodedMsg}`;
+        // Log ke audit
+        try {
+            await addAuditLog(o.invoiceNumber, 'update', 'WhatsApp Sent', null, phone, `WhatsApp dibuka oleh ${STAFF_NAME}`);
+        } catch(e) {}
+        // Buka WhatsApp dalam tab baru
+        window.open(waUrl, '_blank');
+        closeWAOptionsModal();
     };
 
     const DESIGN_STATUS = {
@@ -3505,6 +3711,7 @@ document.addEventListener('DOMContentLoaded', function() {
         tb.querySelectorAll('.print-btn').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice); if (!o) return; const w = window.open('', '_blank'); if (!w) return alert('Pop-up diblok'); w.document.write(buildPrintHTML(o, false, false)); w.document.close(); setTimeout(()=>w.print(), 500); }));
         tb.querySelectorAll('.print-final-btn').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice); if (!o) return; const type = e.target.dataset.type; const w = window.open('', '_blank'); if (!w) return alert('Pop-up diblok'); w.document.write(buildPrintHTML(o, type === 'final', type === 'partial')); w.document.close(); setTimeout(()=>w.print(), 500); }));
         tb.querySelectorAll('.edit-btn').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice); if (o) showEditOrderModal(o); }));
+        tb.querySelectorAll('.wa-btn').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice); if (o) openWAOptionsModal(o); }));
         tb.querySelectorAll('.complete-btn').forEach(b => b.addEventListener('click', e => {
             if (b.disabled) return;
             e.stopPropagation();
@@ -3546,6 +3753,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             const printBtn = `<button class="print-btn" data-invoice="${o.invoiceNumber}" title="Cetak quotation">🖨️ Cetak</button>`;
             const editBtn = `<button class="edit-btn" data-invoice="${o.invoiceNumber}" title="Edit">✏️ Edit</button>`;
+            const waBtn = o.customerPhone ? `<button class="wa-btn" data-invoice="${o.invoiceNumber}" title="Hantar WhatsApp">📱 WA</button>` : '';
             const deleteBtn = `<button class="btn btn-danger" data-invoice="${o.invoiceNumber}" onclick="promptDeleteQuotation('${o.invoiceNumber}')" style="padding:3px 5px;font-size:10px;">🗑️</button>`;
             tr.innerHTML = `
                 <td><strong style="color:#16a085;">${o.invoiceNumber||'-'}</strong></td>
@@ -3555,7 +3763,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td>${escapeHtml(o.salesPerson)||'-'}</td>
                 <td><strong>${formatRM(o.subtotal)}</strong></td>
                 <td>${statusBadge}</td>
-                <td class="no-print"><div class="order-actions">${printBtn}${editBtn}${convertBtn}${deleteBtn}</div></td>`;
+                <td class="no-print"><div class="order-actions">${printBtn}${editBtn}${waBtn}${convertBtn}${deleteBtn}</div></td>`;
             tb.appendChild(tr);
         });
         const totalValue = quotations.reduce((s,o)=>s+(o.subtotal||0),0);
@@ -3583,6 +3791,11 @@ document.addEventListener('DOMContentLoaded', function() {
             e.stopPropagation();
             const o = quotations.find(x => x.invoiceNumber === e.target.dataset.invoice);
             if (o) openConvertQuotationModal(o);
+        }));
+        tb.querySelectorAll('.wa-btn').forEach(b => b.addEventListener('click', e => {
+            e.stopPropagation();
+            const o = quotations.find(x => x.invoiceNumber === e.target.dataset.invoice);
+            if (o) openWAOptionsModal(o);
         }));
         applyBossMode();
     }
@@ -3718,7 +3931,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const pending = totalItems - delivered;
         $('qc-invoice').textContent = o.invoiceNumber;
         $('qc-info-box').innerHTML = `<div style="font-size:13px;font-weight:bold;">📦 Item: ${totalItems} | ✅ Diserahkan: ${delivered} | ⏳ Baki: ${pending}</div><div style="font-size:13px;margin-top:5px;">💰 Baki bayaran: <strong>RM ${(o.balance||0).toFixed(2)}</strong></div>`;
-        // ===== FIX: Warning sahaja, bukan block =====
         if (o.productionStatus !== 'done') {
             $('qc-warning-box').style.display = 'block';
             $('qc-warning-box').innerHTML = `⚠️ <strong>Perhatian:</strong> Production belum ditanda "Siap" dalam sistem. Anda masih boleh teruskan jika kerja sebenarnya sudah siap.`;
@@ -3738,7 +3950,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 return `<div class="qc-item-row"><input type="checkbox" class="qc-item-check" data-idx="${idx}" onchange="updateQCDeliverySelection()"><div class="qc-item-info"><div class="qc-item-name">${idx+1}. ${escapeHtml(itemName)} (${it.quantity}x) — <span class="qc-item-price">RM${(it.total||0).toFixed(2)}</span></div>${itemDetail ? `<div class="qc-item-detail">${escapeHtml(itemDetail)}</div>` : ''}</div></div>`;
             }).join('');
         }
-        // Auto-tick semua kalau production dah done
         if (o.productionStatus === 'done') { document.querySelectorAll('.qc-item-check').forEach(cb => { cb.checked = true; }); updateQCDeliverySelection(); }
         const activeStaff = allStaffCardsCache.filter(s => s.active);
         $('qc-staff').innerHTML = activeStaff.map(s => `<option value="${escapeAttr(s.staff_name)}"${s.staff_name === STAFF_NAME ? ' selected' : ''}>${escapeHtml(s.staff_name)}${s.staff_name === STAFF_NAME ? ' (anda)' : ''}</option>`).join('');
@@ -3747,6 +3958,7 @@ document.addEventListener('DOMContentLoaded', function() {
         $('qc-payment-amount').value = (o.balance||0).toFixed(2);
         $('qc-pin').value = '';
         $('qc-error').style.display = 'none';
+        if ($('qc-send-wa')) $('qc-send-wa').checked = false;
         $('quick-complete-modal').style.display = 'flex';
         setTimeout(() => $('qc-pin').focus(), 300);
     };
@@ -3767,6 +3979,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const payAmount = parseFloat($('qc-payment-amount').value) || 0;
         const pin = $('qc-pin').value.trim();
         const shouldPrint = $('qc-print-bill').checked;
+        const shouldWA = $('qc-send-wa') ? $('qc-send-wa').checked : false;
         const checks = document.querySelectorAll('.qc-item-check:checked');
         const selectedIndices = Array.from(checks).map(c => parseInt(c.dataset.idx));
         if (!staffName) { $('qc-error').textContent = 'Sila pilih staf.'; $('qc-error').style.display = 'block'; return; }
@@ -3784,7 +3997,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const totalItems = (o.items||[]).length;
         const newDeliveredCount = getDeliveredCountForOrder({ invoiceNumber: o.invoiceNumber, items: o.items });
         const allDelivered = newDeliveredCount >= totalItems;
-        // ===== FIX: Selesai walau production belum done =====
         let newStatus = o.status, statusLabel = '';
         if (allDelivered) { newStatus = 'completed'; statusLabel = 'SELESAI'; }
         else { newStatus = 'normal'; statusLabel = 'SERAH TIDAK LENGKAP (item belum cukup)'; }
@@ -3801,6 +4013,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const isPartial = !isFinal;
             const w = window.open('', '_blank');
             if (w) { w.document.write(buildPrintHTML(updatedOrder, isFinal, isPartial)); w.document.close(); setTimeout(() => w.print(), 500); }
+        }
+        if (shouldWA && updatedOrder && updatedOrder.customerPhone) {
+            setTimeout(() => openWAOptionsModal(updatedOrder), 1000);
         }
         displayOrders();
         if (activeOrdersPage.style.display === 'block') displayActiveOrders();
@@ -3839,8 +4054,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const st = getOrderStatus(o); const dr = getDaysRemaining(o.completionDate);
             if (dr.cls === 'late') late++; else if (dr.cls === 'today' || dr.cls === 'soon') urgent++;
             const productionCellHtml = getProductionCellHtml(o);
-            // ===== FIX: Butang Selesai AKTIF untuk semua order =====
             const completeBtn = `<button class="complete-btn" data-invoice="${o.invoiceNumber}">✅ Selesai</button>`;
+            const waBtn = o.customerPhone ? `<button class="wa-btn" data-invoice="${o.invoiceNumber}">📱 WA</button>` : '';
             const tr = document.createElement('tr');
             tr.innerHTML = `<td><span class="order-number" data-invoice="${o.invoiceNumber}">${o.invoiceNumber||'-'}</span></td>
                 <td>${escapeHtml(o.customerName)||'-'}</td><td>${escapeHtml(o.salesPerson)||'-'}</td>
@@ -3852,7 +4067,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td>${getSerahBadge(o)}</td>
                 <td><span class="day-badge ${dr.cls}">${dr.text}</span></td>
                 <td>${formatRM(o.balance)}</td>
-                <td class="no-print"><div class="order-actions"><button class="print-btn" data-invoice="${o.invoiceNumber}">🖨️ Cetak</button><button class="edit-btn" data-invoice="${o.invoiceNumber}">✏️ Edit</button>${completeBtn}</div></td>`;
+                <td class="no-print"><div class="order-actions"><button class="print-btn" data-invoice="${o.invoiceNumber}">🖨️ Cetak</button>${waBtn}<button class="edit-btn" data-invoice="${o.invoiceNumber}">✏️ Edit</button>${completeBtn}</div></td>`;
             tb.appendChild(tr);
         });
         const tb2 = orders.reduce((s,o)=>s+(o.balance||0),0);
@@ -3863,6 +4078,7 @@ document.addEventListener('DOMContentLoaded', function() {
         tb.querySelectorAll('.order-number').forEach(el => el.addEventListener('click', e => { const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice); if (o) showOrderDetail(o); }));
         tb.querySelectorAll('.edit-btn').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice); if (o) showEditOrderModal(o); }));
         tb.querySelectorAll('.print-btn').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice); if (!o) return; const w = window.open('', '_blank'); if (!w) return alert('Pop-up diblok'); w.document.write(buildPrintHTML(o, false, false)); w.document.close(); setTimeout(()=>w.print(), 500); }));
+        tb.querySelectorAll('.wa-btn').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice); if (o) openWAOptionsModal(o); }));
         tb.querySelectorAll('.complete-btn').forEach(b => b.addEventListener('click', e => {
             if (b.disabled) return;
             e.stopPropagation();
@@ -4118,6 +4334,11 @@ document.addEventListener('DOMContentLoaded', function() {
         else $('detail-note-updated-info').textContent = 'Belum pernah dikemaskini';
         await loadIncompleteNoteHistory(o.invoiceNumber);
         $('btn-print-final').style.display = 'block';
+        // WA button visibility
+        if ($('btn-wa-order')) {
+            if (o.customerPhone) $('btn-wa-order').style.display = 'inline-block';
+            else $('btn-wa-order').style.display = 'none';
+        }
         await populateDesignerDropdown('detail-designer-select', o.assignedDesigner || '');
         $('detail-design-status-badge').outerHTML = getDesignStatusBadge(o.designStatus || 'pending').replace('class="design-status-badge', 'id="detail-design-status-badge" class="design-status-badge');
         $('detail-design-notes').value = o.designNotes || '';
@@ -5055,6 +5276,7 @@ document.addEventListener('DOMContentLoaded', function() {
     $('btn-delete-order').addEventListener('click', promptDeleteOrder);
     $('btn-print-final').addEventListener('click', printFinal);
     $('btn-upload-file').addEventListener('click', () => { if (currentOrder) openUploadModal(currentOrder.invoiceNumber); });
+    $('btn-wa-order').addEventListener('click', () => { if (currentOrder) openWAOptionsModal(currentOrder); });
     $('form-file-input').addEventListener('change', function(e) {
         const files = e.target.files;
         if (!files || !files.length) return;
