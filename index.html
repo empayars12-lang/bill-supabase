@@ -5000,7 +5000,7 @@ document.addEventListener('DOMContentLoaded', function() {
             window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
             return;
         }
-        window.open(`https://wa.me/${intlPhone}?text=${encodeURIComponent(msg)}`, '_blank');
+        window.open(`https://api.whatsapp.com/send?phone=${intlPhone}&text=${encodeURIComponent(msg)}`, '_blank');
         closeWhatsAppPopup();
     };
     window.waPrintPDF = function() {
