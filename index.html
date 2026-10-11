@@ -4987,22 +4987,41 @@ document.addEventListener('DOMContentLoaded', function() {
         $('whatsapp-popup-modal').style.display = 'none';
         waCurrentOrder = null;
     };
-    window.waSendNow = async function() {
-        if (!waCurrentOrder) return;
-        const cfg = await loadWhatsAppConfig();
-        const phone = waCurrentOrder.customerPhone || '';
-        const msg = $('wa-message-text').value;
-        const shouldPrint = $('wa-print-pdf').checked;
-        if (shouldPrint) waPrintPDF();
-        const intlPhone = normalizePhone(phone, cfg.country_code);
-        if (!intlPhone) {
-            try { await navigator.clipboard.writeText(msg); } catch(e){}
-            window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
-            return;
-        }
-        window.open(`https://api.whatsapp.com/send?phone=${intlPhone}&text=${encodeURIComponent(msg)}`, '_blank');
-        closeWhatsAppPopup();
-    };
+window.waSendNow = async function() {
+    if (!waCurrentOrder) return;
+    const cfg = await loadWhatsAppConfig();
+    const phone = waCurrentOrder.customerPhone || '';
+    const msg = $('wa-message-text').value;
+    const shouldPrint = $('wa-print-pdf').checked;
+    if (shouldPrint) waPrintPDF();
+    
+    // Detect device: mobile vs desktop
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(navigator.userAgent);
+    
+    const intlPhone = normalizePhone(phone, cfg.country_code);
+    
+    // Kalau takde phone — copy mesej je
+    if (!intlPhone) {
+        try { await navigator.clipboard.writeText(msg); } catch(e){}
+        const link = isMobile 
+            ? 'whatsapp://send?text=' + encodeURIComponent(msg)
+            : 'https://api.whatsapp.com/send?text=' + encodeURIComponent(msg);
+        window.open(link, '_blank');
+        return;
+    }
+    
+    // Mobile → guna wa.me atau whatsapp:// scheme (trigger app)
+    if (isMobile) {
+        const mobileUrl = `https://wa.me/${intlPhone}?text=${encodeURIComponent(msg)}`;
+        window.location.href = mobileUrl;
+    } else {
+        // Desktop → guna api.whatsapp.com
+        const desktopUrl = `https://api.whatsapp.com/send?phone=${intlPhone}&text=${encodeURIComponent(msg)}`;
+        window.open(desktopUrl, '_blank');
+    }
+    
+    closeWhatsAppPopup();
+};
     window.waPrintPDF = function() {
         if (!waCurrentOrder) return;
         const w = window.open('', '_blank');
