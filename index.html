@@ -57,7 +57,6 @@ body { font-family: var(--font-family); margin: 0; padding: 0; background-color:
 .order-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; background: white; border-radius: var(--border-radius); overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
 .order-table th { background-color: #f2f2f2; padding: 12px 15px; text-align: left; font-weight: bold; border-bottom: 1px solid #ddd; font-size: 13px; }
 .order-table td { padding: 12px 15px; border-bottom: 1px solid #eee; font-size: 13px; }
-.order-table tr:hover { background-color: #f9f9f9; }
 .order-number { font-weight: bold; color: var(--primary); cursor: pointer; text-decoration: underline; }
 .status-indicator { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 5px; }
 .status-new { background-color: var(--info); } .status-warning { background-color: var(--warning); } .status-urgent { background-color: var(--danger); }
@@ -406,6 +405,14 @@ body:not(.boss-mode) .boss-only { display: none !important; }
 .order-table .status-indicator { width: 7px; height: 7px; margin-right: 3px; }
 .order-table .quotation-badge { padding: 2px 6px !important; font-size: 9px !important; white-space: nowrap; }
 .table-wrap { width: 100%; overflow-x: visible; }
+
+/* ===== ROW HIGHLIGHT ===== */
+.order-table tbody tr { transition: background-color 0.15s ease, box-shadow 0.15s ease; cursor: pointer; }
+.order-table tbody tr:hover { background-color: #fff8e1 !important; box-shadow: inset 0 0 0 2px #f39c12; }
+.order-table tbody tr.row-selected { background-color: #fef3c7 !important; box-shadow: inset 0 0 0 3px #6e48aa; }
+.order-table tbody tr.row-selected td { background-color: #fef3c7 !important; font-weight: 600; }
+.order-table tbody tr.row-selected .order-number { color: #6e48aa; font-weight: bold; }
+
 @media (max-width: 900px) {
   .order-table th { font-size: 9px !important; padding: 4px 3px !important; }
   .order-table td { font-size: 10px !important; padding: 4px 3px !important; }
@@ -1761,6 +1768,7 @@ document.addEventListener('DOMContentLoaded', function() {
         column_order: [
             { key: 'invoiceNumber', label: 'No. Bil', visible: true },
             { key: 'customerName', label: 'Pelanggan', visible: true },
+            { key: 'subtotal', label: 'Jumlah Jualan', visible: true },
             { key: 'customerPhone', label: 'Telefon', visible: true },
             { key: 'orderDate', label: 'Tarikh Order', visible: true },
             { key: 'completionDate', label: 'Tarikh Siap', visible: true },
@@ -1787,6 +1795,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         } catch(e) { console.error('loadUIConfig:', e); }
+        // MIGRATION: pastikan kolum subtotal wujud
+        if (!UI_CONFIG.column_order) UI_CONFIG.column_order = JSON.parse(JSON.stringify(DEFAULT_UI_CONFIG.column_order));
+        if (!UI_CONFIG.column_order.find(c => c.key === 'subtotal')) {
+            const idx = UI_CONFIG.column_order.findIndex(c => c.key === 'customerName');
+            const newCol = { key: 'subtotal', label: 'Jumlah Jualan', visible: true };
+            if (idx >= 0) UI_CONFIG.column_order.splice(idx + 1, 0, newCol);
+            else UI_CONFIG.column_order.push(newCol);
+        }
     }
     function deepMerge(target, source) {
         for (const k in source) {
@@ -1910,6 +1926,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const cellMap = {
             invoiceNumber: `<td><span class="order-number" data-invoice="${o.invoiceNumber}">${o.invoiceNumber||'-'}</span></td>`,
             customerName: `<td>${escapeHtml(o.customerName)||'-'}</td>`,
+            subtotal: `<td><strong style="color:#27ae60;">RM ${(o.subtotal||0).toFixed(2)}</strong></td>`,
             customerPhone: `<td>${escapeHtml(o.customerPhone)||'-'}</td>`,
             orderDate: `<td>${formatDate(o.orderDate)}</td>`,
             completionDate: `<td>${formatDate(o.completionDate)}</td>`,
@@ -3477,6 +3494,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!orders.length) tb.innerHTML = `<tr><td colspan="${colCount}" style="text-align:center;">Tiada order</td></tr>`;
         orders.forEach(o => {
             const tr = document.createElement('tr');
+            tr.dataset.invoice = o.invoiceNumber;
             tr.innerHTML = buildOrderRowCells(o, orders);
             tb.appendChild(tr);
         });
@@ -3487,6 +3505,15 @@ document.addEventListener('DOMContentLoaded', function() {
         $('summary-sales').textContent = formatRM(ts);
         $('summary-deposit').textContent = formatRM(td);
         $('summary-balance').textContent = formatRM(tbal);
+        // Row highlight: klik row untuk kekal highlight
+        tb.querySelectorAll('tr[data-invoice]').forEach(tr => {
+            tr.addEventListener('click', e => {
+                if (e.target.closest('button')) return;
+                const wasSelected = tr.classList.contains('row-selected');
+                tb.querySelectorAll('tr.row-selected').forEach(x => x.classList.remove('row-selected'));
+                if (!wasSelected) tr.classList.add('row-selected');
+            });
+        });
         tb.querySelectorAll('.order-number').forEach(el => el.addEventListener('click', e => { const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice); if (o) showOrderDetail(o); }));
         tb.querySelectorAll('.print-btn').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice); if (!o) return; const w = window.open('', '_blank'); if (!w) return alert('Pop-up diblok'); w.document.write(buildPrintHTML(o, false, false)); w.document.close(); setTimeout(()=>w.print(), 500); }));
         tb.querySelectorAll('.print-final-btn').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice); if (!o) return; const type = e.target.dataset.type; const w = window.open('', '_blank'); if (!w) return alert('Pop-up diblok'); w.document.write(buildPrintHTML(o, type === 'final', type === 'partial')); w.document.close(); setTimeout(()=>w.print(), 500); }));
@@ -3831,6 +3858,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const productionCellHtml = getProductionCellHtml(o);
             const completeBtn = `<button class="complete-btn" data-invoice="${o.invoiceNumber}">✅ Selesai</button>`;
             const tr = document.createElement('tr');
+            tr.dataset.invoice = o.invoiceNumber;
             tr.innerHTML = `<td><span class="order-number" data-invoice="${o.invoiceNumber}">${o.invoiceNumber||'-'}</span></td>
                 <td>${escapeHtml(o.customerName)||'-'}</td><td>${escapeHtml(o.salesPerson)||'-'}</td>
                 <td>${o.assignedDesigner ? escapeHtml(o.assignedDesigner) : '<span style="color:#999;">-</span>'}</td>
@@ -3849,6 +3877,15 @@ document.addEventListener('DOMContentLoaded', function() {
         $('active-summary-balance').textContent = formatRM(tb2);
         $('active-summary-late').textContent = late;
         $('active-summary-urgent').textContent = urgent;
+        // Row highlight untuk Order Aktif
+        tb.querySelectorAll('tr[data-invoice]').forEach(tr => {
+            tr.addEventListener('click', e => {
+                if (e.target.closest('button')) return;
+                const wasSelected = tr.classList.contains('row-selected');
+                tb.querySelectorAll('tr.row-selected').forEach(x => x.classList.remove('row-selected'));
+                if (!wasSelected) tr.classList.add('row-selected');
+            });
+        });
         tb.querySelectorAll('.order-number').forEach(el => el.addEventListener('click', e => { const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice); if (o) showOrderDetail(o); }));
         tb.querySelectorAll('.edit-btn').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice); if (o) showEditOrderModal(o); }));
         tb.querySelectorAll('.print-btn').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); const o = orders.find(x => x.invoiceNumber === e.target.dataset.invoice); if (!o) return; const w = window.open('', '_blank'); if (!w) return alert('Pop-up diblok'); w.document.write(buildPrintHTML(o, false, false)); w.document.close(); setTimeout(()=>w.print(), 500); }));
@@ -4814,7 +4851,6 @@ document.addEventListener('DOMContentLoaded', function() {
         resetForm();
         if (isQ) switchTab('tab-quotation');
         else switchTab('tab-orders');
-        // Auto-trigger WhatsApp popup
         setTimeout(() => openWhatsAppPopup(savedData), 400);
     }
     function resetForm() {
@@ -4959,13 +4995,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         const companyName = (UI_CONFIG.text.company_name || 'EMPAYAR S KREATIF');
         const companyPhone = '01133387532';
-        const isQ = order.isQuotation;
-        const totalToShow = isQ ? (order.subtotal || 0) : (order.subtotal || 0);
         return template
             .replace(/\{nama\}/g, order.customerName || '-')
             .replace(/\{no_bil\}/g, order.invoiceNumber || '-')
             .replace(/\{tarikh\}/g, formatDate(order.orderDate) || '-')
-            .replace(/\{jumlah\}/g, totalToShow.toFixed(2))
+            .replace(/\{jumlah\}/g, (order.subtotal || 0).toFixed(2))
             .replace(/\{deposit\}/g, (order.deposit || 0).toFixed(2))
             .replace(/\{baki\}/g, (order.balance || 0).toFixed(2))
             .replace(/\{telefon_syarikat\}/g, companyPhone)
@@ -4987,41 +5021,33 @@ document.addEventListener('DOMContentLoaded', function() {
         $('whatsapp-popup-modal').style.display = 'none';
         waCurrentOrder = null;
     };
-window.waSendNow = async function() {
-    if (!waCurrentOrder) return;
-    const cfg = await loadWhatsAppConfig();
-    const phone = waCurrentOrder.customerPhone || '';
-    const msg = $('wa-message-text').value;
-    const shouldPrint = $('wa-print-pdf').checked;
-    if (shouldPrint) waPrintPDF();
-    
-    // Detect device: mobile vs desktop
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(navigator.userAgent);
-    
-    const intlPhone = normalizePhone(phone, cfg.country_code);
-    
-    // Kalau takde phone — copy mesej je
-    if (!intlPhone) {
-        try { await navigator.clipboard.writeText(msg); } catch(e){}
-        const link = isMobile 
-            ? 'whatsapp://send?text=' + encodeURIComponent(msg)
-            : 'https://api.whatsapp.com/send?text=' + encodeURIComponent(msg);
-        window.open(link, '_blank');
-        return;
-    }
-    
-    // Mobile → guna wa.me atau whatsapp:// scheme (trigger app)
-    if (isMobile) {
-        const mobileUrl = `https://wa.me/${intlPhone}?text=${encodeURIComponent(msg)}`;
-        window.location.href = mobileUrl;
-    } else {
-        // Desktop → guna api.whatsapp.com
-        const desktopUrl = `https://api.whatsapp.com/send?phone=${intlPhone}&text=${encodeURIComponent(msg)}`;
-        window.open(desktopUrl, '_blank');
-    }
-    
-    closeWhatsAppPopup();
-};
+    window.waSendNow = async function() {
+        if (!waCurrentOrder) return;
+        const cfg = await loadWhatsAppConfig();
+        const phone = waCurrentOrder.customerPhone || '';
+        const msg = $('wa-message-text').value;
+        const shouldPrint = $('wa-print-pdf').checked;
+        if (shouldPrint) waPrintPDF();
+        // Auto-detect device
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(navigator.userAgent);
+        const intlPhone = normalizePhone(phone, cfg.country_code);
+        if (!intlPhone) {
+            try { await navigator.clipboard.writeText(msg); } catch(e){}
+            const link = isMobile
+                ? 'whatsapp://send?text=' + encodeURIComponent(msg)
+                : 'https://api.whatsapp.com/send?text=' + encodeURIComponent(msg);
+            window.open(link, '_blank');
+            return;
+        }
+        if (isMobile) {
+            // Mobile: guna wa.me — trigger app WhatsApp
+            window.location.href = `https://wa.me/${intlPhone}?text=${encodeURIComponent(msg)}`;
+        } else {
+            // Desktop: guna api.whatsapp.com
+            window.open(`https://api.whatsapp.com/send?phone=${intlPhone}&text=${encodeURIComponent(msg)}`, '_blank');
+        }
+        closeWhatsAppPopup();
+    };
     window.waPrintPDF = function() {
         if (!waCurrentOrder) return;
         const w = window.open('', '_blank');
