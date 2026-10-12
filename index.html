@@ -1761,8 +1761,8 @@ document.addEventListener('DOMContentLoaded', function() {
         column_order: [
             { key: 'invoiceNumber', label: 'No. Bil', visible: true },
             { key: 'customerName', label: 'Pelanggan', visible: true },
-            { key: 'subtotal', label: 'Jumlah Jualan', visible: true },
             { key: 'customerPhone', label: 'Telefon', visible: true },
+            { key: 'orderDate', label: 'Tarikh Order', visible: true },
             { key: 'completionDate', label: 'Tarikh Siap', visible: true },
             { key: 'salesPerson', label: 'Jurujual', visible: true },
             { key: 'assignedDesigner', label: 'Designer', visible: true },
@@ -1787,15 +1787,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         } catch(e) { console.error('loadUIConfig:', e); }
-        
-        // MIGRATION: Pastikan kolum 'subtotal' wujud (Jumlah Jualan)
-        if (!UI_CONFIG.column_order) UI_CONFIG.column_order = [...DEFAULT_UI_CONFIG.column_order];
-        if (!UI_CONFIG.column_order.find(c => c.key === 'subtotal')) {
-            const idx = UI_CONFIG.column_order.findIndex(c => c.key === 'customerName');
-            const newCol = { key: 'subtotal', label: 'Jumlah Jualan', visible: true };
-            if (idx >= 0) UI_CONFIG.column_order.splice(idx + 1, 0, newCol);
-            else UI_CONFIG.column_order.push(newCol);
-        }
     }
     function deepMerge(target, source) {
         for (const k in source) {
@@ -1916,11 +1907,7 @@ document.addEventListener('DOMContentLoaded', function() {
         else if (isPartial) printFinalBtn = `<button class="print-final-btn" data-invoice="${o.invoiceNumber}" data-type="partial" title="Cetak bill TIDAK LENGKAP" style="background:#e67e22;">📄 Cetak Akhir</button>`;
         const editBtn = `<button class="edit-btn" data-invoice="${o.invoiceNumber}" title="Edit order">✏️ Edit</button>`;
         const st = getOrderStatus(o);
-             const cellMap = {
-            invoiceNumber: `<td><span class="order-number" data-invoice="${o.invoiceNumber}">${o.invoiceNumber||'-'}</span></td>`,
-            customerName: `<td>${escapeHtml(o.customerName)||'-'}</td>`,
-            subtotal: `<td><strong style="color:#27ae60;">RM ${(o.subtotal||0).toFixed(2)}</strong></td>`,
-            customerPhone: `<td>${escapeHtml(o.customerPhone)||'-'}</td>`,   const cellMap = {
+        const cellMap = {
             invoiceNumber: `<td><span class="order-number" data-invoice="${o.invoiceNumber}">${o.invoiceNumber||'-'}</span></td>`,
             customerName: `<td>${escapeHtml(o.customerName)||'-'}</td>`,
             customerPhone: `<td>${escapeHtml(o.customerPhone)||'-'}</td>`,
