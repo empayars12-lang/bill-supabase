@@ -1,7 +1,7 @@
 // Service Worker untuk Empayar S Kreatif PWA
 // Version: 1.0
 
-const CACHE_NAME = 'esk-cache-v2'; // Tukar v1 jadi v2
+const CACHE_NAME = 'esk-cache-v1';
 const urlsToCache = [
   './',
   './index.html',
