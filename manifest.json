@@ -1,0 +1,33 @@
+{
+  "name": "Empayar S Kreatif - Sistem Invois",
+  "short_name": "ESK Bill",
+  "description": "Sistem Pengurusan Invois & Order - Staff Internal",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#6e48aa",
+  "theme_color": "#6e48aa",
+  "lang": "ms",
+  "categories": ["business", "productivity"],
+  "icons": [
+    {
+      "src": "https://arleta.site/interactivelink/68/Untitled-1.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://arleta.site/interactivelink/68/Untitled-1.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://arleta.site/interactivelink/68/Untitled-1.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
