@@ -9,6 +9,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Empayar S Kreatif - Sistem Invois & Order</title>
 <meta name="theme-color" content="#6e48aa"/>
+<!-- ========================================== -->
+<!-- PWA META TAGS (BARU) -->
+<!-- ========================================== -->
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ESK Bill">
+<meta name="mobile-web-app-capable" content="yes">
+<!-- ========================================== -->
 <link rel="icon" href="https://arleta.site/interactivelink/68/Untitled-1.png">
 <link rel="apple-touch-icon" href="https://arleta.site/interactivelink/68/Untitled-1.png">
 <style>
@@ -30,7 +39,7 @@ body { font-family: var(--font-family); margin: 0; padding: 0; background-color:
 .btn-primary-landing:hover { transform: translateY(-3px); }
 .btn-secondary-landing { background-color: rgba(255,255,255,0.2); color: white; border: 2px solid white; }
 .btn-secondary-landing:hover { background-color: rgba(255,255,255,0.3); }
-#install-app-btn { background-color: var(--success); color: white; display: none; }
+#install-app-btn { display: none; }
 .features { display: flex; justify-content: center; flex-wrap: wrap; gap: 30px; margin-top: 40px; }
 .feature-card { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 15px; padding: 25px; width: 250px; }
 .feature-icon { font-size: 2.5rem; margin-bottom: 15px; }
@@ -391,7 +400,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
 .order-table .quotation-badge { padding: 2px 6px !important; font-size: 9px !important; white-space: nowrap; }
 .table-wrap { width: 100%; overflow-x: visible; }
 
-/* ===== ROW HIGHLIGHT (boleh edit dari Tetapan) ===== */
+/* ===== ROW HIGHLIGHT ===== */
 .order-table tbody tr { transition: background-color 0.15s ease, box-shadow 0.15s ease; cursor: pointer; }
 .order-table tbody tr:hover { 
     background-color: var(--row-hover-bg, #fff8e1) !important; 
@@ -454,7 +463,8 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         <button id="manage-quotations-btn" class="btn-landing btn-secondary-landing" style="background:#1abc9c;border-color:#1abc9c;" data-ui="btn_manage_quotations">📋 Senarai Quotation</button>
         <button id="dashboard-btn" class="btn-landing btn-secondary-landing" data-ui="btn_dashboard">Papan Pemuka Jualan</button>
         <button id="settings-btn" class="btn-landing btn-secondary-landing" data-ui="btn_settings">⚙️ Tetapan</button>
-        <button id="install-app-btn" class="btn-landing">Pasang Aplikasi Ini</button>
+        <!-- BOTANG PWA -->
+        <button id="install-app-btn" class="btn-landing" style="background:#2ecc71;color:white;border:none;font-weight:bold;">📲 Pasang Aplikasi Ini</button>
     </div>
     <div class="features" id="landing-features">
         <div class="feature-card"><div class="feature-icon">📊</div><div class="feature-title" data-ui="feat1_title">Invois Profesional</div><div data-ui="feat1_desc">Buat dan cetak invois dengan mudah</div></div>
@@ -1126,6 +1136,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
             <select id="convert-new-invoice-number" style="padding:10px;font-size:14px;">
                 <option value="">-- Pilih No. Bil --</option>
             </select>
+            <div style="font-size:11px;color:#666;margin-top:5px;font-style:italic;">No. bil order biasa (25DXXXX). Quotation asal akan disimpan untuk rekod.</div>
         </div>
         <div class="form-group">
             <label>📅 Tarikh Janji Siap:</label>
@@ -1134,6 +1145,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         <div class="form-group">
             <label>💰 Deposit Diterima (RM):</label>
             <input type="number" id="convert-deposit" step="0.01" placeholder="0.00">
+            <div style="font-size:11px;color:#666;margin-top:5px;font-style:italic;">Masukkan jumlah deposit jika customer dah bayar. Kosong jika belum.</div>
         </div>
         <div class="form-group">
             <label>📝 Nota Convert (optional):</label>
@@ -1220,7 +1232,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
     </div>
 </div>
 
-<!-- ========== FORCE DELETE MODAL (BARU) ========== -->
+<!-- ========== FORCE DELETE MODAL ========== -->
 <div id="force-delete-modal">
     <div class="force-delete-modal-content">
         <button class="modal-close-x" onclick="closeForceDeleteModal()">×</button>
@@ -3664,7 +3676,6 @@ document.addEventListener('DOMContentLoaded', function() {
         $('fd-reason').value = '';
         $('fd-pin').value = '';
         $('fd-error').style.display = 'none';
-        // Load senarai staf aktif
         await loadStaffCards();
         const activeStaff = allStaffCardsCache.filter(s => s.active);
         $('fd-staff').innerHTML = '<option value="">-- Pilih Staf --</option>' + 
@@ -3684,7 +3695,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!reason) { $('fd-error').textContent = '⚠️ Sila isi sebab padam.'; $('fd-error').style.display = 'block'; return; }
         if (!staffName) { $('fd-error').textContent = '⚠️ Sila pilih staf.'; $('fd-error').style.display = 'block'; return; }
         if (pin.length !== 4) { $('fd-error').textContent = '⚠️ PIN mesti 4 digit.'; $('fd-error').style.display = 'block'; return; }
-        // Verify PIN
         const verified = await verifyPinByName(staffName, pin);
         if (!verified) {
             $('fd-error').textContent = '❌ PIN salah untuk ' + staffName;
@@ -3696,7 +3706,6 @@ document.addEventListener('DOMContentLoaded', function() {
         $('fd-error').style.display = 'none';
         const inv = forceDeleteOrder.invoiceNumber;
         if (!confirm(`⚠️ PENGESAHAN TERAKHIR!\n\nPadam order ${inv}?\nPelanggan: ${forceDeleteOrder.customerName}\nSebab: ${reason}\n\nTIDAK boleh dikembalikan!`)) return;
-        // Simpan ke deleted_bills
         try {
             await supabaseClient.from('deleted_bills').insert({
                 invoice_number: forceDeleteOrder.invoiceNumber,
@@ -5441,6 +5450,99 @@ document.addEventListener('DOMContentLoaded', function() {
         if (isProduction) setInterval(() => { if (document.querySelector('.tab-btn.active')?.id === 'tab-production') displayProductionOrders(); }, 60000);
         console.log('✅ Sistem sedia. Mode:', formMode, '| Staff:', STAFF_NAME);
     })();
+
+    // ============================================================
+    // PWA INSTALL & SERVICE WORKER
+    // ============================================================
+    let deferredPrompt = null;
+    
+    window.addEventListener('beforeinstallprompt', (e) => {
+        console.log('[PWA] Install prompt available');
+        e.preventDefault();
+        deferredPrompt = e;
+        const installBtn = document.getElementById('install-app-btn');
+        if (installBtn) installBtn.style.display = 'block';
+    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        const installBtn = document.getElementById('install-app-btn');
+        if (installBtn) {
+            installBtn.addEventListener('click', async () => {
+                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+                const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+                
+                if (isStandalone) {
+                    alert('✅ Aplikasi sudah dipasang di peranti ini.');
+                    return;
+                }
+                
+                if (isIOS) {
+                    alert(
+                        '📱 CARA PASANG DI IPHONE:\n\n' +
+                        '1. Pastikan buka guna Safari (bukan Chrome)\n' +
+                        '2. Tekan butang Share ⬆️ (kotak dengan anak panah)\n' +
+                        '3. Scroll dan tekan "Add to Home Screen"\n' +
+                        '4. Tekan "Add"\n\n' +
+                        '✅ App akan muncul di home screen.'
+                    );
+                    return;
+                }
+                
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    console.log('[PWA] Install outcome:', outcome);
+                    if (outcome === 'accepted') {
+                        alert('✅ Aplikasi berjaya dipasang! Semak home screen anda.');
+                    }
+                    deferredPrompt = null;
+                } else {
+                    alert(
+                        '📱 CARA PASANG DI ANDROID:\n\n' +
+                        '1. Buka menu Chrome (⋮) di kanan atas\n' +
+                        '2. Tekan "Install app" atau "Add to Home screen"\n' +
+                        '3. Tekan "Install"\n\n' +
+                        'ATAU:\n' +
+                        'Tunggu beberapa saat — akan ada popup "Add to Home screen" di bawah skrin.'
+                    );
+                }
+            });
+        }
+        
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js')
+                .then(reg => {
+                    console.log('✅ Service Worker registered:', reg.scope);
+                    reg.addEventListener('updatefound', () => {
+                        const newWorker = reg.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                if (confirm('🔄 Versi baru tersedia. Refresh untuk update sekarang?')) {
+                                    newWorker.postMessage({ type: 'SKIP_WAITING' });
+                                    window.location.reload();
+                                }
+                            }
+                        });
+                    });
+                })
+                .catch(err => console.error('❌ Service Worker failed:', err));
+            
+            let refreshing = false;
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                if (!refreshing) {
+                    refreshing = true;
+                    window.location.reload();
+                }
+            });
+        }
+    });
+    
+    window.addEventListener('appinstalled', (e) => {
+        console.log('[PWA] App installed');
+        const installBtn = document.getElementById('install-app-btn');
+        if (installBtn) installBtn.style.display = 'none';
+        alert('✅ App berjaya dipasang!');
+    });
 });
 </script>
 </body>
