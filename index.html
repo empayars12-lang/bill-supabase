@@ -5545,5 +5545,396 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+    <!-- ========================================== -->
+    <!-- 1. HTML UNTUK TAB KEWANGAN (DI BAWAH SEKALI) -->
+    <!-- ========================================== -->
+    <div id="finance-page" class="page">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:20px;">
+            <h2 style="margin:0;">💰 Kewangan & Buku Tunai</h2>
+            <div>
+                <button class="btn btn-info" onclick="openFinanceSettingsModal()" style="font-size:14px; padding:8px 15px; margin-right:5px;">⚙️ Tetapan Kewangan</button>
+                <button class="btn" onclick="openFinanceModal('in')" style="background:var(--success); font-size:14px; padding:8px 15px;">📥 Duit Masuk</button>
+                <button class="btn" onclick="openFinanceModal('expense')" style="background:var(--danger); font-size:14px; padding:8px 15px;">📤 Belanja Kedai</button>
+                <button class="btn" onclick="openFinanceModal('personal')" style="background:var(--warning); font-size:14px; padding:8px 15px;">💸 Ambilan Peribadi</button>
+            </div>
+        </div>
+        
+        <div class="summary-row">
+            <div class="finance-card balance" style="flex: 2;">
+                <h4>💰 Baki Tunai Dalam Tangan</h4>
+                <div class="amount" id="fin-balance-cash" style="color:var(--primary);">RM 0.00</div>
+                <div class="sub">(Baki Permulaan + Duit Masuk - Semua Duit Keluar)</div>
+            </div>
+            <div class="finance-card inflow">
+                <h4>📥 Untung Kasar Bisnes</h4>
+                <div class="amount" id="fin-profit-biz" style="color:var(--success);">RM 0.00</div>
+                <div class="sub">(Duit Masuk - Belanja Kedai)</div>
+            </div>
+            <div class="finance-card personal">
+                <h4>💸 Ambilan Peribadi Boss</h4>
+                <div class="amount" id="fin-total-personal" style="color:var(--warning);">RM 0.00</div>
+                <div class="sub">(Duit Kedai yang digunakan peribadi)</div>
+            </div>
+        </div>
+
+        <div style="margin-top:20px; display:flex; gap:15px; flex-wrap:wrap;">
+            <div class="finance-card" style="flex:1;">
+                <h4>Total Deposit Masuk</h4>
+                <div class="amount" id="fin-total-deposit" style="color:var(--info); font-size:1.5rem;">RM 0.00</div>
+            </div>
+            <div class="finance-card outflow">
+                <h4>Total Belanja Kedai</h4>
+                <div class="amount" id="fin-total-expense" style="color:var(--danger); font-size:1.5rem;">RM 0.00</div>
+            </div>
+            <div class="finance-card" style="flex:1;">
+                <h4>Total Duit Masuk Manual</h4>
+                <div class="amount" id="fin-total-manual-in" style="color:var(--success); font-size:1.5rem;">RM 0.00</div>
+            </div>
+        </div>
+
+        <div style="margin-top:30px; background:white; border-radius:10px; padding:20px; box-shadow:0 2px 10px rgba(0,0,0,0.05);">
+            <h3 style="margin-top:0; color:var(--primary);">📋 Sejarah Buku Tunai</h3>
+            <div style="margin-bottom:10px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                <input type="text" id="search-finance" class="search-input" placeholder="Cari keterangan..." style="max-width:300px;" oninput="renderFinanceTable()">
+                <select id="filter-finance-type" class="filter-select" onchange="renderFinanceTable()">
+                    <option value="">Semua Jenis</option>
+                    <option value="in">📥 Duit Masuk</option>
+                    <option value="out_expense">📤 Belanja Kedai</option>
+                    <option value="out_personal">💸 Ambilan Peribadi</option>
+                </select>
+            </div>
+            <div style="overflow-x:auto;">
+                <table class="order-table" style="font-size:12px;">
+                    <thead>
+                        <tr>
+                            <th>Tarikh</th>
+                            <th>Jenis</th>
+                            <th>Keterangan</th>
+                            <th>Kategori / Order</th>
+                            <th>Jumlah (RM)</th>
+                            <th class="no-print">Resit</th>
+                            <th class="no-print">Tindakan</th>
+                        </tr>
+                    </thead>
+                    <tbody id="finance-table-body">
+                        <tr><td colspan="7" style="text-align:center;">Memuatkan...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL KEWANGAN -->
+    <div id="finance-modal" style="position:fixed;z-index:3500;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:none;justify-content:center;align-items:center;padding:20px;">
+        <div class="finance-modal-content" style="background:white;padding:30px;border-radius:12px;position:relative;width:100%;max-width:500px;max-height:90vh;overflow-y:auto;">
+            <button class="modal-close-x" onclick="closeFinanceModal()">×</button>
+            <h3 id="finance-modal-title" style="margin-top:0;">Rekod Kewangan</h3>
+            <div class="form-group" id="finance-cat-group">
+                <label>Kategori:</label>
+                <select id="finance-category"></select>
+            </div>
+            <div class="form-group">
+                <label>Keterangan / Nota:</label>
+                <input type="text" id="finance-desc" placeholder="Contoh: Beli Kertas A4">
+            </div>
+            <div class="form-group">
+                <label>Jumlah (RM):</label>
+                <input type="number" id="finance-amount" step="0.01" placeholder="0.00">
+            </div>
+            <div class="form-group">
+                <label>No. Resit (Optional):</label>
+                <input type="text" id="finance-receipt-no">
+            </div>
+            <div class="form-group">
+                <label>No. Bil Order (Optional):</label>
+                <input type="text" id="finance-rel-invoice" placeholder="25D0012">
+            </div>
+            <div class="form-group">
+                <label>Upload Gambar Resit (Optional):</label>
+                <input type="file" id="finance-receipt-file" accept="image/*">
+            </div>
+            <div class="action-buttons" style="justify-content:flex-end;">
+                <button class="btn btn-secondary" onclick="closeFinanceModal()">Batal</button>
+                <button class="btn" onclick="submitFinanceRecord()">💾 Simpan</button>
+            </div>
+            <input type="hidden" id="finance-record-type" value="">
+        </div>
+    </div>
+
+    <div id="finance-settings-modal" style="position:fixed;z-index:3500;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:none;justify-content:center;align-items:center;padding:20px;">
+        <div class="finance-settings-modal-content" style="background:white;padding:30px;border-radius:12px;position:relative;width:100%;max-width:500px;max-height:90vh;overflow-y:auto;">
+            <button class="modal-close-x" onclick="closeFinanceSettingsModal()">×</button>
+            <h3 style="margin-top:0;">⚙️ Tetapan Kewangan</h3>
+            <div class="form-group" style="background:#f0f9ff; padding:15px; border-radius:8px; border-left:4px solid var(--info);">
+                <label>Baki Permulaan (RM):</label>
+                <input type="number" id="fin-setting-opening-balance" step="0.01" placeholder="0.00">
+            </div>
+            <div class="form-group" style="background:#f0fff4; padding:15px; border-radius:8px; border-left:4px solid var(--success);">
+                <label>Tarikh Mula Catat:</label>
+                <input type="date" id="fin-setting-start-date">
+            </div>
+            <h4 style="color:var(--primary); margin-top:20px;">Senarai Kategori</h4>
+            <div id="finance-cat-list" style="max-height:200px; overflow-y:auto; margin-bottom:15px;"></div>
+            <button class="btn btn-info" onclick="openFinanceCatModal()" style="width:100%; background:#3498db; margin-bottom:10px;">➕ Tambah Kategori</button>
+            <div class="action-buttons" style="justify-content:flex-end;">
+                <button class="btn btn-secondary" onclick="closeFinanceSettingsModal()">Tutup</button>
+                <button class="btn" onclick="saveFinanceSettings()">💾 Simpan Tetapan</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="finance-cat-modal" style="position:fixed;z-index:3500;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:none;justify-content:center;align-items:center;padding:20px;">
+        <div style="background:white;padding:30px;border-radius:12px;position:relative;width:100%;max-width:400px;">
+            <button class="modal-close-x" onclick="closeFinanceCatModal()">×</button>
+            <h3 style="margin-top:0;">Tambah Kategori</h3>
+            <div class="form-group">
+                <label>Nama Kategori:</label>
+                <input type="text" id="new-fin-cat-name">
+            </div>
+            <div class="form-group">
+                <label>Jenis:</label>
+                <select id="new-fin-cat-type">
+                    <option value="expense">📤 Belanja Kedai</option>
+                    <option value="personal">💸 Ambilan Peribadi</option>
+                </select>
+            </div>
+            <div class="action-buttons" style="justify-content:flex-end;">
+                <button class="btn btn-secondary" onclick="closeFinanceCatModal()">Batal</button>
+                <button class="btn" onclick="saveFinanceCategory()">💾 Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 2. JAVASCRIPT KEWANGAN -->
+    <!-- ========================================== -->
+    <script>
+        // Kita guna setTimeout untuk pastikan fungsi asal dah load sepenuhnya
+        setTimeout(() => {
+            // 1. TUKAR TAB KEWANGAN JADI BOSS SAHAJA
+            const financeTab = document.getElementById('tab-finance');
+            if (financeTab) {
+                const origApplyBossMode = window.applyBossMode;
+                window.applyBossMode = function() {
+                    if (origApplyBossMode) origApplyBossMode();
+                    const hasBossAccess = (sessionStorage.getItem('appAuthed') === 'true' || isBoss);
+                    if (hasBossAccess) {
+                        financeTab.style.display = '';
+                    } else {
+                        financeTab.style.display = 'none';
+                    }
+                };
+            }
+
+            // 2. TAMBAH EVENT UNTUK TAB KEWANGAN DI SWITCH TAB
+            const origSwitchTab = window.switchTab;
+            window.switchTab = function(id) {
+                if (id === 'tab-finance') {
+                    document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.page').forEach(p => { p.classList.remove('active'); p.style.display = 'none'; });
+                    document.getElementById(id).classList.add('active');
+                    document.getElementById('finance-page').style.display = 'block';
+                    document.getElementById('finance-page').classList.add('active');
+                    loadFinanceData(); // Tarik data kewangan
+                    return;
+                }
+                if (origSwitchTab) origSwitchTab(id);
+            };
+
+            // 3. FUNGSI-FUNGSI KEWANGAN
+            window.loadFinanceData = async function() {
+                try {
+                    const { data: settings } = await supabaseClient.from('finance_settings').select('*');
+                    if (settings) settings.forEach(s => financeSettings[s.key] = s.value);
+                    
+                    const { data: cats } = await supabaseClient.from('finance_categories').select('*').order('type').order('name');
+                    allFinanceCategories = cats || [];
+                    
+                    const { data: trans } = await supabaseClient.from('finance_transactions').select('*').order('date', {ascending: false});
+                    allFinanceTransactions = trans || [];
+                    
+                    window.renderFinanceDashboard();
+                    window.renderFinanceTable();
+                } catch(e) { console.error('Error finance:', e); }
+            };
+
+            window.renderFinanceDashboard = function() {
+                const startDate = financeSettings.start_date || '2000-01-01';
+                const openingBalance = parseFloat(financeSettings.opening_balance) || 0;
+                let totalDepositFromOrders = 0;
+                
+                if (window.allOrdersCache) {
+                    window.allOrdersCache.forEach(o => {
+                        if (!o.isQuotation && o.deposit > 0 && o.orderDate >= startDate) totalDepositFromOrders += o.deposit;
+                    });
+                }
+
+                let totalManualIn = 0, totalExpense = 0, totalPersonal = 0;
+                allFinanceTransactions.forEach(t => {
+                    if (t.date < startDate) return;
+                    const amt = parseFloat(t.amount) || 0;
+                    if (t.type === 'in') totalManualIn += amt;
+                    else if (t.type === 'out' && t.category_name !== 'Ambilan Peribadi') totalExpense += amt;
+                    else if (t.type === 'out' && t.category_name === 'Ambilan Peribadi') totalPersonal += amt;
+                });
+
+                const totalIn = totalDepositFromOrders + totalManualIn;
+                const cashBalance = openingBalance + totalIn - (totalExpense + totalPersonal);
+                const profitBiz = totalIn - totalExpense;
+
+                document.getElementById('fin-balance-cash').textContent = 'RM ' + cashBalance.toFixed(2);
+                document.getElementById('fin-profit-biz').textContent = 'RM ' + profitBiz.toFixed(2);
+                document.getElementById('fin-total-personal').textContent = 'RM ' + totalPersonal.toFixed(2);
+                document.getElementById('fin-total-deposit').textContent = 'RM ' + totalDepositFromOrders.toFixed(2);
+                document.getElementById('fin-total-manual-in').textContent = 'RM ' + totalManualIn.toFixed(2);
+                document.getElementById('fin-total-expense').textContent = 'RM ' + totalExpense.toFixed(2);
+            };
+
+            window.renderFinanceTable = function() {
+                const tbody = document.getElementById('finance-table-body');
+                if (!tbody) return;
+                
+                const search = (document.getElementById('search-finance').value || '').toLowerCase();
+                const filterType = document.getElementById('filter-finance-type').value;
+                const startDate = financeSettings.start_date || '2000-01-01';
+                let combined = [];
+                
+                if (window.allOrdersCache) {
+                    window.allOrdersCache.forEach(o => {
+                        if (!o.isQuotation && o.deposit > 0 && o.orderDate >= startDate) {
+                            combined.push({ id: 'ord_'+o.id, date: o.orderDate, type: 'in', category_name: 'Deposit Order', description: 'Deposit '+(o.customerName||''), amount: o.deposit, related_invoice: o.invoiceNumber, is_order: true });
+                        }
+                    });
+                }
+
+                allFinanceTransactions.forEach(t => {
+                    if (t.date < startDate) return;
+                    combined.push({ id: t.id, date: t.date, type: t.type, category_name: t.category_name, description: t.description, amount: t.amount, receipt_number: t.receipt_number, receipt_file_url: t.receipt_file_url, related_invoice: t.related_invoice, is_order: false });
+                });
+
+                combined.sort((a,b) => new Date(b.date) - new Date(a.date));
+                let filtered = combined.filter(item => {
+                    if (filterType === 'in' && item.type !== 'in') return false;
+                    if (filterType === 'out_expense' && (item.type !== 'out' || item.category_name === 'Ambilan Peribadi')) return false;
+                    if (filterType === 'out_personal' && (item.type !== 'out' || item.category_name !== 'Ambilan Peribadi')) return false;
+                    if (search && !(item.description+' '+item.category_name).toLowerCase().includes(search)) return false;
+                    return true;
+                });
+
+                if (filtered.length === 0) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Tiada rekod.</td></tr>'; return; }
+
+                tbody.innerHTML = filtered.map(item => {
+                    let typeBadge = '', amtStyle = '', displayAmt = '';
+                    if (item.type === 'in') { typeBadge = '<span style="color:#27ae60;">Masuk</span>'; amtStyle = 'color:#27ae60;font-weight:bold;'; displayAmt = '+ '+parseFloat(item.amount).toFixed(2); }
+                    else if (item.category_name === 'Ambilan Peribadi') { typeBadge = '<span style="color:#e67e22;">Peribadi</span>'; amtStyle = 'color:#e67e22;font-weight:bold;'; displayAmt = '- '+parseFloat(item.amount).toFixed(2); }
+                    else { typeBadge = '<span style="color:#e74c3c;">Keluar</span>'; amtStyle = 'color:#e74c3c;font-weight:bold;'; displayAmt = '- '+parseFloat(item.amount).toFixed(2); }
+
+                    let catDisplay = item.category_name || '-';
+                    if (item.related_invoice) catDisplay += `<br><small>${item.related_invoice}</small>`;
+
+                    let resitBtn = '-';
+                    if (item.receipt_file_url) resitBtn = `<button class="btn btn-info" onclick="viewFinanceReceipt('${item.receipt_file_url}')">Lihat</button>`;
+                    else if (item.receipt_number) resitBtn = item.receipt_number;
+
+                    let actionBtn = item.is_order ? '<span style="color:#999;font-size:10px;">Auto</span>' : `<button class="btn btn-danger" onclick="deleteFinanceRecord('${item.id}')">Padam</button>`;
+
+                    return `<tr><td>${formatDate(item.date)}</td><td>${typeBadge}</td><td>${escapeHtml(item.description)}</td><td>${catDisplay}</td><td style="${amtStyle}">RM ${displayAmt}</td><td>${resitBtn}</td><td>${actionBtn}</td></tr>`;
+                }).join('');
+            };
+
+            window.openFinanceModal = function(mode) {
+                document.getElementById('finance-record-type').value = mode;
+                document.getElementById('finance-cat-group').style.display = (mode === 'in') ? 'none' : 'block';
+                if (mode !== 'in') {
+                    const type = (mode === 'personal') ? 'personal' : 'expense';
+                    document.getElementById('finance-category').innerHTML = allFinanceCategories.filter(c => c.type === type).map(c => `<option value="${escapeAttr(c.name)}">${escapeHtml(c.name)}</option>`).join('');
+                }
+                document.getElementById('finance-modal').style.display = 'flex';
+            };
+            window.closeFinanceModal = function() { document.getElementById('finance-modal').style.display = 'none'; };
+
+            window.submitFinanceRecord = async function() {
+                const mode = document.getElementById('finance-record-type').value;
+                const desc = document.getElementById('finance-desc').value.trim();
+                const amount = parseFloat(document.getElementById('finance-amount').value);
+                const receiptNo = document.getElementById('finance-receipt-no').value.trim();
+                const relInvoice = document.getElementById('finance-rel-invoice').value.trim();
+                const fileInput = document.getElementById('finance-receipt-file');
+
+                if (!desc || !amount) return alert('Sila isi keterangan dan jumlah.');
+                
+                let type = 'in', catName = 'Modal Masuk';
+                if (mode === 'expense') { type = 'out'; catName = document.getElementById('finance-category').value; }
+                if (mode === 'personal') { type = 'out'; catName = 'Ambilan Peribadi'; }
+
+                let fileUrl = null;
+                if (fileInput.files.length > 0) {
+                    const file = fileInput.files[0];
+                    const safeName = Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+                    const { error: upErr } = await supabaseClient.storage.from('designs').upload(safeName, file);
+                    if (upErr) return alert('Gagal upload resit.');
+                    fileUrl = safeName;
+                }
+
+                const { error } = await supabaseClient.from('finance_transactions').insert({
+                    date: new Date().toISOString().split('T')[0], type: type, category_name: catName,
+                    description: desc, amount: amount, receipt_number: receiptNo || null,
+                    receipt_file_url: fileUrl, related_invoice: relInvoice || null, created_by: STAFF_NAME
+                });
+
+                if (error) return alert('Gagal: ' + error.message);
+                alert('✅ Rekod disimpan.'); window.closeFinanceModal(); window.loadFinanceData();
+            };
+
+            window.deleteFinanceRecord = async function(id) {
+                if (!confirm('Padam rekod ini?')) return;
+                await supabaseClient.from('finance_transactions').delete().eq('id', id);
+                window.loadFinanceData();
+            };
+
+            window.viewFinanceReceipt = async function(path) {
+                const { data } = await supabaseClient.storage.from('designs').createSignedUrl(path, 3600);
+                if (data) window.open(data.signedUrl, '_blank');
+            };
+
+            window.openFinanceSettingsModal = function() {
+                document.getElementById('fin-setting-opening-balance').value = financeSettings.opening_balance || 0;
+                document.getElementById('fin-setting-start-date').value = financeSettings.start_date || '';
+                document.getElementById('finance-cat-list').innerHTML = allFinanceCategories.map(c => `
+                    <div style="display:flex; justify-content:space-between; padding:8px; border-bottom:1px solid #eee;">
+                        <span>${c.type === 'expense' ? '📤' : '💸'} ${escapeHtml(c.name)}</span>
+                        <button class="btn btn-danger" onclick="deleteFinanceCategory('${c.id}')">Padam</button>
+                    </div>
+                `).join('');
+                document.getElementById('finance-settings-modal').style.display = 'flex';
+            };
+            window.closeFinanceSettingsModal = function() { document.getElementById('finance-settings-modal').style.display = 'none'; };
+
+            window.saveFinanceSettings = async function() {
+                const opening = parseFloat(document.getElementById('fin-setting-opening-balance').value) || 0;
+                const startDate = document.getElementById('fin-setting-start-date').value;
+                await supabaseClient.from('finance_settings').upsert([{ key: 'opening_balance', value: opening.toString() }, { key: 'start_date', value: startDate }]);
+                alert('✅ Tetapan disimpan.'); window.closeFinanceSettingsModal(); window.loadFinanceData();
+            };
+
+            window.openFinanceCatModal = function() { document.getElementById('finance-cat-modal').style.display = 'flex'; };
+            window.closeFinanceCatModal = function() { document.getElementById('finance-cat-modal').style.display = 'none'; };
+            window.saveFinanceCategory = async function() {
+                const name = document.getElementById('new-fin-cat-name').value.trim();
+                const type = document.getElementById('new-fin-cat-type').value;
+                if (!name) return alert('Isi nama kategori.');
+                await supabaseClient.from('finance_categories').insert({ name, type });
+                window.closeFinanceCatModal(); window.loadFinanceData(); window.openFinanceSettingsModal();
+            };
+            window.deleteFinanceCategory = async function(id) {
+                if (!confirm('Padam kategori ini?')) return;
+                await supabaseClient.from('finance_categories').delete().eq('id', id);
+                window.loadFinanceData(); window.openFinanceSettingsModal();
+            };
+
+            // Auto-run semak Boss Mode
+            setTimeout(window.applyBossMode, 1000);
+        }, 1000);
+    </script>
 </body>
 </html>
