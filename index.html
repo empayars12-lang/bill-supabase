@@ -2647,35 +2647,7 @@ document.addEventListener('DOMContentLoaded', function() {
         switchFinanceTab('catatan');
     }
     window.displayFinance = displayFinance;
-
-    // === INTEGRASI DALAM applyBossMode() ===
-    // (Anda perlu UBAH applyBossMode() asal)
-    // Cari baris:
-    //   ['tab-dashboard','tab-sales-person','tab-templates','tab-deleted-bills','tab-settings'].forEach(id => {
-    // Tukar jadi:
-    //   ['tab-dashboard','tab-sales-person','tab-templates','tab-deleted-bills','tab-settings','tab-finance'].forEach(id => {
-    // (Tambah 'tab-finance' dalam kedua-dua array — if & else)
-
-    // === INTEGRASI DALAM showPasswordPrompt() ===
-    // (Anda perlu UBAH switchTab() asal — tambah 'tab-finance' dalam protected list)
-    // Cari:
-    //   const prot = ['tab-dashboard','tab-sales-person','tab-deleted-bills','tab-settings'];
-    // Tukar jadi:
-    //   const prot = ['tab-dashboard','tab-sales-person','tab-deleted-bills','tab-settings','tab-finance'];
-
-    // === INTEGRASI DALAM init() ===
-    // (Anda perlu UBAH init() asal — tambah loadFinanceData())
-    // Cari dalam init() asal, tambah selepas `await loadOrders();`:
-    //   await loadFinanceData();
-    //   applyFinanceLabels();
-
-    console.log('✅ Kewangan module loaded. Fungsi sedia: displayFinance(), openFinanceModal(), dll.');
-    // ============================================================
-    // === FUNGSI ASAL ANDA DARI index (22).html ===
-    // === SEMUA FUNGSI DI BAWAH INI DARI FAIL ASAL ANDA ===
-    // === SAYA TAK UBAH — CUMA SALIN ===
-    // ============================================================
-
+    
     const DESIGN_STATUS = {
         pending: { label: 'Pending', icon: '🟡', cls: 'design-pending' },
         in_progress: { label: 'In Progress', icon: '🔵', cls: 'design-in_progress' },
