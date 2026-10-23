@@ -5744,9 +5744,13 @@ document.addEventListener('DOMContentLoaded', function() {
         function renderFinTable() {
             const tbody = document.getElementById('float-fin-table-body');
             if (!tbody) return;
-            let combined = [];
+            
+            const search = (document.getElementById('search-finance')?.value || '').toLowerCase();
+            const filterType = document.getElementById('filter-finance-type')?.value || '';
             const startDate = finSettings.start_date || '2000-01-01';
 
+            let combined = [];
+            
             if (window.allOrdersCache) {
                 window.allOrdersCache.forEach(o => {
                     if (!o.isQuotation && o.deposit > 0 && o.orderDate >= startDate) {
@@ -5754,40 +5758,76 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 });
             }
+
             allFinTrans.forEach(t => {
                 if (t.date < startDate) return;
-                combined.push({ id: t.id, date: t.date, type: t.type, category_name: t.category_name, description: t.description, amount: t.amount, is_order: false });
+                combined.push({ id: t.id, date: t.date, type: t.type, category_name: t.category_name, description: t.description, amount: t.amount, receipt_number: t.receipt_number, receipt_file_url: t.receipt_file_url, related_invoice: t.related_invoice, is_order: false });
             });
 
             combined.sort((a,b) => new Date(b.date) - new Date(a.date));
+            
+            let filtered = combined.filter(item => {
+                if (filterType === 'in' && item.type !== 'in') return false;
+                if (filterType === 'out_expense' && (item.type !== 'out' || item.category_name === 'Ambilan Peribadi')) return false;
+                if (filterType === 'out_personal' && (item.type !== 'out' || item.category_name !== 'Ambilan Peribadi')) return false;
+                if (search && !(item.description+' '+item.category_name).toLowerCase().includes(search)) return false;
+                return true;
+            });
 
-            if (combined.length === 0) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Tiada rekod.</td></tr>'; return; }
+            if (filtered.length === 0) { 
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Tiada rekod.</td></tr>'; 
+                return; 
+            }
 
-            tbody.innerHTML = combined.map(item => {
-                let typeBadge = '', amtStyle = '';
-                if (item.type === 'in') { typeBadge = '📥 Masuk'; amtStyle = 'color:#27ae60;font-weight:bold;'; }
-                else if (item.category_name === 'Ambilan Peribadi') { typeBadge = '💸 Peribadi'; amtStyle = 'color:#e67e22;font-weight:bold;'; }
-                else { typeBadge = '📤 Keluar'; amtStyle = 'color:#e74c3c;font-weight:bold;'; }
+            tbody.innerHTML = filtered.map(item => {
+                let typeBadge = '', amtStyle = '', displayAmt = '';
+                if (item.type === 'in') { 
+                    typeBadge = '<span style="color:#27ae60;">📥 Masuk</span>'; 
+                    amtStyle = 'color:#27ae60;font-weight:bold;'; 
+                    displayAmt = '+ '+parseFloat(item.amount).toFixed(2); 
+                }
+                else if (item.category_name === 'Ambilan Peribadi') { 
+                    typeBadge = '<span style="color:#e67e22;">💸 Peribadi</span>'; 
+                    amtStyle = 'color:#e67e22;font-weight:bold;'; 
+                    displayAmt = '- '+parseFloat(item.amount).toFixed(2); 
+                }
+                else { 
+                    typeBadge = '<span style="color:#e74c3c;">📤 Keluar</span>'; 
+                    amtStyle = 'color:#e74c3c;font-weight:bold;'; 
+                    displayAmt = '- '+parseFloat(item.amount).toFixed(2); 
+                }
 
-                                let resitBtn = '-';
+                let catDisplay = item.category_name || '-';
+                if (item.related_invoice) catDisplay += `<br><small style="color:#6e48aa;">${item.related_invoice}</small>`;
+
+                let resitBtn = '-';
                 if (item.receipt_file_url) {
                     resitBtn = `<button class="btn btn-info" style="padding:2px 6px;font-size:10px;" onclick="viewFinReceipt('${item.receipt_file_url}')">🖼️ Resit</button>`;
-                } else if (item.receipt_number) {
+                } else if (item.receipt_number && item.receipt_number !== '-') {
                     resitBtn = `<span style="font-size:10px;">${item.receipt_number}</span>`;
                 }
+
                 let actionBtn = item.is_order ? '<span style="color:#999;font-size:10px;">Auto</span>' : `<button class="btn btn-danger" style="padding:2px 6px;font-size:10px;" onclick="delFinRecord('${item.id}')">Padam</button>`;
 
-                                return `<tr>
+                return `<tr>
                     <td>${formatDate(item.date)}</td>
                     <td>${typeBadge}</td>
                     <td>${escapeHtml(item.description)}</td>
-                    <td>${item.category_name}</td>
-                    <td style="${amtStyle}">RM ${parseFloat(item.amount).toFixed(2)}</td>
+                    <td>${catDisplay}</td>
+                    <td style="${amtStyle}">RM ${displayAmt}</td>
                     <td>${resitBtn}</td>
                     <td>${actionBtn}</td>
                 </tr>`;
             }).join('');
         }
+
+        window.viewFinReceipt = async function(path) {
+            try {
+                const { data, error } = await supabaseClient.storage.from('designs').createSignedUrl(path, 3600);
+                if (error) throw error;
+                window.open(data.signedUrl, '_blank');
+            } catch(e) { alert('Gagal buka resit: ' + e.message); }
+        };
 
         window.openFinRecordModal = function(mode) {
             document.getElementById('fin-record-type').value = mode;
