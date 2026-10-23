@@ -5624,6 +5624,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 <input type="number" id="fin-record-amount" step="0.01" placeholder="0.00">
             </div>
             <div class="form-group">
+                <label>Upload Gambar Resit (Optional):</label>
+                <input type="file" id="fin-record-file" accept="image/*" style="padding:5px; background:#f9f9f9; border:1px solid #ddd; border-radius:4px; width:100%;">
+            </div>
+            <div class="form-group">
                 <label>No. Resit (Optional):</label>
                 <input type="text" id="fin-record-resit" placeholder="Contoh: INV-1234">
             </div>
@@ -5765,9 +5769,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 else if (item.category_name === 'Ambilan Peribadi') { typeBadge = '💸 Peribadi'; amtStyle = 'color:#e67e22;font-weight:bold;'; }
                 else { typeBadge = '📤 Keluar'; amtStyle = 'color:#e74c3c;font-weight:bold;'; }
 
+                                let resitBtn = '-';
+                if (item.receipt_file_url) {
+                    resitBtn = `<button class="btn btn-info" style="padding:2px 6px;font-size:10px;" onclick="viewFinReceipt('${item.receipt_file_url}')">🖼️ Resit</button>`;
+                } else if (item.receipt_number) {
+                    resitBtn = `<span style="font-size:10px;">${item.receipt_number}</span>`;
+                }
                 let actionBtn = item.is_order ? '<span style="color:#999;font-size:10px;">Auto</span>' : `<button class="btn btn-danger" style="padding:2px 6px;font-size:10px;" onclick="delFinRecord('${item.id}')">Padam</button>`;
 
-                return `<tr><td>${formatDate(item.date)}</td><td>${typeBadge}</td><td>${escapeHtml(item.description)}</td><td>${item.category_name}</td><td style="${amtStyle}">RM ${parseFloat(item.amount).toFixed(2)}</td><td>${actionBtn}</td></tr>`;
+                                return `<tr>
+                    <td>${formatDate(item.date)}</td>
+                    <td>${typeBadge}</td>
+                    <td>${escapeHtml(item.description)}</td>
+                    <td>${item.category_name}</td>
+                    <td style="${amtStyle}">RM ${parseFloat(item.amount).toFixed(2)}</td>
+                    <td>${resitBtn}</td>
+                    <td>${actionBtn}</td>
+                </tr>`;
             }).join('');
         }
 
@@ -5786,6 +5804,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const desc = document.getElementById('fin-record-desc').value.trim();
             const amount = parseFloat(document.getElementById('fin-record-amount').value);
             const resit = document.getElementById('fin-record-resit').value.trim();
+            const fileInput = document.getElementById('fin-record-file');
 
             if (!desc || !amount) return alert('Sila isi keterangan dan jumlah.');
             
@@ -5793,7 +5812,27 @@ document.addEventListener('DOMContentLoaded', function() {
             if (mode === 'expense') { type = 'out'; catName = document.getElementById('fin-record-cat').value; }
             if (mode === 'personal') { type = 'out'; catName = 'Ambilan Peribadi'; }
 
-            await supabaseClient.from('finance_transactions').insert({
+            let fileUrl = null;
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                // Simpan gambar ke folder 'designs' dalam Supabase Storage
+                const safeName = 'resit_' + Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+                const { error: upErr } = await supabaseClient.storage.from('designs').upload(safeName, file);
+                if (upErr) { alert('Gagal upload gambar: ' + upErr.message); return; }
+                fileUrl = safeName;
+            }
+
+            const { error } = await supabaseClient.from('finance_transactions').insert({
+                date: new Date().toISOString().split('T')[0], type: type, category_name: catName,
+                description: desc, amount: amount, receipt_number: resit || null, 
+                receipt_file_url: fileUrl, created_by: STAFF_NAME
+            });
+
+            if (error) return alert('Gagal simpan: ' + error.message);
+            alert('✅ Rekod & Gambar disimpan.'); 
+            document.getElementById('fin-record-modal').style.display = 'none'; 
+            loadFinData();
+        };
                 date: new Date().toISOString().split('T')[0], type: type, category_name: catName,
                 description: desc, amount: amount, receipt_number: resit || null, created_by: STAFF_NAME
             });
