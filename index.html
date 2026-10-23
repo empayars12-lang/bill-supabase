@@ -5545,22 +5545,18 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-    <!-- ========================================== -->
-    <!-- BUTANG TERAPUNG KEWANGAN (BOSS SAHAJA) -->
-    <!-- ========================================== -->
+    <!-- BUTANG TERAPUNG KEWANGAN -->
     <button id="floating-finance-btn" onclick="openFinanceModalFull()" style="display:none; position:fixed; bottom:30px; right:30px; z-index:9000; background:linear-gradient(135deg, #f39c12, #e67e22); color:white; border:none; border-radius:50px; padding:15px 25px; font-size:16px; font-weight:bold; box-shadow:0 4px 15px rgba(243, 156, 18, 0.5); cursor:pointer; align-items:center; gap:10px;">
         💰 Buku Tunai Kewangan
     </button>
 
-    <!-- MODAL KEWANGAN PENUH -->
+    <!-- MODAL KEWANGAN -->
     <div id="finance-full-modal" style="position:fixed; z-index:9500; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.8); display:none; justify-content:center; align-items:center; padding:20px;">
         <div style="background:#f5f5f5; padding:20px; border-radius:12px; width:100%; max-width:1000px; max-height:95vh; overflow-y:auto; position:relative;">
             <button class="modal-close-x" onclick="document.getElementById('finance-full-modal').style.display='none'" style="font-size:32px; color:#333;">×</button>
             
             <h2 style="margin-top:0; color:var(--primary);">💰 Sistem Kewangan & Buku Tunai</h2>
-            <p style="font-size:13px; color:#666;">Urus duit masuk, belanja kedai, dan ambilan peribadi anda di sini.</p>
-
-            <!-- BUTANG TINDAKAN -->
+            
             <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:20px;">
                 <button class="btn btn-info" onclick="openFinanceSettingsFull()" style="padding:10px 15px;">⚙️ Tetapan & Kategori</button>
                 <button class="btn" onclick="openFinRecordModal('in')" style="background:var(--success); padding:10px 15px;">📥 Duit Masuk</button>
@@ -5568,7 +5564,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 <button class="btn" onclick="openFinRecordModal('personal')" style="background:var(--warning); padding:10px 15px;">💸 Ambilan Peribadi</button>
             </div>
 
-            <!-- KAD RINGKASAN -->
             <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:15px; margin-bottom:20px;">
                 <div style="background:white; padding:20px; border-radius:10px; border-left:5px solid var(--primary);">
                     <div style="font-size:12px; color:#666; font-weight:bold;">💰 BAKI TUNAI DALAM TANGAN</div>
@@ -5584,7 +5579,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </div>
 
-            <!-- SEJARAH TRANSAKSI -->
             <div style="background:white; padding:20px; border-radius:10px;">
                 <h4 style="margin-top:0; border-bottom:2px solid #eee; padding-bottom:10px;">📋 Sejarah Buku Tunai</h4>
                 <div style="overflow-x:auto; max-height:400px;">
@@ -5606,7 +5600,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     </div>
 
-    <!-- MODAL TAMBAH REKOD KEWANGAN -->
+    <!-- MODAL REKOD -->
     <div id="fin-record-modal" style="position:fixed; z-index:9600; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); display:none; justify-content:center; align-items:center; padding:20px;">
         <div style="background:white; padding:25px; border-radius:12px; width:100%; max-width:450px; position:relative;">
             <button class="modal-close-x" onclick="document.getElementById('fin-record-modal').style.display='none'">×</button>
@@ -5635,7 +5629,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     </div>
 
-    <!-- MODAL TETAPAN KEWANGAN -->
+    <!-- MODAL TETAPAN -->
     <div id="fin-settings-modal" style="position:fixed; z-index:9600; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); display:none; justify-content:center; align-items:center; padding:20px;">
         <div style="background:white; padding:25px; border-radius:12px; width:100%; max-width:450px; max-height:90vh; overflow-y:auto; position:relative;">
             <button class="modal-close-x" onclick="document.getElementById('fin-settings-modal').style.display='none'">×</button>
@@ -5644,7 +5638,6 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="form-group" style="background:#f0f9ff; padding:12px; border-radius:8px;">
                 <label>Baki Permulaan (RM):</label>
                 <input type="number" id="fin-set-opening" step="0.01">
-                <div style="font-size:11px; color:#666; margin-top:5px;">Duit awal dalam tangan sebelum mula rekod.</div>
             </div>
             
             <div class="form-group" style="background:#f0fff4; padding:12px; border-radius:8px;">
@@ -5672,12 +5665,10 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
 
     <script>
-        // Fungsi ini berjalan di latar belakang untuk uruskan kewangan tanpa ganggu sistem asal
         let allFinCats = [];
         let allFinTrans = [];
         let finSettings = { opening_balance: '0', start_date: '' };
 
-        // Tunjuk butang terapung bila Boss Login
         setInterval(() => {
             const hasBossAccess = (sessionStorage.getItem('appAuthed') === 'true' || isBoss);
             const btn = document.getElementById('floating-finance-btn');
@@ -5737,7 +5728,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('float-fin-personal').textContent = 'RM ' + totalPersonal.toFixed(2);
         }
 
-        window.renderFinTable = function() {
+        function renderFinTable() {
             const tbody = document.getElementById('float-fin-table-body');
             if (!tbody) return;
             
@@ -5807,13 +5798,65 @@ document.addEventListener('DOMContentLoaded', function() {
                     <td>${actionBtn}</td>
                 </tr>`;
             }).join('');
+        }
+
+        window.openFinRecordModal = function(mode) {
+            document.getElementById('fin-record-type').value = mode;
+            document.getElementById('fin-cat-group').style.display = (mode === 'in') ? 'none' : 'block';
+            if (mode !== 'in') {
+                const type = (mode === 'personal') ? 'personal' : 'expense';
+                document.getElementById('fin-record-cat').innerHTML = allFinCats.filter(c => c.type === type).map(c => `<option value="${escapeAttr(c.name)}">${escapeHtml(c.name)}</option>`).join('');
+            }
+            document.getElementById('fin-record-modal').style.display = 'flex';
+        };
+
+        window.saveFinanceFull = async function() {
+            const mode = document.getElementById('fin-record-type').value;
+            const desc = document.getElementById('fin-record-desc').value.trim();
+            const amount = parseFloat(document.getElementById('fin-record-amount').value);
+
+            if (!desc || !amount) return alert('Sila isi keterangan dan jumlah.');
+            
+            let type = 'in', catName = 'Modal Masuk';
+            if (mode === 'expense') { type = 'out'; catName = document.getElementById('fin-record-cat').value; }
+            if (mode === 'personal') { type = 'out'; catName = 'Ambilan Peribadi'; }
+
+            const { error } = await supabaseClient.from('finance_transactions').insert({
+                date: new Date().toISOString().split('T')[0], type: type, category_name: catName,
+                description: desc, amount: amount, created_by: STAFF_NAME
+            });
+
+            if (error) return alert('Gagal simpan: ' + error.message);
+            alert('✅ Rekod disimpan.'); 
+            document.getElementById('fin-record-modal').style.display = 'none'; 
+            loadFinData();
+        };
+
+        window.delFinRecord = async function(id) {
+            if (!confirm('Padam rekod ini?')) return;
+            await supabaseClient.from('finance_transactions').delete().eq('id', id);
+            loadFinData();
+        };
+
+        window.openFinanceSettingsFull = function() {
+            document.getElementById('fin-set-opening').value = finSettings.opening_balance || 0;
+            document.getElementById('fin-set-startdate').value = finSettings.start_date || '';
+            document.getElementById('fin-cat-list').innerHTML = allFinCats.map(c => `
+                <div style="display:flex; justify-content:space-between; padding:5px; border-bottom:1px solid #eee;">
+                    <span>${c.type === 'expense' ? '📤' : '💸'} ${escapeHtml(c.name)}</span>
+                    <button style="border:none;background:none;color:red;cursor:pointer;" onclick="delFinCat('${c.id}')">✕</button>
+                </div>
+            `).join('');
+            document.getElementById('fin-settings-modal').style.display = 'flex';
         };
 
         window.saveFinanceSettingsFull = async function() {
             const opening = parseFloat(document.getElementById('fin-set-opening').value) || 0;
             const startDate = document.getElementById('fin-set-startdate').value;
             await supabaseClient.from('finance_settings').upsert([{ key: 'opening_balance', value: opening.toString() }, { key: 'start_date', value: startDate }]);
-            alert('✅ Tetapan disimpan.'); document.getElementById('fin-settings-modal').style.display = 'none'; loadFinData();
+            alert('✅ Tetapan disimpan.'); 
+            document.getElementById('fin-settings-modal').style.display = 'none'; 
+            loadFinData();
         };
 
         window.addFinanceCatFull = async function() {
@@ -5822,7 +5865,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!name) return alert('Isi nama kategori.');
             await supabaseClient.from('finance_categories').insert({ name, type });
             document.getElementById('fin-new-cat-name').value = '';
-            loadFinData().then(() => openFinanceSettingsFull()); // Refresh list
+            loadFinData().then(() => openFinanceSettingsFull());
         };
 
         window.delFinCat = async function(id) {
