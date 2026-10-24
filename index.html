@@ -518,7 +518,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         <button class="tab-btn" id="tab-finance" data-tab-key="tab-finance" style="color:#059669;display:none;">💰 Kewangan</button>
         <button class="tab-btn" id="tab-settings" data-tab-key="tab-settings">⚙️ Tetapan</button>
     </div>
-    <div id="invoice-page" class="page">
+        <div id="invoice-page" class="page">
         <div class="form-mode-toggle no-print">
             <button class="form-mode-btn invoice-active" id="mode-invoice-btn" onclick="switchFormMode('invoice')">📄 Invois / Order</button>
             <button class="form-mode-btn" id="mode-quotation-btn" onclick="switchFormMode('quotation')">📋 Quotation</button>
@@ -610,7 +610,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         </div>
         <div class="action-buttons no-print"><button id="preview-invoice" class="btn">Pratonton Invois</button></div>
     </div>
-        <div id="preview-page" class="page">
+    <div id="preview-page" class="page">
         <div class="header-info">
             <img src="https://arleta.site/interactivelink/68/Untitled-1.png" alt="Logo">
             <div class="company-details"><h2 data-ui="company_name">EMPAYAR S KREATIF</h2><p data-ui="company_full_address">Hadapan Sek.Ren.Keb Ketereh, 16450 Kota Bharu Kelantan<br>TEL: 01133387532<br>(KT0565538-X)</p></div>
@@ -741,7 +741,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         </table>
         </div>
     </div>
-    <div id="active-orders-page" class="page">
+        <div id="active-orders-page" class="page">
         <h2 style="margin-top:0;">📋 Order Aktif (Belum Selesai)</h2>
         <p style="color:#666;margin-top:-10px;">Disusun mengikut tarikh janji siap (paling urgent di atas).</p>
         <div class="search-filter no-print">
@@ -1349,6 +1349,19 @@ body:not(.boss-mode) .boss-only { display: none !important; }
             <p style="font-size:12px;color:#666;margin-top:5px;">Duit yang dah ada masa anda mula catat.</p>
         </div>
         <div class="finance-settings-section">
+            <h4>📑 Kategori Belanja & Peribadi</h4>
+            <p style="font-size:12px;color:#666;margin-top:-5px;">Tambah atau padam kategori ikut keperluan anda.</p>
+            <div id="finance-category-list" style="max-height:150px; overflow-y:auto; margin-bottom:10px;"></div>
+            <div style="display:flex; gap:5px; margin-top:10px;">
+                <input type="text" id="new-cat-name" placeholder="Nama Kategori Baru" style="flex:1; padding:8px; font-size:13px;">
+                <select id="new-cat-type" style="width:120px; padding:8px; font-size:13px;">
+                    <option value="expense">🟢 Belanja</option>
+                    <option value="personal">🔴 Peribadi</option>
+                </select>
+                <button class="btn" style="background:#6e48aa; padding:8px 12px; font-size:13px;" onclick="addNewFinanceCategory()">➕ Tambah</button>
+            </div>
+        </div>
+        <div class="finance-settings-section">
             <h4>🏷️ Nama Kolum (Custom Label)</h4>
             <p style="font-size:12px;color:#666;margin-top:-5px;">Tukar label ikut selera anda.</p>
             <div id="finance-label-fields"></div>
@@ -1904,6 +1917,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let formMode = 'invoice';
     let waCurrentOrder = null;
 
+    // KEWANGAN STATE
     let allFinanceTransactionsCache = [];
     let allFinanceCategoriesCache = [];
     let financeSettingsCache = { start_date: null, opening_balance: 0, label_overrides: {} };
@@ -1912,10 +1926,11 @@ document.addEventListener('DOMContentLoaded', function() {
     let financeCurrentFilter = 'all';
     let financeDeleteId = null;
 
+    // UI CONFIG
     let UI_CONFIG = { text: {}, theme: {}, layout: {}, tab_order: [], column_order: [] };
 
     function escapeHtml(s) { return (s||'').toString().replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-    function escapeAttr(s) { return (s||'').toString().replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
+    function escapeAttr(s) { return (s||'').toString().replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
     function formatDate(d) {
         if (!d || d === '-') return '-';
         try { const dt = new Date(d); if (isNaN(dt)) return '-';
@@ -1931,6 +1946,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     function genTempId() { return 'tmp_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8); }
 
+    // ============================================
+    // FUNGSI KEWANGAN
+    // ============================================
     async function loadFinanceData() {
         try {
             const { data: settings } = await supabaseClient.from('finance_settings').select('*');
@@ -1939,8 +1957,10 @@ document.addEventListener('DOMContentLoaded', function() {
             financeSettingsCache.start_date = settingsMap.start_date || null;
             financeSettingsCache.opening_balance = parseFloat(settingsMap.opening_balance) || 0;
             try { financeSettingsCache.label_overrides = JSON.parse(settingsMap.label_overrides || '{}'); } catch(e) { financeSettingsCache.label_overrides = {}; }
+            
             const { data: cats } = await supabaseClient.from('finance_categories').select('*').order('type').order('name');
             allFinanceCategoriesCache = cats || [];
+            
             const { data: txs } = await supabaseClient.from('finance_transactions').select('*').order('date', {ascending: false}).order('created_at', {ascending: false});
             allFinanceTransactionsCache = txs || [];
             return true;
@@ -1962,6 +1982,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function computeFinanceBalances() {
         const startDate = financeSettingsCache.start_date ? new Date(financeSettingsCache.start_date) : new Date(0);
         startDate.setHours(0,0,0,0);
+        
         let duitPelanggan = 0;
         (allOrdersCache || []).forEach(o => {
             if (o.isQuotation) return;
@@ -1970,6 +1991,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (od < startDate) return;
             duitPelanggan += (o.deposit || 0);
         });
+        
         let belanjaKedai = 0, ambilanPeribadi = 0, modalLuar = 0;
         (allFinanceTransactionsCache || []).forEach(t => {
             if (!t.date) return;
@@ -1984,6 +2006,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (t.category_name === 'Modal Luar') modalLuar += parseFloat(t.amount) || 0;
             }
         });
+        
         const bakiPelanggan = duitPelanggan - belanjaKedai;
         const bakiTunai = bakiPelanggan + modalLuar + financeSettingsCache.opening_balance - ambilanPeribadi;
         const untungBisnes = duitPelanggan - belanjaKedai;
@@ -2015,6 +2038,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (period === 'today') { periodStart = new Date(now); periodStart.setHours(0,0,0,0); }
         else if (period === '7days') { periodStart = new Date(now); periodStart.setDate(now.getDate() - 7); }
         else if (period === 'month') { periodStart = new Date(now.getFullYear(), now.getMonth(), 1); }
+        
         return (allFinanceTransactionsCache || []).filter(t => {
             if (!t.date) return false;
             const td = new Date(t.date);
@@ -2028,11 +2052,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const cat = allFinanceCategoriesCache.find(c => c.name === t.category_name);
         const type = cat ? cat.type : (t.category_name === 'Modal Luar' ? 'modal' : 'expense');
         let typeClass = 'type-belanja', typeLabel = '🟢 Belanja Kedai', amountClass = 'negatif', amountPrefix = '−';
+        
         if (t.type === 'in') {
             if (t.category_name === 'Modal Luar') { typeClass = 'type-modal'; typeLabel = '🟩 Modal Luar'; amountClass = 'positif'; amountPrefix = '+'; }
         } else if (type === 'personal') {
             typeClass = 'type-peribadi'; typeLabel = '🔴 Ambilan Peribadi';
         }
+        
         return `<div class="finance-transaksi-item ${typeClass}">
             <div class="finance-transaksi-info">
                 <div class="finance-transaksi-desc">${escapeHtml(t.description || '-')}</div>
@@ -2058,8 +2084,7 @@ document.addEventListener('DOMContentLoaded', function() {
         el.innerHTML = txs.slice(0, 20).map(renderFinanceListItem).join('');
         renderFinanceBalances();
     }
-
-    function openFinanceModal(type, editId) {
+        function openFinanceModal(type, editId) {
         financeCurrentModalType = type;
         financeEditingId = editId || null;
         const formEl = $('finance-modal-form');
@@ -2098,7 +2123,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="form-group"><label>Tarikh:</label><input type="date" id="fdate" value="${existing ? (existing.date || today) : today}"></div>
                 <div class="form-group"><label>Apa yang ${type === 'belanja' ? 'dibeli' : 'digunakan'}?</label><input type="text" id="fdesc" placeholder="Contoh: ${type === 'belanja' ? 'Beli kertas A4' : 'Beli makan keluarga'}" value="${existing ? escapeAttr(existing.description || '') : ''}"></div>
                 <div class="form-group"><label>Jumlah (RM):</label><input type="number" id="famount" step="0.01" placeholder="0.00" value="${existing ? existing.amount : ''}"></div>
-                <div class="form-group"><label>${catFieldLabel}</label><select id="fcat"><option value="">-- Pilih --</option>${catOptions}</select></div>
+                <div class="form-group"><label>${catFieldLabel}</label>
+                    <select id="fcat" onchange="toggleFinanceManualCategory()"><option value="">-- Pilih --</option>${catOptions}</select>
+                </div>
+                <div class="form-group" id="fcat_manual_group" style="display:none; background:#f9f9f9; padding:10px; border-left:3px solid #6e48aa;">
+                    <label>Taip Nama Kategori:</label>
+                    <input type="text" id="fcat_manual" placeholder="Contoh: Pempers Anak, Beli Rokok...">
+                </div>
                 ${allowReceipt ? `
                 <div class="form-group"><label>📎 Resit (optional):</label>
                     <input type="file" id="freceipt" accept=".jpg,.jpeg,.png,.webp,.pdf" style="font-size:12px;">
@@ -2106,7 +2137,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>` : ''}
             `;
             if (existing && existing.category_name) {
-                setTimeout(() => { if ($('fcat')) $('fcat').value = existing.category_name; }, 50);
+                setTimeout(() => { 
+                    if ($('fcat')) {
+                        $('fcat').value = existing.category_name; 
+                        toggleFinanceManualCategory();
+                    }
+                }, 50);
             }
         }
 
@@ -2117,6 +2153,21 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => { if ($('fdesc')) $('fdesc').focus(); }, 200);
     }
     window.openFinanceModal = openFinanceModal;
+
+    window.toggleFinanceManualCategory = function() {
+        const catSelect = $('fcat');
+        const manualInput = $('fcat_manual');
+        const manualGroup = $('fcat_manual_group');
+        if (!catSelect || !manualInput || !manualGroup) return;
+
+        if (catSelect.value.includes('Lain-lain')) {
+            manualGroup.style.display = 'block';
+            manualInput.focus();
+        } else {
+            manualGroup.style.display = 'none';
+            manualInput.value = '';
+        }
+    };
 
     window.openFinanceEditModal = function(id) {
         const t = allFinanceTransactionsCache.find(x => x.id === id);
@@ -2139,8 +2190,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const date = $('fdate').value;
         const desc = $('fdesc').value.trim();
         const amount = parseFloat($('famount').value) || 0;
-        const cat = $('fcat') ? $('fcat').value : 'Modal Luar';
+        let cat = $('fcat') ? $('fcat').value : 'Modal Luar';
+        const manualCat = $('fcat_manual') ? $('fcat_manual').value.trim() : '';
         const type = financeCurrentModalType === 'modal' ? 'in' : 'out';
+
+        if (cat.includes('Lain-lain') && manualCat) {
+            cat = manualCat;
+        }
 
         if (!date) { errEl.textContent = 'Sila isi tarikh.'; errEl.style.display = 'block'; return; }
         if (!desc) { errEl.textContent = 'Sila isi keterangan.'; errEl.style.display = 'block'; return; }
@@ -2221,8 +2277,7 @@ document.addEventListener('DOMContentLoaded', function() {
             renderFinanceList();
         }
     };
-
-    window.openFinanceFullList = function() {
+        window.openFinanceFullList = function() {
         financeCurrentFilter = 'all';
         document.querySelectorAll('.finance-filter-btn').forEach(b => b.classList.toggle('active', b.dataset.ffilter === 'all'));
         renderFinanceFullList();
@@ -2268,6 +2323,15 @@ document.addEventListener('DOMContentLoaded', function() {
     async function openFinanceSettings() {
         $('finance-setting-start-date').value = financeSettingsCache.start_date || new Date().toISOString().split('T')[0];
         $('finance-setting-opening-balance').value = financeSettingsCache.opening_balance || 0;
+        
+        renderFinanceCategoriesList();
+        renderFinanceLabelFields();
+        
+        $('finance-settings-modal').style.display = 'flex';
+    }
+    window.openFinanceSettings = openFinanceSettings;
+
+    window.renderFinanceLabelFields = function() {
         const labels = [
             { key: 'baki_pelanggan', label: 'Baki Pelanggan' },
             { key: 'baki_tunai', label: 'Baki Tunai' },
@@ -2279,9 +2343,53 @@ document.addEventListener('DOMContentLoaded', function() {
                 <input type="text" data-finance-label-input="${l.key}" value="${escapeAttr(financeSettingsCache.label_overrides[l.key] || l.label)}" placeholder="${l.label}">
             </div>
         `).join('');
-        $('finance-settings-modal').style.display = 'flex';
-    }
-    window.openFinanceSettings = openFinanceSettings;
+    };
+
+    window.renderFinanceCategoriesList = function() {
+        const listEl = $('finance-category-list');
+        if (!listEl) return;
+        if (!allFinanceCategoriesCache.length) {
+            listEl.innerHTML = '<p style="font-size:12px;color:#999;text-align:center;">Tiada kategori.</p>';
+            return;
+        }
+        listEl.innerHTML = allFinanceCategoriesCache.map(c => `
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 10px; background:white; border:1px solid #eee; border-radius:4px; margin-bottom:5px;">
+                <span style="font-size:13px;">${c.type === 'expense' ? '🟢' : '🔴'} ${escapeHtml(c.name)}</span>
+                <button onclick="deleteFinanceCategory('${c.id}', '${escapeAttr(c.name)}')" style="background:none; border:none; color:#dc2626; cursor:pointer; font-size:14px;" title="Padam">🗑️</button>
+            </div>
+        `).join('');
+    };
+
+    window.addNewFinanceCategory = async function() {
+        const nameInput = $('new-cat-name');
+        const typeInput = $('new-cat-type');
+        const name = nameInput.value.trim();
+        const type = typeInput.value;
+        
+        if (!name) { alert('Sila masukkan nama kategori.'); return; }
+        
+        try {
+            const { error } = await supabaseClient.from('finance_categories').insert({ name, type });
+            if (error) throw error;
+            nameInput.value = '';
+            await loadFinanceData();
+            renderFinanceCategoriesList();
+        } catch(e) {
+            alert('Gagal tambah kategori: ' + e.message);
+        }
+    };
+
+    window.deleteFinanceCategory = async function(id, name) {
+        if (!confirm(`Padam kategori "${name}"?`)) return;
+        try {
+            const { error } = await supabaseClient.from('finance_categories').delete().eq('id', id);
+            if (error) throw error;
+            await loadFinanceData();
+            renderFinanceCategoriesList();
+        } catch(e) {
+            alert('Gagal padam kategori: ' + e.message);
+        }
+    };
 
     function closeFinanceSettings() { $('finance-settings-modal').style.display = 'none'; }
     window.closeFinanceSettings = closeFinanceSettings;
@@ -2320,7 +2428,8 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch(e) { alert('Gagal: ' + e.message); }
     }
     window.saveFinanceSettings = saveFinanceSettings;
-        async function openFinanceBalanceCheck() {
+
+    async function openFinanceBalanceCheck() {
         const b = computeFinanceBalances();
         $('finance-check-date').value = new Date().toISOString().split('T')[0];
         $('finance-check-system').value = formatRM(b.bakiTunai);
@@ -2461,7 +2570,9 @@ document.addEventListener('DOMContentLoaded', function() {
         switchFinanceTab('catatan');
     }
     window.displayFinance = displayFinance;
-
+        // ============================================
+    // FUNGSI ASAS & SENARAI (DARI KOD ASAL)
+    // ============================================
     const DESIGN_STATUS = {
         pending: { label: 'Pending', icon: '🟡', cls: 'design-pending' },
         in_progress: { label: 'In Progress', icon: '🔵', cls: 'design-in_progress' },
@@ -2580,6 +2691,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const prodTab = $('tab-production');
         if (prodTab && !prodTab.dataset.hiddenByConfig) prodTab.style.display = (isProduction || hasBossAccess) ? '' : 'none';
     }
+
     function hasUnsavedFormData() {
         const invoiceNum = $('invoice-number').value;
         const customerName = $('customer-name').value.trim();
@@ -2587,6 +2699,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let hasItems = currentInvoiceItems.length > 0;
         return !!(invoiceNum || customerName || customerPhone || hasItems || pendingFiles.length > 0);
     }
+
     async function loadAppSettings() {
         try {
             const { data } = await supabaseClient.from('app_settings').select('*').eq('key', 'boss_password').maybeSingle();
@@ -2601,7 +2714,8 @@ document.addEventListener('DOMContentLoaded', function() {
             CORRECT_PASSWORD = newPwd;
             return true;
         } catch(e) { alert('Gagal: ' + e.message); return false; }
-    }    async function loadStaffCards() {
+    }
+        async function loadStaffCards() {
         try {
             const { data, error } = await supabaseClient.from('staff_cards').select('*').order('created_at', {ascending: true});
             if (error) throw error;
@@ -2745,7 +2859,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return allDeliveriesCache;
         } catch(e) { return {}; }
     }
-    async function addDelivery(invoiceNumber, itemIndices, itemSummary, deliveryMethod, staffName, paymentMethod, paymentAmount, deliveryDate) {
+        async function addDelivery(invoiceNumber, itemIndices, itemSummary, deliveryMethod, staffName, paymentMethod, paymentAmount, deliveryDate) {
         try {
             const { data: order } = await supabaseClient.from('orders').select('id').eq('invoice_number', invoiceNumber).single();
             if (!order) throw new Error('Order not found');
@@ -2919,7 +3033,8 @@ document.addEventListener('DOMContentLoaded', function() {
             await addAuditLog(inv, 'delete', null, null, null, `Order dipadam. Sebab: ${reason}`);
             return true;
         } catch(e) { return false; }
-    }    async function loadSalesPersons() {
+    }
+        async function loadSalesPersons() {
         try {
             const { data } = await supabaseClient.from('sales_persons').select('*');
             allSalesPersonsCache = (data||[]).map(p => ({name:p.name, commission:parseFloat(p.commission)||0}));
@@ -3093,7 +3208,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     function showLandingPage() { landingPage.style.display='flex'; container.style.display='none'; }
     function showContainer(tab) { landingPage.style.display='none'; container.style.display='block'; document.getElementById(tab).click(); }
-    function switchTab(id) {
+        function switchTab(id) {
         const prot = ['tab-dashboard','tab-sales-person','tab-deleted-bills','tab-settings','tab-finance'];
         if (prot.includes(id) && !isBoss && sessionStorage.getItem('appAuthed') !== 'true') { 
             showPasswordPrompt('access_tab', id); 
@@ -3147,7 +3262,8 @@ document.addEventListener('DOMContentLoaded', function() {
             isBoss = true;
             applyBossMode(); hidePasswordPrompt(); showDangerModal();
         }
-    }    function showDangerModal() {
+    }
+    function showDangerModal() {
         $('danger-confirm-input').value = ''; $('danger-error').style.display = 'none';
         $('danger-confirm-btn').disabled = true;
         $('danger-modal').style.display = 'flex';
@@ -3231,7 +3347,7 @@ document.addEventListener('DOMContentLoaded', function() {
         alert(msg);
         showContainer('tab-invoice');
     }
-    function openPinLogin(staff) {
+        function openPinLogin(staff) {
         CURRENT_STAFF = staff;
         $('pin-login-name').textContent = staff.staff_name;
         ['pin-1','pin-2','pin-3','pin-4'].forEach(id => $(id).value = '');
@@ -3367,7 +3483,8 @@ document.addEventListener('DOMContentLoaded', function() {
             $('staff-department-group').style.display = 'none';
         }
         $('staff-modal').style.display = 'flex';
-    }    window.closeStaffModal = function() { $('staff-modal').style.display = 'none'; editingStaffId = null; };
+    }
+    window.closeStaffModal = function() { $('staff-modal').style.display = 'none'; editingStaffId = null; };
     async function saveStaff() {
         const name = $('staff-name-input').value.trim();
         const jawatan = $('staff-jawatan-input').value.trim();
@@ -3404,7 +3521,7 @@ document.addEventListener('DOMContentLoaded', function() {
         $('print-idcard-btn').onclick = () => printIdCard(s);
     };
     window.closeQrDisplay = function() { $('qr-display-modal').style.display = 'none'; };
-    async function printIdCard(staff) {
+        async function printIdCard(staff) {
         const container = $('idcard-preview');
         container.innerHTML = `<div class="id-card-print" id="id-card-content"><div class="id-card-header"><h3>${escapeHtml(UI_CONFIG.text.company_name || 'EMPAYAR S KREATIF')}</h3><p>Kad Pengenalan Staf</p></div><div class="id-card-body"><div class="id-card-info"><div class="field"><div class="field-label">Nama</div><div class="field-value">${escapeHtml(staff.staff_name)}</div></div><div class="field"><div class="field-label">Jawatan</div><div class="field-value">${escapeHtml(staff.jawatan||'Staff')}</div></div><div class="field"><div class="field-label">ID</div><div class="field-value">ESK-${staff.id.substring(0,6).toUpperCase()}</div></div></div><div class="id-card-qr" id="idcard-qr-target"></div></div><div class="id-card-footer">Kad ini hak milik ${escapeHtml(UI_CONFIG.text.company_name || 'EMPAYAR S KREATIF')}.</div></div>`;
         try {
@@ -3552,7 +3669,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         updateTotals();
     }
-    function attachSimpleRow(tr, idx) {
+        function attachSimpleRow(tr, idx) {
         const minusBtn = tr.querySelector('.minus'), plusBtn = tr.querySelector('.plus');
         const qtyInput = tr.querySelector('.quantity-input'), priceInput = tr.querySelector('.item-price');
         const descInput = tr.querySelector('.item-desc'), removeBtn = tr.querySelector('.remove-item');
@@ -3613,7 +3730,8 @@ document.addEventListener('DOMContentLoaded', function() {
             pendingFiles.push({ id: genTempId(), file: file, name: file.name, size: file.size, type: file.type });
         }
         renderPendingFiles();
-    }    async function uploadPendingFilesToOrder(invoiceNumber) {
+    }
+    async function uploadPendingFilesToOrder(invoiceNumber) {
         if (!pendingFiles.length) return;
         for (const pf of pendingFiles) {
             try {
@@ -3690,7 +3808,7 @@ document.addEventListener('DOMContentLoaded', function() {
         sel.style.display = 'block';
         note.style.display = 'none';
     }
-    function getFilteredOrders() {
+        function getFilteredOrders() {
         let orders = allOrdersCache.filter(o => !o.isQuotation);
         const sf = document.querySelector('#order-list-page .filter-btn.active')?.dataset.filter || 'all';
         const period = $('filter-period').value, month = $('filter-month').value, year = $('filter-year').value;
@@ -3779,13 +3897,19 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     function getVisibleOrderColumns() {
-        return (UI_CONFIG.column_order && UI_CONFIG.column_order.length > 0) ? UI_CONFIG.column_order.filter(c => c.visible) : [
+        return [
             { key: 'invoiceNumber', label: 'No. Bil', visible: true },
             { key: 'customerName', label: 'Pelanggan', visible: true },
+            { key: 'subtotal', label: 'Jumlah Jualan', visible: true },
             { key: 'customerPhone', label: 'Telefon', visible: true },
             { key: 'orderDate', label: 'Tarikh Order', visible: true },
             { key: 'completionDate', label: 'Tarikh Siap', visible: true },
             { key: 'salesPerson', label: 'Jurujual', visible: true },
+            { key: 'assignedDesigner', label: 'Designer', visible: true },
+            { key: 'designStatus', label: 'Status Design', visible: true },
+            { key: 'productionStatus', label: 'Status Production', visible: true },
+            { key: 'deliveryMethod', label: 'Kaedah', visible: true },
+            { key: 'serah', label: 'Serah', visible: true },
             { key: 'status', label: 'Status', visible: true }
         ];
     }
@@ -3829,7 +3953,8 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         const cells = cols.map(c => cellMap[c.key] || '<td>-</td>').join('');
         return cells + `<td class="no-print"><div class="order-actions">${printBtn}${waBtn}${printFinalBtn}${editBtn}${completeBtn}${forceDelBtn}</div></td>`;
-    }    async function displayOrders() {
+    }
+        async function displayOrders() {
         await loadOrders();
         updateFilterCounts();
         updateQuotationBadge();
@@ -3963,7 +4088,7 @@ document.addEventListener('DOMContentLoaded', function() {
             displayQuotations();
         } catch(e) { alert('❌ Gagal padam: ' + e.message); }
     };
-    window.openForceDeleteModal = async function(order) {
+        window.openForceDeleteModal = async function(order) {
         forceDeleteOrder = order;
         $('fd-invoice').textContent = order.invoiceNumber || '-';
         $('fd-customer').textContent = order.customerName || '-';
@@ -4104,7 +4229,8 @@ document.addEventListener('DOMContentLoaded', function() {
             $('convert-error').textContent = '❌ Gagal convert: ' + e.message;
             $('convert-error').style.display = 'block';
         }
-    };    window.saveIncompleteNote = async function() {
+    };
+        window.saveIncompleteNote = async function() {
         if (!currentOrder) return;
         const newNote = $('detail-incomplete-note').value.trim();
         const oldNote = currentOrder.incompleteNote || '';
@@ -4227,7 +4353,7 @@ document.addEventListener('DOMContentLoaded', function() {
         displayOrders();
         if (activeOrdersPage.style.display === 'block') displayActiveOrders();
     };
-    window.openPrintOptionsModal = function(o) {
+        window.openPrintOptionsModal = function(o) {
         printOptionsOrder = o;
         $('print-options-invoice').textContent = o.invoiceNumber;
         $('print-options-customer').textContent = o.customerName || '-';
@@ -4304,7 +4430,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (o) openQuickCompleteModal(o);
         }));
         applyBossMode();
-    }    async function displayDesignerOrders() {
+    }
+    async function displayDesignerOrders() {
         if (!STAFF_NAME) return;
         await loadOrders();
         $('design-page-designer-name').textContent = STAFF_NAME;
@@ -4346,7 +4473,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }));
     }
     window.displayDesignerOrders = displayDesignerOrders;
-    window.openSendToProductionModalForInvoice = function(invoiceNumber) {
+        window.openSendToProductionModalForInvoice = function(invoiceNumber) {
         const o = allOrdersCache.find(x => x.invoiceNumber === invoiceNumber);
         if (!o) return;
         currentOrder = o;
@@ -4453,7 +4580,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!confirm(`Tandakan production ${invoiceNumber} sebagai SIAP?`)) return;
         const upd = { ...o, productionStatus: 'done', productionUpdatedAt: new Date(), productionUpdatedBy: STAFF_NAME };
         if (await updateOrderWithLog(upd, o)) { await addProductionActivity(invoiceNumber, 'done', 'in_progress', 'done', 'Production siap.'); await loadOrders(); await displayProductionOrders(); alert('✅ Production SIAP!'); }
-    };    window.openSendToProductionModal = async function() {
+    };
+        window.openSendToProductionModal = async function() {
         if (!currentOrder) return;
         await window.loadDepartments();
         const activeDepts = allDepartmentsCache.filter(d => d.active);
@@ -4608,7 +4736,7 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('✅ Penyerahan di-undo.');
         }
     }
-    async function loadDesignActivityForDetail(invoiceNumber) {
+        async function loadDesignActivityForDetail(invoiceNumber) {
         const activity = await loadDesignActivity(invoiceNumber);
         const el = $('design-activity-list');
         if (!activity.length) { el.innerHTML = '<p style="color:#999;font-size:13px;">Tiada aktiviti design.</p>'; return; }
@@ -4631,7 +4759,8 @@ document.addEventListener('DOMContentLoaded', function() {
         else if (t && t.id === 'tab-quotation') { quotationListPage.style.display='block'; displayQuotations(); }
         else { orderListPage.style.display='block'; displayOrders(); }
         currentOrder = null;
-    }    function buildPrintHTML(o, isFinal, isPartial, isQuotation) {
+    }
+    function buildPrintHTML(o, isFinal, isPartial, isQuotation) {
         let title = isQuotation ? 'QUOTATION' : (isFinal ? 'INVOIS AKHIR' : (isPartial ? 'INVOIS - TIDAK LENGKAP' : 'INVOIS'));
         let stamp = '';
         if (isQuotation) stamp = '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-45deg);font-size:80px;color:rgba(22,160,133,0.15);font-weight:bold;border:8px solid rgba(22,160,133,0.15);padding:30px;z-index:1000;border-radius:10px;">QUOTATION</div>';
@@ -4727,7 +4856,7 @@ document.addEventListener('DOMContentLoaded', function() {
         w.document.close(); 
         setTimeout(()=>w.print(),500); 
     }
-    window.updateDesignerFromDetail = async function() {
+        window.updateDesignerFromDetail = async function() {
         if (!currentOrder) return;
         const newDesigner = $('detail-designer-select').value;
         const oldDesigner = currentOrder.assignedDesigner || '';
@@ -4808,7 +4937,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     window.openUploadModal = openUploadModal;
     window.closeUploadModal = function() { $('upload-modal').style.display = 'none'; currentUploadInvoice = null; selectedFile = null; };
-        async function doUploadFile() {
+    async function doUploadFile() {
         if (!selectedFile) { $('upload-error').textContent = '❌ Sila pilih fail dahulu.'; $('upload-error').style.display = 'block'; return; }
         if (!currentUploadInvoice) return;
         const progressEl = $('upload-progress'), progressBar = $('upload-progress-bar'), progressText = $('upload-progress-text');
@@ -4842,7 +4971,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     window.doUploadFile = doUploadFile;
-    async function loadExistingFiles(invoiceNumber) {
+        async function loadExistingFiles(invoiceNumber) {
         const listEl = $('existing-files-list');
         if (!listEl) return;
         listEl.innerHTML = '<p style="color:#999;text-align:center;">Memuatkan...</p>';
@@ -5029,7 +5158,8 @@ document.addEventListener('DOMContentLoaded', function() {
             alert(`Order ${inv} dipadam.`);
             backToList(); displayOrders(); displayActiveOrders(); updateDashboard(); displayDeletedBills();
         } else alert('Gagal padam.');
-    }    function exportCSV() {
+    }
+        function exportCSV() {
         const orders = getFilteredOrders();
         if (!orders.length) return alert('Tiada order untuk export.');
         const headers = ['No. Bil','Pelanggan','Telefon','Tarikh Order','Tarikh Siap','Jurujual','Designer','Status Design','Status Production','Kaedah','Tarikh Kutipan/Pos','Alamat','Serah','Status','Jumlah','Diskaun','Selepas Diskaun','Deposit','Baki','Item'];
@@ -5145,7 +5275,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (period === 'year') return [new Date(year,0,1), new Date(year,11,31,23,59,59)];
         return [new Date(2000,0,1), new Date(2100,0,1)];
     }
-    async function updateDashboard() {
+        async function updateDashboard() {
         const orders = await loadOrders();
         await loadStaffCards();
         const activeStaff = allStaffCardsCache.filter(s => s.active);
@@ -5204,7 +5334,8 @@ document.addEventListener('DOMContentLoaded', function() {
         $('monthly-sales').textContent = formatRM(sumRange(monthStart, 'subtotal'));
         $('monthly-deposit').textContent = formatRM(sumRange(monthStart, 'deposit'));
         $('yearly-sales').textContent = formatRM(sumRange(yearStart, 'subtotal'));
-    }    async function submitAndPrint() {
+    }
+    async function submitAndPrint() {
         let salesPerson = $('sales-person').value;
         if (!salesPerson && STAFF_NAME && STAFF_NAME !== 'BOSS') {
             const isStaff = allStaffCardsCache.some(s => s.staff_name === STAFF_NAME);
@@ -5308,7 +5439,7 @@ document.addEventListener('DOMContentLoaded', function() {
         $('preview-total-quantity').textContent = tq;
         $('preview-total-amount').textContent = ta.toFixed(2);
     }
-    window.loadDepartments = async function() {
+        window.loadDepartments = async function() {
         try {
             const { data, error } = await supabaseClient.from('departments').select('*').order('sort_order', { ascending: true });
             if (error) throw error;
@@ -5453,7 +5584,7 @@ document.addEventListener('DOMContentLoaded', function() {
         w.document.close();
         setTimeout(() => w.print(), 500);
     };
-    window.uiSwitchTab = function(tab) {
+        window.uiSwitchTab = function(tab) {
         document.querySelectorAll('.ui-tab-btn').forEach(b => b.classList.toggle('active', b.dataset.uitab === tab));
         document.querySelectorAll('.ui-tab-content').forEach(c => c.classList.toggle('active', c.dataset.uicontent === tab));
     };
@@ -5748,7 +5879,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (isDesigner) setInterval(() => { if (document.querySelector('.tab-btn.active')?.id === 'tab-design') displayDesignerOrders(); }, 60000);
         if (isProduction) setInterval(() => { if (document.querySelector('.tab-btn.active')?.id === 'tab-production') displayProductionOrders(); }, 60000);
     })();
-    let deferredPrompt = null;
+        let deferredPrompt = null;
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
