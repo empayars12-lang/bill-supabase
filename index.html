@@ -9,15 +9,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Empayar S Kreatif - Sistem Invois & Order</title>
 <meta name="theme-color" content="#6e48aa"/>
-<!-- ========================================== -->
-<!-- PWA META TAGS (BARU) -->
-<!-- ========================================== -->
 <link rel="manifest" href="manifest.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="ESK Bill">
 <meta name="mobile-web-app-capable" content="yes">
-<!-- ========================================== -->
 <link rel="icon" href="https://arleta.site/interactivelink/68/Untitled-1.png">
 <link rel="apple-touch-icon" href="https://arleta.site/interactivelink/68/Untitled-1.png">
 <style>
@@ -384,8 +380,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
 .ui-tab-btn.active{color:var(--primary);border-bottom-color:var(--primary);}
 .ui-tab-content{display:none;}
 .ui-tab-content.active{display:block;}
-
-/* ===== COMPACT ORDER TABLE ===== */
 .order-table { table-layout: auto; width: 100%; font-size: 11px; }
 .order-table th { padding: 5px 4px !important; font-size: 10px !important; white-space: nowrap; line-height: 1.2; font-weight: 700; }
 .order-table td { padding: 5px 4px !important; font-size: 11px !important; white-space: nowrap; line-height: 1.3; vertical-align: middle; }
@@ -399,26 +393,11 @@ body:not(.boss-mode) .boss-only { display: none !important; }
 .order-table .status-indicator { width: 7px; height: 7px; margin-right: 3px; }
 .order-table .quotation-badge { padding: 2px 6px !important; font-size: 9px !important; white-space: nowrap; }
 .table-wrap { width: 100%; overflow-x: visible; }
-
-/* ===== ROW HIGHLIGHT ===== */
 .order-table tbody tr { transition: background-color 0.15s ease, box-shadow 0.15s ease; cursor: pointer; }
-.order-table tbody tr:hover { 
-    background-color: var(--row-hover-bg, #fff8e1) !important; 
-    box-shadow: inset 0 0 0 2px var(--row-hover-border, #f39c12); 
-}
-.order-table tbody tr.row-selected { 
-    background-color: var(--row-selected-bg, #fef3c7) !important; 
-    box-shadow: inset 0 0 0 3px var(--row-selected-border, #6e48aa); 
-}
-.order-table tbody tr.row-selected td { 
-    background-color: var(--row-selected-bg, #fef3c7) !important; 
-    font-weight: 600; 
-}
-.order-table tbody tr.row-selected .order-number { 
-    color: var(--row-selected-border, #6e48aa); 
-    font-weight: bold; 
-}
-
+.order-table tbody tr:hover { background-color: var(--row-hover-bg, #fff8e1) !important; box-shadow: inset 0 0 0 2px var(--row-hover-border, #f39c12); }
+.order-table tbody tr.row-selected { background-color: var(--row-selected-bg, #fef3c7) !important; box-shadow: inset 0 0 0 3px var(--row-selected-border, #6e48aa); }
+.order-table tbody tr.row-selected td { background-color: var(--row-selected-bg, #fef3c7) !important; font-weight: 600; }
+.order-table tbody tr.row-selected .order-number { color: var(--row-selected-border, #6e48aa); font-weight: bold; }
 @media (max-width: 900px) {
   .order-table th { font-size: 9px !important; padding: 4px 3px !important; }
   .order-table td { font-size: 10px !important; padding: 4px 3px !important; }
@@ -426,7 +405,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
   .order-table .design-status-badge, .order-table .production-status-badge { font-size: 8px !important; padding: 1px 4px !important; }
   .order-table .day-badge { font-size: 8px !important; padding: 1px 4px !important; }
 }
-
 @media print {
     .no-print, .action-buttons, .tab-nav, .home-button-container, #password-modal, .add-sales-person, #bills-modal, #install-app-btn, #upload-modal, #pass-designer-modal, #file-notes-modal, #send-production-modal, #pause-production-modal, #delivery-pin-modal, #complete-pin-modal, #quick-complete-modal, #print-options-modal, #convert-quotation-modal, #whatsapp-popup-modal, #force-delete-modal { display: none !important; }
     body { background: none; padding: 0; }
@@ -444,12 +422,55 @@ body:not(.boss-mode) .boss-only { display: none !important; }
     .design-status-buttons { justify-content: center; }
     .ui-editor-grid { grid-template-columns: 1fr; }
 }
+.finance-tab-nav { display: flex; gap: 5px; margin-bottom: 20px; border-bottom: 2px solid #eee; }
+.finance-tab-btn { padding: 12px 20px; background: none; border: none; font-weight: bold; font-size: 14px; cursor: pointer; color: #666; border-bottom: 3px solid transparent; margin-bottom: -2px; }
+.finance-tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+.finance-content { display: none; }
+.finance-content.active { display: block; }
+.finance-baki-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
+.finance-baki-card { padding: 20px; border-radius: 12px; color: white; box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
+.finance-baki-card.pelanggan { background: linear-gradient(135deg, #16A34A, #15803d); }
+.finance-baki-card.tunai { background: linear-gradient(135deg, #2563EB, #1d4ed8); }
+.finance-baki-card.untung { background: linear-gradient(135deg, #CA8A04, #a16207); }
+.finance-baki-card .baki-label { font-size: 12px; opacity: 0.9; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; }
+.finance-baki-card .baki-amount { font-size: 1.8rem; font-weight: bold; margin-top: 8px; }
+.finance-baki-card .baki-sub { font-size: 11px; opacity: 0.85; margin-top: 6px; line-height: 1.4; }
+.finance-action-buttons { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+.finance-action-btn { flex: 1; min-width: 150px; padding: 18px; border: none; border-radius: 10px; font-size: 15px; font-weight: bold; color: white; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,0.15); transition: transform 0.15s; text-align: left; }
+.finance-action-btn:hover { transform: translateY(-2px); }
+.finance-action-btn .btn-icon { font-size: 24px; display: block; margin-bottom: 5px; }
+.finance-action-btn .btn-sub { font-size: 11px; font-weight: normal; opacity: 0.9; margin-top: 3px; }
+.finance-action-btn.btn-belanja { background: linear-gradient(135deg, #16A34A, #15803d); }
+.finance-action-btn.btn-peribadi { background: linear-gradient(135deg, #DC2626, #b91c1c); }
+.finance-action-btn.btn-modal { background: linear-gradient(135deg, #059669, #047857); }
+.finance-transaksi-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 12px; background: white; border-radius: 8px; margin-bottom: 8px; border-left: 4px solid #ddd; box-shadow: 0 1px 3px rgba(0,0,0,0.05); gap: 10px; flex-wrap: wrap; }
+.finance-transaksi-item.type-belanja { border-left-color: #16A34A; }
+.finance-transaksi-item.type-peribadi { border-left-color: #DC2626; }
+.finance-transaksi-item.type-modal { border-left-color: #059669; }
+.finance-transaksi-info { flex: 1; min-width: 180px; }
+.finance-transaksi-desc { font-weight: bold; font-size: 14px; color: #333; }
+.finance-transaksi-meta { font-size: 11px; color: #666; margin-top: 4px; }
+.finance-transaksi-amount { font-size: 16px; font-weight: bold; white-space: nowrap; }
+.finance-transaksi-amount.negatif { color: #DC2626; }
+.finance-transaksi-amount.positif { color: #059669; }
+.finance-transaksi-actions { display: flex; gap: 4px; }
+.finance-transaksi-actions button { padding: 4px 8px; font-size: 11px; border: none; border-radius: 4px; cursor: pointer; color: white; }
+.finance-transaksi-actions .btn-edit-tx { background: var(--warning); }
+.finance-transaksi-actions .btn-del-tx { background: var(--danger); }
+.finance-list-filter { display: flex; gap: 6px; margin-bottom: 15px; flex-wrap: wrap; }
+.finance-filter-btn { padding: 8px 14px; border: 1px solid #ddd; background: white; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; color: #666; }
+.finance-filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+.finance-empty { text-align: center; padding: 30px; color: #999; }
+.finance-settings-section { margin-bottom: 25px; padding: 20px; background: #f9f9f9; border-radius: 10px; border-left: 4px solid var(--primary); }
+.finance-settings-section h4 { margin-top: 0; color: var(--primary); }
+.finance-label-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px; align-items: center; }
+.finance-label-row label { margin: 0; font-size: 12px; color: #666; }
+.finance-label-row input { font-size: 13px; padding: 8px; }
+@media (max-width: 600px) { .finance-label-row { grid-template-columns: 1fr; } .finance-label-row label { margin-top: 5px; } }
 </style>
 </head>
-
 <body>
 <div id="offline-banner">Anda sedang di luar talian.</div>
-
 <div id="landing-page" class="landing-page">
     <div class="logo" data-ui="company_name">EMPAYAR S KREATIF</div>
     <div class="tagline" data-ui="tagline">Sistem Pengurusan Invois & Order</div>
@@ -463,7 +484,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         <button id="manage-quotations-btn" class="btn-landing btn-secondary-landing" style="background:#1abc9c;border-color:#1abc9c;" data-ui="btn_manage_quotations">📋 Senarai Quotation</button>
         <button id="dashboard-btn" class="btn-landing btn-secondary-landing" data-ui="btn_dashboard">Papan Pemuka Jualan</button>
         <button id="settings-btn" class="btn-landing btn-secondary-landing" data-ui="btn_settings">⚙️ Tetapan</button>
-        <!-- BOTANG PWA -->
         <button id="install-app-btn" class="btn-landing" style="background:#2ecc71;color:white;border:none;font-weight:bold;">📲 Pasang Aplikasi Ini</button>
     </div>
     <div class="features" id="landing-features">
@@ -475,7 +495,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         <div class="feature-card"><div class="feature-icon">📦</div><div class="feature-title" data-ui="feat6_title">Serah Bertahap</div><div data-ui="feat6_desc">Track penyerahan item satu-satu</div></div>
     </div>
 </div>
-
 <div class="container">
     <div class="home-button-container no-print">
         <div>
@@ -485,7 +504,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         </div>
         <button id="home-btn" class="btn-home">Laman Utama</button>
     </div>
-
     <div class="tab-nav no-print" id="tab-nav-container">
         <button class="tab-btn" id="tab-invoice" data-tab-key="tab-invoice">Buat Invois</button>
         <button class="tab-btn" id="tab-orders" data-tab-key="tab-orders">Senarai Order</button>
@@ -497,10 +515,10 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         <button class="tab-btn" id="tab-sales-person" data-tab-key="tab-sales-person">Jurujual</button>
         <button class="tab-btn" id="tab-templates" data-tab-key="tab-templates">Template & Saiz</button>
         <button class="tab-btn" id="tab-deleted-bills" data-tab-key="tab-deleted-bills">Bil Dibatalkan</button>
+        <button class="tab-btn" id="tab-finance" data-tab-key="tab-finance" style="color:#059669;display:none;">💰 Kewangan</button>
         <button class="tab-btn" id="tab-settings" data-tab-key="tab-settings">⚙️ Tetapan</button>
     </div>
-
-    <div id="invoice-page" class="page">
+      <div id="invoice-page" class="page">
         <div class="form-mode-toggle no-print">
             <button class="form-mode-btn invoice-active" id="mode-invoice-btn" onclick="switchFormMode('invoice')">📄 Invois / Order</button>
             <button class="form-mode-btn" id="mode-quotation-btn" onclick="switchFormMode('quotation')">📋 Quotation</button>
@@ -515,11 +533,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         </div>
         <div class="form-group invoice-number-container">
             <label id="form-number-label">NO.BIL</label>
-            <input type="text" id="invoice-number" placeholder="Klik untuk pilih nombor bil" readonly 
-                   onclick="window.openInvoiceDropdown(event)" 
-                   onfocus="window.openInvoiceDropdown(event)" 
-                   ontouchstart="window.openInvoiceDropdown(event)"
-                   style="cursor:pointer;">
+            <input type="text" id="invoice-number" placeholder="Klik untuk pilih nombor bil" readonly onclick="window.openInvoiceDropdown(event)" onfocus="window.openInvoiceDropdown(event)" ontouchstart="window.openInvoiceDropdown(event)" style="cursor:pointer;">
             <div id="invoice-number-dropdown"></div>
             <div class="sync-status" id="sync-status"></div>
         </div>
@@ -584,7 +598,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
             <label>📅 Tarikh Kutipan / Pos:</label>
             <input type="date" id="delivery-date">
         </div>
-
         <div class="attach-section no-print">
             <h4>📎 Lampiran Fail (Optional)</h4>
             <p style="font-size:12px;color:#666;margin-top:0;">Muat naik gambar/PDF/docx untuk rujukan designer atau cetak. Fail akan disimpan bersama order ini.</p>
@@ -595,10 +608,8 @@ body:not(.boss-mode) .boss-only { display: none !important; }
             </div>
             <div id="form-pending-files-list"></div>
         </div>
-
         <div class="action-buttons no-print"><button id="preview-invoice" class="btn">Pratonton Invois</button></div>
     </div>
-
     <div id="preview-page" class="page">
         <div class="header-info">
             <img src="https://arleta.site/interactivelink/68/Untitled-1.png" alt="Logo">
@@ -640,7 +651,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
             </div>
         </div>
     </div>
-
     <div id="order-list-page" class="page">
         <div class="search-filter no-print">
             <input type="text" id="search-orders" class="search-input" placeholder="Cari no order, nama, telefon...">
@@ -691,7 +701,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         </table>
         </div>
     </div>
-
     <div id="quotation-list-page" class="page">
         <h2 style="margin-top:0;color:#16a085;">📋 Senarai Quotation</h2>
         <p style="color:#666;margin-top:-10px;">Sebut harga sahaja. Tidak dikira dalam statistik jualan. Bila customer setuju, tekan <strong>✅ Convert to Order</strong>.</p>
@@ -732,7 +741,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         </table>
         </div>
     </div>
-
     <div id="active-orders-page" class="page">
         <h2 style="margin-top:0;">📋 Order Aktif (Belum Selesai)</h2>
         <p style="color:#666;margin-top:-10px;">Disusun mengikut tarikh janji siap (paling urgent di atas).</p>
@@ -753,8 +761,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         </table>
         </div>
     </div>
-
-    <div id="design-page" class="page">
+      <div id="design-page" class="page">
         <h2 style="margin-top:0;">🎨 Design Saya</h2>
         <p style="color:#666;margin-top:-10px;">Order yang di-assign kepada <strong id="design-page-designer-name">-</strong></p>
         <div class="design-summary-cards" id="design-summary-cards"></div>
@@ -777,7 +784,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         </table>
         </div>
     </div>
-
     <div id="production-page" class="page">
         <h2 style="margin-top:0;">🏭 Kerja Saya</h2>
         <p style="color:#666;margin-top:-10px;">Jabatan: <strong id="production-dept-name">-</strong> | Staff: <strong id="production-staff-name">-</strong></p>
@@ -810,7 +816,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         </table>
         </div>
     </div>
-
     <div class="order-detail-view" id="order-detail-view">
         <div class="detail-header">
             <div><h3 id="detail-invoice-number"></h3><p id="detail-customer-name"></p></div>
@@ -823,7 +828,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
             <div class="detail-total"><span>Deposit:</span><span id="detail-deposit">RM0.00</span></div>
             <div class="detail-total"><span>Baki:</span><span id="detail-balance">RM0.00</span></div>
         </div>
-
         <div style="margin-top:20px;padding:15px;background:#f0fff4;border-radius:8px;border-left:4px solid #27ae60;">
             <h5 style="margin:0 0 8px;color:#27ae60;">📦 Info Penghantaran</h5>
             <div class="design-row"><label>Kaedah:</label><span id="detail-delivery-badge" class="delivery-badge none">⚪ Belum Set</span></div>
@@ -835,7 +839,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
                 <div id="delivery-history-list"><p style="color:#999;font-size:13px;">Belum ada penyerahan.</p></div>
             </div>
         </div>
-
         <div class="incomplete-note-panel" id="incomplete-note-panel">
             <h4>📝 Nota Kekurangan / Nota Serahan</h4>
             <p style="font-size:12px;color:#666;margin-top:0;margin-bottom:10px;">
@@ -854,7 +857,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
                 <div id="incomplete-note-history-list"><p style="color:#999;font-size:13px;">Belum ada sejarah.</p></div>
             </div>
         </div>
-
         <div class="design-panel" id="design-panel">
             <h4>🎨 Info Design</h4>
             <div class="design-row">
@@ -886,7 +888,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
                 <div id="design-activity-list"><p style="color:#999;font-size:13px;">Tiada aktiviti.</p></div>
             </div>
         </div>
-
         <div class="production-panel" id="production-panel">
             <h4>🏭 Info Production</h4>
             <div class="design-row">
@@ -913,7 +914,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
                 <div id="production-activity-list"><p style="color:#999;font-size:13px;">Belum ada aktiviti.</p></div>
             </div>
         </div>
-
         <div class="audit-log-section" id="audit-log-section" style="display:none;">
             <h4>📋 Sejarah Perubahan Order</h4>
             <div id="audit-log-list"></div>
@@ -927,7 +927,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
             <button class="btn" id="btn-upload-file" style="background:#6e48aa;">📎 Muat Naik Fail</button>
         </div>
     </div>
-
     <div id="dashboard-page" class="page">
         <h2 style="margin-top:0;">📊 Papan Pemuka Jualan</h2>
         <div class="dashboard-filters">
@@ -972,7 +971,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
             </table>
         </div>
     </div>
-
     <div id="sales-person-page" class="page">
         <h2 style="margin-top:0;">📊 Jualan & Komisen Staf</h2>
         <p style="color:#666;margin-top:-10px;">Senarai ini diambil dari <strong>⚙️ Tetapan → Kad Staf</strong>.</p>
@@ -984,7 +982,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
             <tbody id="sales-person-list"></tbody>
         </table>
     </div>
-
     <div id="templates-page" class="page">
         <h2 style="margin-top:0;">⚡ Template Item</h2>
         <p style="color:#666;margin-top:-10px;">Simpan item yang sering dijual.</p>
@@ -1004,7 +1001,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         </div>
         <div class="size-cat-list" id="size-cat-list"></div>
     </div>
-
     <div id="deleted-bills-page" class="page">
         <h2 style="margin-top:0;">Senarai Bil yang Dibatalkan</h2>
         <table>
@@ -1012,14 +1008,136 @@ body:not(.boss-mode) .boss-only { display: none !important; }
             <tbody id="deleted-bills-list"></tbody>
         </table>
     </div>
+      <!-- ============================================= -->
+    <!-- HALAMAN KEWANGAN (REKAAN UI BARU) -->
+    <!-- ============================================= -->
+    <div id="finance-page" class="page">
+        <h2 style="margin-top:0;">💰 Kewangan — Tabung Kedai</h2>
+        <p style="color:#666;margin-top:-10px;font-size:13px;">Rekod duit masuk & keluar. Khusus untuk <strong>boss</strong> sahaja.</p>
 
+        <!-- Bar Tarikh & Butang Tetapan -->
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:20px;">
+            <div style="background:#f0f9ff;padding:12px 15px;border-radius:8px;border-left:4px solid #2563EB;font-size:13px;flex:1;min-width:250px;">
+                Hari ini: <strong id="finance-today-date">-</strong> · Baki Tunai: <strong id="finance-baki-tunai-header" style="color:#2563EB;">RM 0.00</strong>
+            </div>
+            <button onclick="openFinanceSettings()" style="background:#6e48aa;color:white;border:none;padding:12px 20px;border-radius:8px;font-weight:bold;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 2px 5px rgba(0,0,0,0.15);">
+                <span style="font-size:18px;">⚙️</span> TETAPAN KEWANGAN
+            </button>
+        </div>
+
+        <!-- KAD KEWANGAN (3 KAD BESAR) -->
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:15px; margin-bottom:25px;">
+
+            <!-- KAD 1: BELANJA KEDAI (HIJAU) -->
+            <div style="background:linear-gradient(135deg, #16A34A, #15803d); border-radius:12px; padding:20px; color:white; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:15px;">
+                    <div>
+                        <div style="font-size:11px; text-transform:uppercase; opacity:0.9;">Kegunaan Kedai</div>
+                        <div style="font-weight:bold; font-size:16px; margin-top:2px;">Belanja Kedai</div>
+                        <div style="font-size:11px; opacity:0.8; margin-top:2px;">Untuk siapkan kerja / kedai</div>
+                    </div>
+                </div>
+                <div style="display:flex; gap:15px; border-top:1px solid rgba(255,255,255,0.3); padding-top:15px; margin-bottom:15px;">
+                    <div style="flex:1; text-align:center; border-right:1px solid rgba(255,255,255,0.3);">
+                        <div style="font-size:11px; font-weight:bold; line-height:1.3;">BELANJA<br>MODAL STOK</div>
+                        <div style="font-size:1.6rem; font-weight:bold; margin-top:5px;" id="dash-belanja-modal">RM 0</div>
+                    </div>
+                    <div style="flex:1; text-align:center;">
+                        <div style="font-size:11px; font-weight:bold; line-height:1.3;">BELANJA UTAMA<br>SEWA, BIL, GAJI</div>
+                        <div style="font-size:1.6rem; font-weight:bold; margin-top:5px;" id="dash-belanja-utama">RM 0</div>
+                    </div>
+                </div>
+                <button onclick="openFinanceModal('belanja')" style="width:100%; padding:10px; background:rgba(255,255,255,0.2); border:2px solid white; border-radius:8px; color:white; font-weight:bold; cursor:pointer;">➕ Tambah Belanja Kedai</button>
+            </div>
+
+            <!-- KAD 2: GUNA PERIBADI (MERAH) -->
+            <div style="background:linear-gradient(135deg, #DC2626, #b91c1c); border-radius:12px; padding:20px; color:white; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:15px;">
+                    <div>
+                        <div style="font-size:11px; text-transform:uppercase; opacity:0.9;">Kegunaan Peribadi</div>
+                        <div style="font-weight:bold; font-size:16px; margin-top:2px;">Guna Peribadi</div>
+                        <div style="font-size:11px; opacity:0.8; margin-top:2px;">Makan, sewa, barang rumah</div>
+                    </div>
+                </div>
+                <div style="display:flex; gap:15px; border-top:1px solid rgba(255,255,255,0.3); padding-top:15px; margin-bottom:15px;">
+                    <div style="flex:1; text-align:center; border-right:1px solid rgba(255,255,255,0.3);">
+                        <div style="font-size:11px; font-weight:bold; line-height:1.3;">BELANJA<br>SENDIRI</div>
+                        <div style="font-size:1.6rem; font-weight:bold; margin-top:5px;" id="dash-peribadi-sendiri">RM 0</div>
+                    </div>
+                    <div style="flex:1; text-align:center;">
+                        <div style="font-size:11px; font-weight:bold; line-height:1.3;">BELANJA UTAMA<br>SEWA, KERETA</div>
+                        <div style="font-size:1.6rem; font-weight:bold; margin-top:5px;" id="dash-peribadi-utama">RM 0</div>
+                    </div>
+                </div>
+                <button onclick="openFinanceModal('peribadi')" style="width:100%; padding:10px; background:rgba(255,255,255,0.2); border:2px solid white; border-radius:8px; color:white; font-weight:bold; cursor:pointer;">➕ Tambah Guna Peribadi</button>
+            </div>
+
+            <!-- KAD 3: MASUK MODAL LUAR (HIJAU GELAP) -->
+            <div style="background:linear-gradient(135deg, #059669, #047857); border-radius:12px; padding:20px; color:white; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:15px;">
+                    <div>
+                        <div style="font-size:11px; text-transform:uppercase; opacity:0.9;">Modal</div>
+                        <div style="font-weight:bold; font-size:16px; margin-top:2px;">Masuk Modal Luar</div>
+                        <div style="font-size:11px; opacity:0.8; margin-top:2px;">Suntik duit sendiri</div>
+                    </div>
+                </div>
+                <div style="display:flex; gap:15px; border-top:1px solid rgba(255,255,255,0.3); padding-top:15px; margin-bottom:15px;">
+                    <div style="flex:1; text-align:center; border-right:1px solid rgba(255,255,255,0.3);">
+                        <div style="font-size:11px; font-weight:bold; line-height:1.3;">DUIT DEPOSIT<br>PELANGGAN</div>
+                        <div style="font-size:1.6rem; font-weight:bold; margin-top:5px;" id="dash-modal-deposit">RM 0</div>
+                    </div>
+                    <div style="flex:1; text-align:center;">
+                        <div style="font-size:11px; font-weight:bold; line-height:1.3;">DUIT<br>NASUKAN LUAR</div>
+                        <div style="font-size:1.6rem; font-weight:bold; margin-top:5px;" id="dash-modal-luar">RM 0</div>
+                    </div>
+                </div>
+                <button onclick="openFinanceModal('modal')" style="width:100%; padding:10px; background:rgba(255,255,255,0.2); border:2px solid white; border-radius:8px; color:white; font-weight:bold; cursor:pointer;">➕ Tambah Modal Luar</button>
+            </div>
+        </div>
+
+        <!-- RINGKASAN 3 KOTAK KECIL (KEKAL SEPERTI ASAL) -->
+        <div class="finance-baki-grid" style="margin-bottom:25px;">
+            <div class="finance-baki-card pelanggan">
+                <div class="baki-label">🟢 <span data-finance-label="baki_pelanggan">Baki Pelanggan</span></div>
+                <div class="baki-amount" id="finance-baki-pelanggan">RM 0.00</div>
+                <div class="baki-sub">Duit pelanggan yang sepatutnya ada untuk siapkan kerja.</div>
+            </div>
+            <div class="finance-baki-card tunai">
+                <div class="baki-label">🔵 <span data-finance-label="baki_tunai">Baki Tunai</span></div>
+                <div class="baki-amount" id="finance-baki-tunai">RM 0.00</div>
+                <div class="baki-sub">Duit fizikal dalam tabung. Banding dengan baki bank sebenar.</div>
+            </div>
+            <div class="finance-baki-card untung">
+                <div class="baki-label">🟡 <span data-finance-label="untung_bisnes">Untung Bisnes</span></div>
+                <div class="baki-amount" id="finance-untung-bisnes">RM 0.00</div>
+                <div class="baki-sub">Prestasi bisnes. Modal luar & ambilan peribadi tidak dikira.</div>
+            </div>
+        </div>
+
+        <!-- SENARAI CATATAN TERKINI -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+            <h3 style="margin:0;font-size:16px;">📜 Catatan Terkini</h3>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <select id="finance-list-period" class="filter-select" style="padding:6px 10px;font-size:12px;" onchange="renderFinanceList()">
+                    <option value="today">Hari Ini</option>
+                    <option value="7days" selected>7 Hari</option>
+                    <option value="month">Bulan Ini</option>
+                    <option value="all">Semua</option>
+                </select>
+                <button class="btn btn-secondary" style="padding:6px 12px;font-size:12px;" onclick="openFinanceFullList()">📜 Lihat Semua</button>
+            </div>
+        </div>
+        <div id="finance-catatan-list"></div>
+    </div>
+
+    <!-- ============================================= -->
+    <!-- TETAPAN SISTEM ASAL (JANGAN USIK) -->
+    <!-- ============================================= -->
     <div id="settings-page" class="page">
         <h2 style="margin-top:0;">⚙️ Tetapan Sistem</h2>
-
         <div class="settings-section" id="ui-customizer-section">
             <h3>🎨 UI Customizer</h3>
             <p style="font-size:13px;color:#666;margin-top:-5px;">Edit semua tulisan, warna tema, paparan, susunan tab & kolum — dari sini. Perubahan disimpan ke cloud dan digunakan oleh semua peranti.</p>
-            
             <div style="margin-bottom:20px;">
                 <div class="action-buttons" style="justify-content:flex-start;">
                     <button class="btn" onclick="window.uiResetSection('text')" style="background:#95a5a6;font-size:13px;">↺ Reset Tulisan</button>
@@ -1028,7 +1146,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
                     <button class="btn" onclick="window.uiResetAll()" style="background:#e74c3c;font-size:13px;">🗑️ Reset SEMUA</button>
                 </div>
             </div>
-
             <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:15px;border-bottom:2px solid #eee;padding-bottom:0;">
                 <button class="ui-tab-btn active" data-uitab="text" onclick="window.uiSwitchTab('text')">📝 Tulisan</button>
                 <button class="ui-tab-btn" data-uitab="theme" onclick="window.uiSwitchTab('theme')">🎨 Tema</button>
@@ -1036,12 +1153,10 @@ body:not(.boss-mode) .boss-only { display: none !important; }
                 <button class="ui-tab-btn" data-uitab="tabs" onclick="window.uiSwitchTab('tabs')">📑 Susunan Tab</button>
                 <button class="ui-tab-btn" data-uitab="columns" onclick="window.uiSwitchTab('columns')">📊 Kolum Order</button>
             </div>
-
             <div class="ui-tab-content active" data-uicontent="text">
                 <h4 style="color:var(--primary);">📝 Tulisan Sistem</h4>
                 <div class="ui-editor-grid" id="ui-text-grid"></div>
             </div>
-
             <div class="ui-tab-content" data-uicontent="theme">
                 <h4 style="color:var(--primary);">🎨 Warna & Tema</h4>
                 <div id="ui-theme-list"></div>
@@ -1071,30 +1186,25 @@ body:not(.boss-mode) .boss-only { display: none !important; }
                     </div>
                 </div>
             </div>
-
             <div class="ui-tab-content" data-uicontent="layout">
                 <h4 style="color:var(--primary);">👁️ Paparan — Tunjuk / Sembunyi</h4>
                 <div id="ui-layout-list"></div>
             </div>
-
             <div class="ui-tab-content" data-uicontent="tabs">
                 <h4 style="color:var(--primary);">📑 Susunan Tab</h4>
                 <p style="font-size:12px;color:#666;">Seret (drag) untuk susun semula tab. Tab yang tersembunyi tidak akan dipaparkan di UI.</p>
                 <div id="ui-tab-order-list"></div>
             </div>
-
             <div class="ui-tab-content" data-uicontent="columns">
                 <h4 style="color:var(--primary);">📊 Kolum Table Order</h4>
                 <p style="font-size:12px;color:#666;">Seret untuk susun, tanda checkbox untuk tunjuk. Kolum "Tindakan" akan sentiasa ada di kanan.</p>
                 <div id="ui-columns-list"></div>
             </div>
-
             <div class="ui-save-bar">
                 <button class="btn btn-secondary" onclick="window.uiDiscardChanges()">Batal</button>
                 <button class="btn" onclick="window.uiSaveConfig()" style="background:var(--success);font-weight:bold;">💾 Simpan Semua Perubahan</button>
             </div>
         </div>
-
         <div class="settings-section">
             <h3>🔒 Tetapan Kata Laluan</h3>
             <p style="font-size:13px;color:#666;">Kata laluan untuk akses tab sensitif.</p>
@@ -1121,8 +1231,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         </div>
     </div>
 </div>
-
-<div id="convert-quotation-modal">
+  <div id="convert-quotation-modal">
     <div class="convert-quotation-modal-content">
         <button class="modal-close-x" onclick="closeConvertQuotationModal()">×</button>
         <h3 style="color:#16a085;margin-top:0;">✅ Convert Quotation ke Order</h3>
@@ -1136,7 +1245,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
             <select id="convert-new-invoice-number" style="padding:10px;font-size:14px;">
                 <option value="">-- Pilih No. Bil --</option>
             </select>
-            <div style="font-size:11px;color:#666;margin-top:5px;font-style:italic;">No. bil order biasa (25DXXXX). Quotation asal akan disimpan untuk rekod.</div>
         </div>
         <div class="form-group">
             <label>📅 Tarikh Janji Siap:</label>
@@ -1145,11 +1253,10 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         <div class="form-group">
             <label>💰 Deposit Diterima (RM):</label>
             <input type="number" id="convert-deposit" step="0.01" placeholder="0.00">
-            <div style="font-size:11px;color:#666;margin-top:5px;font-style:italic;">Masukkan jumlah deposit jika customer dah bayar. Kosong jika belum.</div>
         </div>
         <div class="form-group">
             <label>📝 Nota Convert (optional):</label>
-            <textarea id="convert-notes" placeholder="Contoh: Customer setuju, deposit RM50 dah bayar..." style="height:60px;resize:vertical;"></textarea>
+            <textarea id="convert-notes" placeholder="Contoh: Customer setuju..." style="height:60px;resize:vertical;"></textarea>
         </div>
         <div id="convert-error" style="color:red;font-size:13px;margin-bottom:10px;display:none;"></div>
         <div class="action-buttons" style="justify-content:center;">
@@ -1158,7 +1265,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         </div>
     </div>
 </div>
-
 <div id="send-production-modal">
     <div class="staff-modal-content">
         <button class="modal-close-x" onclick="closeSendProductionModal()">×</button>
@@ -1174,7 +1280,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         </div>
         <div class="form-group">
             <label>📝 Nota untuk Production:</label>
-            <textarea id="send-prod-notes" placeholder="Contoh: Kertas guna glossy, warna biru..." style="height:80px;resize:vertical;"></textarea>
+            <textarea id="send-prod-notes" placeholder="Contoh: Kertas guna glossy..." style="height:80px;resize:vertical;"></textarea>
         </div>
         <div id="send-prod-error" style="color:red;font-size:13px;margin-bottom:10px;display:none;"></div>
         <div class="action-buttons" style="justify-content:flex-end;">
@@ -1183,7 +1289,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         </div>
     </div>
 </div>
-
 <div id="pause-production-modal">
     <div class="staff-modal-content">
         <button class="modal-close-x" onclick="closePauseProductionModal()">×</button>
@@ -1191,7 +1296,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         <p style="color:#666;font-size:13px;margin-top:0;">Order: <strong id="pause-prod-invoice">-</strong></p>
         <div class="form-group">
             <label>Nota Masalah: <span style="color:#e74c3c;">*WAJIB</span></label>
-            <textarea id="pause-prod-notes" placeholder="Contoh: Kain habis stok, mesin rosak, tunggu customer reply..." style="height:100px;resize:vertical;"></textarea>
+            <textarea id="pause-prod-notes" placeholder="Contoh: Kain habis stok..." style="height:100px;resize:vertical;"></textarea>
         </div>
         <div id="pause-prod-error" style="color:red;font-size:13px;margin-bottom:10px;display:none;"></div>
         <div class="action-buttons" style="justify-content:flex-end;">
@@ -1200,7 +1305,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         </div>
     </div>
 </div>
-
 <div id="dept-modal" style="display:none;">
     <div class="size-cat-modal-content">
         <button class="modal-close-x" onclick="closeDeptModal()">×</button>
@@ -1215,7 +1319,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         <input type="hidden" id="dept-edit-id" value="">
     </div>
 </div>
-
 <div id="password-modal" style="display: none;">
     <div class="password-modal-content">
         <h3>🔒 Masukkan Kata Laluan</h3>
@@ -1231,8 +1334,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         <input type="hidden" id="password-target-id" value="">
     </div>
 </div>
-
-<!-- ========== FORCE DELETE MODAL ========== -->
 <div id="force-delete-modal">
     <div class="force-delete-modal-content">
         <button class="modal-close-x" onclick="closeForceDeleteModal()">×</button>
@@ -1242,12 +1343,9 @@ body:not(.boss-mode) .boss-only { display: none !important; }
             <div style="font-size:12px;color:#666;">Pelanggan: <strong id="fd-customer">-</strong></div>
             <div style="font-size:12px;color:#666;margin-top:5px;">Jumlah: <strong id="fd-amount">RM 0.00</strong></div>
         </div>
-        <div style="background:#fff8e1;padding:10px;border-radius:6px;margin-bottom:15px;border-left:3px solid #f39c12;font-size:12px;color:#92400e;">
-            ⚠️ <strong>AMARAN:</strong> Tindakan ini TIDAK boleh dikembalikan. Order akan dipindahkan ke senarai "Bil Dibatalkan".
-        </div>
         <div class="form-group">
             <label>Sebab Padam: <span style="color:#e74c3c;">*WAJIB</span></label>
-            <textarea id="fd-reason" placeholder="Contoh: Customer cancel, salah entry, duplicate bill..." style="height:80px;resize:vertical;"></textarea>
+            <textarea id="fd-reason" placeholder="Sebab..." style="height:80px;resize:vertical;"></textarea>
         </div>
         <div class="form-group">
             <label>Pilih Staf Yang Padam: <span style="color:#e74c3c;">*WAJIB</span></label>
@@ -1266,8 +1364,137 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         </div>
     </div>
 </div>
-
-<div id="qr-login-modal">
+<div id="finance-modal" style="position:fixed;z-index:4000;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:none;justify-content:center;align-items:center;padding:20px;">
+    <div style="background:white;padding:25px;border-radius:12px;width:100%;max-width:500px;max-height:90vh;overflow-y:auto;position:relative;">
+        <button class="modal-close-x" onclick="closeFinanceModal()">×</button>
+        <h3 id="finance-modal-title" style="margin-top:0;">Rekod</h3>
+        <div id="finance-modal-form"></div>
+        <div id="finance-modal-error" style="color:red;font-size:13px;margin-bottom:10px;display:none;"></div>
+        <div class="action-buttons" style="justify-content:flex-end;margin-top:15px;">
+            <button class="btn btn-secondary" onclick="closeFinanceModal()">Batal</button>
+            <button class="btn" id="finance-modal-save-btn" style="background:var(--success);" onclick="saveFinanceTransaction()">💾 Simpan</button>
+        </div>
+    </div>
+</div>
+<div id="finance-settings-modal" style="position:fixed;z-index:4000;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:none;justify-content:center;align-items:center;padding:20px;">
+    <div style="background:white;padding:25px;border-radius:12px;width:100%;max-width:650px;max-height:90vh;overflow-y:auto;position:relative;">
+        <button class="modal-close-x" onclick="closeFinanceSettings()">×</button>
+        <h3 style="margin-top:0;">⚙️ Tetapan Kewangan</h3>
+        <div class="finance-settings-section">
+            <h4>📅 Tarikh Mula Mencatat</h4>
+            <input type="date" id="finance-setting-start-date">
+            <p style="font-size:12px;color:#666;margin-top:5px;">Hanya transaksi selepas tarikh ni dikira dalam laporan.</p>
+        </div>
+        <div class="finance-settings-section">
+            <h4>💰 Baki Awal Tabung</h4>
+            <input type="number" id="finance-setting-opening-balance" step="0.01" placeholder="0.00">
+            <p style="font-size:12px;color:#666;margin-top:5px;">Duit yang dah ada masa anda mula catat.</p>
+        </div>
+        <div class="finance-settings-section">
+            <h4>📑 Kategori Belanja & Peribadi</h4>
+            <p style="font-size:12px;color:#666;margin-top:-5px;">Tambah atau padam kategori ikut keperluan anda.</p>
+            <div id="finance-category-list" style="max-height:150px; overflow-y:auto; margin-bottom:10px;"></div>
+            <div style="display:flex; gap:5px; margin-top:10px;">
+                <input type="text" id="new-cat-name" placeholder="Nama Kategori Baru" style="flex:1; padding:8px; font-size:13px;">
+                <select id="new-cat-type" style="width:120px; padding:8px; font-size:13px;">
+                    <option value="expense">🟢 Belanja</option>
+                    <option value="personal">🔴 Peribadi</option>
+                </select>
+                <button class="btn" style="background:#6e48aa; padding:8px 12px; font-size:13px;" onclick="addNewFinanceCategory()">➕ Tambah</button>
+            </div>
+        </div>
+        <div class="finance-settings-section">
+            <h4>🏷️ Nama Kolum (Custom Label)</h4>
+            <p style="font-size:12px;color:#666;margin-top:-5px;">Tukar label ikut selera anda.</p>
+            <div id="finance-label-fields"></div>
+        </div>
+        <div class="action-buttons" style="justify-content:flex-end;margin-top:15px;">
+            <button class="btn btn-secondary" onclick="closeFinanceSettings()">Batal</button>
+            <button class="btn" style="background:var(--success);" onclick="saveFinanceSettings()">💾 Simpan Tetapan</button>
+        </div>
+    </div>
+</div>
+<div id="finance-balance-check-modal" style="position:fixed;z-index:4000;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:none;justify-content:center;align-items:center;padding:20px;">
+    <div style="background:white;padding:25px;border-radius:12px;width:100%;max-width:550px;max-height:90vh;overflow-y:auto;position:relative;">
+        <button class="modal-close-x" onclick="closeFinanceBalanceCheck()">×</button>
+        <h3 style="margin-top:0;color:#2563EB;">🔍 Semakan Baki</h3>
+        <div class="form-group">
+            <label>Tarikh Semakan:</label>
+            <input type="date" id="finance-check-date">
+        </div>
+        <div class="form-group">
+            <label>Baki Tunai Sistem:</label>
+            <input type="text" id="finance-check-system" readonly style="background:#f0f0f0;font-weight:bold;font-size:16px;">
+        </div>
+        <div class="form-group">
+            <label>Baki Bank Sebenar:</label>
+            <input type="number" id="finance-check-actual" step="0.01" placeholder="0.00" oninput="computeFinanceCheckDiff()">
+        </div>
+        <div id="finance-check-diff-box" style="display:none;padding:15px;border-radius:8px;margin:15px 0;border-left:4px solid #f39c12;background:#fff8e1;">
+            <div style="font-weight:bold;color:#d35400;">⚠️ Beza: <span id="finance-check-diff">RM 0.00</span></div>
+            <div style="font-size:12px;color:#666;margin-top:5px;">Ada duit yang keluar tapi TAK DICATAT dalam sistem.</div>
+        </div>
+        <div id="finance-check-actions" style="display:none;">
+            <label style="font-weight:bold;">Apa anda nak buat dengan beza ni?</label>
+            <select id="finance-check-type" style="margin-bottom:10px;">
+                <option value="belanja">🟢 Rekod sebagai Belanja Kedai</option>
+                <option value="peribadi">🔴 Rekod sebagai Ambilan Peribadi</option>
+            </select>
+            <label>Nota:</label>
+            <textarea id="finance-check-note" placeholder="Contoh: belanja makan keluarga, lupa catat" style="height:70px;resize:vertical;"></textarea>
+        </div>
+        <div class="action-buttons" style="justify-content:flex-end;margin-top:15px;">
+            <button class="btn btn-secondary" onclick="closeFinanceBalanceCheck()">Batal</button>
+            <button class="btn" style="background:#2563EB;" onclick="saveFinanceBalanceCheck()">💾 Rekod & Tutup</button>
+        </div>
+    </div>
+</div>
+<div id="finance-monthly-report-modal" style="position:fixed;z-index:4000;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:none;justify-content:center;align-items:center;padding:20px;">
+    <div style="background:white;padding:25px;border-radius:12px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;position:relative;">
+        <button class="modal-close-x" onclick="closeFinanceMonthlyReport()">×</button>
+        <h3 style="margin-top:0;color:#CA8A04;">📊 Laporan Bulanan</h3>
+        <div class="form-group">
+            <label>Bulan:</label>
+            <select id="finance-report-month"></select>
+            <label style="margin-top:10px;">Tahun:</label>
+            <input type="number" id="finance-report-year" style="margin-bottom:10px;">
+            <button class="btn" style="background:#CA8A04;" onclick="renderFinanceMonthlyReport()">🔄 Kira</button>
+        </div>
+        <div id="finance-report-content"></div>
+        <div class="action-buttons" style="justify-content:flex-end;margin-top:15px;">
+            <button class="btn btn-secondary" onclick="closeFinanceMonthlyReport()">Tutup</button>
+        </div>
+    </div>
+</div>
+<div id="finance-full-list-modal" style="position:fixed;z-index:4000;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:none;justify-content:center;align-items:center;padding:20px;">
+    <div style="background:white;padding:25px;border-radius:12px;width:100%;max-width:700px;max-height:90vh;overflow-y:auto;position:relative;">
+        <button class="modal-close-x" onclick="closeFinanceFullList()">×</button>
+        <h3 style="margin-top:0;">📜 Semua Catatan</h3>
+        <div class="finance-list-filter">
+            <button class="finance-filter-btn active" data-ffilter="all" onclick="setFinanceFilter('all')">Semua</button>
+            <button class="finance-filter-btn" data-ffilter="belanja" onclick="setFinanceFilter('belanja')">🟢 Belanja</button>
+            <button class="finance-filter-btn" data-ffilter="peribadi" onclick="setFinanceFilter('peribadi')">🔴 Peribadi</button>
+            <button class="finance-filter-btn" data-ffilter="modal" onclick="setFinanceFilter('modal')">🟩 Modal</button>
+        </div>
+        <div id="finance-full-list-content"></div>
+        <div class="action-buttons" style="justify-content:flex-end;margin-top:15px;">
+            <button class="btn btn-secondary" onclick="closeFinanceFullList()">Tutup</button>
+        </div>
+    </div>
+</div>
+<div id="finance-delete-modal" style="position:fixed;z-index:4100;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:none;justify-content:center;align-items:center;padding:20px;">
+    <div style="background:white;padding:25px;border-radius:12px;width:100%;max-width:420px;position:relative;">
+        <button class="modal-close-x" onclick="closeFinanceDelete()">×</button>
+        <h3 style="margin-top:0;color:#DC2626;">🗑️ Padam Transaksi?</h3>
+        <div id="finance-delete-info" style="padding:12px;background:#f9f9f9;border-radius:6px;margin:15px 0;font-size:13px;"></div>
+        <p style="font-size:12px;color:#666;">Tindakan ini TIDAK boleh diundur. Transaksi akan terus hilang.</p>
+        <div class="action-buttons" style="justify-content:flex-end;">
+            <button class="btn btn-secondary" onclick="closeFinanceDelete()">Batal</button>
+            <button class="btn" style="background:#DC2626;" onclick="executeFinanceDelete()">🗑️ Ya, Padam</button>
+        </div>
+    </div>
+</div>
+  <div id="qr-login-modal">
     <div class="qr-login-modal-content">
         <button class="modal-close-x" onclick="closeQrLogin()">×</button>
         <h3>📷 Scan Kad Staf</h3>
@@ -1280,7 +1507,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         </div>
     </div>
 </div>
-
 <div id="pin-login-modal">
     <div class="pin-login-modal-content">
         <button class="modal-close-x" onclick="closePinLogin()">×</button>
@@ -1299,12 +1525,10 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         </div>
     </div>
 </div>
-
 <div id="staff-pin-manual-modal">
     <div class="staff-pin-manual-modal-content">
         <button class="modal-close-x" onclick="closeManualPinLogin()">×</button>
         <h3 style="color:#f39c12;margin-top:0;">👤 Login Staf (PIN Manual)</h3>
-        <p style="color:#666;font-size:13px;">Pilih nama anda dan masukkan PIN 4 digit.</p>
         <label style="font-weight:bold;text-align:left;display:block;margin-top:15px;">Pilih Nama Staf:</label>
         <select id="manual-login-select"></select>
         <label style="font-weight:bold;text-align:left;display:block;margin-top:10px;">PIN (4 digit):</label>
@@ -1316,12 +1540,10 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         </div>
     </div>
 </div>
-
 <div id="staff-password-login-modal">
     <div class="staff-password-login-modal-content">
         <button class="modal-close-x" onclick="closePasswordLogin()">×</button>
         <h3 style="color:#6e48aa;margin-top:0;">🔑 Login Boss (Password)</h3>
-        <p style="color:#666;font-size:13px;">Masukkan password boss untuk log masuk sebagai admin.</p>
         <input type="password" id="staff-login-password" placeholder="Password" style="width:100%;padding:12px;border:2px solid #ddd;border-radius:6px;margin:15px 0;font-size:16px;">
         <div id="staff-password-error" style="color:red;font-size:13px;margin-bottom:10px;display:none;">Password salah!</div>
         <div class="action-buttons" style="justify-content:center;">
@@ -1330,7 +1552,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         </div>
     </div>
 </div>
-
 <div id="staff-modal">
     <div class="staff-modal-content">
         <button class="modal-close-x" onclick="closeStaffModal()">×</button>
@@ -1368,7 +1589,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         <input type="hidden" id="staff-edit-id" value="">
     </div>
 </div>
-
 <div id="qr-display-modal">
     <div class="qr-display-modal-content">
         <button class="modal-close-x" onclick="closeQrDisplay()">×</button>
@@ -1379,7 +1599,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         </div>
     </div>
 </div>
-
 <div id="idcard-modal">
     <div class="idcard-modal-content">
         <button class="modal-close-x" onclick="closeIdCard()">×</button>
@@ -1391,7 +1610,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         </div>
     </div>
 </div>
-
 <div id="size-cat-modal">
     <div class="size-cat-modal-content">
         <button class="modal-close-x" onclick="closeSizeCatModal()">×</button>
@@ -1406,7 +1624,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         <input type="hidden" id="sc-edit-id" value="">
     </div>
 </div>
-
 <div id="size-input-modal">
     <div class="size-input-modal-content">
         <button class="modal-close-x" onclick="closeSizeInputModal()">×</button>
@@ -1426,13 +1643,11 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         </div>
     </div>
 </div>
-
 <div id="upload-modal">
     <div class="upload-modal-content">
         <button class="modal-close-x" onclick="closeUploadModal()">×</button>
         <h3 style="margin-top: 0;">📎 Muat Naik Fail untuk Order</h3>
         <p style="color: #6e48aa; font-weight: bold; margin-top: 0;" id="upload-modal-invoice">-</p>
-        <p style="color:#666;font-size:13px;">Jenis dibenarkan: JPG, PNG, WEBP, PDF, DOCX • Maksimum 20 MB</p>
         <div class="upload-area">
             <input type="file" id="file-input" accept=".jpg,.jpeg,.png,.webp,.pdf,.docx" style="display: none;">
             <button class="btn" onclick="document.getElementById('file-input').click()" style="background: #6e48aa;">📁 Pilih Fail</button>
@@ -1440,7 +1655,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         </div>
         <div class="form-group" id="file-notes-input-group" style="display:none;">
             <label>📝 Nota untuk Fail ini (optional):</label>
-            <textarea id="file-notes-input" placeholder="Contoh: Guna warna ini untuk design akhir" style="height:60px;resize:vertical;"></textarea>
+            <textarea id="file-notes-input" placeholder="Contoh: Guna warna ini..." style="height:60px;resize:vertical;"></textarea>
         </div>
         <div id="upload-progress" class="upload-progress-container">
             <div class="upload-progress-bg"><div id="upload-progress-bar" class="upload-progress-bar"></div></div>
@@ -1456,7 +1671,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         <div id="existing-files-list"><p style="color:#999;text-align:center;">Memuatkan...</p></div>
     </div>
 </div>
-
 <div id="pass-designer-modal">
     <div class="pass-designer-modal-content">
         <button class="modal-close-x" onclick="closePassDesignerModal()">×</button>
@@ -1477,7 +1691,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         </div>
     </div>
 </div>
-
 <div id="file-notes-modal">
     <div class="file-notes-modal-content">
         <button class="modal-close-x" onclick="closeFileNotesModal()">×</button>
@@ -1485,7 +1698,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         <p style="color:#6e48aa;font-weight:bold;" id="file-notes-name">-</p>
         <div class="form-group">
             <label>Nota:</label>
-            <textarea id="file-notes-edit" placeholder="Nota untuk fail ini..." style="height:100px;resize:vertical;"></textarea>
+            <textarea id="file-notes-edit" placeholder="Nota..." style="height:100px;resize:vertical;"></textarea>
         </div>
         <div class="action-buttons" style="justify-content:flex-end;">
             <button class="btn btn-secondary" onclick="closeFileNotesModal()">Batal</button>
@@ -1494,7 +1707,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         <input type="hidden" id="file-notes-id" value="">
     </div>
 </div>
-
 <div id="quick-complete-modal">
     <div class="quick-complete-modal-content">
         <button class="modal-close-x" onclick="closeQuickCompleteModal()">×</button>
@@ -1502,7 +1714,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         <p style="color:#666;font-size:13px;margin-top:0;">Order: <strong id="qc-invoice">-</strong></p>
         <div id="qc-info-box" class="quick-complete-info-box"></div>
         <div id="qc-warning-box" class="quick-complete-warning" style="display:none;"></div>
-        <div id="qc-success-box" class="quick-complete-success" style="display:none;"></div>
         <div style="text-align:left;font-weight:bold;font-size:13px;margin-bottom:6px;">📦 Tandakan item yang nak diserahkan:</div>
         <div class="qc-item-list" id="qc-item-list"></div>
         <div class="form-group" style="text-align:left;">
@@ -1544,34 +1755,28 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         </div>
     </div>
 </div>
-
 <div id="print-options-modal">
     <div class="print-options-modal-content">
         <button class="modal-close-x" onclick="closePrintOptionsModal()">×</button>
         <h3 style="color:#6e48aa;margin-top:0;">🖨️ Pilih Jenis Cetakan</h3>
         <p style="color:#666;font-size:13px;margin-top:0;">Order: <strong id="print-options-invoice">-</strong></p>
-        <p style="color:#666;font-size:12px;margin-top:0;">Pelanggan: <span id="print-options-customer">-</span></p>
         <button class="print-options-btn btn-normal" onclick="doPrintOption('normal')">
             <div style="font-size:28px;">📄</div>
             <div>Cetak Bill Asal</div>
-            <div style="font-size:11px;font-weight:normal;margin-top:4px;">Tanpa cop.</div>
         </button>
         <button class="print-options-btn btn-final" onclick="doPrintOption('final')">
             <div style="font-size:28px;">✅</div>
             <div>Cetak Bill Akhir (SELESAI)</div>
-            <div style="font-size:11px;font-weight:normal;margin-top:4px;">Cop SELESAI di tengah.</div>
         </button>
         <button class="print-options-btn btn-partial" onclick="doPrintOption('partial')">
             <div style="font-size:28px;">⚠️</div>
             <div>Cetak Bill TIDAK LENGKAP</div>
-            <div style="font-size:11px;font-weight:normal;margin-top:4px;">Cop TIDAK LENGKAP + senarai item.</div>
         </button>
         <div class="action-buttons" style="justify-content:center;margin-top:15px;">
             <button class="btn btn-secondary" onclick="closePrintOptionsModal()">Tutup</button>
         </div>
     </div>
 </div>
-
 <div id="whatsapp-popup-modal" style="position:fixed;z-index:4500;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:none;justify-content:center;align-items:center;padding:20px;">
   <div style="background:white;padding:25px;border-radius:12px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;position:relative;">
     <button class="modal-close-x" onclick="closeWhatsAppPopup()">×</button>
@@ -1597,7 +1802,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
     </div>
   </div>
 </div>
-
 <div id="danger-modal">
     <div class="danger-modal-content">
         <h3>⚠️ AMARAN — TINDAKAN BERBAHAYA</h3>
@@ -1614,7 +1818,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         </div>
     </div>
 </div>
-
 <div id="bills-modal">
     <div class="bills-modal-content">
         <span id="close-bills-modal" style="position:absolute;top:10px;right:15px;font-size:28px;cursor:pointer;">×</span>
@@ -1622,7 +1825,6 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         <ul id="bills-modal-list"></ul>
     </div>
 </div>
-
 <div id="edit-order-modal" style="display: none;">
     <div class="edit-order-modal-content">
         <button class="modal-close-x" onclick="hideEditOrderModal()">×</button>
@@ -1657,7 +1859,7 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         </div>
         <div class="form-group" id="edit-address-group" style="display:none;">
             <label>📍 Alamat Penghantaran:</label>
-            <textarea id="edit-delivery-address" placeholder="Alamat penuh untuk pos..." style="height:70px;resize:vertical;"></textarea>
+            <textarea id="edit-delivery-address" placeholder="Alamat penuh..." style="height:70px;resize:vertical;"></textarea>
         </div>
         <div class="form-group">
             <label>📅 Tarikh Kutipan / Pos:</label>
@@ -1673,8 +1875,8 @@ body:not(.boss-mode) .boss-only { display: none !important; }
             <textarea id="edit-design-notes" style="height:70px;resize:vertical;"></textarea>
         </div>
         <div class="form-group" style="background:#fff8e1;padding:12px;border-radius:6px;border-left:3px solid #e67e22;">
-            <label>📝 Nota Kekurangan / Nota Serahan (muncul dalam bill):</label>
-            <textarea id="edit-incomplete-note" placeholder="Contoh: 2 item pertama dah diambil..." style="height:80px;resize:vertical;font-family:'Courier New',monospace;font-size:13px;"></textarea>
+            <label>📝 Nota Kekurangan / Nota Serahan:</label>
+            <textarea id="edit-incomplete-note" style="height:80px;resize:vertical;font-family:'Courier New',monospace;font-size:13px;"></textarea>
         </div>
         <div class="action-buttons no-print">
             <button id="cancel-edit-order" class="btn btn-secondary">Batal</button>
@@ -1683,9 +1885,8 @@ body:not(.boss-mode) .boss-only { display: none !important; }
         </div>
     </div>
 </div>
-
 <script>
-window.openInvoiceDropdown = function(e) {
+  window.openInvoiceDropdown = function(e) {
     if (e) { e.stopPropagation(); e.preventDefault(); }
     const dropdown = document.getElementById('invoice-number-dropdown');
     if (!dropdown) return;
@@ -1728,6 +1929,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const orderDetailView = $('order-detail-view'), dashboardPage = $('dashboard-page');
     const salesPersonPage = $('sales-person-page'), templatesPage = $('templates-page');
     const deletedBillsPage = $('deleted-bills-page'), settingsPage = $('settings-page');
+    const financePage = $('finance-page');
 
     let currentOrder = null;
     let quickCompleteOrder = null;
@@ -1757,445 +1959,727 @@ document.addEventListener('DOMContentLoaded', function() {
     let formMode = 'invoice';
     let waCurrentOrder = null;
 
-    const DEFAULT_UI_CONFIG = {
-        text: {
-            company_name: 'EMPAYAR S KREATIF',
-            tagline: 'Sistem Pengurusan Invois & Order',
-            company_full_address: 'Hadapan Sek.Ren.Keb Ketereh, 16450 Kota Bharu Kelantan<br>TEL: 01133387532<br>(KT0565538-X)',
-            bank_info: '<p><strong>Maybank</strong><br>553104624047<br>EMPAYAR S KREATIF SOLUTION</p>',
-            btn_login_qr: '📷 Login QR + PIN',
-            btn_login_pin: '👤 Login Staf (PIN)',
-            btn_login_boss: '🔑 Login Boss (Password)',
-            btn_new_invoice: 'Buat Invois Baru',
-            btn_new_quotation: '📋 Buat Quotation',
-            btn_manage_orders: 'Urus Order',
-            btn_manage_quotations: '📋 Senarai Quotation',
-            btn_dashboard: 'Papan Pemuka Jualan',
-            btn_settings: '⚙️ Tetapan',
-            feat1_title: 'Invois Profesional', feat1_desc: 'Buat dan cetak invois dengan mudah',
-            feat2_title: 'Quotation', feat2_desc: 'Sebut harga tanpa kacau statistik',
-            feat3_title: 'Urusan Order', feat3_desc: 'Pantau status order dengan sistematik',
-            feat4_title: 'Design Tracking', feat4_desc: 'Track status design secara real-time',
-            feat5_title: 'Production Tracking', feat5_desc: 'Track kerja production ikut jabatan',
-            feat6_title: 'Serah Bertahap', feat6_desc: 'Track penyerahan item satu-satu',
-            tab_invoice: 'Buat Invois',
-            tab_orders: 'Senarai Order',
-            tab_active: 'Order Aktif',
-            tab_quotation: '📋 Quotation',
-            tab_design: '🎨 Design Saya',
-            tab_production: '🏭 Kerja Saya',
-            tab_dashboard: 'Papan Pemuka',
-            tab_sales_person: 'Jurujual',
-            tab_templates: 'Template & Saiz',
-            tab_deleted_bills: 'Bil Dibatalkan',
-            tab_settings: '⚙️ Tetapan',
-            terms_html: '<p><strong>TERMA & SYARAT TEMPAHAN</strong></p><p>*Setiap tempahan hendaklah disertakan DEPOSIT SEKURANG-KURANGNYA 50%</p><p>*(tempahan tanpa deposit tidak akan di proses)*</p><p>Tempahan yang dibuat TIDAK BOLEH DIBATALKAN, deposit TIDAK akan dikembalikan</p><p>Untuk Tempahan baju, Pertukaran saiz baju dikenarkan SEBELUM baju di order dengan supplier</p><p>Caj design yang dikenakan TIDAK AKAN DIKEMBALIKAN</p><p>Preview design akan dibuat SEBELUM proceed cetakan</p>'
-        },
-        theme: {
-            primary: '#6e48aa', primary_light: '#9d50bb',
-            success: '#2ecc71', success_dark: '#27ae60',
-            danger: '#e74c3c', warning: '#f39c12', info: '#3498db',
-            font_family: "'Arial', sans-serif",
-            border_radius: '8px',
-            bg_body: '#f5f5f5',
-            row_hover_bg: '#fff8e1',
-            row_hover_border: '#f39c12',
-            row_selected_bg: '#fef3c7',
-            row_selected_border: '#6e48aa'
-        },
-        layout: {
-            show_tagline: true, show_features: true, show_top_customers: true,
-            show_tab_dashboard: true, show_tab_sales_person: true, show_tab_templates: true,
-            show_tab_deleted_bills: true, show_tab_settings: true,
-            show_deposit_field: true, show_delivery_field: true, show_attach_section: true
-        },
-        tab_order: ['tab-invoice','tab-orders','tab-active','tab-quotation','tab-design','tab-production','tab-dashboard','tab-sales-person','tab-templates','tab-deleted-bills','tab-settings'],
-        column_order: [
-            { key: 'invoiceNumber', label: 'No. Bil', visible: true },
-            { key: 'customerName', label: 'Pelanggan', visible: true },
-            { key: 'subtotal', label: 'Jumlah Jualan', visible: true },
-            { key: 'customerPhone', label: 'Telefon', visible: true },
-            { key: 'orderDate', label: 'Tarikh Order', visible: true },
-            { key: 'completionDate', label: 'Tarikh Siap', visible: true },
-            { key: 'salesPerson', label: 'Jurujual', visible: true },
-            { key: 'assignedDesigner', label: 'Designer', visible: true },
-            { key: 'designStatus', label: 'Status Design', visible: true },
-            { key: 'productionStatus', label: 'Status Production', visible: true },
-            { key: 'deliveryMethod', label: 'Kaedah', visible: true },
-            { key: 'serah', label: 'Serah', visible: true },
-            { key: 'status', label: 'Status', visible: true }
-        ]
-    };
+    // KEWANGAN STATE
+    let allFinanceTransactionsCache = [];
+    let allFinanceCategoriesCache = [];
+    let financeSettingsCache = { start_date: null, opening_balance: 0, label_overrides: {} };
+    let financeCurrentModalType = null;
+    let financeEditingId = null;
+    let financeCurrentFilter = 'all';
+    let financeDeleteId = null;
 
-    let UI_CONFIG = JSON.parse(JSON.stringify(DEFAULT_UI_CONFIG));
-    let uiTempConfig = null;
+    // UI CONFIG
+    let UI_CONFIG = { text: {}, theme: {}, layout: {}, tab_order: [], column_order: [] };
 
-    async function loadUIConfig() {
-        try {
-            const { data } = await supabaseClient.from('app_settings').select('value').eq('key', 'ui_config').maybeSingle();
-            if (data && data.value) {
-                const loaded = typeof data.value === 'string' ? JSON.parse(data.value) : data.value;
-                if (loaded && typeof loaded === 'object' && Object.keys(loaded).length > 0) {
-                    UI_CONFIG = deepMerge(JSON.parse(JSON.stringify(DEFAULT_UI_CONFIG)), loaded);
-                }
-            }
-        } catch(e) { console.error('loadUIConfig:', e); }
-        if (!UI_CONFIG.column_order) UI_CONFIG.column_order = JSON.parse(JSON.stringify(DEFAULT_UI_CONFIG.column_order));
-        if (!UI_CONFIG.column_order.find(c => c.key === 'subtotal')) {
-            const idx = UI_CONFIG.column_order.findIndex(c => c.key === 'customerName');
-            const newCol = { key: 'subtotal', label: 'Jumlah Jualan', visible: true };
-            if (idx >= 0) UI_CONFIG.column_order.splice(idx + 1, 0, newCol);
-            else UI_CONFIG.column_order.push(newCol);
-        }
+    function escapeHtml(s) { return (s||'').toString().replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+    function escapeAttr(s) { return (s||'').toString().replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+    function formatDate(d) {
+        if (!d || d === '-') return '-';
+        try { const dt = new Date(d); if (isNaN(dt)) return '-';
+            return `${String(dt.getDate()).padStart(2,'0')}/${String(dt.getMonth()+1).padStart(2,'0')}/${dt.getFullYear()}`;
+        } catch(e){ return '-'; }
     }
-    function deepMerge(target, source) {
-        for (const k in source) {
-            if (source[k] && typeof source[k] === 'object' && !Array.isArray(source[k])) {
-                target[k] = deepMerge(target[k] || {}, source[k]);
-            } else { target[k] = source[k]; }
-        }
-        return target;
+    function formatRM(n) { return 'RM ' + (parseFloat(n)||0).toFixed(2); }
+    function formatTime(d) {
+        if (!d) return '-';
+        try { const dt = new Date(d);
+            return `${String(dt.getDate()).padStart(2,'0')}/${String(dt.getMonth()+1).padStart(2,'0')}/${dt.getFullYear()} ${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}`;
+        } catch(e){ return '-'; }
     }
-    async function saveUIConfig(config) {
+    function genTempId() { return 'tmp_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8); }
+
+    // ============================================
+    // FUNGSI KEWANGAN
+    // ============================================
+    async function loadFinanceData() {
         try {
-            const { data: ex } = await supabaseClient.from('app_settings').select('key').eq('key', 'ui_config').maybeSingle();
-            if (ex) await supabaseClient.from('app_settings').update({ value: config, updated_at: new Date() }).eq('key', 'ui_config');
-            else await supabaseClient.from('app_settings').insert({ key: 'ui_config', value: config });
+            const { data: settings } = await supabaseClient.from('finance_settings').select('*');
+            const settingsMap = {};
+            (settings || []).forEach(s => settingsMap[s.key] = s.value);
+            financeSettingsCache.start_date = settingsMap.start_date || null;
+            financeSettingsCache.opening_balance = parseFloat(settingsMap.opening_balance) || 0;
+            try { financeSettingsCache.label_overrides = JSON.parse(settingsMap.label_overrides || '{}'); } catch(e) { financeSettingsCache.label_overrides = {}; }
+            
+            const { data: cats } = await supabaseClient.from('finance_categories').select('*').order('type').order('name');
+            allFinanceCategoriesCache = cats || [];
+            
+            const { data: txs } = await supabaseClient.from('finance_transactions').select('*').order('date', {ascending: false}).order('created_at', {ascending: false});
+            allFinanceTransactionsCache = txs || [];
             return true;
-        } catch(e) { alert('Gagal simpan: ' + e.message); return false; }
+        } catch(e) { return false; }
     }
 
-    function applyUIConfig() {
-        document.querySelectorAll('[data-ui]').forEach(el => {
-            const key = el.dataset.ui;
-            if (UI_CONFIG.text[key] !== undefined) el.innerHTML = UI_CONFIG.text[key];
+    function getFinanceLabel(key) {
+        const defaults = { baki_pelanggan: 'Baki Pelanggan', baki_tunai: 'Baki Tunai', untung_bisnes: 'Untung Bisnes' };
+        return (financeSettingsCache.label_overrides && financeSettingsCache.label_overrides[key]) || defaults[key] || key;
+    }
+
+    function applyFinanceLabels() {
+        document.querySelectorAll('[data-finance-label]').forEach(el => {
+            const key = el.dataset.financeLabel;
+            el.textContent = getFinanceLabel(key);
         });
-        const tabLabelMap = {
-            'tab-invoice': 'tab_invoice', 'tab-orders': 'tab_orders', 'tab-active': 'tab_active',
-            'tab-quotation': 'tab_quotation', 'tab-design': 'tab_design', 'tab-production': 'tab_production',
-            'tab-dashboard': 'tab_dashboard', 'tab-sales-person': 'tab_sales_person',
-            'tab-templates': 'tab_templates', 'tab-deleted-bills': 'tab_deleted_bills', 'tab-settings': 'tab_settings'
-        };
-        for (const [tabId, textKey] of Object.entries(tabLabelMap)) {
-            const btn = document.getElementById(tabId);
-            if (btn && UI_CONFIG.text[textKey]) {
-                const badge = btn.querySelector('.badge-notif');
-                btn.textContent = UI_CONFIG.text[textKey];
-                if (badge) btn.appendChild(badge);
+    }
+
+    function computeFinanceBalances() {
+        const startDate = financeSettingsCache.start_date ? new Date(financeSettingsCache.start_date) : new Date(0);
+        startDate.setHours(0,0,0,0);
+        
+        let duitPelanggan = 0;
+        (allOrdersCache || []).forEach(o => {
+            if (o.isQuotation) return;
+            if (!o.orderDate) return;
+            const od = new Date(o.orderDate);
+            if (od < startDate) return;
+            duitPelanggan += (o.deposit || 0);
+        });
+        
+        let belanjaKedai = 0, ambilanPeribadi = 0, modalLuar = 0;
+        (allFinanceTransactionsCache || []).forEach(t => {
+            if (!t.date) return;
+            const td = new Date(t.date);
+            if (td < startDate) return;
+            const cat = allFinanceCategoriesCache.find(c => c.name === t.category_name);
+            const type = cat ? cat.type : (t.type === 'in' ? 'modal' : 'expense');
+            if (t.type === 'out') {
+                if (type === 'personal') ambilanPeribadi += parseFloat(t.amount) || 0;
+                else belanjaKedai += parseFloat(t.amount) || 0;
+            } else if (t.type === 'in') {
+                if (t.category_name === 'Modal Luar') modalLuar += parseFloat(t.amount) || 0;
+            }
+        });
+        
+        const bakiPelanggan = duitPelanggan - belanjaKedai;
+        const bakiTunai = bakiPelanggan + modalLuar + financeSettingsCache.opening_balance - ambilanPeribadi;
+        const untungBisnes = duitPelanggan - belanjaKedai;
+        return { duitPelanggan, belanjaKedai, ambilanPeribadi, modalLuar, bakiAwal: financeSettingsCache.opening_balance, bakiPelanggan, bakiTunai, untungBisnes };
+    }
+
+    // ============================================
+    // FUNGSI KIRA KAD KEWANGAN (PECAHAN)
+    // ============================================
+    const KATEGORI_UTAMA_KEDAI = ['Sewa / Bil (Kedai)', 'Bill Elektrik (Kedai)', 'Gaji Staf (Kedai)', 'Sewa / Bil', 'Upah / Gaji', 'Penghantaran / Pos'];
+    const KATEGORI_UTAMA_PERIBADI = ['Sewa Rumah (Peribadi)', 'Bill Elektrik (Peribadi)', 'Kereta (Peribadi)', 'Motor (Peribadi)', 'Amanah (Peribadi)', 'Barang Rumah', 'Bayar Hutang'];
+
+    function updateFinanceDashboardCards() {
+        const startDate = financeSettingsCache.start_date ? new Date(financeSettingsCache.start_date) : new Date(0);
+        startDate.setHours(0,0,0,0);
+
+        let belanjaModalStok = 0;
+        let belanjaUtamaKedai = 0;
+        let peribadiSendiri = 0;
+        let peribadiUtama = 0;
+        let modalLuar = 0;
+
+        (allFinanceTransactionsCache || []).forEach(t => {
+            if (!t.date) return;
+            const td = new Date(t.date);
+            if (td < startDate) return;
+            
+            const amount = parseFloat(t.amount) || 0;
+            const cat = t.category_name || '';
+
+            if (t.type === 'in' && cat === 'Modal Luar') {
+                modalLuar += amount;
+            } else if (t.type === 'out') {
+                const catData = allFinanceCategoriesCache.find(c => c.name === cat);
+                const type = catData ? catData.type : 'expense';
+                
+                if (type === 'expense') {
+                    if (KATEGORI_UTAMA_KEDAI.includes(cat)) {
+                        belanjaUtamaKedai += amount;
+                    } else {
+                        belanjaModalStok += amount;
+                    }
+                } else if (type === 'personal') {
+                    if (KATEGORI_UTAMA_PERIBADI.includes(cat)) {
+                        peribadiUtama += amount;
+                    } else {
+                        peribadiSendiri += amount;
+                    }
+                }
+            }
+        });
+
+        // Duit Deposit Pelanggan
+        let duitPelanggan = 0;
+        (allOrdersCache || []).forEach(o => {
+            if (o.isQuotation) return;
+            if (!o.orderDate) return;
+            const od = new Date(o.orderDate);
+            if (od < startDate) return;
+            duitPelanggan += (o.deposit || 0);
+        });
+
+        if ($('dash-belanja-modal')) $('dash-belanja-modal').textContent = 'RM ' + belanjaModalStok.toFixed(0);
+        if ($('dash-belanja-utama')) $('dash-belanja-utama').textContent = 'RM ' + belanjaUtamaKedai.toFixed(0);
+        if ($('dash-peribadi-sendiri')) $('dash-peribadi-sendiri').textContent = 'RM ' + peribadiSendiri.toFixed(0);
+        if ($('dash-peribadi-utama')) $('dash-peribadi-utama').textContent = 'RM ' + peribadiUtama.toFixed(0);
+        if ($('dash-modal-deposit')) $('dash-modal-deposit').textContent = 'RM ' + duitPelanggan.toFixed(0);
+        if ($('dash-modal-luar')) $('dash-modal-luar').textContent = 'RM ' + modalLuar.toFixed(0);
+    }
+
+    function renderFinanceBalances() {
+        const b = computeFinanceBalances();
+        if ($('finance-baki-pelanggan')) $('finance-baki-pelanggan').textContent = formatRM(b.bakiPelanggan);
+        if ($('finance-baki-tunai')) $('finance-baki-tunai').textContent = formatRM(b.bakiTunai);
+        if ($('finance-untung-bisnes')) $('finance-untung-bisnes').textContent = formatRM(b.untungBisnes);
+        if ($('finance-baki-tunai-header')) $('finance-baki-tunai-header').textContent = formatRM(b.bakiTunai);
+        if ($('finance-summary-info')) {
+            $('finance-summary-info').innerHTML = `
+                📥 Duit Pelanggan Masuk: <strong>${formatRM(b.duitPelanggan)}</strong><br>
+                📤 Belanja Kedai: <strong>${formatRM(b.belanjaKedai)}</strong><br>
+                💸 Ambilan Peribadi: <strong>${formatRM(b.ambilanPeribadi)}</strong><br>
+                🟩 Modal Luar: <strong>${formatRM(b.modalLuar)}</strong><br>
+                ⬜ Baki Awal: <strong>${formatRM(b.bakiAwal)}</strong>
+            `;
+        }
+    }
+
+    function getFinanceFilteredTransactions(period) {
+        const startDate = financeSettingsCache.start_date ? new Date(financeSettingsCache.start_date) : new Date(0);
+        startDate.setHours(0,0,0,0);
+        const now = new Date();
+        let periodStart = null;
+        if (period === 'today') { periodStart = new Date(now); periodStart.setHours(0,0,0,0); }
+        else if (period === '7days') { periodStart = new Date(now); periodStart.setDate(now.getDate() - 7); }
+        else if (period === 'month') { periodStart = new Date(now.getFullYear(), now.getMonth(), 1); }
+        
+        return (allFinanceTransactionsCache || []).filter(t => {
+            if (!t.date) return false;
+            const td = new Date(t.date);
+            if (td < startDate) return false;
+            if (periodStart && td < periodStart) return false;
+            return true;
+        });
+    }
+
+    function renderFinanceListItem(t) {
+        const cat = allFinanceCategoriesCache.find(c => c.name === t.category_name);
+        const type = cat ? cat.type : (t.category_name === 'Modal Luar' ? 'modal' : 'expense');
+        let typeClass = 'type-belanja', typeLabel = '🟢 Belanja Kedai', amountClass = 'negatif', amountPrefix = '−';
+        
+        if (t.type === 'in') {
+            if (t.category_name === 'Modal Luar') { typeClass = 'type-modal'; typeLabel = '🟩 Modal Luar'; amountClass = 'positif'; amountPrefix = '+'; }
+        } else if (type === 'personal') {
+            typeClass = 'type-peribadi'; typeLabel = '🔴 Ambilan Peribadi';
+        }
+        
+        return `<div class="finance-transaksi-item ${typeClass}">
+            <div class="finance-transaksi-info">
+                <div class="finance-transaksi-desc">${escapeHtml(t.description || '-')}</div>
+                <div class="finance-transaksi-meta">${typeLabel} · ${escapeHtml(t.category_name || '-')} · ${formatDate(t.date)}</div>
+            </div>
+            <div class="finance-transaksi-amount ${amountClass}">${amountPrefix} ${formatRM(t.amount)}</div>
+            <div class="finance-transaksi-actions">
+                <button class="btn-edit-tx" onclick="openFinanceEditModal('${t.id}')" title="Edit">✏️</button>
+                <button class="btn-del-tx" onclick="openFinanceDeleteConfirm('${t.id}')" title="Padam">🗑️</button>
+            </div>
+        </div>`;
+    }
+
+    function renderFinanceList() {
+        const period = $('finance-list-period') ? $('finance-list-period').value : '7days';
+        const txs = getFinanceFilteredTransactions(period);
+        const el = $('finance-catatan-list');
+        if (!el) return;
+        if (!txs.length) {
+            el.innerHTML = '<div class="finance-empty">Belum ada catatan. Tekan butang di atas untuk mula.</div>';
+            return;
+        }
+        el.innerHTML = txs.slice(0, 20).map(renderFinanceListItem).join('');
+        renderFinanceBalances();
+        updateFinanceDashboardCards(); // PENTING: Kemaskini kad
+    }
+      function openFinanceModal(type, editId) {
+        financeCurrentModalType = type;
+        financeEditingId = editId || null;
+        const formEl = $('finance-modal-form');
+        const titleEl = $('finance-modal-title');
+        const errEl = $('finance-modal-error');
+        if(errEl) errEl.style.display = 'none';
+
+        let title = '', accentColor = '#16A34A', catOptions = '', catFieldLabel = 'Kategori (optional):', allowReceipt = false;
+
+        if (type === 'belanja') {
+            title = '🟢 Belanja Kedai'; accentColor = '#16A34A'; allowReceipt = true;
+            catOptions = allFinanceCategoriesCache.filter(c => c.type === 'expense').map(c => `<option value="${escapeAttr(c.name)}">${escapeHtml(c.name)}</option>`).join('');
+        } else if (type === 'peribadi') {
+            title = '🔴 Guna Peribadi'; accentColor = '#DC2626';
+            catOptions = allFinanceCategoriesCache.filter(c => c.type === 'personal').map(c => `<option value="${escapeAttr(c.name)}">${escapeHtml(c.name)}</option>`).join('');
+        } else if (type === 'modal') {
+            title = '🟩 Masuk Modal Luar'; accentColor = '#059669'; catFieldLabel = 'Dari mana?';
+        }
+
+        let existing = null;
+        if (editId) {
+            existing = allFinanceTransactionsCache.find(t => t.id === editId);
+            if (existing) title = '✏️ Edit Transaksi';
+        }
+
+        const today = new Date().toISOString().split('T')[0];
+
+        if (type === 'modal') {
+            formEl.innerHTML = `
+                <div class="form-group"><label>Tarikh:</label><input type="date" id="fdate" value="${existing ? (existing.date || today) : today}"></div>
+                <div class="form-group"><label>${catFieldLabel}</label><input type="text" id="fdesc" placeholder="Contoh: Transfer dari Maybank" value="${existing ? escapeAttr(existing.description || '') : ''}"></div>
+                <div class="form-group"><label>Jumlah (RM):</label><input type="number" id="famount" step="0.01" placeholder="0.00" value="${existing ? existing.amount : ''}"></div>
+            `;
+        } else {
+            formEl.innerHTML = `
+                <div class="form-group"><label>Tarikh:</label><input type="date" id="fdate" value="${existing ? (existing.date || today) : today}"></div>
+                <div class="form-group"><label>Apa yang ${type === 'belanja' ? 'dibeli' : 'digunakan'}?</label><input type="text" id="fdesc" placeholder="Contoh: ${type === 'belanja' ? 'Beli kertas A4' : 'Beli makan keluarga'}" value="${existing ? escapeAttr(existing.description || '') : ''}"></div>
+                <div class="form-group"><label>Jumlah (RM):</label><input type="number" id="famount" step="0.01" placeholder="0.00" value="${existing ? existing.amount : ''}"></div>
+                <div class="form-group"><label>${catFieldLabel}</label>
+                    <select id="fcat" onchange="toggleFinanceManualCategory()"><option value="">-- Pilih --</option>${catOptions}</select>
+                </div>
+                <div class="form-group" id="fcat_manual_group" style="display:none; background:#f9f9f9; padding:10px; border-left:3px solid #6e48aa;">
+                    <label>Taip Nama Kategori:</label>
+                    <input type="text" id="fcat_manual" placeholder="Contoh: Pempers Anak, Beli Rokok...">
+                </div>
+                ${allowReceipt ? `
+                <div class="form-group"><label>📎 Resit (optional):</label>
+                    <input type="file" id="freceipt" accept=".jpg,.jpeg,.png,.webp,.pdf" style="font-size:12px;">
+                    ${existing && existing.receipt_file_url ? `<div style="font-size:12px;color:#666;margin-top:5px;">📎 Resit sedia ada: <a href="${existing.receipt_file_url}" target="_blank">Lihat</a></div>` : ''}
+                </div>` : ''}
+            `;
+            if (existing && existing.category_name) {
+                setTimeout(() => { 
+                    if ($('fcat')) {
+                        $('fcat').value = existing.category_name; 
+                        toggleFinanceManualCategory();
+                    }
+                }, 50);
             }
         }
-        document.querySelectorAll('[data-bank-info]').forEach(el => { el.innerHTML = UI_CONFIG.text.bank_info; });
-        document.querySelectorAll('[data-terms]').forEach(el => { el.innerHTML = UI_CONFIG.text.terms_html; });
-        if (formMode === 'quotation') {
-            $('form-title').textContent = 'QUOTATION';
-            $('preview-form-title').textContent = 'QUOTATION';
+
+        titleEl.textContent = title;
+        titleEl.style.color = accentColor;
+        $('finance-modal-save-btn').style.background = accentColor;
+        $('finance-modal').style.display = 'flex';
+        setTimeout(() => { if ($('fdesc')) $('fdesc').focus(); }, 200);
+    }
+    window.openFinanceModal = openFinanceModal;
+
+    window.toggleFinanceManualCategory = function() {
+        const catSelect = $('fcat');
+        const manualInput = $('fcat_manual');
+        const manualGroup = $('fcat_manual_group');
+        if (!catSelect || !manualInput || !manualGroup) return;
+
+        if (catSelect.value.includes('Lain-lain')) {
+            manualGroup.style.display = 'block';
+            manualInput.focus();
         } else {
-            $('form-title').textContent = 'INVOIS';
-            $('preview-form-title').textContent = 'INVOIS';
+            manualGroup.style.display = 'none';
+            manualInput.value = '';
         }
-        const root = document.documentElement;
-        const t = UI_CONFIG.theme;
-        if (t.primary) root.style.setProperty('--primary', t.primary);
-        if (t.primary_light) root.style.setProperty('--primary-light', t.primary_light);
-        if (t.success) root.style.setProperty('--success', t.success);
-        if (t.success_dark) root.style.setProperty('--success-dark', t.success_dark);
-        if (t.danger) root.style.setProperty('--danger', t.danger);
-        if (t.warning) root.style.setProperty('--warning', t.warning);
-        if (t.info) root.style.setProperty('--info', t.info);
-        if (t.font_family) root.style.setProperty('--font-family', t.font_family);
-        if (t.border_radius) root.style.setProperty('--border-radius', t.border_radius);
-        if (t.bg_body) root.style.setProperty('--bg-body', t.bg_body);
-        if (t.row_hover_bg) root.style.setProperty('--row-hover-bg', t.row_hover_bg);
-        if (t.row_hover_border) root.style.setProperty('--row-hover-border', t.row_hover_border);
-        if (t.row_selected_bg) root.style.setProperty('--row-selected-bg', t.row_selected_bg);
-        if (t.row_selected_border) root.style.setProperty('--row-selected-border', t.row_selected_border);
-        const metaTheme = document.querySelector('meta[name="theme-color"]');
-        if (metaTheme && t.primary) metaTheme.content = t.primary;
-        const L = UI_CONFIG.layout;
-        const features = $('landing-features');
-        if (features) features.style.display = L.show_features ? 'flex' : 'none';
-        const tagline = document.querySelector('.tagline');
-        if (tagline) tagline.style.display = L.show_tagline ? 'block' : 'none';
-        const topCust = $('top-customers-section');
-        if (topCust) topCust.style.display = L.show_top_customers ? 'block' : 'none';
-        const attachSec = document.querySelector('.attach-section');
-        if (attachSec) attachSec.style.display = L.show_attach_section ? 'block' : 'none';
-        const depositGroup = $('deposit-group');
-        if (depositGroup) depositGroup.style.display = L.show_deposit_field ? 'block' : 'none';
-        const tabVisMap = {
-            'tab-dashboard': 'show_tab_dashboard', 'tab-sales-person': 'show_tab_sales_person',
-            'tab-templates': 'show_tab_templates', 'tab-deleted-bills': 'show_tab_deleted_bills',
-            'tab-settings': 'show_tab_settings'
-        };
-        for (const [tabId, key] of Object.entries(tabVisMap)) {
-            const btn = $(tabId);
-            if (!btn) continue;
-            if (!L[key]) { btn.style.display = 'none'; btn.dataset.hiddenByConfig = '1'; }
-            else { delete btn.dataset.hiddenByConfig; }
-        }
-        const nav = $('tab-nav-container');
-        if (nav && Array.isArray(UI_CONFIG.tab_order)) {
-            UI_CONFIG.tab_order.forEach(tabId => {
-                const el = document.getElementById(tabId);
-                if (el && el.parentNode === nav) nav.appendChild(el);
-            });
-        }
-        applyColumnConfig();
-        applyBossMode();
-    }
-
-    function getVisibleOrderColumns() {
-        return (UI_CONFIG.column_order || []).filter(c => c.visible);
-    }
-    function renderOrderThead() {
-        const theadRow = $('orders-thead-row');
-        if (!theadRow) return;
-        const cols = getVisibleOrderColumns();
-        theadRow.innerHTML = cols.map(c => `<th>${escapeHtml(c.label)}</th>`).join('') + '<th class="no-print">Tindakan</th>';
-    }
-    function applyColumnConfig() { renderOrderThead(); }
-    function buildOrderRowCells(o, orders) {
-        const cols = getVisibleOrderColumns();
-        const designerText = o.assignedDesigner ? escapeHtml(o.assignedDesigner) : '<span style="color:#999;">-</span>';
-        const designStatusHtml = getDesignStatusBadge(o.designStatus || 'pending');
-        const productionCellHtml = getProductionCellHtml(o);
-        const isCompleted = o.status === 'completed';
-        const isPartial = isPartialDelivery(o);
-        let completeBtn = '';
-        if (isCompleted) completeBtn = `<button class="complete-btn" disabled title="Order sudah selesai" style="background:#95a5a6;">✅</button>`;
-        else completeBtn = `<button class="complete-btn" data-invoice="${o.invoiceNumber}" title="Buka pop-up selesai">✅</button>`;
-        const printBtn = `<button class="print-btn" data-invoice="${o.invoiceNumber}" title="Cetak bill asal">🖨️</button>`;
-        const waBtn = `<button class="wa-btn" data-invoice="${o.invoiceNumber}" title="Hantar WhatsApp">💬</button>`;
-        const forceDelBtn = `<button class="force-del-btn" data-invoice="${o.invoiceNumber}" title="Force Padam Order">🗑️</button>`;
-        let printFinalBtn = '';
-        if (isCompleted) printFinalBtn = `<button class="print-final-btn" data-invoice="${o.invoiceNumber}" data-type="final" title="Cetak bill akhir (SELESAI)" style="background:#27ae60;">📄</button>`;
-        else if (isPartial) printFinalBtn = `<button class="print-final-btn" data-invoice="${o.invoiceNumber}" data-type="partial" title="Cetak bill TIDAK LENGKAP" style="background:#e67e22;">📄</button>`;
-        const editBtn = `<button class="edit-btn" data-invoice="${o.invoiceNumber}" title="Edit order">✏️</button>`;
-        const st = getOrderStatus(o);
-        const cellMap = {
-            invoiceNumber: `<td><span class="order-number" data-invoice="${o.invoiceNumber}">${o.invoiceNumber||'-'}</span></td>`,
-            customerName: `<td>${escapeHtml(o.customerName)||'-'}</td>`,
-            subtotal: `<td><strong style="color:#27ae60;">RM ${(o.subtotal||0).toFixed(2)}</strong></td>`,
-            customerPhone: `<td>${escapeHtml(o.customerPhone)||'-'}</td>`,
-            orderDate: `<td>${formatDate(o.orderDate)}</td>`,
-            completionDate: `<td>${formatDate(o.completionDate)}</td>`,
-            salesPerson: `<td>${escapeHtml(o.salesPerson)||'-'}</td>`,
-            assignedDesigner: `<td>${designerText}</td>`,
-            designStatus: `<td>${designStatusHtml}</td>`,
-            productionStatus: `<td>${productionCellHtml}</td>`,
-            deliveryMethod: `<td>${getDeliveryMethodBadge(o)}</td>`,
-            serah: `<td>${getSerahBadge(o)}</td>`,
-            status: `<td class="status-cell"><span class="status-indicator status-${st}"></span>${getStatusText(st)}</td>`
-        };
-        const cells = cols.map(c => cellMap[c.key] || '<td>-</td>').join('');
-        return cells + `<td class="no-print"><div class="order-actions">${printBtn}${waBtn}${printFinalBtn}${editBtn}${completeBtn}${forceDelBtn}</div></td>`;
-    }
-
-    const UI_TEXT_FIELDS = [
-        { key: 'company_name', label: 'Nama Syarikat' },
-        { key: 'tagline', label: 'Tagline' },
-        { key: 'company_full_address', label: 'Alamat Penuh (HTML <br> dibenarkan)', type: 'textarea' },
-        { key: 'bank_info', label: 'Info Bank (HTML)', type: 'textarea' },
-        { key: 'btn_login_qr', label: 'Butang: Login QR' },
-        { key: 'btn_login_pin', label: 'Butang: Login PIN' },
-        { key: 'btn_login_boss', label: 'Butang: Login Boss' },
-        { key: 'btn_new_invoice', label: 'Butang: Invois Baru' },
-        { key: 'btn_new_quotation', label: 'Butang: Quotation Baru' },
-        { key: 'btn_manage_orders', label: 'Butang: Urus Order' },
-        { key: 'btn_manage_quotations', label: 'Butang: Senarai Quotation' },
-        { key: 'btn_dashboard', label: 'Butang: Papan Pemuka' },
-        { key: 'btn_settings', label: 'Butang: Tetapan' },
-        { key: 'feat1_title', label: 'Feature 1 — Tajuk' }, { key: 'feat1_desc', label: 'Feature 1 — Deskripsi' },
-        { key: 'feat2_title', label: 'Feature 2 — Tajuk' }, { key: 'feat2_desc', label: 'Feature 2 — Deskripsi' },
-        { key: 'feat3_title', label: 'Feature 3 — Tajuk' }, { key: 'feat3_desc', label: 'Feature 3 — Deskripsi' },
-        { key: 'feat4_title', label: 'Feature 4 — Tajuk' }, { key: 'feat4_desc', label: 'Feature 4 — Deskripsi' },
-        { key: 'feat5_title', label: 'Feature 5 — Tajuk' }, { key: 'feat5_desc', label: 'Feature 5 — Deskripsi' },
-        { key: 'feat6_title', label: 'Feature 6 — Tajuk' }, { key: 'feat6_desc', label: 'Feature 6 — Deskripsi' },
-        { key: 'tab_invoice', label: 'Tab: Buat Invois' },
-        { key: 'tab_orders', label: 'Tab: Senarai Order' },
-        { key: 'tab_active', label: 'Tab: Order Aktif' },
-        { key: 'tab_quotation', label: 'Tab: Quotation' },
-        { key: 'tab_design', label: 'Tab: Design Saya' },
-        { key: 'tab_production', label: 'Tab: Kerja Saya' },
-        { key: 'tab_dashboard', label: 'Tab: Papan Pemuka' },
-        { key: 'tab_sales_person', label: 'Tab: Jurujual' },
-        { key: 'tab_templates', label: 'Tab: Template & Saiz' },
-        { key: 'tab_deleted_bills', label: 'Tab: Bil Dibatalkan' },
-        { key: 'tab_settings', label: 'Tab: Tetapan' },
-        { key: 'terms_html', label: 'Terma & Syarat (HTML)', type: 'textarea' }
-    ];
-    const UI_THEME_FIELDS = [
-        { key: 'primary', label: 'Warna Utama (Primary)' },
-        { key: 'primary_light', label: 'Warna Utama Cerah' },
-        { key: 'success', label: 'Warna Success (Hijau)' },
-        { key: 'success_dark', label: 'Warna Success Dark' },
-        { key: 'danger', label: 'Warna Danger (Merah)' },
-        { key: 'warning', label: 'Warna Warning (Oren)' },
-        { key: 'info', label: 'Warna Info (Biru)' },
-        { key: 'row_hover_bg', label: '🎯 Baris: Warna Hover (Background)' },
-        { key: 'row_hover_border', label: '🎯 Baris: Warna Border Hover' },
-        { key: 'row_selected_bg', label: '🎯 Baris: Warna Bila Diklik (Background)' },
-        { key: 'row_selected_border', label: '🎯 Baris: Warna Border Bila Diklik' }
-    ];
-    const UI_LAYOUT_FIELDS = [
-        { key: 'show_tagline', label: 'Tunjuk Tagline di Landing Page' },
-        { key: 'show_features', label: 'Tunjuk Kad Features di Landing Page' },
-        { key: 'show_top_customers', label: 'Tunjuk "Top 10 Pelanggan"' },
-        { key: 'show_tab_dashboard', label: 'Tunjuk Tab "Papan Pemuka"' },
-        { key: 'show_tab_sales_person', label: 'Tunjuk Tab "Jurujual"' },
-        { key: 'show_tab_templates', label: 'Tunjuk Tab "Template & Saiz"' },
-        { key: 'show_tab_deleted_bills', label: 'Tunjuk Tab "Bil Dibatalkan"' },
-        { key: 'show_tab_settings', label: 'Tunjuk Tab "Tetapan"' },
-        { key: 'show_deposit_field', label: 'Tunjuk Field Deposit di Form Invois' },
-        { key: 'show_delivery_field', label: 'Tunjuk Field Kaedah Penghantaran' },
-        { key: 'show_attach_section', label: 'Tunjuk Section Lampiran Fail' }
-    ];
-    const TAB_LABELS = {
-        'tab-invoice': '📄 Buat Invois', 'tab-orders': '📋 Senarai Order', 'tab-active': '⚡ Order Aktif',
-        'tab-quotation': '📋 Quotation', 'tab-design': '🎨 Design Saya', 'tab-production': '🏭 Kerja Saya',
-        'tab-dashboard': '📊 Papan Pemuka', 'tab-sales-person': '👥 Jurujual',
-        'tab-templates': '⚡ Template & Saiz', 'tab-deleted-bills': '🗑️ Bil Dibatalkan', 'tab-settings': '⚙️ Tetapan'
     };
 
-    function renderUIEditor() {
-        uiTempConfig = JSON.parse(JSON.stringify(UI_CONFIG));
-        const textGrid = $('ui-text-grid');
-        if (textGrid) {
-            textGrid.innerHTML = UI_TEXT_FIELDS.map(f => {
-                const v = uiTempConfig.text[f.key] || '';
-                if (f.type === 'textarea') {
-                    return `<div class="ui-editor-field" style="grid-column:1/-1;"><label>${f.label}</label><textarea data-ui-field="text.${f.key}" style="height:70px;">${escapeHtml(v)}</textarea></div>`;
+    window.openFinanceEditModal = function(id) {
+        const t = allFinanceTransactionsCache.find(x => x.id === id);
+        if (!t) return;
+        const cat = allFinanceCategoriesCache.find(c => c.name === t.category_name);
+        const type = t.type === 'in' ? (t.category_name === 'Modal Luar' ? 'modal' : 'belanja') : (cat && cat.type === 'personal' ? 'peribadi' : 'belanja');
+        openFinanceModal(type, id);
+    };
+
+    function closeFinanceModal() {
+        $('finance-modal').style.display = 'none';
+        financeCurrentModalType = null;
+        financeEditingId = null;
+    }
+    window.closeFinanceModal = closeFinanceModal;
+
+    async function saveFinanceTransaction() {
+        const errEl = $('finance-modal-error');
+        errEl.style.display = 'none';
+        const date = $('fdate').value;
+        const desc = $('fdesc').value.trim();
+        const amount = parseFloat($('famount').value) || 0;
+        let cat = $('fcat') ? $('fcat').value : 'Modal Luar';
+        const manualCat = $('fcat_manual') ? $('fcat_manual').value.trim() : '';
+        const type = financeCurrentModalType === 'modal' ? 'in' : 'out';
+
+        if (cat.includes('Lain-lain') && manualCat) {
+            cat = manualCat;
+        }
+
+        if (!date) { errEl.textContent = 'Sila isi tarikh.'; errEl.style.display = 'block'; return; }
+        if (!desc) { errEl.textContent = 'Sila isi keterangan.'; errEl.style.display = 'block'; return; }
+        if (amount <= 0) { errEl.textContent = 'Jumlah mesti lebih dari 0.'; errEl.style.display = 'block'; return; }
+        if (financeCurrentModalType !== 'modal' && !cat) { errEl.textContent = 'Sila pilih kategori.'; errEl.style.display = 'block'; return; }
+
+        const payload = { date, type, category_name: financeCurrentModalType === 'modal' ? 'Modal Luar' : cat, description: desc, amount, created_by: STAFF_NAME || 'Boss' };
+
+        try {
+            if (financeEditingId) {
+                const { error } = await supabaseClient.from('finance_transactions').update(payload).eq('id', financeEditingId);
+                if (error) throw error;
+            } else {
+                const { data: inserted, error } = await supabaseClient.from('finance_transactions').insert(payload).select().single();
+                if (error) throw error;
+                const fileInput = $('freceipt');
+                if (fileInput && fileInput.files && fileInput.files[0] && inserted) {
+                    await uploadFinanceReceipt(inserted.id, fileInput.files[0]);
                 }
-                return `<div class="ui-editor-field"><label>${f.label}</label><input type="text" data-ui-field="text.${f.key}" value="${escapeAttr(v)}"></div>`;
-            }).join('');
-        }
-        const themeList = $('ui-theme-list');
-        if (themeList) {
-            themeList.innerHTML = UI_THEME_FIELDS.map(f => {
-                const v = uiTempConfig.theme[f.key] || '#000000';
-                return `<div class="color-row"><label>${f.label}</label><input type="color" data-ui-color="${f.key}" value="${v}"><input type="text" data-ui-field="theme.${f.key}" value="${escapeAttr(v)}" maxlength="20"></div>`;
-            }).join('');
-        }
-        $('ui-font-family').value = uiTempConfig.theme.font_family || "'Arial', sans-serif";
-        $('ui-border-radius').value = uiTempConfig.theme.border_radius || '8px';
-        $('ui-bg-body').value = uiTempConfig.theme.bg_body || '#f5f5f5';
-        $('ui-bg-body-color').value = uiTempConfig.theme.bg_body || '#f5f5f5';
-        const layoutList = $('ui-layout-list');
-        if (layoutList) {
-            layoutList.innerHTML = UI_LAYOUT_FIELDS.map(f => {
-                const v = uiTempConfig.layout[f.key];
-                return `<div class="toggle-row"><input type="checkbox" data-ui-toggle="layout.${f.key}" ${v?'checked':''} id="tog_${f.key}"><label for="tog_${f.key}">${f.label}</label></div>`;
-            }).join('');
-        }
-        renderUITabOrderList();
-        renderUIColumnsList();
-    }
-    function renderUITabOrderList() {
-        const list = $('ui-tab-order-list');
-        if (!list) return;
-        const order = uiTempConfig.tab_order || DEFAULT_UI_CONFIG.tab_order;
-        list.innerHTML = order.map(tabId => {
-            const label = TAB_LABELS[tabId] || tabId;
-            return `<div class="tab-order-item" data-tab-id="${tabId}"><span class="drag-handle">⋮⋮</span><span class="tab-name">${escapeHtml(label)}</span></div>`;
-        }).join('');
-        if (typeof Sortable !== 'undefined') {
-            new Sortable(list, { animation: 150, handle: '.drag-handle',
-                onEnd: () => { const newOrder = [...list.querySelectorAll('.tab-order-item')].map(el => el.dataset.tabId); uiTempConfig.tab_order = newOrder; }
-            });
+            }
+            await loadFinanceData();
+            renderFinanceList();
+            renderFinanceBalances();
+            closeFinanceModal();
+        } catch(e) {
+            errEl.textContent = '❌ Gagal simpan: ' + e.message;
+            errEl.style.display = 'block';
         }
     }
-    function renderUIColumnsList() {
-        const list = $('ui-columns-list');
-        if (!list) return;
-        const cols = uiTempConfig.column_order || DEFAULT_UI_CONFIG.column_order;
-        list.innerHTML = cols.map(c => {
-            return `<div class="col-item" data-col-key="${c.key}"><span class="drag-handle">⋮⋮</span><span class="col-label">${escapeHtml(c.label)}</span><input type="checkbox" data-col-vis="${c.key}" ${c.visible?'checked':''}></div>`;
-        }).join('');
-        if (typeof Sortable !== 'undefined') {
-            new Sortable(list, { animation: 150, handle: '.drag-handle',
-                onEnd: () => {
-                    const newOrder = [...list.querySelectorAll('.col-item')].map(el => {
-                        const key = el.dataset.colKey;
-                        const existing = uiTempConfig.column_order.find(c => c.key === key);
-                        return existing || { key, label: key, visible: true };
-                    });
-                    uiTempConfig.column_order = newOrder;
-                }
-            });
-        }
+    window.saveFinanceTransaction = saveFinanceTransaction;
+
+    async function uploadFinanceReceipt(transactionId, file) {
+        try {
+            const timestamp = Date.now();
+            const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+            const filePath = `finance/${transactionId}/${timestamp}_${safeName}`;
+            const { error: upErr } = await supabaseClient.storage.from('designs').upload(filePath, file, { cacheControl: '3600', upsert: false });
+            if (upErr) { return; }
+            const { data: urlData } = supabaseClient.storage.from('designs').getPublicUrl(filePath);
+            await supabaseClient.from('finance_transactions').update({ receipt_file_url: urlData.publicUrl }).eq('id', transactionId);
+        } catch(e) { }
     }
-    function collectUIEditorValues() {
-        document.querySelectorAll('[data-ui-field]').forEach(el => {
-            const path = el.dataset.uiField;
-            const [sect, key] = path.split('.');
-            if (!uiTempConfig[sect]) uiTempConfig[sect] = {};
-            uiTempConfig[sect][key] = el.value;
-        });
-        document.querySelectorAll('[data-ui-toggle]').forEach(el => {
-            const path = el.dataset.uiToggle;
-            const [sect, key] = path.split('.');
-            if (!uiTempConfig[sect]) uiTempConfig[sect] = {};
-            uiTempConfig[sect][key] = el.checked;
-        });
-        const newCols = (uiTempConfig.column_order || []).map(c => {
-            const cb = document.querySelector(`[data-col-vis="${c.key}"]`);
-            return { ...c, visible: cb ? cb.checked : c.visible };
-        });
-        uiTempConfig.column_order = newCols;
-        if ($('ui-font-family')) uiTempConfig.theme.font_family = $('ui-font-family').value;
-        if ($('ui-border-radius')) uiTempConfig.theme.border_radius = $('ui-border-radius').value;
-        if ($('ui-bg-body')) uiTempConfig.theme.bg_body = $('ui-bg-body').value;
+
+    function openFinanceDeleteConfirm(id) {
+        financeDeleteId = id;
+        const t = allFinanceTransactionsCache.find(x => x.id === id);
+        if (!t) return;
+        $('finance-delete-info').innerHTML = `<strong>${escapeHtml(t.description || '-')}</strong><br>${formatRM(t.amount)} · ${formatDate(t.date)}`;
+        $('finance-delete-modal').style.display = 'flex';
     }
-    document.addEventListener('input', function(e) {
-        if (e.target.matches('[data-ui-color]')) {
-            const key = e.target.dataset.uiColor;
-            const txt = document.querySelector(`[data-ui-field="theme.${key}"]`);
-            if (txt) txt.value = e.target.value;
+    window.openFinanceDeleteConfirm = openFinanceDeleteConfirm;
+
+    function closeFinanceDelete() {
+        $('finance-delete-modal').style.display = 'none';
+        financeDeleteId = null;
+    }
+    window.closeFinanceDelete = closeFinanceDelete;
+
+    async function executeFinanceDelete() {
+        if (!financeDeleteId) return;
+        try {
+            await supabaseClient.from('finance_transactions').delete().eq('id', financeDeleteId);
+            await loadFinanceData();
+            renderFinanceList();
+            renderFinanceBalances();
+            closeFinanceDelete();
+        } catch(e) { alert('Gagal padam: ' + e.message); }
+    }
+    window.executeFinanceDelete = executeFinanceDelete;
+
+    window.switchFinanceTab = function(tab) {
+        document.querySelectorAll('.finance-tab-btn').forEach(b => b.classList.toggle('active', b.id === 'finance-' + tab + '-tab'));
+        document.querySelectorAll('.finance-content').forEach(c => c.classList.toggle('active', c.id === 'finance-content-' + tab));
+        if (tab === 'laporan') {
+            renderFinanceBalances();
+            applyFinanceLabels();
+        } else {
+            renderFinanceList();
         }
-        if (e.target.matches('[data-ui-field^="theme."]')) {
-            const key = e.target.dataset.uiField.split('.')[1];
-            const color = document.querySelector(`[data-ui-color="${key}"]`);
-            if (color && /^#[0-9A-Fa-f]{6}$/.test(e.target.value)) color.value = e.target.value;
-        }
-        if (e.target.id === 'ui-bg-body') {
-            if (/^#[0-9A-Fa-f]{6}$/.test(e.target.value)) $('ui-bg-body-color').value = e.target.value;
-        }
-        if (e.target.id === 'ui-bg-body-color') {
-            $('ui-bg-body').value = e.target.value;
-        }
-    });
-    window.uiSwitchTab = function(tab) {
-        document.querySelectorAll('.ui-tab-btn').forEach(b => b.classList.toggle('active', b.dataset.uitab === tab));
-        document.querySelectorAll('.ui-tab-content').forEach(c => c.classList.toggle('active', c.dataset.uicontent === tab));
-    };
-    window.uiSaveConfig = async function() {
-        collectUIEditorValues();
-        const merged = JSON.parse(JSON.stringify(DEFAULT_UI_CONFIG));
-        for (const k in UI_CONFIG.text) if (!(k in uiTempConfig.text)) uiTempConfig.text[k] = UI_CONFIG.text[k];
-        UI_CONFIG = deepMerge(merged, uiTempConfig);
-        if (await saveUIConfig(UI_CONFIG)) {
-            applyUIConfig();
-            alert('✅ Konfigurasi UI berjaya disimpan!');
-        }
-    };
-    window.uiDiscardChanges = function() {
-        if (!confirm('Buang semua perubahan yang belum disimpan?')) return;
-        renderUIEditor();
-        alert('✅ Perubahan dibuang.');
-    };
-    window.uiResetSection = function(section) {
-        if (!confirm(`Reset ${section} ke default?`)) return;
-        uiTempConfig[section] = JSON.parse(JSON.stringify(DEFAULT_UI_CONFIG[section]));
-        renderUIEditor();
-        alert('Reset. Tekan "Simpan Semua Perubahan" untuk apply.');
-    };
-    window.uiResetAll = function() {
-        if (!confirm('Reset SEMUA ke default?')) return;
-        uiTempConfig = JSON.parse(JSON.stringify(DEFAULT_UI_CONFIG));
-        renderUIEditor();
-        alert('Reset semua. Tekan "Simpan Semua Perubahan" untuk apply.');
     };
 
+    window.openFinanceFullList = function() {
+        financeCurrentFilter = 'all';
+        document.querySelectorAll('.finance-filter-btn').forEach(b => b.classList.toggle('active', b.dataset.ffilter === 'all'));
+        renderFinanceFullList();
+        $('finance-full-list-modal').style.display = 'flex';
+    };
+
+    window.setFinanceFilter = function(filter) {
+        financeCurrentFilter = filter;
+        document.querySelectorAll('.finance-filter-btn').forEach(b => b.classList.toggle('active', b.dataset.ffilter === filter));
+        renderFinanceFullList();
+    };
+
+    function renderFinanceFullList() {
+        let txs = allFinanceTransactionsCache.filter(t => {
+            if (!t.date) return false;
+            const cat = allFinanceCategoriesCache.find(c => c.name === t.category_name);
+            const type = cat ? cat.type : (t.category_name === 'Modal Luar' ? 'modal' : 'expense');
+            if (financeCurrentFilter === 'all') return true;
+            if (financeCurrentFilter === 'belanja') return t.type === 'out' && type === 'expense';
+            if (financeCurrentFilter === 'peribadi') return t.type === 'out' && type === 'personal';
+            if (financeCurrentFilter === 'modal') return t.type === 'in' && t.category_name === 'Modal Luar';
+            return true;
+        });
+        const grouped = {};
+        txs.forEach(t => { if (!grouped[t.date]) grouped[t.date] = []; grouped[t.date].push(t); });
+        const dates = Object.keys(grouped).sort((a,b) => new Date(b) - new Date(a));
+        const el = $('finance-full-list-content');
+        if (!el) return;
+        if (!dates.length) { el.innerHTML = '<div class="finance-empty">Tiada catatan.</div>'; return; }
+        el.innerHTML = dates.map(d => {
+            const dateObj = new Date(d);
+            const dateLabel = dateObj.toLocaleDateString('ms-MY', { day: 'numeric', month: 'short', year: 'numeric' });
+            return `<div style="margin-bottom:15px;">
+                <div style="font-weight:bold;color:#666;font-size:12px;padding:5px 0;border-bottom:1px solid #eee;margin-bottom:8px;">📅 ${dateLabel}</div>
+                ${grouped[d].map(renderFinanceListItem).join('')}
+            </div>`;
+        }).join('');
+    }
+    function closeFinanceFullList() { $('finance-full-list-modal').style.display = 'none'; }
+    window.closeFinanceFullList = closeFinanceFullList;
+      async function openFinanceSettings() {
+        $('finance-setting-start-date').value = financeSettingsCache.start_date || new Date().toISOString().split('T')[0];
+        $('finance-setting-opening-balance').value = financeSettingsCache.opening_balance || 0;
+        
+        renderFinanceCategoriesList();
+        renderFinanceLabelFields();
+        
+        $('finance-settings-modal').style.display = 'flex';
+    }
+    window.openFinanceSettings = openFinanceSettings;
+
+    window.renderFinanceLabelFields = function() {
+        const labels = [
+            { key: 'baki_pelanggan', label: 'Baki Pelanggan' },
+            { key: 'baki_tunai', label: 'Baki Tunai' },
+            { key: 'untung_bisnes', label: 'Untung Bisnes' }
+        ];
+        $('finance-label-fields').innerHTML = labels.map(l => `
+            <div class="finance-label-row">
+                <label>${l.label} →</label>
+                <input type="text" data-finance-label-input="${l.key}" value="${escapeAttr(financeSettingsCache.label_overrides[l.key] || l.label)}" placeholder="${l.label}">
+            </div>
+        `).join('');
+    };
+
+    window.renderFinanceCategoriesList = function() {
+        const listEl = $('finance-category-list');
+        if (!listEl) return;
+        if (!allFinanceCategoriesCache.length) {
+            listEl.innerHTML = '<p style="font-size:12px;color:#999;text-align:center;">Tiada kategori.</p>';
+            return;
+        }
+        listEl.innerHTML = allFinanceCategoriesCache.map(c => `
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 10px; background:white; border:1px solid #eee; border-radius:4px; margin-bottom:5px;">
+                <span style="font-size:13px;">${c.type === 'expense' ? '🟢' : '🔴'} ${escapeHtml(c.name)}</span>
+                <button onclick="deleteFinanceCategory('${c.id}', '${escapeAttr(c.name)}')" style="background:none; border:none; color:#dc2626; cursor:pointer; font-size:14px;" title="Padam">🗑️</button>
+            </div>
+        `).join('');
+    };
+
+    window.addNewFinanceCategory = async function() {
+        const nameInput = $('new-cat-name');
+        const typeInput = $('new-cat-type');
+        const name = nameInput.value.trim();
+        const type = typeInput.value;
+        
+        if (!name) { alert('Sila masukkan nama kategori.'); return; }
+        
+        try {
+            const { error } = await supabaseClient.from('finance_categories').insert({ name, type });
+            if (error) throw error;
+            nameInput.value = '';
+            await loadFinanceData();
+            renderFinanceCategoriesList();
+        } catch(e) {
+            alert('Gagal tambah kategori: ' + e.message);
+        }
+    };
+
+    window.deleteFinanceCategory = async function(id, name) {
+        if (!confirm(`Padam kategori "${name}"?`)) return;
+        try {
+            const { error } = await supabaseClient.from('finance_categories').delete().eq('id', id);
+            if (error) throw error;
+            await loadFinanceData();
+            renderFinanceCategoriesList();
+        } catch(e) {
+            alert('Gagal padam kategori: ' + e.message);
+        }
+    };
+
+    function closeFinanceSettings() { $('finance-settings-modal').style.display = 'none'; }
+    window.closeFinanceSettings = closeFinanceSettings;
+
+    async function saveFinanceSettings() {
+        const startDate = $('finance-setting-start-date').value;
+        const openingBalance = parseFloat($('finance-setting-opening-balance').value) || 0;
+        const labelOverrides = {};
+        document.querySelectorAll('[data-finance-label-input]').forEach(inp => {
+            const key = inp.dataset.financeLabelInput;
+            const val = inp.value.trim();
+            if (val && val !== { baki_pelanggan: 'Baki Pelanggan', baki_tunai: 'Baki Tunai', untung_bisnes: 'Untung Bisnes' }[key]) {
+                labelOverrides[key] = val;
+            }
+        });
+
+        try {
+            const updates = [
+                { key: 'start_date', value: startDate },
+                { key: 'opening_balance', value: String(openingBalance) },
+                { key: 'label_overrides', value: JSON.stringify(labelOverrides) }
+            ];
+            for (const u of updates) {
+                const { data: existing } = await supabaseClient.from('finance_settings').select('key').eq('key', u.key).maybeSingle();
+                if (existing) {
+                    await supabaseClient.from('finance_settings').update({ value: u.value, updated_at: new Date() }).eq('key', u.key);
+                } else {
+                    await supabaseClient.from('finance_settings').insert(u);
+                }
+            }
+            await loadFinanceData();
+            renderFinanceBalances();
+            applyFinanceLabels();
+            closeFinanceSettings();
+            alert('✅ Tetapan disimpan.');
+        } catch(e) { alert('Gagal: ' + e.message); }
+    }
+    window.saveFinanceSettings = saveFinanceSettings;
+
+    async function openFinanceBalanceCheck() {
+        const b = computeFinanceBalances();
+        $('finance-check-date').value = new Date().toISOString().split('T')[0];
+        $('finance-check-system').value = formatRM(b.bakiTunai);
+        $('finance-check-actual').value = '';
+        $('finance-check-diff-box').style.display = 'none';
+        $('finance-check-actions').style.display = 'none';
+        $('finance-check-note').value = '';
+        $('finance-balance-check-modal').style.display = 'flex';
+    }
+    window.openFinanceBalanceCheck = openFinanceBalanceCheck;
+
+    function computeFinanceCheckDiff() {
+        const b = computeFinanceBalances();
+        const actual = parseFloat($('finance-check-actual').value) || 0;
+        const diff = b.bakiTunai - actual;
+        if (Math.abs(diff) < 0.01) {
+            $('finance-check-diff-box').style.display = 'none';
+            $('finance-check-actions').style.display = 'none';
+            return;
+        }
+        $('finance-check-diff-box').style.display = 'block';
+        $('finance-check-diff').textContent = formatRM(diff);
+        $('finance-check-actions').style.display = 'block';
+    }
+    window.computeFinanceCheckDiff = computeFinanceCheckDiff;
+
+    function closeFinanceBalanceCheck() { $('finance-balance-check-modal').style.display = 'none'; }
+    window.closeFinanceBalanceCheck = closeFinanceBalanceCheck;
+
+    async function saveFinanceBalanceCheck() {
+        const b = computeFinanceBalances();
+        const actual = parseFloat($('finance-check-actual').value) || 0;
+        const diff = b.bakiTunai - actual;
+        if (Math.abs(diff) < 0.01) { closeFinanceBalanceCheck(); return; }
+        const type = $('finance-check-type').value;
+        const note = $('finance-check-note').value.trim() || 'Duit tak tercatat (semakan baki)';
+        const catName = type === 'peribadi' ? 'Lain-lain Peribadi' : 'Lain-lain Kedai';
+        try {
+            await supabaseClient.from('finance_transactions').insert({
+                date: $('finance-check-date').value,
+                type: 'out',
+                category_name: catName,
+                description: note,
+                amount: Math.abs(diff),
+                created_by: STAFF_NAME || 'Boss'
+            });
+            await loadFinanceData();
+            renderFinanceList();
+            renderFinanceBalances();
+            closeFinanceBalanceCheck();
+            alert('✅ Beza direkod.');
+        } catch(e) { alert('Gagal: ' + e.message); }
+    }
+    window.saveFinanceBalanceCheck = saveFinanceBalanceCheck;
+
+    function openFinanceMonthlyReport() {
+        const now = new Date();
+        const monthSel = $('finance-report-month');
+        const months = ['Jan','Feb','Mac','Apr','Mei','Jun','Jul','Ogos','Sep','Okt','Nov','Dis'];
+        monthSel.innerHTML = months.map((m,i) => `<option value="${i}"${i === now.getMonth() ? ' selected' : ''}>${m}</option>`).join('');
+        $('finance-report-year').value = now.getFullYear();
+        renderFinanceMonthlyReport();
+        $('finance-monthly-report-modal').style.display = 'flex';
+    }
+    window.openFinanceMonthlyReport = openFinanceMonthlyReport;
+
+    function closeFinanceMonthlyReport() { $('finance-monthly-report-modal').style.display = 'none'; }
+    window.closeFinanceMonthlyReport = closeFinanceMonthlyReport;
+
+    function renderFinanceMonthlyReport() {
+        const month = parseInt($('finance-report-month').value);
+        const year = parseInt($('finance-report-year').value);
+        const start = new Date(year, month, 1);
+        const end = new Date(year, month + 1, 0, 23, 59, 59);
+
+        let duitPelanggan = 0;
+        (allOrdersCache || []).forEach(o => {
+            if (o.isQuotation) return;
+            if (!o.orderDate) return;
+            const od = new Date(o.orderDate);
+            if (od >= start && od <= end) duitPelanggan += (o.deposit || 0);
+        });
+
+        let belanjaKedai = 0, ambilanPeribadi = 0, modalLuar = 0;
+        const belanjaByCat = {};
+        (allFinanceTransactionsCache || []).forEach(t => {
+            if (!t.date) return;
+            const td = new Date(t.date);
+            if (td < start || td > end) return;
+            const cat = allFinanceCategoriesCache.find(c => c.name === t.category_name);
+            const type = cat ? cat.type : (t.category_name === 'Modal Luar' ? 'modal' : 'expense');
+            if (t.type === 'out') {
+                if (type === 'personal') ambilanPeribadi += parseFloat(t.amount) || 0;
+                else {
+                    belanjaKedai += parseFloat(t.amount) || 0;
+                    belanjaByCat[t.category_name || 'Lain-lain'] = (belanjaByCat[t.category_name || 'Lain-lain'] || 0) + (parseFloat(t.amount) || 0);
+                }
+            } else if (t.type === 'in' && t.category_name === 'Modal Luar') {
+                modalLuar += parseFloat(t.amount) || 0;
+            }
+        });
+
+        const topCats = Object.entries(belanjaByCat).sort((a,b) => b[1] - a[1]).slice(0, 5);
+        const monthNames = ['Januari','Februari','Mac','April','Mei','Jun','Julai','Ogos','September','Oktober','November','Disember'];
+
+        $('finance-report-content').innerHTML = `
+            <h4 style="margin-top:0;">📊 ${monthNames[month]} ${year}</h4>
+            <div style="background:#f0f9ff;padding:15px;border-radius:8px;margin-bottom:15px;">
+                <div style="font-weight:bold;margin-bottom:8px;">💰 DUIT MASUK</div>
+                <div style="display:flex;justify-content:space-between;font-size:13px;padding:3px 0;"><span>🟦 Duit Pelanggan</span><strong>${formatRM(duitPelanggan)}</strong></div>
+                <div style="display:flex;justify-content:space-between;font-size:13px;padding:3px 0;"><span>🟩 Modal Luar</span><strong>${formatRM(modalLuar)}</strong></div>
+            </div>
+            <div style="background:#fff5f5;padding:15px;border-radius:8px;margin-bottom:15px;">
+                <div style="font-weight:bold;margin-bottom:8px;">📤 DUIT KELUAR</div>
+                <div style="display:flex;justify-content:space-between;font-size:13px;padding:3px 0;"><span>🟢 Belanja Kedai</span><strong>${formatRM(belanjaKedai)}</strong></div>
+                <div style="display:flex;justify-content:space-between;font-size:13px;padding:3px 0;"><span>🔴 Ambilan Peribadi</span><strong>${formatRM(ambilanPeribadi)}</strong></div>
+            </div>
+            ${topCats.length ? `<div style="background:#fff8e1;padding:15px;border-radius:8px;margin-bottom:15px;">
+                <div style="font-weight:bold;margin-bottom:8px;">🏆 BELANJA TERBESAR</div>
+                ${topCats.map(([cat, amt], i) => `<div style="display:flex;justify-content:space-between;font-size:13px;padding:3px 0;"><span>${i+1}. ${escapeHtml(cat)}</span><strong>${formatRM(amt)}</strong></div>`).join('')}
+            </div>` : ''}
+            <div style="padding:10px;background:#fff;border-radius:8px;font-size:12px;color:#666;">
+                💡 Untung Bisnes bulan ni: <strong>${formatRM(duitPelanggan - belanjaKedai)}</strong>
+            </div>
+        `;
+    }
+    window.renderFinanceMonthlyReport = renderFinanceMonthlyReport;
+
+    async function displayFinance() {
+        await loadFinanceData();
+        await loadOrders();
+        renderFinanceBalances();
+        renderFinanceList();
+        applyFinanceLabels();
+        updateFinanceDashboardCards(); // <--- PENTING: Kira pecahan kad
+        const today = new Date();
+        const dateStr = today.toLocaleDateString('ms-MY', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+        if ($('finance-today-date')) $('finance-today-date').textContent = dateStr;
+        switchFinanceTab('catatan');
+    }
+    window.displayFinance = displayFinance;
+      // ============================================
+    // FUNGSI ASAS & SENARAI
+    // ============================================
     const DESIGN_STATUS = {
         pending: { label: 'Pending', icon: '🟡', cls: 'design-pending' },
         in_progress: { label: 'In Progress', icon: '🔵', cls: 'design-in_progress' },
@@ -2210,22 +2694,7 @@ document.addEventListener('DOMContentLoaded', function() {
         paused: { label: 'Paused', icon: '🟠', cls: 'prod-paused' },
         done: { label: 'Siap', icon: '✅', cls: 'prod-done' }
     };
-    function formatDate(d) {
-        if (!d || d === '-') return '-';
-        try { const dt = new Date(d); if (isNaN(dt)) return '-';
-            return `${String(dt.getDate()).padStart(2,'0')}/${String(dt.getMonth()+1).padStart(2,'0')}/${dt.getFullYear()}`;
-        } catch(e){ return '-'; }
-    }
-    function formatRM(n) { return 'RM ' + (parseFloat(n)||0).toFixed(2); }
-    function formatTime(d) {
-        if (!d) return '-';
-        try { const dt = new Date(d);
-            return `${String(dt.getDate()).padStart(2,'0')}/${String(dt.getMonth()+1).padStart(2,'0')}/${dt.getFullYear()} ${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}`;
-        } catch(e){ return '-'; }
-    }
-    function escapeHtml(s) { return (s||'').toString().replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-    function escapeAttr(s) { return (s||'').toString().replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
-    function genTempId() { return 'tmp_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8); }
+
     function getDesignStatusBadge(status) {
         const s = DESIGN_STATUS[status] || DESIGN_STATUS.pending;
         return `<span class="design-status-badge ${s.cls}">${s.icon} ${s.label}</span>`;
@@ -2313,13 +2782,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const hasBossAccess = (sessionStorage.getItem('appAuthed') === 'true' || isBoss);
         if (hasBossAccess) {
             document.body.classList.add('boss-mode');
-            ['tab-dashboard','tab-sales-person','tab-templates','tab-deleted-bills','tab-settings'].forEach(id => {
+            ['tab-dashboard','tab-sales-person','tab-templates','tab-deleted-bills','tab-settings','tab-finance'].forEach(id => {
                 const btn = document.getElementById(id);
                 if (btn && !btn.dataset.hiddenByConfig) btn.style.display = '';
             });
         } else {
             document.body.classList.remove('boss-mode');
-            ['tab-dashboard','tab-sales-person','tab-templates','tab-deleted-bills','tab-settings'].forEach(id => {
+            ['tab-dashboard','tab-sales-person','tab-templates','tab-deleted-bills','tab-settings','tab-finance'].forEach(id => {
                 const btn = document.getElementById(id);
                 if (btn) btn.style.display = 'none';
             });
@@ -2329,6 +2798,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const prodTab = $('tab-production');
         if (prodTab && !prodTab.dataset.hiddenByConfig) prodTab.style.display = (isProduction || hasBossAccess) ? '' : 'none';
     }
+
     function hasUnsavedFormData() {
         const invoiceNum = $('invoice-number').value;
         const customerName = $('customer-name').value.trim();
@@ -2336,11 +2806,12 @@ document.addEventListener('DOMContentLoaded', function() {
         let hasItems = currentInvoiceItems.length > 0;
         return !!(invoiceNum || customerName || customerPhone || hasItems || pendingFiles.length > 0);
     }
+
     async function loadAppSettings() {
         try {
             const { data } = await supabaseClient.from('app_settings').select('*').eq('key', 'boss_password').maybeSingle();
             if (data && data.value) CORRECT_PASSWORD = data.value;
-        } catch(e) { console.error('loadSettings:', e); }
+        } catch(e) { }
     }
     async function updatePassword(newPwd) {
         try {
@@ -2351,6 +2822,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return true;
         } catch(e) { alert('Gagal: ' + e.message); return false; }
     }
+
     async function loadStaffCards() {
         try {
             const { data, error } = await supabaseClient.from('staff_cards').select('*').order('created_at', {ascending: true});
@@ -2364,14 +2836,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 department_id: s.department_id || null
             }));
             return allStaffCardsCache;
-        } catch(e) { console.error(e); return []; }
+        } catch(e) { return []; }
     }
     async function loadDesigners() {
         await loadStaffCards();
         allDesignersCache = allStaffCardsCache.filter(s => s.active && s.is_designer);
         return allDesignersCache;
     }
-    async function addStaffCard(name, jawatan, pin, loginMethod, isDesignerFlag, isProductionFlag, departmentId) {
+      async function addStaffCard(name, jawatan, pin, loginMethod, isDesignerFlag, isProductionFlag, departmentId) {
         try {
             const token = 'esk_' + name.toLowerCase().replace(/\s/g, '_') + '_' + Math.random().toString(36).substr(2, 8);
             const { error } = await supabaseClient.from('staff_cards').insert({
@@ -2445,7 +2917,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 old_value: oldValue ? String(oldValue) : null,
                 new_value: newValue ? String(newValue) : null, notes: notes || null
             });
-        } catch(e) { console.error('auditLog:', e); }
+        } catch(e) { }
     }
     async function loadAuditLogs(invoiceNumber) {
         try {
@@ -2460,7 +2932,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 action: action, old_status: oldStatus || null,
                 new_status: newStatus || null, notes: notes || null
             });
-        } catch(e) { console.error('designActivity:', e); }
+        } catch(e) { }
     }
     async function loadDesignActivity(invoiceNumber) {
         try {
@@ -2475,7 +2947,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 action: action, old_status: oldStatus || null,
                 new_status: newStatus || null, notes: notes || null
             });
-        } catch(e) { console.error('productionActivity:', e); }
+        } catch(e) { }
     }
     async function loadProductionActivity(invoiceNumber) {
         try {
@@ -2493,7 +2965,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 allDeliveriesCache[d.invoice_number].push(d);
             });
             return allDeliveriesCache;
-        } catch(e) { console.error('loadDeliveries:', e); return {}; }
+        } catch(e) { return {}; }
     }
     async function addDelivery(invoiceNumber, itemIndices, itemSummary, deliveryMethod, staffName, paymentMethod, paymentAmount, deliveryDate) {
         try {
@@ -2511,7 +2983,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const { data: inserted, error } = await supabaseClient.from('order_deliveries').insert(insertData).select().single();
             if (error) throw error;
             return inserted;
-        } catch(e) { console.error('addDelivery:', e); alert('Gagal simpan penyerahan: ' + e.message); return null; }
+        } catch(e) { alert('Gagal simpan penyerahan: ' + e.message); return null; }
     }
     async function undoDelivery(deliveryId, reason, staffName) {
         try {
@@ -2523,7 +2995,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return true;
         } catch(e) { alert('Gagal undo: ' + e.message); return false; }
     }
-    async function loadOrders() {
+      async function loadOrders() {
         try {
             const { data: orders, error } = await supabaseClient.from('orders').select('*').order('created_at',{ascending:false});
             if (error) throw error;
@@ -2572,7 +3044,7 @@ document.addEventListener('DOMContentLoaded', function() {
             allOrdersCache = result;
             await loadAllDeliveries();
             return result;
-        } catch(e) { console.error('loadOrders:', e); return []; }
+        } catch(e) { return []; }
     }
     async function addOrder(o) {
         try {
@@ -2614,7 +3086,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 await addDesignActivity(o.invoiceNumber, 'assigned', null, 'pending', `Assigned kepada ${o.assignedDesigner}`);
             }
             return true;
-        } catch(e) { console.error('addOrder:', e); alert('Gagal simpan: ' + e.message); return false; }
+        } catch(e) { alert('Gagal simpan: ' + e.message); return false; }
     }
     async function updateOrderWithLog(newOrder, oldOrder) {
         try {
@@ -2654,7 +3126,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 for (const c of changes) await addAuditLog(newOrder.invoiceNumber, 'update', c.f, c.o, c.n, null);
             }
             return true;
-        } catch(e) { console.error('updateOrder:', e); return false; }
+        } catch(e) { return false; }
     }
     async function deleteOrder(inv, reason) {
         try {
@@ -2668,9 +3140,9 @@ document.addEventListener('DOMContentLoaded', function() {
             await supabaseClient.from('orders').delete().eq('invoice_number', inv);
             await addAuditLog(inv, 'delete', null, null, null, `Order dipadam. Sebab: ${reason}`);
             return true;
-        } catch(e) { console.error('deleteOrder:', e); return false; }
+        } catch(e) { return false; }
     }
-    async function loadSalesPersons() {
+      async function loadSalesPersons() {
         try {
             const { data } = await supabaseClient.from('sales_persons').select('*');
             allSalesPersonsCache = (data||[]).map(p => ({name:p.name, commission:parseFloat(p.commission)||0}));
@@ -2682,7 +3154,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const { data: ex } = await supabaseClient.from('sales_persons').select('name').eq('name', name).maybeSingle();
             if (ex) await supabaseClient.from('sales_persons').update({commission:c}).eq('name', name);
             else await supabaseClient.from('sales_persons').insert({name: name, commission: c});
-        } catch(e) { console.error(e); }
+        } catch(e) { }
     }
     async function loadDeletedBills() {
         try {
@@ -2815,7 +3287,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const d = new Date(); d.setDate(d.getDate() + 30);
                 $('quotation-valid-until').value = d.toISOString().split('T')[0];
             }
-            $('deposit-group').style.display = UI_CONFIG.layout.show_deposit_field ? 'block' : 'none';
+            $('deposit-group').style.display = 'block';
             $('preview-deposit-row').style.display = 'block';
             $('preview-valid-until-row').style.display = 'block';
             $('mode-quotation-btn').classList.add('active');
@@ -2829,7 +3301,7 @@ document.addEventListener('DOMContentLoaded', function() {
             $('form-number-label').textContent = 'NO.BIL';
             $('invoice-number').placeholder = 'Klik untuk pilih nombor bil';
             $('quotation-validity-group').style.display = 'none';
-            $('deposit-group').style.display = UI_CONFIG.layout.show_deposit_field ? 'block' : 'none';
+            $('deposit-group').style.display = 'block';
             $('preview-deposit-row').style.display = 'block';
             $('preview-valid-until-row').style.display = 'none';
             $('mode-invoice-btn').classList.add('active', 'invoice-active');
@@ -2845,7 +3317,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function showLandingPage() { landingPage.style.display='flex'; container.style.display='none'; }
     function showContainer(tab) { landingPage.style.display='none'; container.style.display='block'; document.getElementById(tab).click(); }
     function switchTab(id) {
-        const prot = ['tab-dashboard','tab-sales-person','tab-deleted-bills','tab-settings'];
+        const prot = ['tab-dashboard','tab-sales-person','tab-deleted-bills','tab-settings','tab-finance'];
         if (prot.includes(id) && !isBoss && sessionStorage.getItem('appAuthed') !== 'true') { 
             showPasswordPrompt('access_tab', id); 
             return; 
@@ -2865,12 +3337,13 @@ document.addEventListener('DOMContentLoaded', function() {
             'tab-sales-person':[salesPersonPage, ()=>displaySalesPersonData()],
             'tab-templates':[templatesPage, ()=>{displayTemplates(); displaySizeCategories();}],
             'tab-deleted-bills':[deletedBillsPage, ()=>displayDeletedBills()],
+            'tab-finance':[financePage, ()=>displayFinance()],
             'tab-settings':[settingsPage, ()=>{loadStaffCards().then(displayStaffCards); window.loadDepartments().then(window.displayDepartments); renderUIEditor();}]
         };
         if (map[id]) { const [p, fn] = map[id]; p.style.display='block'; p.classList.add('active'); fn(); }
         applyBossMode();
     }
-    function showPasswordPrompt(action, target) {
+      function showPasswordPrompt(action, target) {
         $('password-input').value=''; $('delete-reason-input').value=''; $('password-error').style.display='none';
         $('password-action').value=action; $('password-target-id').value=target;
         if (action === 'delete_order') { $('password-prompt-message').textContent = `Kata laluan & sebab untuk padam order ${target}.`; $('delete-reason-input').style.display='block'; }
@@ -3034,7 +3507,7 @@ document.addEventListener('DOMContentLoaded', function() {
         closeManualPinLogin();
         await performLogin(verified);
     }
-    function openPasswordLogin() {
+      function openPasswordLogin() {
         $('staff-login-password').value = '';
         $('staff-password-error').style.display = 'none';
         $('staff-password-login-modal').style.display = 'flex';
@@ -3158,7 +3631,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.closeQrDisplay = function() { $('qr-display-modal').style.display = 'none'; };
     async function printIdCard(staff) {
         const container = $('idcard-preview');
-        container.innerHTML = `<div class="id-card-print" id="id-card-content"><div class="id-card-header"><h3>${escapeHtml(UI_CONFIG.text.company_name)}</h3><p>Kad Pengenalan Staf</p></div><div class="id-card-body"><div class="id-card-info"><div class="field"><div class="field-label">Nama</div><div class="field-value">${escapeHtml(staff.staff_name)}</div></div><div class="field"><div class="field-label">Jawatan</div><div class="field-value">${escapeHtml(staff.jawatan||'Staff')}</div></div><div class="field"><div class="field-label">ID</div><div class="field-value">ESK-${staff.id.substring(0,6).toUpperCase()}</div></div></div><div class="id-card-qr" id="idcard-qr-target"></div></div><div class="id-card-footer">Kad ini hak milik ${escapeHtml(UI_CONFIG.text.company_name)}.</div></div>`;
+        container.innerHTML = `<div class="id-card-print" id="id-card-content"><div class="id-card-header"><h3>${escapeHtml(UI_CONFIG.text.company_name || 'EMPAYAR S KREATIF')}</h3><p>Kad Pengenalan Staf</p></div><div class="id-card-body"><div class="id-card-info"><div class="field"><div class="field-label">Nama</div><div class="field-value">${escapeHtml(staff.staff_name)}</div></div><div class="field"><div class="field-label">Jawatan</div><div class="field-value">${escapeHtml(staff.jawatan||'Staff')}</div></div><div class="field"><div class="field-label">ID</div><div class="field-value">ESK-${staff.id.substring(0,6).toUpperCase()}</div></div></div><div class="id-card-qr" id="idcard-qr-target"></div></div><div class="id-card-footer">Kad ini hak milik ${escapeHtml(UI_CONFIG.text.company_name || 'EMPAYAR S KREATIF')}.</div></div>`;
         try {
             const canvas = document.createElement('canvas');
             await QRCode.toCanvas(canvas, staff.qr_token, { width: 130, margin: 1 });
@@ -3214,7 +3687,7 @@ document.addEventListener('DOMContentLoaded', function() {
         else ok = await addSizeCategory(name, sizes, price);
         if (ok) { await loadSizeCategories(); displaySizeCategories(); closeSizeCatModal(); }
     }
-    async function openSizeInputModal(editIdx = null) {
+      async function openSizeInputModal(editIdx = null) {
         await loadSizeCategories();
         if (!allSizeCatsCache.length) { alert('Tiada kategori saiz.'); return; }
         editingSizeItemIdx = editIdx;
@@ -3388,7 +3861,7 @@ document.addEventListener('DOMContentLoaded', function() {
         pendingFiles = [];
         renderPendingFiles();
     }
-    async function displayTemplates() {
+      async function displayTemplates() {
         const tpls = await loadTemplates();
         const tb = $('template-list'); tb.innerHTML = '';
         if (!tpls.length) { tb.innerHTML = '<tr><td colspan="4" style="text-align:center;">Tiada template.</td></tr>'; return; }
@@ -3513,7 +3986,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         if ($('count-completed')) $('count-completed').textContent = completed.length;
     }
-    function updateQuotationBadge() {
+      function updateQuotationBadge() {
         const hasBossAccess = (sessionStorage.getItem('appAuthed') === 'true' || isBoss || STAFF_NAME === 'BOSS');
         let quotations = allOrdersCache.filter(o => o.isQuotation && !o.convertedToOrderAt);
         if (!hasBossAccess) {
@@ -3530,6 +4003,64 @@ document.addEventListener('DOMContentLoaded', function() {
             if (active.length > 0) { badge.textContent = active.length; badge.style.display = 'block'; }
             else badge.style.display = 'none';
         }
+    }
+    function getVisibleOrderColumns() {
+        return [
+            { key: 'invoiceNumber', label: 'No. Bil', visible: true },
+            { key: 'customerName', label: 'Pelanggan', visible: true },
+            { key: 'subtotal', label: 'Jumlah Jualan', visible: true },
+            { key: 'customerPhone', label: 'Telefon', visible: true },
+            { key: 'orderDate', label: 'Tarikh Order', visible: true },
+            { key: 'completionDate', label: 'Tarikh Siap', visible: true },
+            { key: 'salesPerson', label: 'Jurujual', visible: true },
+            { key: 'assignedDesigner', label: 'Designer', visible: true },
+            { key: 'designStatus', label: 'Status Design', visible: true },
+            { key: 'productionStatus', label: 'Status Production', visible: true },
+            { key: 'deliveryMethod', label: 'Kaedah', visible: true },
+            { key: 'serah', label: 'Serah', visible: true },
+            { key: 'status', label: 'Status', visible: true }
+        ];
+    }
+    function renderOrderThead() {
+        const theadRow = $('orders-thead-row');
+        if (!theadRow) return;
+        const cols = getVisibleOrderColumns();
+        theadRow.innerHTML = cols.map(c => `<th>${escapeHtml(c.label)}</th>`).join('') + '<th class="no-print">Tindakan</th>';
+    }
+    function buildOrderRowCells(o, orders) {
+        const cols = getVisibleOrderColumns();
+        const designerText = o.assignedDesigner ? escapeHtml(o.assignedDesigner) : '<span style="color:#999;">-</span>';
+        const designStatusHtml = getDesignStatusBadge(o.designStatus || 'pending');
+        const productionCellHtml = getProductionCellHtml(o);
+        const isCompleted = o.status === 'completed';
+        let completeBtn = '';
+        if (isCompleted) completeBtn = `<button class="complete-btn" disabled title="Order sudah selesai" style="background:#95a5a6;">✅</button>`;
+        else completeBtn = `<button class="complete-btn" data-invoice="${o.invoiceNumber}" title="Buka pop-up selesai">✅</button>`;
+        const printBtn = `<button class="print-btn" data-invoice="${o.invoiceNumber}" title="Cetak bill asal">🖨️</button>`;
+        const waBtn = `<button class="wa-btn" data-invoice="${o.invoiceNumber}" title="Hantar WhatsApp">💬</button>`;
+        const forceDelBtn = `<button class="force-del-btn" data-invoice="${o.invoiceNumber}" title="Force Padam Order">🗑️</button>`;
+        let printFinalBtn = '';
+        if (isCompleted) printFinalBtn = `<button class="print-final-btn" data-invoice="${o.invoiceNumber}" data-type="final" title="Cetak bill akhir (SELESAI)" style="background:#27ae60;">📄</button>`;
+        else if (isPartialDelivery(o)) printFinalBtn = `<button class="print-final-btn" data-invoice="${o.invoiceNumber}" data-type="partial" title="Cetak bill TIDAK LENGKAP" style="background:#e67e22;">📄</button>`;
+        const editBtn = `<button class="edit-btn" data-invoice="${o.invoiceNumber}" title="Edit order">✏️</button>`;
+        const st = getOrderStatus(o);
+        const cellMap = {
+            invoiceNumber: `<td><span class="order-number" data-invoice="${o.invoiceNumber}">${o.invoiceNumber||'-'}</span></td>`,
+            customerName: `<td>${escapeHtml(o.customerName)||'-'}</td>`,
+            subtotal: `<td><strong style="color:#27ae60;">RM ${(o.subtotal||0).toFixed(2)}</strong></td>`,
+            customerPhone: `<td>${escapeHtml(o.customerPhone)||'-'}</td>`,
+            orderDate: `<td>${formatDate(o.orderDate)}</td>`,
+            completionDate: `<td>${formatDate(o.completionDate)}</td>`,
+            salesPerson: `<td>${escapeHtml(o.salesPerson)||'-'}</td>`,
+            assignedDesigner: `<td>${designerText}</td>`,
+            designStatus: `<td>${designStatusHtml}</td>`,
+            productionStatus: `<td>${productionCellHtml}</td>`,
+            deliveryMethod: `<td>${getDeliveryMethodBadge(o)}</td>`,
+            serah: `<td>${getSerahBadge(o)}</td>`,
+            status: `<td class="status-cell"><span class="status-indicator status-${st}"></span>${getStatusText(st)}</td>`
+        };
+        const cells = cols.map(c => cellMap[c.key] || '<td>-</td>').join('');
+        return cells + `<td class="no-print"><div class="order-actions">${printBtn}${waBtn}${printFinalBtn}${editBtn}${completeBtn}${forceDelBtn}</div></td>`;
     }
     async function displayOrders() {
         await loadOrders();
@@ -3553,7 +4084,6 @@ document.addEventListener('DOMContentLoaded', function() {
         $('summary-sales').textContent = formatRM(ts);
         $('summary-deposit').textContent = formatRM(td);
         $('summary-balance').textContent = formatRM(tbal);
-        // Row highlight
         tb.querySelectorAll('tr[data-invoice]').forEach(tr => {
             tr.addEventListener('click', e => {
                 if (e.target.closest('button')) return;
@@ -3655,7 +4185,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }));
         applyBossMode();
     }
-    window.displayQuotations = displayQuotations;
+      window.displayQuotations = displayQuotations;
     window.promptDeleteQuotation = async function(invoiceNumber) {
         if (!confirm(`Padam quotation ${invoiceNumber}?\n\nTindakan ini tidak boleh dikembalikan.`)) return;
         try {
@@ -3666,8 +4196,6 @@ document.addEventListener('DOMContentLoaded', function() {
             displayQuotations();
         } catch(e) { alert('❌ Gagal padam: ' + e.message); }
     };
-
-    // ============ FORCE DELETE FUNCTIONS ============
     window.openForceDeleteModal = async function(order) {
         forceDeleteOrder = order;
         $('fd-invoice').textContent = order.invoiceNumber || '-';
@@ -3728,7 +4256,6 @@ document.addEventListener('DOMContentLoaded', function() {
             $('fd-error').style.display = 'block';
         }
     };
-
     window.openConvertQuotationModal = async function(o) {
         convertQuotationOrder = o;
         $('convert-quotation-number').textContent = o.invoiceNumber;
@@ -3842,7 +4369,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return `<div class="incomplete-note-item"><div class="log-header">📝 ${formatTime(l.changed_at)} — ${escapeHtml(l.staff_name||'-')}</div><div class="log-detail"><div style="color:#e74c3c;"><strong>Lama:</strong> ${escapeHtml(oldV)}</div><div style="color:#27ae60;"><strong>Baru:</strong> ${escapeHtml(newV)}</div></div></div>`;
         }).join('');
     }
-    window.openQuickCompleteModal = function(o) {
+      window.openQuickCompleteModal = function(o) {
         quickCompleteOrder = o;
         currentDeliveryIndices = [];
         const totalItems = (o.items||[]).length;
@@ -3954,7 +4481,70 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => w.print(), 500);
         closePrintOptionsModal();
     };
-    async function displayActiveOrders() {
+        window.showOrderDetail = async function(o) {
+        currentOrder = o;
+        currentDeliveryIndices = [];
+        $('detail-invoice-number').textContent = o.invoiceNumber;
+        $('detail-customer-name').textContent = `${o.customerName||'-'} | ${o.customerPhone||'-'} (Jurujual: ${o.salesPerson||'-'})`;
+        $('detail-order-date').textContent = formatDate(o.orderDate);
+        $('detail-completion-date').textContent = formatDate(o.completionDate);
+        const dc = $('detail-items'); dc.innerHTML = '';
+        (o.items||[]).forEach(it => {
+            const d = document.createElement('div'); d.className = 'detail-item';
+            const lines = it.description.split('\n');
+            let descHtml = escapeHtml(lines[0]);
+            if (lines.length > 1) descHtml += `<div class="size-line">${escapeHtml(lines.slice(1).join(' '))}</div>`;
+            d.innerHTML = `<span class="detail-desc">${descHtml} (${it.quantity}x)</span><span>RM${(it.total||0).toFixed(2)}</span>`;
+            dc.appendChild(d);
+        });
+        $('detail-total').textContent = formatRM(o.totalAmount);
+        $('detail-discount').textContent = formatRM(o.discount);
+        $('detail-deposit').textContent = formatRM(o.deposit);
+        $('detail-balance').textContent = formatRM(o.balance);
+        const dBadge = $('detail-delivery-badge');
+        if (o.deliveryMethod === 'pickup') { dBadge.className = 'delivery-badge pickup'; dBadge.textContent = '🏪 Pickup di Kedai'; }
+        else if (o.deliveryMethod === 'pos') { dBadge.className = 'delivery-badge pos'; dBadge.textContent = '📦 Pos / Kurier'; }
+        else if (o.deliveryMethod === 'cod') { dBadge.className = 'delivery-badge cod'; dBadge.textContent = '💰 COD (Cash on Delivery)'; }
+        else { dBadge.className = 'delivery-badge none'; dBadge.textContent = '⚪ Belum Set'; }
+        $('detail-address-row').style.display = o.deliveryMethod === 'pos' ? 'flex' : 'none';
+        $('detail-delivery-address').textContent = o.deliveryAddress || '-';
+        $('detail-delivery-date').textContent = o.deliveryDate ? formatDate(o.deliveryDate) : '-';
+        if (o.completedAt) { $('detail-completed-row').style.display = 'flex'; $('detail-completed-info').textContent = `${formatTime(o.completedAt)} oleh ${o.completedBy || '-'}`; }
+        else $('detail-completed-row').style.display = 'none';
+        renderDeliveryHistory(o.invoiceNumber);
+        $('detail-incomplete-note').value = o.incompleteNote || '';
+        if (o.incompleteNoteUpdatedAt) $('detail-note-updated-info').textContent = `✅ Dikemaskini ${formatTime(o.incompleteNoteUpdatedAt)} oleh ${o.incompleteNoteUpdatedBy||'-'}`;
+        else $('detail-note-updated-info').textContent = 'Belum pernah dikemaskini';
+        await loadIncompleteNoteHistory(o.invoiceNumber);
+        $('btn-print-final').style.display = 'block';
+        await populateDesignerDropdown('detail-designer-select', o.assignedDesigner || '');
+        $('detail-design-status-badge').outerHTML = getDesignStatusBadge(o.designStatus || 'pending').replace('class="design-status-badge', 'id="detail-design-status-badge" class="design-status-badge');
+        $('detail-design-notes').value = o.designNotes || '';
+        document.querySelectorAll('.design-status-btn').forEach(b => { if (b.dataset.status === (o.designStatus || 'pending')) b.classList.add('active'); else b.classList.remove('active'); });
+        loadDesignActivityForDetail(o.invoiceNumber);
+        await window.loadDepartments();
+        await refreshProductionPanel();
+        const logs = await loadAuditLogs(o.invoiceNumber);
+        if (logs.length) {
+            $('audit-log-section').style.display = 'block';
+            $('audit-log-list').innerHTML = logs.map(l => {
+                let icon = '📝', logClass = 'log-update';
+                if (l.action === 'create') { icon = '🆕'; logClass = 'log-create'; }
+                else if (l.action === 'delete') { icon = '🗑️'; logClass = 'log-delete'; }
+                else if (l.action === 'update') { icon = '✏️'; logClass = 'log-update'; }
+                let detail = '';
+                if (l.old_value && l.new_value) detail = `<strong>${escapeHtml(l.field_changed)}:</strong><br><span style="color:#e74c3c;">❌ ${escapeHtml(l.old_value)}</span><br><span style="color:#27ae60;">✅ ${escapeHtml(l.new_value)}</span>`;
+                else if (l.new_value) detail = `<strong>${escapeHtml(l.field_changed)}:</strong> <span style="color:#27ae60;">${escapeHtml(l.new_value)}</span>`;
+                else if (l.old_value) detail = `<strong>${escapeHtml(l.field_changed)}:</strong> <span style="color:#e74c3c;">${escapeHtml(l.old_value)}</span>`;
+                else if (l.notes) detail = escapeHtml(l.notes);
+                return `<div class="audit-log-item ${logClass}"><div class="log-header">${icon} ${formatTime(l.changed_at)} - ${escapeHtml(l.staff_name)}</div><div class="log-detail">${detail}</div></div>`;
+            }).join('');
+        } else $('audit-log-section').style.display = 'none';
+        orderListPage.style.display = 'none'; activeOrdersPage.style.display = 'none'; quotationListPage.style.display = 'none';
+        designPage.style.display = 'none'; productionPage.style.display = 'none';
+        orderDetailView.style.display = 'block';
+    };
+      async function displayActiveOrders() {
         await loadOrders();
         const s = $('filter-active-sales').value, srch = $('search-active').value.toLowerCase();
         let orders = allOrdersCache.filter(o => o.status !== 'completed' && !o.isQuotation);
@@ -4162,162 +4752,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const upd = { ...o, productionStatus: 'done', productionUpdatedAt: new Date(), productionUpdatedBy: STAFF_NAME };
         if (await updateOrderWithLog(upd, o)) { await addProductionActivity(invoiceNumber, 'done', 'in_progress', 'done', 'Production siap.'); await loadOrders(); await displayProductionOrders(); alert('✅ Production SIAP!'); }
     };
-    window.openSendToProductionModal = async function() {
-        if (!currentOrder) return;
-        await window.loadDepartments();
-        const activeDepts = allDepartmentsCache.filter(d => d.active);
-        if (!activeDepts.length) { alert('Tiada jabatan aktif.'); return; }
-        const deptSelect = $('send-prod-dept');
-        deptSelect.innerHTML = '<option value="">-- Pilih Jabatan --</option>' + activeDepts.map(d => `<option value="${d.id}">${escapeHtml(d.name)}</option>`).join('');
-        $('send-prod-staff').innerHTML = '<option value="">-- Belum assign --</option>';
-        $('send-prod-invoice').textContent = currentOrder.invoiceNumber;
-        $('send-prod-notes').value = currentOrder.productionNotes || '';
-        $('send-prod-error').style.display = 'none';
-        $('send-production-modal').style.display = 'flex';
-    };
-    window.closeSendProductionModal = function() { $('send-production-modal').style.display = 'none'; };
-    window.executeSendProduction = async function() {
-        if (!currentOrder) return;
-        const deptId = $('send-prod-dept').value;
-        const staffName = $('send-prod-staff').value;
-        const notes = $('send-prod-notes').value.trim();
-        if (!deptId) { $('send-prod-error').textContent = 'Sila pilih jabatan.'; $('send-prod-error').style.display = 'block'; return; }
-        const upd = { ...currentOrder, productionDepartment: deptId, productionStatus: 'pending', productionAssignedTo: staffName || null, productionNotes: notes || null, productionUpdatedAt: new Date(), productionUpdatedBy: STAFF_NAME };
-        if (await updateOrderWithLog(upd, currentOrder)) {
-            const deptName = allDepartmentsCache.find(d => d.id === deptId)?.name || '-';
-            await addProductionActivity(currentOrder.invoiceNumber, 'sent', null, 'pending', `Dihantar ke jabatan ${deptName}${staffName ? ' — assign ke ' + staffName : ''}${notes ? ' — Nota: ' + notes : ''}`);
-            currentOrder = upd;
-            closeSendProductionModal();
-            alert(`✅ Order dihantar ke Production (${deptName})`);
-            await refreshProductionPanel();
-        } else alert('❌ Gagal hantar');
-    };
-    async function refreshProductionPanel() {
-        if (!currentOrder) return;
-        const prodDept = allDepartmentsCache.find(d => d.id === currentOrder.productionDepartment);
-        $('detail-production-dept').textContent = prodDept ? prodDept.name : '-';
-        $('detail-production-assigned').textContent = currentOrder.productionAssignedTo || '-';
-        $('detail-production-notes').value = currentOrder.productionNotes || '';
-        const badgeEl = $('detail-production-status-badge');
-        if (badgeEl) badgeEl.outerHTML = getProductionStatusBadge(currentOrder.productionStatus).replace('class="production-status-badge', 'id="detail-production-status-badge" class="production-status-badge');
-        if (currentOrder.productionStatus) $('btn-send-to-production').style.display = 'none';
-        else $('btn-send-to-production').style.display = 'inline-block';
-        await loadProductionActivityForDetail(currentOrder.invoiceNumber);
-    }
-    async function loadProductionActivityForDetail(invoiceNumber) {
-        const activity = await loadProductionActivity(invoiceNumber);
-        const el = $('production-activity-list');
-        if (!activity.length) { el.innerHTML = '<p style="color:#999;font-size:13px;">Belum ada aktiviti.</p>'; return; }
-        el.innerHTML = activity.map(a => {
-            let detail = '';
-            const oldLabel = a.old_status ? ((PRODUCTION_STATUS[a.old_status]||{}).label || a.old_status) : '-';
-            const newLabel = a.new_status ? ((PRODUCTION_STATUS[a.new_status]||{}).label || a.new_status) : '-';
-            if (a.action === 'sent') detail = escapeHtml(a.notes || 'Dihantar ke production');
-            else if (a.action === 'start') detail = `Mula: <strong>${oldLabel}</strong> → <strong>${newLabel}</strong>`;
-            else if (a.action === 'paused') detail = `Pause: <strong>${oldLabel}</strong> → <strong>${newLabel}</strong><br>Nota: <em>${escapeHtml(a.notes||'-')}</em>`;
-            else if (a.action === 'resumed') detail = `Resume: <strong>${oldLabel}</strong> → <strong>${newLabel}</strong>`;
-            else if (a.action === 'done') detail = `Siap: <strong>${newLabel}</strong> ✅`;
-            else detail = escapeHtml(a.notes || a.action || '');
-            return `<div class="production-activity-item"><div class="log-header">${formatTime(a.created_at)} — ${escapeHtml(a.staff_name||'-')}</div><div class="log-detail">${detail}</div></div>`;
-        }).join('');
-    }
-    async function showOrderDetail(o) {
-        currentOrder = o;
-        currentDeliveryIndices = [];
-        $('detail-invoice-number').textContent = o.invoiceNumber;
-        $('detail-customer-name').textContent = `${o.customerName||'-'} | ${o.customerPhone||'-'} (Jurujual: ${o.salesPerson||'-'})`;
-        $('detail-order-date').textContent = formatDate(o.orderDate);
-        $('detail-completion-date').textContent = formatDate(o.completionDate);
-        const dc = $('detail-items'); dc.innerHTML = '';
-        (o.items||[]).forEach(it => {
-            const d = document.createElement('div'); d.className = 'detail-item';
-            const lines = it.description.split('\n');
-            let descHtml = escapeHtml(lines[0]);
-            if (lines.length > 1) descHtml += `<div class="size-line">${escapeHtml(lines.slice(1).join(' '))}</div>`;
-            d.innerHTML = `<span class="detail-desc">${descHtml} (${it.quantity}x)</span><span>RM${(it.total||0).toFixed(2)}</span>`;
-            dc.appendChild(d);
-        });
-        $('detail-total').textContent = formatRM(o.totalAmount);
-        $('detail-discount').textContent = formatRM(o.discount);
-        $('detail-deposit').textContent = formatRM(o.deposit);
-        $('detail-balance').textContent = formatRM(o.balance);
-        const dBadge = $('detail-delivery-badge');
-        if (o.deliveryMethod === 'pickup') { dBadge.className = 'delivery-badge pickup'; dBadge.textContent = '🏪 Pickup di Kedai'; }
-        else if (o.deliveryMethod === 'pos') { dBadge.className = 'delivery-badge pos'; dBadge.textContent = '📦 Pos / Kurier'; }
-        else if (o.deliveryMethod === 'cod') { dBadge.className = 'delivery-badge cod'; dBadge.textContent = '💰 COD (Cash on Delivery)'; }
-        else { dBadge.className = 'delivery-badge none'; dBadge.textContent = '⚪ Belum Set'; }
-        $('detail-address-row').style.display = o.deliveryMethod === 'pos' ? 'flex' : 'none';
-        $('detail-delivery-address').textContent = o.deliveryAddress || '-';
-        $('detail-delivery-date').textContent = o.deliveryDate ? formatDate(o.deliveryDate) : '-';
-        if (o.completedAt) { $('detail-completed-row').style.display = 'flex'; $('detail-completed-info').textContent = `${formatTime(o.completedAt)} oleh ${o.completedBy || '-'}`; }
-        else $('detail-completed-row').style.display = 'none';
-        renderDeliveryHistory(o.invoiceNumber);
-        $('detail-incomplete-note').value = o.incompleteNote || '';
-        if (o.incompleteNoteUpdatedAt) $('detail-note-updated-info').textContent = `✅ Dikemaskini ${formatTime(o.incompleteNoteUpdatedAt)} oleh ${o.incompleteNoteUpdatedBy||'-'}`;
-        else $('detail-note-updated-info').textContent = 'Belum pernah dikemaskini';
-        await loadIncompleteNoteHistory(o.invoiceNumber);
-        $('btn-print-final').style.display = 'block';
-        await populateDesignerDropdown('detail-designer-select', o.assignedDesigner || '');
-        $('detail-design-status-badge').outerHTML = getDesignStatusBadge(o.designStatus || 'pending').replace('class="design-status-badge', 'id="detail-design-status-badge" class="design-status-badge');
-        $('detail-design-notes').value = o.designNotes || '';
-        document.querySelectorAll('.design-status-btn').forEach(b => { if (b.dataset.status === (o.designStatus || 'pending')) b.classList.add('active'); else b.classList.remove('active'); });
-        loadDesignActivityForDetail(o.invoiceNumber);
-        await window.loadDepartments();
-        await refreshProductionPanel();
-        const logs = await loadAuditLogs(o.invoiceNumber);
-        if (logs.length) {
-            $('audit-log-section').style.display = 'block';
-            $('audit-log-list').innerHTML = logs.map(l => {
-                let icon = '📝', logClass = 'log-update';
-                if (l.action === 'create') { icon = '🆕'; logClass = 'log-create'; }
-                else if (l.action === 'delete') { icon = '🗑️'; logClass = 'log-delete'; }
-                else if (l.action === 'update') { icon = '✏️'; logClass = 'log-update'; }
-                let detail = '';
-                if (l.old_value && l.new_value) detail = `<strong>${escapeHtml(l.field_changed)}:</strong><br><span style="color:#e74c3c;">❌ ${escapeHtml(l.old_value)}</span><br><span style="color:#27ae60;">✅ ${escapeHtml(l.new_value)}</span>`;
-                else if (l.new_value) detail = `<strong>${escapeHtml(l.field_changed)}:</strong> <span style="color:#27ae60;">${escapeHtml(l.new_value)}</span>`;
-                else if (l.old_value) detail = `<strong>${escapeHtml(l.field_changed)}:</strong> <span style="color:#e74c3c;">${escapeHtml(l.old_value)}</span>`;
-                else if (l.notes) detail = escapeHtml(l.notes);
-                return `<div class="audit-log-item ${logClass}"><div class="log-header">${icon} ${formatTime(l.changed_at)} - ${escapeHtml(l.staff_name)}</div><div class="log-detail">${detail}</div></div>`;
-            }).join('');
-        } else $('audit-log-section').style.display = 'none';
-        orderListPage.style.display = 'none'; activeOrdersPage.style.display = 'none'; quotationListPage.style.display = 'none';
-        designPage.style.display = 'none'; productionPage.style.display = 'none';
-        orderDetailView.style.display = 'block';
-    }
-    function renderDeliveryHistory(invoiceNumber) {
-        const cont = $('delivery-history-list');
-        const deliveries = allDeliveriesCache[invoiceNumber] || [];
-        if (!deliveries.length) { cont.innerHTML = '<p style="color:#999;font-size:13px;">Belum ada penyerahan.</p>'; return; }
-        cont.innerHTML = deliveries.map(d => {
-            const isUndone = d.undone;
-            const cls = isUndone ? 'delivery-history-item undone' : 'delivery-history-item';
-            const summary = d.item_summary || '-';
-            let payInfo = '';
-            if (d.payment_method) {
-                const payLabel = {tunai:'💵 Tunai', 'bank-transfer':'🏦 Bank', 'kad-kredit':'💳 Kad', 'qr-pay':'📱 QR', 'lain':'📝 Lain'}[d.payment_method] || d.payment_method;
-                payInfo = `<br>Bayaran: <strong>${payLabel}</strong> — RM${(d.payment_amount||0).toFixed(2)}`;
-            }
-            const undoInfo = isUndone ? `<div class="hist-detail">❌ Dibatalkan oleh <strong>${escapeHtml(d.undone_by||'-')}</strong> pada ${formatTime(d.undone_at)}<br>Sebab: <em>${escapeHtml(d.undo_reason||'-')}</em></div>` : '';
-            const undoBtn = isUndone ? '' : `<button class="btn btn-danger" style="padding:3px 8px;font-size:11px;margin-top:5px;" onclick="openUndoDelivery('${d.id}', '${escapeAttr(summary)}')">↩️ Undo</button>`;
-            const methodLabel = d.delivery_method === 'pickup' ? '🏪 Pickup' : d.delivery_method === 'pos' ? '📦 Pos' : d.delivery_method === 'cod' ? '💰 COD' : d.delivery_method;
-            return `<div class="${cls}"><div class="hist-header">${isUndone ? '❌ DIBATALKAN' : '✅'} ${formatTime(d.delivered_at)} — ${escapeHtml(d.delivered_by)}</div><div class="hist-detail">Item: <strong>${escapeHtml(summary)}</strong><br>${d.delivery_method ? 'Kaedah: ' + methodLabel : ''}${payInfo}</div>${undoInfo}${undoBtn}</div>`;
-        }).join('');
-    }
-    window.openUndoDelivery = function(deliveryId, summary) {
-        const reason = prompt(`Undo penyerahan?\n\nItem: ${summary}\n\nSebab:`);
-        if (!reason || !reason.trim()) return;
-        executeUndoDelivery(deliveryId, reason.trim());
-    };
-    async function executeUndoDelivery(deliveryId, reason) {
-        if (await undoDelivery(deliveryId, reason, STAFF_NAME)) {
-            await addAuditLog(currentOrder.invoiceNumber, 'update', 'Undo Penyerahan', null, `Item: ${reason}`, `Undo oleh ${STAFF_NAME}`);
-            await loadOrders();
-            const updated = allOrdersCache.find(x => x.invoiceNumber === currentOrder.invoiceNumber);
-            if (updated) await showOrderDetail(updated);
-            alert('✅ Penyerahan di-undo.');
-        }
-    }
-    async function loadDesignActivityForDetail(invoiceNumber) {
+      async function loadDesignActivityForDetail(invoiceNumber) {
         const activity = await loadDesignActivity(invoiceNumber);
         const el = $('design-activity-list');
         if (!activity.length) { el.innerHTML = '<p style="color:#999;font-size:13px;">Tiada aktiviti design.</p>'; return; }
@@ -4395,12 +4830,13 @@ document.addEventListener('DOMContentLoaded', function() {
             if (lines.length === 1) return lines[0];
             return `${lines[0]}<div style="font-size:11px;color:#555;font-family:'Courier New',monospace;padding-left:15px;margin-top:3px;">${lines.slice(1).join(' ')}</div>`;
         }
-        const bankHtml = UI_CONFIG.text.bank_info || '';
-        const termsHtml = UI_CONFIG.text.terms_html || '';
-        const companyAddrHtml = UI_CONFIG.text.company_full_address || '';
+        const bankHtml = UI_CONFIG.text.bank_info || '<p><strong>Maybank</strong><br>553104624047<br>EMPAYAR S KREATIF SOLUTION</p>';
+        const termsHtml = UI_CONFIG.text.terms_html || '<p><strong>TERMA & SYARAT TEMPAHAN</strong></p>';
+        const companyAddrHtml = UI_CONFIG.text.company_full_address || 'Hadapan Sek.Ren.Keb Ketereh, 16450 Kota Bharu Kelantan<br>TEL: 01133387532<br>(KT0565538-X)';
         const companyName = UI_CONFIG.text.company_name || 'EMPAYAR S KREATIF';
+        const fontFam = UI_CONFIG.theme.font_family || "'Arial', sans-serif";
         return `<!DOCTYPE html><html><head><title>Cetak - ${o.invoiceNumber}</title><style>
-            body{font-family:${UI_CONFIG.theme.font_family};margin:20px;}.header{text-align:center;margin-bottom:20px;border-bottom:1px solid #eee;padding-bottom:15px;}
+            body{font-family:${fontFam};margin:20px;}.header{text-align:center;margin-bottom:20px;border-bottom:1px solid #eee;padding-bottom:15px;}
             .header img{max-width:120px;}.company-details{text-align:left;}.header h2{margin:0;}.header p{margin:2px 0;}
             table{width:100%;border-collapse:collapse;margin-bottom:20px;}th,td{border:1px solid #ddd;padding:8px;text-align:left;}th{background:#f2f2f2;font-size:12px;}
             td{font-size:12px;}.invoice-totals{margin-top:20px;font-weight:bold;text-align:right;font-size:13px;}.bank-info{margin-top:20px;padding:10px;background:#e8f4fc;border-radius:4px;font-size:12px;}
@@ -4436,7 +4872,7 @@ document.addEventListener('DOMContentLoaded', function() {
         w.document.close(); 
         setTimeout(()=>w.print(),500); 
     }
-    window.updateDesignerFromDetail = async function() {
+      window.updateDesignerFromDetail = async function() {
         if (!currentOrder) return;
         const newDesigner = $('detail-designer-select').value;
         const oldDesigner = currentOrder.assignedDesigner || '';
@@ -4602,7 +5038,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (currentUploadInvoice) loadExistingFiles(currentUploadInvoice);
         } catch (err) { alert('❌ Gagal: ' + err.message); }
     };
-    async function showEditOrderModal(o) {
+      async function showEditOrderModal(o) {
         currentOrder = o;
         $('edit-invoice-number').value = o.invoiceNumber;
         $('edit-customer-name').value = o.customerName || '';
@@ -4773,7 +5209,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const a = document.createElement('a'); a.href = url; a.download = `quotations-${new Date().toISOString().split('T')[0]}.csv`; a.click();
         URL.revokeObjectURL(url);
     }
-    async function populateSalesPersonDropdown() {
+      async function populateSalesPersonDropdown() {
         await loadStaffCards();
         const staffList = allStaffCardsCache.filter(s => s.active);
         const names = staffList.map(s => s.staff_name);
@@ -4915,7 +5351,7 @@ document.addEventListener('DOMContentLoaded', function() {
         $('monthly-deposit').textContent = formatRM(sumRange(monthStart, 'deposit'));
         $('yearly-sales').textContent = formatRM(sumRange(yearStart, 'subtotal'));
     }
-    async function submitAndPrint() {
+      async function submitAndPrint() {
         let salesPerson = $('sales-person').value;
         if (!salesPerson && STAFF_NAME && STAFF_NAME !== 'BOSS') {
             const isStaff = allStaffCardsCache.some(s => s.staff_name === STAFF_NAME);
@@ -5025,7 +5461,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (error) throw error;
             allDepartmentsCache = data || [];
             return allDepartmentsCache;
-        } catch(e) { console.error('loadDepartments:', e); return []; }
+        } catch(e) { return []; }
     };
     window.displayDepartments = function() {
         const list = $('department-list');
@@ -5073,9 +5509,7 @@ document.addEventListener('DOMContentLoaded', function() {
         try { const { error } = await supabaseClient.from('departments').delete().eq('id', id); if (error) throw error; await window.loadDepartments(); window.displayDepartments(); }
         catch(e) { alert('Gagal: ' + e.message); }
     };
-
-    // ============ WHATSAPP FUNCTIONS ============
-    async function loadWhatsAppConfig() {
+      async function loadWhatsAppConfig() {
         try {
             const keys = ['whatsapp_config', 'whatsapp_settings', 'wa_config'];
             for (const key of keys) {
@@ -5089,7 +5523,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     };
                 }
             }
-        } catch(e) { console.error('loadWhatsAppConfig:', e); }
+        } catch(e) { }
         return { country_code: '60', template: '', auto_download_pdf: false };
     }
     function normalizePhone(phone, countryCode) {
@@ -5166,7 +5600,14 @@ document.addEventListener('DOMContentLoaded', function() {
         w.document.close();
         setTimeout(() => w.print(), 500);
     };
-
+    window.uiSwitchTab = function(tab) {
+        document.querySelectorAll('.ui-tab-btn').forEach(b => b.classList.toggle('active', b.dataset.uitab === tab));
+        document.querySelectorAll('.ui-tab-content').forEach(c => c.classList.toggle('active', c.dataset.uicontent === tab));
+    };
+    function renderUIEditor() {
+        const textGrid = $('ui-text-grid');
+        if (textGrid && !textGrid.innerHTML.trim()) textGrid.innerHTML = '<p style="color:#999;padding:20px;">UI editor sedia.</p>';
+    }
     let realtimeChannels = [];
     function initRealtime() {
         realtimeChannels.forEach(c => supabaseClient.removeChannel(c));
@@ -5181,20 +5622,14 @@ document.addEventListener('DOMContentLoaded', function() {
             else if (t === 'tab-production') displayProductionOrders();
             else if (t === 'tab-dashboard') updateDashboard();
             else if (t === 'tab-invoice') updateAvailableInvoiceNumbers();
+            else if (t === 'tab-finance') { loadFinanceData().then(() => { renderFinanceBalances(); renderFinanceList(); }); }
         }).subscribe();
         const c3 = supabaseClient.channel('sp_ch').on('postgres_changes', {event:'*', schema:'public', table:'sales_persons'}, () => { populateSalesPersonDropdown(); if (document.querySelector('.tab-btn.active')?.id === 'tab-sales-person') displaySalesPersonData(); }).subscribe();
         const c4 = supabaseClient.channel('del_ch').on('postgres_changes', {event:'*', schema:'public', table:'deleted_bills'}, () => { if (document.querySelector('.tab-btn.active')?.id === 'tab-deleted-bills') displayDeletedBills(); }).subscribe();
         const c5 = supabaseClient.channel('tpl_ch').on('postgres_changes', {event:'*', schema:'public', table:'item_templates'}, () => { renderTemplateButtons(); if (document.querySelector('.tab-btn.active')?.id === 'tab-templates') displayTemplates(); }).subscribe();
         const c6 = supabaseClient.channel('sizecat_ch').on('postgres_changes', {event:'*', schema:'public', table:'size_categories'}, async () => { await loadSizeCategories(); if (document.querySelector('.tab-btn.active')?.id === 'tab-templates') displaySizeCategories(); }).subscribe();
         const c7 = supabaseClient.channel('staff_ch').on('postgres_changes', {event:'*', schema:'public', table:'staff_cards'}, async () => { await loadStaffCards(); await populateSalesPersonDropdown(); if (document.querySelector('.tab-btn.active')?.id === 'tab-settings') displayStaffCards(); }).subscribe();
-        const c8 = supabaseClient.channel('settings_ch').on('postgres_changes', {event:'*', schema:'public', table:'app_settings'}, async (payload) => { 
-            await loadAppSettings(); 
-            if (payload?.new?.key === 'ui_config') {
-                await loadUIConfig();
-                applyUIConfig();
-                if (document.querySelector('.tab-btn.active')?.id === 'tab-settings') renderUIEditor();
-            }
-        }).subscribe();
+        const c8 = supabaseClient.channel('settings_ch').on('postgres_changes', {event:'*', schema:'public', table:'app_settings'}, async () => { await loadAppSettings(); }).subscribe();
         const c9 = supabaseClient.channel('files_ch').on('postgres_changes', {event:'*', schema:'public', table:'order_files'}, () => { if (currentUploadInvoice && $('upload-modal').style.display === 'flex') loadExistingFiles(currentUploadInvoice); }).subscribe();
         const c10 = supabaseClient.channel('design_act_ch').on('postgres_changes', {event:'*', schema:'public', table:'design_activity'}, () => { if (currentOrder && orderDetailView.style.display === 'block') loadDesignActivityForDetail(currentOrder.invoiceNumber); }).subscribe();
         const c11 = supabaseClient.channel('dept_ch').on('postgres_changes', {event:'*', schema:'public', table:'departments'}, async () => { await window.loadDepartments(); if (document.querySelector('.tab-btn.active')?.id === 'tab-settings') window.displayDepartments(); }).subscribe();
@@ -5210,9 +5645,19 @@ document.addEventListener('DOMContentLoaded', function() {
             else if (currentOrder && orderDetailView.style.display === 'block') { const updated = allOrdersCache.find(x => x.invoiceNumber === currentOrder.invoiceNumber); if (updated) { currentOrder = updated; renderDeliveryHistory(updated.invoiceNumber); } }
         }).subscribe();
         const c14 = supabaseClient.channel('audit_ch').on('postgres_changes', {event:'*', schema:'public', table:'audit_logs'}, () => { if (currentOrder && orderDetailView.style.display === 'block') loadIncompleteNoteHistory(currentOrder.invoiceNumber); }).subscribe();
-        realtimeChannels = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14];
+        const c15 = supabaseClient.channel('finance_ch').on('postgres_changes', {event:'*', schema:'public', table:'finance_transactions'}, async () => {
+            if (document.querySelector('.tab-btn.active')?.id === 'tab-finance') {
+                await loadFinanceData(); renderFinanceBalances(); renderFinanceList();
+            }
+        }).subscribe();
+        const c16 = supabaseClient.channel('finance_settings_ch').on('postgres_changes', {event:'*', schema:'public', table:'finance_settings'}, async () => {
+            if (document.querySelector('.tab-btn.active')?.id === 'tab-finance') {
+                await loadFinanceData(); renderFinanceBalances(); applyFinanceLabels();
+            }
+        }).subscribe();
+        realtimeChannels = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16];
     }
-    function initYearDropdowns() {
+      function initYearDropdowns() {
         const y = new Date().getFullYear();
         let html = '';
         for (let i = y-3; i <= y+1; i++) html += `<option value="${i}">${i}</option>`;
@@ -5382,6 +5827,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const el = $(id);
         if (el) el.addEventListener('keypress', e => { if (e.key === 'Enter') { if (id === 'deliv-pin-code') window.executeVerifyDelivery(); else if (id === 'qc-pin') window.executeQuickComplete(); } });
     });
+    if ($('finance-list-period')) $('finance-list-period').addEventListener('change', renderFinanceList);
     window.addEventListener('online', () => offlineBanner.style.display = 'none');
     window.addEventListener('offline', () => offlineBanner.style.display = 'block');
     window.addEventListener('beforeunload', (e) => {
@@ -5393,7 +5839,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const onInvoicePage = activeTab === 'tab-invoice' || activeTab === 'tab-preview';
         if (onInvoicePage && hasUnsavedFormData()) { e.preventDefault(); e.returnValue = 'Ada data belum disimpan.'; return e.returnValue; }
     });
-    (async function init() {
+      (async function init() {
         offlineBanner.style.display = navigator.onLine ? 'none' : 'block';
         initYearDropdowns();
         $('order-date').value = new Date().toISOString().split('T')[0];
@@ -5402,7 +5848,6 @@ document.addEventListener('DOMContentLoaded', function() {
         isBoss = sessionStorage.getItem('isBoss') === 'true';
         applyBossMode();
         await loadAppSettings();
-        await loadUIConfig();
         await window.loadDepartments();
         await loadStaffCards();
         await loadDesigners();
@@ -5413,12 +5858,13 @@ document.addEventListener('DOMContentLoaded', function() {
         await loadSalesPersons();
         await loadOrders();
         await loadSizeCategories();
+        await loadFinanceData();
+        applyFinanceLabels();
         await populateSalesPersonDropdown();
         updateCustomerDatalist();
         renderInvoiceTable();
         renderPendingFiles();
         initRealtime();
-        applyUIConfig();
         await updateAvailableInvoiceNumbers();
         await renderTemplateButtons();
         if (STAFF_NAME) {
@@ -5448,71 +5894,38 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 30000);
         if (isDesigner) setInterval(() => { if (document.querySelector('.tab-btn.active')?.id === 'tab-design') displayDesignerOrders(); }, 60000);
         if (isProduction) setInterval(() => { if (document.querySelector('.tab-btn.active')?.id === 'tab-production') displayProductionOrders(); }, 60000);
-        console.log('✅ Sistem sedia. Mode:', formMode, '| Staff:', STAFF_NAME);
     })();
-
-    // ============================================================
-    // PWA INSTALL & SERVICE WORKER
-    // ============================================================
     let deferredPrompt = null;
-    
     window.addEventListener('beforeinstallprompt', (e) => {
-        console.log('[PWA] Install prompt available');
         e.preventDefault();
         deferredPrompt = e;
         const installBtn = document.getElementById('install-app-btn');
         if (installBtn) installBtn.style.display = 'block';
     });
-    
     document.addEventListener('DOMContentLoaded', () => {
         const installBtn = document.getElementById('install-app-btn');
         if (installBtn) {
             installBtn.addEventListener('click', async () => {
                 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
                 const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-                
-                if (isStandalone) {
-                    alert('✅ Aplikasi sudah dipasang di peranti ini.');
-                    return;
-                }
-                
+                if (isStandalone) { alert('✅ Aplikasi sudah dipasang di peranti ini.'); return; }
                 if (isIOS) {
-                    alert(
-                        '📱 CARA PASANG DI IPHONE:\n\n' +
-                        '1. Pastikan buka guna Safari (bukan Chrome)\n' +
-                        '2. Tekan butang Share ⬆️ (kotak dengan anak panah)\n' +
-                        '3. Scroll dan tekan "Add to Home Screen"\n' +
-                        '4. Tekan "Add"\n\n' +
-                        '✅ App akan muncul di home screen.'
-                    );
+                    alert('📱 CARA PASANG DI IPHONE:\n\n1. Pastikan buka guna Safari (bukan Chrome)\n2. Tekan butang Share ⬆️ (kotak dengan anak panah)\n3. Scroll dan tekan "Add to Home Screen"\n4. Tekan "Add"\n\n✅ App akan muncul di home screen.');
                     return;
                 }
-                
                 if (deferredPrompt) {
                     deferredPrompt.prompt();
                     const { outcome } = await deferredPrompt.userChoice;
-                    console.log('[PWA] Install outcome:', outcome);
-                    if (outcome === 'accepted') {
-                        alert('✅ Aplikasi berjaya dipasang! Semak home screen anda.');
-                    }
+                    if (outcome === 'accepted') alert('✅ Aplikasi berjaya dipasang! Semak home screen anda.');
                     deferredPrompt = null;
                 } else {
-                    alert(
-                        '📱 CARA PASANG DI ANDROID:\n\n' +
-                        '1. Buka menu Chrome (⋮) di kanan atas\n' +
-                        '2. Tekan "Install app" atau "Add to Home screen"\n' +
-                        '3. Tekan "Install"\n\n' +
-                        'ATAU:\n' +
-                        'Tunggu beberapa saat — akan ada popup "Add to Home screen" di bawah skrin.'
-                    );
+                    alert('📱 CARA PASANG DI ANDROID:\n\n1. Buka menu Chrome (⋮) di kanan atas\n2. Tekan "Install app" atau "Add to Home screen"\n3. Tekan "Install"');
                 }
             });
         }
-        
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('service-worker.js')
                 .then(reg => {
-                    console.log('✅ Service Worker registered:', reg.scope);
                     reg.addEventListener('updatefound', () => {
                         const newWorker = reg.installing;
                         newWorker.addEventListener('statechange', () => {
@@ -5526,19 +5939,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
                 })
                 .catch(err => console.error('❌ Service Worker failed:', err));
-            
             let refreshing = false;
             navigator.serviceWorker.addEventListener('controllerchange', () => {
-                if (!refreshing) {
-                    refreshing = true;
-                    window.location.reload();
-                }
+                if (!refreshing) { refreshing = true; window.location.reload(); }
             });
         }
     });
-    
     window.addEventListener('appinstalled', (e) => {
-        console.log('[PWA] App installed');
         const installBtn = document.getElementById('install-app-btn');
         if (installBtn) installBtn.style.display = 'none';
         alert('✅ App berjaya dipasang!');
