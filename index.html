@@ -5951,6 +5951,15 @@ document.addEventListener('DOMContentLoaded', function() {
         alert('✅ App berjaya dipasang!');
     });
 });
+    setTimeout(() => {
+        document.querySelectorAll('.order-number').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const inv = this.dataset.invoice;
+                const o = allOrdersCache.find(x => x.invoiceNumber === inv);
+                if (o && typeof showOrderDetail === 'function') showOrderDetail(o);
+            });
+        });
+    }, 2000);
 </script>
 </body>
 </html>
