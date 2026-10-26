@@ -4480,69 +4480,6 @@ document.addEventListener('DOMContentLoaded', function() {
         w.document.close();
         setTimeout(() => w.print(), 500);
         closePrintOptionsModal();
-    };//
-        window.showOrderDetail = async function(o) {
-        currentOrder = o;
-        currentDeliveryIndices = [];
-        $('detail-invoice-number').textContent = o.invoiceNumber;
-        $('detail-customer-name').textContent = `${o.customerName||'-'} | ${o.customerPhone||'-'} (Jurujual: ${o.salesPerson||'-'})`;
-        $('detail-order-date').textContent = formatDate(o.orderDate);
-        $('detail-completion-date').textContent = formatDate(o.completionDate);
-        const dc = $('detail-items'); dc.innerHTML = '';
-        (o.items||[]).forEach(it => {
-            const d = document.createElement('div'); d.className = 'detail-item';
-            const lines = it.description.split('\n');
-            let descHtml = escapeHtml(lines[0]);
-            if (lines.length > 1) descHtml += `<div class="size-line">${escapeHtml(lines.slice(1).join(' '))}</div>`;
-            d.innerHTML = `<span class="detail-desc">${descHtml} (${it.quantity}x)</span><span>RM${(it.total||0).toFixed(2)}</span>`;
-            dc.appendChild(d);
-        });
-        $('detail-total').textContent = formatRM(o.totalAmount);
-        $('detail-discount').textContent = formatRM(o.discount);
-        $('detail-deposit').textContent = formatRM(o.deposit);
-        $('detail-balance').textContent = formatRM(o.balance);
-        const dBadge = $('detail-delivery-badge');
-        if (o.deliveryMethod === 'pickup') { dBadge.className = 'delivery-badge pickup'; dBadge.textContent = '🏪 Pickup di Kedai'; }
-        else if (o.deliveryMethod === 'pos') { dBadge.className = 'delivery-badge pos'; dBadge.textContent = '📦 Pos / Kurier'; }
-        else if (o.deliveryMethod === 'cod') { dBadge.className = 'delivery-badge cod'; dBadge.textContent = '💰 COD (Cash on Delivery)'; }
-        else { dBadge.className = 'delivery-badge none'; dBadge.textContent = '⚪ Belum Set'; }
-        $('detail-address-row').style.display = o.deliveryMethod === 'pos' ? 'flex' : 'none';
-        $('detail-delivery-address').textContent = o.deliveryAddress || '-';
-        $('detail-delivery-date').textContent = o.deliveryDate ? formatDate(o.deliveryDate) : '-';
-        if (o.completedAt) { $('detail-completed-row').style.display = 'flex'; $('detail-completed-info').textContent = `${formatTime(o.completedAt)} oleh ${o.completedBy || '-'}`; }
-        else $('detail-completed-row').style.display = 'none';
-        renderDeliveryHistory(o.invoiceNumber);
-        $('detail-incomplete-note').value = o.incompleteNote || '';
-        if (o.incompleteNoteUpdatedAt) $('detail-note-updated-info').textContent = `✅ Dikemaskini ${formatTime(o.incompleteNoteUpdatedAt)} oleh ${o.incompleteNoteUpdatedBy||'-'}`;
-        else $('detail-note-updated-info').textContent = 'Belum pernah dikemaskini';
-        await loadIncompleteNoteHistory(o.invoiceNumber);
-        $('btn-print-final').style.display = 'block';
-        await populateDesignerDropdown('detail-designer-select', o.assignedDesigner || '');
-        $('detail-design-status-badge').outerHTML = getDesignStatusBadge(o.designStatus || 'pending').replace('class="design-status-badge', 'id="detail-design-status-badge" class="design-status-badge');
-        $('detail-design-notes').value = o.designNotes || '';
-        document.querySelectorAll('.design-status-btn').forEach(b => { if (b.dataset.status === (o.designStatus || 'pending')) b.classList.add('active'); else b.classList.remove('active'); });
-        loadDesignActivityForDetail(o.invoiceNumber);
-        await window.loadDepartments();
-        await refreshProductionPanel();
-        const logs = await loadAuditLogs(o.invoiceNumber);
-        if (logs.length) {
-            $('audit-log-section').style.display = 'block';
-            $('audit-log-list').innerHTML = logs.map(l => {
-                let icon = '📝', logClass = 'log-update';
-                if (l.action === 'create') { icon = '🆕'; logClass = 'log-create'; }
-                else if (l.action === 'delete') { icon = '🗑️'; logClass = 'log-delete'; }
-                else if (l.action === 'update') { icon = '✏️'; logClass = 'log-update'; }
-                let detail = '';
-                if (l.old_value && l.new_value) detail = `<strong>${escapeHtml(l.field_changed)}:</strong><br><span style="color:#e74c3c;">❌ ${escapeHtml(l.old_value)}</span><br><span style="color:#27ae60;">✅ ${escapeHtml(l.new_value)}</span>`;
-                else if (l.new_value) detail = `<strong>${escapeHtml(l.field_changed)}:</strong> <span style="color:#27ae60;">${escapeHtml(l.new_value)}</span>`;
-                else if (l.old_value) detail = `<strong>${escapeHtml(l.field_changed)}:</strong> <span style="color:#e74c3c;">${escapeHtml(l.old_value)}</span>`;
-                else if (l.notes) detail = escapeHtml(l.notes);
-                return `<div class="audit-log-item ${logClass}"><div class="log-header">${icon} ${formatTime(l.changed_at)} - ${escapeHtml(l.staff_name)}</div><div class="log-detail">${detail}</div></div>`;
-            }).join('');
-        } else $('audit-log-section').style.display = 'none';
-        orderListPage.style.display = 'none'; activeOrdersPage.style.display = 'none'; quotationListPage.style.display = 'none';
-        designPage.style.display = 'none'; productionPage.style.display = 'none';
-        orderDetailView.style.display = 'block';
     };
       async function displayActiveOrders() {
         await loadOrders();
@@ -5951,15 +5888,6 @@ document.addEventListener('DOMContentLoaded', function() {
         alert('✅ App berjaya dipasang!');
     });
 });
-    setTimeout(() => {
-        document.querySelectorAll('.order-number').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const inv = this.dataset.invoice;
-                const o = allOrdersCache.find(x => x.invoiceNumber === inv);
-                if (o && typeof showOrderDetail === 'function') showOrderDetail(o);
-            });
-        });
-    }, 2000);
 </script>
 </body>
 </html>
